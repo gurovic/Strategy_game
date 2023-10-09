@@ -1,38 +1,35 @@
 import InvokerReport
 import InvokerRequest
 import InvokerMultiRequest
+import InvokerMultiRequestPriorityQueue
+import random
 import subprocess
+import PRIORITY
 
 
 class Compiler:
-    def __init__(self, file_to_compile, file_name, id_of_file):
-        self.file = file_to_compile
-        self.ext = file_name.split(".")[-1]
-        self.id = id_of_file
-        self.compiled_file = ""
-        self.results = []
-        self.report = InvokerReport()
-        self.commands = {'py': 'something',
-                         'cpp': f"g++ -c {self.file} -o C:\\Users\\ddybr\\Desktop\\Compiled_files\\{self.id}"}
-        self.compile()
-        self.compiled_file = open(f"C:\\Users\\ddybr\\Desktop\\Compiled_files\\{self.id}")
-        self.results.append(self.compiled_file)
-        self.results.append(self.report)
+    COMMANDS = {'py': None,
+                'cpp': "g++ -c {} -o Compiled_files/{}"}
 
-    def do(self):
-        subprocess.Popen(self.commands[self.ext])
+    def __init__(self, path_to_file):
+        self.file = path_to_file
+        self.extension = path_to_file.split(".")[-1]
+        self.id = random.randint(0, int(1e12))
+        if self.COMMANDS[self.extension] is not None:
+            self.command = self.COMMANDS[self.extension].format(self.file, self.id)
 
     def compile(self):
-        ireq = InvokerRequest(self.commands[self.ext], self.results, True)
-        listireqs = [self.ireq]
-        imr = InvokerMultiRequest(self.listireqs, "Compiler", 10)
-        imr.run()
-
-    def get_results(self):
-        return self.results
-
+        self.report = InvokerReport()
+        invoker_request = InvokerRequest(self.command, self.report, True)
+        invoker_requests = [invoker_request]
+        invoker_multirequest = InvokerMultiRequest(invoker_requests, "Compiler", PRIORITY.RED)
+        queue = InvokerMultiRequestPriorityQueue()
+        queue.add(invoker_multirequest)
 
 
 
-a = Compiler("C:\\Users\\ddybr\\ciplusplus\\main.cpp", "main.cpp", 1)
+
+a = Compiler("ciplusplus\\main.cpp")
 print("f")
+
+#надо будет добавить проверку результата и кому его возвращать(OBSERVER)
