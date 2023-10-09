@@ -1,5 +1,12 @@
 from django.utils import timezone
 from .models import *
+from enum import Enum
+import SETTINGS
+
+
+class InvokerStatus(Enum):
+    WORKING = 1
+    FREE = 0
 
 
 class InvokerRequest:
@@ -22,27 +29,34 @@ class InvokerMultiRequest:
 
 
 class InvokerPool:
+    ALL_INVOKERS_COUNT = SETTINGS.ALL_INVOKERS_COUNT
     def __init__(self):
-        self.all_invokers_count = 100  # TODO сделать определенное количество изначальных Invoker
-        self.free_invokers_count = self.all_invokers_count
-        self.invokers = []
-        for i in range(self.all_invokers_count):
-            self.invokers.append(Invoker(id=i))
+        self.free_invokers_count = self.ALL_INVOKERS_COUNT
+        self.all_invokers = []
+        for i in range(self.ALL_INVOKERS_COUNT):
+            self.all_invokers.append(Invoker(id=i))
 
     def get_free_invokers_count(self):
         return self.free_invokers_count
 
+    # TODO сделать чтобы после освобождения некоторых Invoker IP говорил IMRPQ что есть свободные Invokers
     def free(self, id: int):
-        if self.invokers[id].status == "Working":
+        if self.all_invokers[id].status == InvokerStatus.WORKING:
             self.free_invokers_count += 1
-            self.invokers[id].status = "Free"
+            self.all_invokers[id].status = InvokerStatus.FREE
 
-    def get(self, need_count: int, _priority: int, _user):
+
+    def get(self, need_count: int):
+        if self.get_free_invokers_count() < need_count:
+            return None
         result = []
-        for invoker in self.invokers:
-            if invoker.status == "Free":
-                invoker.status = "Working"
+        for invoker in self.all_invokers:
+            if invoker.status == InvokerStatus.FREE:
+                invoker.status = InvokerStatus.WORKING
                 result.append(invoker.id)
             if len(result) == need_count:
                 break
         return result
+
+# TODO сделать SUBSCRIBE
+# TODO логи?
