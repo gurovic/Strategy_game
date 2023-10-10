@@ -10,11 +10,16 @@ class Battle(models.Model):
     pass
 
 
+class TournamentSystem(models.Model):
+    players_per_battle = models.IntegerField()
+    players = models.ManyToManyField(User, through='PlayersInTournament')
+
+
 class Tournament(models.Model):
     name = models.CharField(max_length=255, default='tournament')
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     players = models.ManyToManyField(User, through='PlayersInTournament')
-    system = models.CharField(max_length=1, choices=[("R", "Round-robin system"), ("O", "Olympic system")], default="O")
+    system = models.ForeignKey(TournamentSystem, on_delete=models.CASCADE)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
     answers_sending_status = models.CharField(max_length=1,
@@ -25,12 +30,7 @@ class Tournament(models.Model):
                                         default="N")
 
     def start(self):
-        participants = PlayersInTournament.objects.get(tournament=self)
-        for i in range(len(participants)):
-            for j in range(len(participants)):
-                if j <= i:
-                    continue
-                Battle(participants[i], participants[j]).save()
+        pass
 
     def count_points(self):
         battles = Battle.objects.get(tournament=self)
