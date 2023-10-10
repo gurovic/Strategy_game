@@ -1,10 +1,22 @@
 # Author: derwes
 # at 2023/10/09
+import logging
+import time
 
-import InvokerMultiRequests
+from invokerMultiRequests import InvokerMultiRequests
+from invokerPool import InvokerPool
+from queue import PriorityQueue
+
+logging.basicConfig(filename='InvokerMRPQ.log', level=logging.DEBUG,
+                    format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
 
 
 class InvokerMultiRequestsPriorityQueue:
+    invokerMultiRequestQueue = PriorityQueue()
+    SELECTEDINVOKERS = "For multirequest {0} selected invokers with id's {1}"
+    MULTIREQUESTADDED = "Multirequest with priority: {0} added with id: {1}"
+    MULTIREQUESTSELECTED = "Multirequest with id {0} and priority: {1} selected"
+    MULTIREQUESTLAUNCHED = "Multirequest with id: {0} launched"
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -12,14 +24,29 @@ class InvokerMultiRequestsPriorityQueue:
         return cls.instance
 
     def __init__(self):
+        self.invokerPool = InvokerPool()
+        # По идее парсинг всех незавершенных IMR из БД
+        # И добавление их в очередь
         pass
 
-    def add(self, invokermultirequests: [InvokerMultiRequests]):
-        pass
+    def run(self):
+        # Можно разбить на несколько очередей (Визуал, Компиляция, ...) Для отсутствия застоя по всем группам
+        freeinvokerscount = self.invokerPool.get_free_invoker_count()
+        priority, invokermultirequest = self.invokerMultiRequestQueue.get()
+        logging.info(
+            self.MULTIREQUESTSELECTED.format(invokermultirequest.id, priority)
+        )
+        while freeinvokerscount < invokermultirequest.invoker_requests_count:
+            freeinvokerscount = self.invokerPool.get_free_invoker_count()
+        freeinvokersid = self.invokerPool.get(invokermultirequest.invoker_requests_count)
+        logging.info(
+            self.SELECTEDINVOKERS.format(invokermultirequest.id, freeinvokersid)
+        )
+        invokermultirequest.run(freeinvokersid)
+        logging.info(self.MULTIREQUESTLAUNCHED.format(invokermultirequest.id))
 
-
-a = InvokerMultiRequestsPriorityQueue()
-b = InvokerMultiRequestsPriorityQueue()
-print('Object 1: ', a)
-print('Object 2: ', b)
-print(a == b)
+    def add(self, invokermultirequest: [InvokerMultiRequests], priority):
+        self.invokerMultiRequestQueue.put((priority, invokermultirequest))
+        logging.info(
+            self.MULTIREQUESTADDED.format(priority, invokermultirequest.id)
+        )
