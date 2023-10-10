@@ -11,8 +11,29 @@ class Battle(models.Model):
 
 
 class TournamentSystem(models.Model):
+    tournament = models.ManyToManyField('Tournament')
     players_per_battle = models.IntegerField()
     players = models.ManyToManyField(User, through='PlayersInTournament')
+
+    def run_tournament(self):
+        players = PlayersInTournament.objects.get(tournament=self.tournament)
+        while True:
+            try:
+                self.make_battle(players)
+
+            except ValueError:
+                break
+
+    def make_battle(self, players):
+        if len(players) < self.players_per_battle:
+            return None
+
+        temporary = []
+        for i in range(len(players)):
+            temporary.append(players[i])
+            players.delete(players[i])
+
+        Battle(temporary, tournament=self.tournament).save()
 
 
 class Tournament(models.Model):
@@ -30,7 +51,8 @@ class Tournament(models.Model):
                                         default="N")
 
     def start(self):
-        pass
+        self.system.run_tournament()
+        self.count_points()
 
     def count_points(self):
         battles = Battle.objects.get(tournament=self)
