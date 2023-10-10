@@ -1,5 +1,7 @@
 from django.utils import timezone
 from .models import *
+import logging
+import time
 from enum import Enum
 import SETTINGS
 
@@ -9,17 +11,27 @@ class InvokerStatus(Enum):
     FREE = 0
 
 
+class InvokerMultiRequestPriorityQueue(object):
+    def __new__(self):
+        if not hasattr(self, 'instance'):
+            self.instance = super(InvokerMultiRequestPriorityQueue, self).__new__(self)
+        return self.instance
+
+    def call_free_invokers(self, count):
+        pass
+
+
 class InvokerRequest:
     def run(self):
         pass
 
 
 class InvokerMultiRequest:
-    def __init__(self, _invoker_requests: [InvokerRequest], _creator, _priority):
-        self.invoker_requests = _invoker_requests
-        self.invoker_requests_count = len(_invoker_requests)
-        self.creator = _creator
-        self.priority = _priority
+    def __init__(self, invoker_requests: [InvokerRequest], creator, priority):
+        self.invoker_requests = invoker_requests
+        self.invoker_requests_count = len(invoker_requests)
+        self.creator = creator
+        self.priority = priority
         self.pub_date = timezone.now()
 
     def run(self, ids: [int]):
@@ -30,24 +42,46 @@ class InvokerMultiRequest:
 
 class InvokerPool:
     ALL_INVOKERS_COUNT = SETTINGS.ALL_INVOKERS_COUNT
+    GET_FREE_INVOKERS_COUNT_INVOKERS = "{'INFO:} Something got free Invokers count"
+    FREE_INVOKER = "{'INFO:'} Invoker with id: {-1} was transferred from {'WORKING'} to {'FREE'}"
+    GET_INVOKERS = "{'INFO:'} Invokers with ids: {[]} was got by InvokerMultiRequestQueue"
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(InvokerPool, cls).__new__(cls)
+        return cls.instance
+
     def __init__(self):
+        logging.basicConfig(level=logging.INFO, filename="InvokerPool.log", filemode='w', format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
+        self.invoker_multi_request_priority_queue = InvokerMultiRequestPriorityQueue()
         self.free_invokers_count = self.ALL_INVOKERS_COUNT
         self.all_invokers = []
         for i in range(self.ALL_INVOKERS_COUNT):
             self.all_invokers.append(Invoker(id=i))
 
     def get_free_invokers_count(self):
+        logging.info(
+            self.GET_FREE_INVOKERS_COUNT_INVOKERS
+        )
         return self.free_invokers_count
 
-    # TODO сделать чтобы после освобождения некоторых Invoker IP говорил IMRPQ что есть свободные Invokers
     def free(self, id: int):
         if self.all_invokers[id].status == InvokerStatus.WORKING:
             self.free_invokers_count += 1
             self.all_invokers[id].status = InvokerStatus.FREE
-
+            logging.info(
+                self.FREE_INVOKER.format(id)
+            )
+        else:
+            logging.warning(
+                self.FREE_INVOKER.format("WARNING:",id,"FREE","FREE")
+            )
 
     def get(self, need_count: int):
         if self.get_free_invokers_count() < need_count:
+            logging.warning(
+                self.GET_INVOKERS.format('WARNING:', )
+            )
             return None
         result = []
         for invoker in self.all_invokers:
@@ -56,7 +90,9 @@ class InvokerPool:
                 result.append(invoker.id)
             if len(result) == need_count:
                 break
+        logging.warning(
+            self.GET_INVOKERS.format(result)
+        )
         return result
 
 # TODO сделать SUBSCRIBE
-# TODO логи?
