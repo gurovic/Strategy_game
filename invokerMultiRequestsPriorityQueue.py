@@ -1,27 +1,24 @@
 # Author: derwes
 # at 2023/10/09
 import logging
-import time
 
 from invokerMultiRequests import InvokerMultiRequests
 from invokerPool import InvokerPool
+from singleton import Singleton
 from queue import PriorityQueue
+
+from threading import Lock, Thread
 
 logging.basicConfig(filename='InvokerMRPQ.log', level=logging.DEBUG,
                     format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
 
 
-class InvokerMultiRequestsPriorityQueue:
+class InvokerMultiRequestsPriorityQueue(metaclass=Singleton):
     invokerMultiRequestQueue = PriorityQueue()
     SELECTEDINVOKERS = "For multirequest {0} selected invokers with id's {1}"
     MULTIREQUESTADDED = "Multirequest with priority: {0} added with id: {1}"
     MULTIREQUESTSELECTED = "Multirequest with id {0} and priority: {1} selected"
     MULTIREQUESTLAUNCHED = "Multirequest with id: {0} launched"
-
-    def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super(InvokerMultiRequestsPriorityQueue, cls).__new__(cls)
-        return cls.instance
 
     def __init__(self):
         self.invokerPool = InvokerPool()
