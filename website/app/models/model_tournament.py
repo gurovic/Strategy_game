@@ -30,6 +30,12 @@ class Tournament(models.Model):
                 player_wins = PlayersInTournament.object.get(tournament=self, player=player).number_of_wins
                 player_wins += PlayersInBattles.object.get(battle=battle, player=player).wins
 
+    def count_places(self):
+        if self.system is "R":
+            pass
+        else:
+            pass
+
 
 class PlayersInTournament(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)
