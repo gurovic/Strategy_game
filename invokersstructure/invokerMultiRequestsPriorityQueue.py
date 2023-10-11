@@ -1,15 +1,15 @@
 # Author: derwes
 # at 2023/10/09
+from queue import PriorityQueue
 import logging
 
 from invokerMultiRequests import InvokerMultiRequests
 from invokerPool import InvokerPool
 from singleton import Singleton
-from queue import PriorityQueue
 
 from threading import Lock, Thread
 
-logging.basicConfig(filename='InvokerMRPQ.log', level=logging.DEBUG,
+logging.basicConfig(filename='LOG.log', level=logging.DEBUG,
                     format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
 
 
