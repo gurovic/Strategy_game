@@ -24,7 +24,11 @@ class Tournament(models.Model):
                 player_points += PlayersInBattles.object.get(battle=battle, player=player).points
 
     def count_wins(self):
-        pass
+        battles = Battle.objects.get(tournament=self)
+        for battle in battles:
+            for player in battle.players.all():
+                player_wins = PlayersInTournament.object.get(tournament=self, player=player).number_of_wins
+                player_wins += PlayersInBattles.object.get(battle=battle, player=player).wins
 
 
 class PlayersInTournament(models.Model):
