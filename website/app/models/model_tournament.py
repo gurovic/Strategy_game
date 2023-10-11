@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .model_game import Game
-#from .model_battle import Battle, PlayersInBattles
+from .model_battle import Battle, PlayersInBattles
 
 
 class Tournament(models.Model):
     name = models.CharField(max_length=255, default='tournament')
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     players = models.ManyToManyField(User, through='PlayersInTournament')
+    battles = models.ManyToManyField(Battle)
     system = models.CharField(max_length=1, choices=[("R", "Round-robin system"), ("O", "Olympic system")], default="O")
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
