@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+    <style>
+        .block {
+        width: 150px;
+        height: 30px;
+        transition-duration: 1s;
+        }
+        .block:hover {
+        background: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload a File</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="block" type="submit"><p>Upload</p></button>
+    </form>
+</body>
+</html>
