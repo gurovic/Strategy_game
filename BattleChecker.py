@@ -160,5 +160,5 @@ def battle():
         if not good:
             winner = ind2
             break
-        #test
+        #testttt
     return winner
