@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+TOURNAMENT_SYSTEMS = {"R": "Round", "O": "Olympic"}
+
 
 class Game(models.Model):
     pass
@@ -14,30 +16,15 @@ class TournamentSystem(models.Model):
     tournament = models.ManyToManyField('Tournament')
     players_per_battle = models.IntegerField()
     players = models.ManyToManyField(User, through='PlayersInTournament')
+    type = models.CharField(max_length=20)
 
     def run_tournament(self):
-        players = PlayersInTournament.objects.get(tournament=self.tournament)
-        while True:
-            try:
-                self.make_battle(players)
-
-            except ValueError:
-                break
-
-    def make_battle(self, players):
-        if len(players) < self.players_per_battle:
-            return None
-
-        temporary = []
-        for i in range(len(players)):
-            temporary.append(players[i])
-            players.delete(players[i])
-
-        Battle(temporary, tournament=self.tournament).save()
+        pass
 
 
 class Tournament(models.Model):
     name = models.CharField(max_length=255, default='tournament')
+    battles = models.ManyToManyField(Battle)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     players = models.ManyToManyField(User, through='PlayersInTournament')
     system = models.ForeignKey(TournamentSystem, on_delete=models.CASCADE)
