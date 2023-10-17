@@ -13,7 +13,6 @@ class TestSingleton(unittest.TestCase):
         b = A()
         self.assertEqual(id(a), id(b))
 
-
     def test_different(self):
         class A(metaclass=Singleton):
             pass
@@ -21,7 +20,6 @@ class TestSingleton(unittest.TestCase):
         class B(metaclass=Singleton):
             pass
 
-	
         a = A()
         b = B()
         self.assertNotEqual(id(a), id(b))
