@@ -39,7 +39,7 @@ class Compiler:
 
     def notify(self):
         compile_report = model_compiler_report.CompilerReport
-        compile_report.id = "id of compiler is {}".format(self.id)
+        compile_report.id = "id of compiled file is {}".format(self.id)
         compile_report.time = "at {} started, at {} ended".format(self.report.time_start, self.report.time_end)
         compile_report.compile_status = self.report.compile_status
         compile_report.compile_error_text = self.report.compile_error_text
