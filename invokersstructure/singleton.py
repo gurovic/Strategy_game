@@ -1,7 +1,7 @@
 # Author: derwes
 # at 2023/10/11
 
-from threading import Lock, Thread
+from threading import Lock
 
 
 class Singleton(type):

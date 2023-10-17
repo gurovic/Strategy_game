@@ -1,7 +1,7 @@
 # Author: derwes
 # at 2023/10/15
+import subprocess
 import random
-import os
 
 from invokerReport import InvokerReport
 
@@ -13,7 +13,7 @@ class Invoker:
         self.id = random.randint(0, 1000000000000)
 
     def run(self, command):
-        exitreport = os.popen(command)
+        exitreport = subprocess.Popen(command)  # что в него передавать ещё предстоит узнать
         report = InvokerReport(exitreport)
         for subscriber in self.subscribers:
             subscriber.notify(id, report)
