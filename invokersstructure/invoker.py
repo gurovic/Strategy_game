@@ -24,4 +24,4 @@ class Invoker:
         exitreport = subprocess.Popen(command)  # что в него передавать ещё предстоит узнать
         report = InvokerReport(exitreport)
         for subscriber in self.subscribers:
-            subscriber.notify(id, report)
+            subscriber.notify(self.id, report)
