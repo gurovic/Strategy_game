@@ -4,10 +4,11 @@ import SETTINGS
 
 from invoker import Invoker
 from singleton import Singleton
+from invoker import InvokerStatus
 from invokerMultiRequestsPriorityQueue import InvokerMultiRequestsPriorityQueue
 
 
-class InvokerPool(Singleton):
+class InvokerPool(metaclass=Singleton):
     ALL_INVOKERS_COUNT = SETTINGS.ALL_INVOKERS_COUNT
     GET_FREE_INVOKERS_COUNT_INVOKERS = "{'INFO:} Something got free Invokers count"
     FREE_INVOKER = "{'INFO:'} Invoker with id: {-1} was transferred from {'WORKING'} to {'FREE'}"
@@ -28,16 +29,16 @@ class InvokerPool(Singleton):
         )
         return self.free_invokers_count
 
-    def free(self, id: int):
-        if self.all_invokers[id].status == InvokerStatus.WORKING:
+    def free(self, invokerid: int):
+        if self.all_invokers[invokerid].status == InvokerStatus.WORKING:
             self.free_invokers_count += 1
-            self.all_invokers[id].status = InvokerStatus.FREE
+            self.all_invokers[invokerid].status = InvokerStatus.FREE
             logging.info(
-                self.FREE_INVOKER.format(id)
+                self.FREE_INVOKER.format(invokerid)
             )
         else:
             logging.warning(
-                self.FREE_INVOKER.format("WARNING:", id, "FREE", "FREE")
+                self.FREE_INVOKER.format("WARNING:", invokerid, "FREE", "FREE")
             )
 
     def get(self, need_count: int):

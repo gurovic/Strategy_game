@@ -4,6 +4,7 @@ from django.utils import timezone
 
 from invokerRequest import InvokerRequest
 
+
 class InvokerMultiRequest:
     def __init__(self, invoker_requests: [InvokerRequest], creator, priority):
         self.invoker_requests = invoker_requests

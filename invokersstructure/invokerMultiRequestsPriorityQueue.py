@@ -6,8 +6,6 @@ from invokerMultiRequests import InvokerMultiRequest
 from invokerPool import InvokerPool
 from singleton import Singleton
 
-from threading import Lock, Thread
-
 logging.basicConfig(filename='LOG.log', level=logging.DEBUG,
                     format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
 
@@ -21,19 +19,17 @@ class InvokerMultiRequestsPriorityQueue(metaclass=Singleton):
 
     def __init__(self):
         self.invokerPool = InvokerPool()
-        # По идее парсинг всех незавершенных IMR из БД
-        # И добавление их в очередь
         pass
 
     def run(self):
         # Можно разбить на несколько очередей (Визуал, Компиляция, ...) Для отсутствия застоя по всем группам
-        freeinvokerscount = self.invokerPool.get_free_invoker_count()
+        freeinvokerscount = self.invokerPool.get_free_invokers_count()
         priority, invokermultirequest = self.invokerMultiRequestQueue.get()
         logging.info(
             self.MULTIREQUESTSELECTED.format(invokermultirequest.id, priority)
         )
         while freeinvokerscount < invokermultirequest.invoker_requests_count:
-            freeinvokerscount = self.invokerPool.get_free_invoker_count()
+            freeinvokerscount = self.invokerPool.get_free_invokers_count()
         freeinvokersid = self.invokerPool.get(invokermultirequest.invoker_requests_count)
         logging.info(
             self.SELECTEDINVOKERS.format(invokermultirequest.id, freeinvokersid)
