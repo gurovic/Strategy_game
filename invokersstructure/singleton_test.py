@@ -1,6 +1,7 @@
 import unittest
 
-from singleton import Singleton 
+from singleton import Singleton
+
 
 class TestSingleton(unittest.TestCase):
 
@@ -8,7 +9,6 @@ class TestSingleton(unittest.TestCase):
         class A(metaclass=Singleton):
             pass
 
-	
         a = A()
         b = A()
         self.assertEqual(id(a), id(b))

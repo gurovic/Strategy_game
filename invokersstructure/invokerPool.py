@@ -5,7 +5,7 @@ import SETTINGS
 from invoker import Invoker
 from singleton import Singleton
 from invoker import InvokerStatus
-from invokerMultiRequestsPriorityQueue import InvokerMultiRequestsPriorityQueue
+from invokerMultiRequestPriorityQueue import InvokerMultiRequestsPriorityQueue
 
 
 class InvokerPool(metaclass=Singleton):
