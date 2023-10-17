@@ -11,13 +11,13 @@ logging.basicConfig(filename='LOG.log', level=logging.DEBUG,
 
 
 class InvokerMultiRequestsPriorityQueue(metaclass=Singleton):
-    invokerMultiRequestQueue = PriorityQueue()
     SELECTEDINVOKERS = "For multirequest {0} selected invokers with id's {1}"
     MULTIREQUESTADDED = "Multirequest with priority: {0} added with id: {1}"
     MULTIREQUESTSELECTED = "Multirequest with id {0} and priority: {1} selected"
     MULTIREQUESTLAUNCHED = "Multirequest with id: {0} launched"
 
     def __init__(self):
+        self.invokerMultiRequestQueue = PriorityQueue()
         self.invokerPool = InvokerPool()
         pass
 
@@ -37,7 +37,7 @@ class InvokerMultiRequestsPriorityQueue(metaclass=Singleton):
         invokermultirequest.run(freeinvokersid)
         logging.info(self.MULTIREQUESTLAUNCHED.format(invokermultirequest.id))
 
-    def add(self, invokermultirequest: [InvokerMultiRequest], priority):
+    def add(self, invokermultirequest: InvokerMultiRequest, priority):
         self.invokerMultiRequestQueue.put((priority, invokermultirequest))
         logging.info(
             self.MULTIREQUESTADDED.format(priority, invokermultirequest.id)
