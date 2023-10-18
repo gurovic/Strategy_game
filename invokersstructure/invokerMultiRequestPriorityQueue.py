@@ -6,9 +6,6 @@ from invokerMultiRequest import InvokerMultiRequest
 from invokerPool import InvokerPool
 from singleton import Singleton
 
-logging.basicConfig(filename='LOG.log', level=logging.DEBUG,
-                    format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
-
 
 class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
     SELECTEDINVOKERS = "For multirequest {0} selected invokers with id's {1}"
@@ -44,3 +41,7 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
         logging.info(
             self.MULTIREQUESTADDED.format(priority, invoker_multi_request.id)
         )
+        self.run()
+
+    def notify(self):
+        self.run()
