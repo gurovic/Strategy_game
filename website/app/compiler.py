@@ -23,7 +23,7 @@ class Compiler:
         self.who_needs = who_needs_compile
         self.file = path_to_file
         self.extension = path_to_file.split(".")[-1]
-        self.id = random.randint(0, int(1e12))
+        self.id = random.randint(0, int(1e11))
         if self.COMMANDS[self.extension] is not None:
             self.command = self.COMMANDS[self.extension].format(self.file, self.id)
         logging.info(self.FILETOCOMPILEISCREATED.format(self.file, self.id))
