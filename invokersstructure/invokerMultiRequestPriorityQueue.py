@@ -38,9 +38,7 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
 
     def add(self, invoker_multi_request: InvokerMultiRequest, priority):
         self.invoker_multi_request_queue.put((priority, invoker_multi_request))
-        logging.info(
-            self.MULTIREQUESTADDED.format(priority, invoker_multi_request.id)
-        )
+        logging.info(self.MULTIREQUESTADDED.format(priority, invoker_multi_request.id))
         self.run()
 
     def notify(self):
