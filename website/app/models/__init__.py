@@ -1,1 +1,1 @@
-from visualizer import Visualizer, Asset
+from app.models.visualizer import Visualizer, Asset
