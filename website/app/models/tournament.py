@@ -13,7 +13,7 @@ class Battle(models.Model):
 
 
 class TournamentSystem(models.Model):
-    tournament = models.ManyToManyField('Tournament')
+    tournament = models.ManyToManyField("Tournament", on_delete=models.CASCADE)
     players_per_battle = models.IntegerField()
     players = models.ManyToManyField(User, through='PlayersInTournament')
     type = models.CharField(max_length=20)
