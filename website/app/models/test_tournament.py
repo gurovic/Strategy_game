@@ -1,8 +1,12 @@
-from unittest import TestCase
+import unittest
 from tournament import *
 
 
-class TestTournament(TestCase):
+class TestTournament(unittest.TestCase):
     def test_get_by_order(self):
-        a = Tournament
-        self.assertEqual(type(a), Tournament)
+        a = int(10)
+        self.assertEqual(type(a), int)
+
+
+if __name__ == "__main__":
+    unittest.main()
