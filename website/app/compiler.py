@@ -44,9 +44,9 @@ class Compiler:
         compile_report.id = self.id
         compile_report.path = self.path
         compile_report.time = "at {} started, at {} ended".format(report.time_start, report.time_end)
-        compile_report.compile_status = report.compile_status
-        compile_report.compile_error_text = report.compile_error_text
-        if report.compile_status == 1:
+        compile_report.compile_status = report.program_status
+        compile_report.compile_error_text = report.program_error_text
+        if report.compile_status == "OK":
             self.clas.notify()
             self.logging.info(self.FILEISCOMPILED.format(self.path, self.id, self.where, self.id))
         else:
