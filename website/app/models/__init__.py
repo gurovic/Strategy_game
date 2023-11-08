@@ -1,1 +1,1 @@
-from tournament import *
+from invoker_report import *
