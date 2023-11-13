@@ -1,15 +1,14 @@
 import logging
 
-import SETTINGS
+from invoker import Invoker, InvokerStatus
+from invoker_multi_request_priority_queue import InvokerMultiRequestsPriorityQueue
+from utils import Singleton
 
-from invoker import Invoker
-from singleton import Singleton
-from invoker import InvokerStatus
-from invokerMultiRequestPriorityQueue import InvokerMultiRequestsPriorityQueue
+from django.conf import settings
 
 
 class InvokerPool(metaclass=Singleton):
-    ALL_INVOKERS_COUNT = SETTINGS.ALL_INVOKERS_COUNT
+    ALL_INVOKERS_COUNT = settings.ALL_INVOKERS_COUNT
     GET_FREE_INVOKERS_COUNT_INVOKERS = "{'INFO:} Something got free Invokers count"
     FREE_INVOKER = "{'INFO:'} Invoker with id: {-1} was transferred from {'WORKING'} to {'FREE'}"
     GET_INVOKERS = "{'INFO:'} Invokers with ids: {[]} was got by InvokerMultiRequestQueue"
