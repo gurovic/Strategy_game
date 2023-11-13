@@ -2,8 +2,8 @@
 from queue import PriorityQueue
 import logging
 
-from invokerMultiRequest import InvokerMultiRequest
-from invokerPool import InvokerPool
+from invoker_multi_request import InvokerMultiRequest
+from invoker_pool import InvokerPool
 from singleton import Singleton
 
 
