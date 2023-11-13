@@ -1,1 +1,1 @@
-from app.models.compiler import *
+from app.models.compiler import CompilerReport
