@@ -2,6 +2,10 @@ import datetime
 import logging
 import random
 
+from django.http import HttpResponse
+from django.template import loader
+from django.db import models
+
 from Strategy_game.invokersstructure.compiler import Compiler, CompilerReport
 
 
@@ -18,12 +22,14 @@ class FileLoader:
         logging.basicConfig(level=logging.INFO, filename="../../../logs/boris.log", filemode='w',
                             format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
         self.creator = creator
-        self.id = random.randint(1,1000000000000000000)
+        self.id = random.randint(1, 1000000000000000000)
         self.file_path = file_path
         self.lang = self.get_format(file_path)
+        self.compiler_report = None
         with open(self.file_path) as file:
             self.compiler = Compiler(file, self.lang, self.notify())
         logging.info(self.CREATED_FILE_LOADER.format(self.id, datetime.datetime.now().strftime("%Y%m%d")))
+        self.compile()
 
     def make_response(self, exp: str):
         if exp == 'formatEXE':
@@ -42,7 +48,12 @@ class FileLoader:
 
     def notify(self, compiler_report):
         logging.info(self.CREATOR_NOTIFYING.format(self.id, datetime.datetime.now()))
-        self.creator.notify(compiler_report)
+        self.compiler_report = compiler_report
+
+    async def get_compiler_report(self):
+        while self.compiler_report == None:
+            pass
+        return self.compiler_report
 
     @staticmethod
     def get_format(file_path: str):
