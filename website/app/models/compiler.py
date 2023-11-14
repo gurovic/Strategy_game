@@ -15,7 +15,9 @@ class CompilerReport(models.Model):
     invoker_report = models.ForeignKey("app.InvokerReport", on_delete=models.CASCADE, verbose_name="Репорт инвокера")
 
     def __str__(self):
-        return f"{self.id} - {self.get_status_display()} | {self.date_created if self.status == self.Status.OK else self.error}"
+        if self.status == self.Status.OK:
+            return f"{self.id} - {self.get_status_display()}"
+        return f"{self.id} - {self.get_status_display()} | {self.error}"
 
     class Meta:
         verbose_name = "Репорт компилятора"
