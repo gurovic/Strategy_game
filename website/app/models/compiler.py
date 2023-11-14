@@ -7,7 +7,7 @@ class CompilerReport(models.Model):
         OK = 0
         ERROR = 1
 
-    compiled_file = models.FileField(upload_to="compiler_report", verbose_name="Файл")
+    compiled_file = models.FileField(upload_to="compiler_report", null=True, blank=True, verbose_name="Файл")
     time = models.PositiveIntegerField(verbose_name="Время выполнения")
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     status = models.IntegerField(choices=Status.choices, default=Status.OK, verbose_name="Статус")
