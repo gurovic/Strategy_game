@@ -1,13 +1,16 @@
+from app.models import CompilerReport, InvokerReport
 from django.test import TestCase
-from app.models import CompilerReport
+from unittest.mock import patch
+from datetime import timedelta
 
 
 class CompilerReportTestCase(TestCase):
     def setUp(self):
-        CompilerReport.objects.create(status=CompilerReport.Status.OK)
-        CompilerReport.objects.create(status=CompilerReport.Status.COMPILER_ERROR, error="Test")
-        CompilerReport.objects.create(status=CompilerReport.Status.COMPILATION_ERROR, error="Test")
-        CompilerReport.objects.create(status=CompilerReport.Status.TIMELIMIT, error="Test")
+        invoker_report = InvokerReport.objects.create()
+        CompilerReport.objects.create(status=CompilerReport.Status.OK, time=timedelta(microseconds=1), invoker_report=invoker_report)
+        CompilerReport.objects.create(status=CompilerReport.Status.COMPILER_ERROR, error="Test", time=timedelta(microseconds=1), invoker_report=invoker_report)
+        CompilerReport.objects.create(status=CompilerReport.Status.COMPILATION_ERROR, error="Test", time=timedelta(microseconds=1), invoker_report=invoker_report)
+        CompilerReport.objects.create(status=CompilerReport.Status.TIMELIMIT, error="Test", time=timedelta(microseconds=1), invoker_report=invoker_report)
 
     def test_str(self):
         ok = CompilerReport.objects.get(status=CompilerReport.Status.OK)
@@ -26,7 +29,7 @@ class CompilerReportTestCase(TestCase):
         compilation_error = CompilerReport.objects.get(status=CompilerReport.Status.COMPILATION_ERROR)
         timelimit_error = CompilerReport.objects.get(status=CompilerReport.Status.TIMELIMIT)
 
-        self.assert_(ok.has_error())
-        self.assert_(not compiler_error.has_error())
-        self.assert_(not compilation_error.has_error())
-        self.assert_(not timelimit_error.has_error())
+        self.assert_(not ok.has_error())
+        self.assert_(compiler_error.has_error())
+        self.assert_(compilation_error.has_error())
+        self.assert_(timelimit_error.has_error())
