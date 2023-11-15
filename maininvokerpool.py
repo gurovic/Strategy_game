@@ -9,7 +9,6 @@ from invokerMultiRequestPriorityQueue import InvokerMultiRequestsPriorityQueue
 
 
 class InvokerPool(metaclass=Singleton):
-    ALL_INVOKERS_COUNT = SETTINGS.ALL_INVOKERS_COUNT
     GET_FREE_INVOKERS_COUNT_INVOKERS = "{'INFO:} Something got free Invokers count"
     FREE_INVOKER = "{'INFO:'} Invoker with id: {-1} was transferred from {'WORKING'} to {'FREE'}"
     GET_INVOKERS = "{'INFO:'} Invokers with ids: {[]} was got by InvokerMultiRequestQueue"
@@ -17,10 +16,11 @@ class InvokerPool(metaclass=Singleton):
     def __init__(self):
         logging.basicConfig(level=logging.INFO, filename="InvokerPool.log", filemode='w',
                             format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
+        self.all_invokers_count = SETTINGS.ALL_INVOKERS_COUNT
         self.invoker_multi_request_priority_queue = InvokerMultiRequestsPriorityQueue()
-        self.free_invokers_count = self.ALL_INVOKERS_COUNT
+        self.free_invokers_count = self.all_invokers_count
         self.all_invokers = []
-        for i in range(self.ALL_INVOKERS_COUNT):
+        for i in range(self.all_invokers_count):
             self.all_invokers.append(Invoker())
 
     def get_free_invokers_count(self):
