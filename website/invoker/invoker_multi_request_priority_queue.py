@@ -2,9 +2,9 @@
 from queue import PriorityQueue
 import logging
 
-from invoker_multi_request import InvokerMultiRequest
-from invoker_pool import InvokerPool
-from singleton import Singleton
+from .invoker_multi_request import InvokerMultiRequest
+from .invoker_pool import InvokerPool
+from .utils import Singleton
 
 
 class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
@@ -41,7 +41,6 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
     def add(self, invoker_multi_request: InvokerMultiRequest, priority):
         self.invoker_multi_request_queue.put((priority, invoker_multi_request))
         logging.info(self.MULTIREQUESTADDED.format(priority, invoker_multi_request.id))
-        self.run()
 
     def notify(self):
         self.run()
