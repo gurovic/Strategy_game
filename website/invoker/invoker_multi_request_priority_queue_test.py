@@ -3,9 +3,9 @@ from unittest.mock import patch
 
 from threading import Thread
 
-from .invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
-from .invoker_multi_request import InvokerMultiRequest
-from .invoker_pool import InvokerPool
+from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
+from invoker.invoker_request import InvokerMultiRequest
+from invoker.invoker_pool import InvokerPool
 
 
 class TestInvokerMultiRequestPriorityQueue(unittest.TestCase):
