@@ -9,11 +9,11 @@
     <ul>
     {% for report in compiler_reports %}
         <li>
-            <p>{report.id}</p>
-            <p>{report.compiler_file}</p>
-            <a href="compiler-report/{{report.id}}"></a>
+            <p>{{report.id}}</p>
+            <p>{{report.compiler_file}}</p>
+            <a href="http://localhost:8000/app/compiler-report/{{report.id}}/">go there</a>
         </li>
-    {% endfor %}}
+    {% endfor %}
         </ul>
 {% else %}
     <p>Testing</p>

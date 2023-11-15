@@ -1,4 +1,4 @@
-from ..models.file_loader import CompilerReport
+from ..models.compiler import CompilerReport
 
 from django.shortcuts import render
 
@@ -12,8 +12,8 @@ def show(request, id):
             break
         except ():
             pass
-    return render(request, "models/compiler_report_details.html", {"compiler_report": compiler_report})
+    return render(request, "compiler_report_details.html", {"compiler_report": compiler_report})
 
 def show_all(request):
-    compiler_reports = CompilerReport.objects
-    return render(request, "models/compiler_reports_all.html", {"compiler_reports": compiler_reports})
+    compiler_reports = CompilerReport.objects.all()
+    return render(request, "compiler_reports_all.html", {"compiler_reports": compiler_reports})

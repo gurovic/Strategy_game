@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+</head>
+<body>
+{% if compiler_report %}
+    {% if compiler_report %}
+        <p>{{ compiler_report.compiler_file }}</p>
+        <p>{{ compiler_report.time }}</p>
+        <p>{{ compiler_report.date_created }}</p>
+        <p>{{ compiler_report.status }}</p>
+        <p>{{ compiler_report.error }}</p>
+        <p>{{ compiler_report.invoker_report }}</p>
+    {% else %}
+        <p>Compiled</p>
+    {% endif %}
+{% else %}
+    <p>Testing</p>
+{% endif %}
+</body>
+</html>

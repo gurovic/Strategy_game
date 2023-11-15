@@ -1,1 +1,1 @@
- 
+from .compiler_report_views import show, show_all
