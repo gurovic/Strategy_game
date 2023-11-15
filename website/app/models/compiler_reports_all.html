@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+</head>
+<body>
+{% if compiler_reports %}
+    <ul>
+    {% for report in compiler_reports %}
+        <li>
+            <p>{report.id}</p>
+            <p>{report.compiler_file}</p>
+            <a href="compiler-report/{{report.id}}"></a>
+        </li>
+    {% endfor %}}
+        </ul>
+{% else %}
+    <p>Testing</p>
+{% endif %}
+</body>
+</html>
