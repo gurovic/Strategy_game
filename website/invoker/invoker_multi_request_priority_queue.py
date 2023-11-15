@@ -16,7 +16,6 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
     def __init__(self):
         self.invoker_multi_request_queue = PriorityQueue()
         self.invoker_pool = InvokerPool()
-        pass
 
     def run(self):
         if self.invoker_multi_request_queue.empty():
@@ -40,6 +39,7 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
     def add(self, invoker_multi_request: InvokerMultiRequest, priority):
         self.invoker_multi_request_queue.put((priority, invoker_multi_request))
         logging.info(self.MULTIREQUESTADDED.format(priority, invoker_multi_request.id))
+        self.run()
 
     def notify(self):
         self.run()
