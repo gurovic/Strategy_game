@@ -1,7 +1,9 @@
 import logging
 
+from django.conf import settings
+
 from invoker.invoker import Invoker, InvokerStatus
-from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestsPriorityQueue
+from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.utils import Singleton
 
 
@@ -10,12 +12,12 @@ class InvokerPool(metaclass=Singleton):
     FREE_INVOKER = "{'INFO:'} Invoker with id: {-1} was transferred from {'WORKING'} to {'FREE'}"
     GET_INVOKERS = "{'INFO:'} Invokers with ids: {[]} was got by InvokerMultiRequestQueue"
 
-    def __init__(self, invokers_count):
+    def __init__(self):
         logging.basicConfig(level=logging.INFO, filename="InvokerPool.log", filemode='w',
                             format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
 
-        self.all_invokers_count = invokers_count
-        self.invoker_multi_request_priority_queue = InvokerMultiRequestsPriorityQueue()
+        self.all_invokers_count = settings.MAX_INVOKERS_COUNT
+        self.invoker_multi_request_priority_queue = InvokerMultiRequestPriorityQueue()
         self.free_invokers_count = self.all_invokers_count
         self.all_invokers = []
         for i in range(self.all_invokers_count):

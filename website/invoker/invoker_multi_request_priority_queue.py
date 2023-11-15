@@ -2,9 +2,9 @@
 from queue import PriorityQueue
 import logging
 
-from .invoker_multi_request import InvokerMultiRequest
-from .invoker_pool import InvokerPool
-from .utils import Singleton
+from invoker.invoker_multi_request import InvokerMultiRequest
+from invoker.invoker_pool import InvokerPool
+from invoker.utils import Singleton
 
 
 class InvokerMultiRequestPriorityQueue(metaclass=Singleton):

@@ -11,7 +11,7 @@ class InvokerRequest:
         self.run_command = run_command
         self.time_created = datetime.now()
         self.subscribers = subscribers
-        self.return_report
+        self.return_report = None
 
     def run(self, current_invoker, preserve_files):
         self.time_created = datetime.now()
