@@ -3,39 +3,38 @@ from invoker import Invoker
 from invoker_log import InvokerLog
 from invoker_pool import InvokerPool
 from invoker_report import InvokerReport
+from invoker_multi_request import InvokerMultiRequest
 from datetime import datetime
 
 
 class InvokerRequest:
-    def __init__(self, start_file):
-        self.start_file = start_file
-        self.time_start = None
-        self.time_end = None
-        # зачем нужны время начала в время конца в self, когда они уже хранятся в self.running_result?
-        self.is_compile = True
-        # зачему нужен этот флаг, когда компиляция и запуск проходят друг за другом в функции run?
-        self.running_result = None
+    def __init__(self, run_command, subscribers):
+        self.run_command = run_command
+        self.time_created = datetime.now()
+        self.subscribers = subscribers
+        self.return_report
 
-    def run(self, id):
-        self.time_start = datetime.now()
+    def run(self, current_invoker, preserve_files):
+        self.time_created = datetime.now()
+        self.current_invoker = current_invoker
         return_report = InvokerReport()
 
-        compile_report = Invoker.compile_file(self.start_file, id)
-        self.is_compile = False
+        compile_report = self.current_invoker.compile_file(self.run_command, id)
         return_report.compile_status = compile_report.compile_status
         return_report.compile_error_text = compile_report.compile_error_text
 
         if return_report.compile_status == 'OK':
-            # куда Invoker складывает скомпилированный фвйл?? Пусть в InvokerReport.file
-            run_report = Invoker.run_file(compile_report.file, id)
+            run_report = self.current_invoker.run_file(compile_report.file, id)
             return_report.run_status = run_report.run_status
             return_report.run_error_text = compile_report.run_error_text
 
-        self.time_end = datetime.now()
         InvokerPool.free(id)
 
-        return_report.time_start = self.time_start
-        return_report.time_end = self.time_end
-        self.running_result = return_report
+        return_report.time_start = self.time_created
+        return_report.time_end = datetime.now()
         InvokerLog.add_invoker(return_report)
+        self.return_report = return_report
         return return_report
+
+    def notify(self):
+        InvokerMultiRequest.notify(self.return_report)
