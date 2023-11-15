@@ -1,6 +1,7 @@
 import datetime
 import logging
 import random
+import os
 
 from django.http import HttpResponse
 from django.template import loader
@@ -18,7 +19,7 @@ class FileLoader:
     WRONG_FUNCTION_CALLING_ERROR = "Wrong calling of make_response function in class FileLoader with id {}"
     FILE_PATH_EXCEPTION = "FileLoader with id {} hadn't found file in {}"
     # OTHER CONSTS
-    AVAILABLE_FORMATS = []  # Writes by Miroslav
+    AVAILABLE_FORMATS = ['.cpp','.py','.JAVA','.rs','.cs','.go','.hs','.kt','.P','.js','.dpr','.ts']
 
     def __init__(self, file_path: str):
         logging.basicConfig(level=logging.INFO, filename="../../../logs/boris.log", filemode='w',
@@ -37,7 +38,7 @@ class FileLoader:
             date = datetime.datetime.now().strftime("%Y%m%d")
             report = CompilerReport(None, 0, date, "ERROR", "Wrong file format", None)
             self.compiler_report = report
-        elif exc == 'no_file':
+        elif exc == '404':
             logging.error(self.FILE_PATH_EXCEPTION.format(self.id, self.file_path))
             date = datetime.datetime.now().strftime("%Y%m%d")
             report = CompilerReport(None, 0, date, "ERROR", "No such file found {}".format(self.file_path), None)
@@ -63,9 +64,10 @@ class FileLoader:
 
     def get_format(self, file_path: str):
         try:
-            with open(file_path) as file:
+            with open(file_path):
                 pass
+            filename, file_extension = os.path.splitext(file_path)
         except:
-            self.make_response("no_file")
-        # TODO get from Miroslav
-        return ".cpp"
+            self.make_response("404")
+            return None
+        return file_extension
