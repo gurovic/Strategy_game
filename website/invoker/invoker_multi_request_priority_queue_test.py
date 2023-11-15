@@ -61,6 +61,33 @@ class TestInvokerMultiRequestPriorityQueue(unittest.TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch(f"{__name__}.InvokerMultiRequest.run")
+    def test_run_mixed(self, mock_invoker_pool, mock_imr_run):
+        class TempQueue(InvokerMultiRequestPriorityQueue):
+            pass
+
+        queue = TempQueue()
+
+        mock_invoker_pool.get_free_invokers_count.return_value = 4
+        mock_invoker_pool.get.return_value = [0, 1, 2, 3]
+        queue.invoker_pool = mock_invoker_pool
+
+        for i in [1, 5, 8]:
+            mock_invoker_multi_request = InvokerMultiRequest()
+            mock_invoker_multi_request.run = mock_imr_run
+            mock_invoker_multi_request.invoker_requests_count = 4
+            queue.add(mock_invoker_multi_request, i)
+
+        for i in [7, 10, 11]:
+            mock_invoker_multi_request = InvokerMultiRequest()
+            mock_invoker_multi_request.run = mock_imr_run
+            mock_invoker_multi_request.invoker_requests_count = 6
+            queue.add(mock_invoker_multi_request, i)
+
+        queue.run()
+        self.assertEqual(queue.invoker_multi_request_queue.qsize(), 4)
+
+    @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
+    @patch(f"{__name__}.InvokerMultiRequest.run")
     def test_add_then_run_overflow_request_count(self, mock_invoker_pool, mock_imr_run):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass

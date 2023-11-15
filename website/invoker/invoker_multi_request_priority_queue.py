@@ -23,7 +23,6 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
             return
         free_invokers_count = self.invoker_pool.get_free_invokers_count()
         priority, invoker_multi_request = self.invoker_multi_request_queue.get()
-
         if invoker_multi_request.invoker_requests_count > free_invokers_count:
             self.invoker_multi_request_queue.put((priority, invoker_multi_request))
         else:
