@@ -120,5 +120,5 @@ class Invoker:
             callback(report)
 
 
-__all__ = ["InvokerReport", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
+__all__ = ["Invoker", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
            "InvokerStatus"]
