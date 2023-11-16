@@ -2,9 +2,9 @@ import datetime
 import random
 
 from ..models import PlayersInBattle
-from Strategy_game.invokersstructure.invokerReport import InvokerReport
-from Strategy_game.invokersstructure.invokerRequest import InvokerRequest
-from Strategy_game.invokersstructure.invokerMultiRequest import InvokerMultiRequest
+from Strategy_game.website.invoker.invoker_request import InvokerRequest
+from ..models.invoker_report import InvokerReport
+from Strategy_game.website.invoker.invoker_multi_request import InvokerMultiRequest
 
 
 class Battle:
