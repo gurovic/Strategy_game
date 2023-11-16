@@ -47,4 +47,4 @@ class InvokerPool:
         return result
 
 
-__all__ = ["InvokerPool"]
+__all__ = ["InvokerPool", "LowInvokerCap"]

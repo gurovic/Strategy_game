@@ -32,7 +32,6 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
 
     def notify(self):
         self.run()
-    # Подумать с нотифаем
 
 
 __all__ = ["InvokerMultiRequestPriorityQueue"]
