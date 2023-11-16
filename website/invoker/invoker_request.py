@@ -18,6 +18,5 @@ class InvokerRequest:
 
     def notify(self, report: InvokerReport):
         self.report = report
-
         if self.callback:
             self.callback(report)

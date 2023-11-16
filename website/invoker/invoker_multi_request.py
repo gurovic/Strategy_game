@@ -8,9 +8,9 @@ from invoker.models import InvokerReport
 
 
 class Priority(enum.IntEnum):
-    GREEN = 0
-    YELLOW = 1
-    RED = 2
+    GREEN = 3
+    YELLOW = 2
+    RED = 1
 
 
 class InvokerMultiRequest:

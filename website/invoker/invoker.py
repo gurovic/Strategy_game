@@ -22,9 +22,9 @@ class InvokerStatus(enum.Enum):
 @dataclass
 class RunResult:
     command: str
-    exit_code: int
 
     log: str
+    exit_code: int
 
     time_start: datetime
     time_end: datetime
@@ -63,8 +63,8 @@ class NormalEnvironment(InvokerEnvironment):
 
         return RunResult(
             command,
-            result.returncode,
             result.stdout,
+            result.returncode,
             time_start,
             time_end,
             return_dir

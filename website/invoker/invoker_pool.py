@@ -3,25 +3,20 @@ import logging
 from django.conf import settings
 
 from invoker.invoker import Invoker, InvokerStatus
-from invoker.utils import Singleton
 
 
 class LowInvokerCap(Exception):
-    def __init__(self, need_count: int, max_count: int):
+    def __init__(self, need_count: int, usable_count: int):
         self.need_count = need_count
-        self.max_count = max_count
+        self.usable_count = usable_count
 
     def __str__(self):
-        return f"Need {self.need_count} but have only {self.max_count}"
+        return f"Need {self.need_count} but have only {self.usable_count}"
 
 
 class InvokerPool:
-    GET_FREE_INVOKERS_COUNT_INVOKERS = "{'INFO:} Something got free Invokers count"
-    FREE_INVOKER = "{'INFO:'} Invoker with id: {-1} was transferred from {'WORKING'} to {'FREE'}"
-    GET_INVOKERS = "{'INFO:'} Invokers with ids: {[]} was got by InvokerMultiRequestQueue"
-
-    def __init__(self):
-        self.all_invokers_count = settings.MAX_INVOKERS_COUNT
+    def __init__(self, max_invoker_count):
+        self.all_invokers_count = max_invoker_count
         self.all_invokers = []
         for i in range(self.all_invokers_count):
             self.all_invokers.append(Invoker())
@@ -29,7 +24,6 @@ class InvokerPool:
     @property
     def free_invokers_count(self):
         logging.info("Something got free Invokers count")
-
         return len(list(filter(lambda x: x.status == InvokerStatus.FREE, self.all_invokers)))
 
     def free(self, invoker: Invoker):
@@ -50,9 +44,4 @@ class InvokerPool:
                 result.append(invoker)
             if len(result) == need_count:
                 break
-
-        logging.warning(
-            self.GET_INVOKERS.format(result)
-        )
-
         return result

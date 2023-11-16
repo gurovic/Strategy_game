@@ -68,7 +68,3 @@ class TestSingleton(TestCase):
         a = A()
         b = B()
         self.assertNotEqual(id(a), id(b))
-
-
-if __name__ == '__main__':
-    unittest.main()
