@@ -29,16 +29,16 @@ class InvokerPool(metaclass=Singleton):
         )
         return self.free_invokers_count
 
-    def free(self, invokerid: int):
-        if self.all_invokers[invokerid].status == InvokerStatus.WORKING:
+    def free(self, invoker):
+        if invoker.status == InvokerStatus.WORKING:
             self.free_invokers_count += 1
-            self.all_invokers[invokerid].status = InvokerStatus.FREE
+            invoker.status = InvokerStatus.FREE
             logging.info(
-                self.FREE_INVOKER.format(invokerid)
+                self.FREE_INVOKER.format(invoker.id)
             )
         else:
             logging.warning(
-                self.FREE_INVOKER.format("WARNING:", invokerid, "FREE", "FREE")
+                self.FREE_INVOKER.format("WARNING:", invoker.id, "FREE", "FREE")
             )
 
     def get(self, need_count: int):
@@ -51,10 +51,10 @@ class InvokerPool(metaclass=Singleton):
         for invoker in self.all_invokers:
             if invoker.status == InvokerStatus.FREE:
                 invoker.status = InvokerStatus.WORKING
-                result.append(invoker.id)
+                result.append(invoker)
             if len(result) == need_count:
                 break
         logging.warning(
-            self.GET_INVOKERS.format(result)
+            self.GET_INVOKERS.format([i.id for i in result])
         )
         return result

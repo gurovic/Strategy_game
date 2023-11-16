@@ -27,7 +27,7 @@ class InvokerRequest:
             return_report.run_status = run_report.run_status
             return_report.run_error_text = compile_report.run_error_text
 
-        InvokerPool.free(id)
+        InvokerPool.free(current_invoker)
 
         return_report.time_start = self.time_created
         return_report.time_end = datetime.now()

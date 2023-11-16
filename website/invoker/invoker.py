@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 import subprocess
 import tempfile
+import random
 import typing
 import enum
 
@@ -57,6 +58,7 @@ class DockerEnvironment(InvokerEnvironment):
 
 class Invoker:
     def __init__(self, callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
+        self.id = random.randint(1000000000, 9999999999)
         self.callback = callback
 
         self.working_status: InvokerStatus = InvokerStatus.FREE
