@@ -37,5 +37,8 @@ class File(models.Model):
         verbose_name = "Файл"
         verbose_name_plural = "Файлы"
 
+    def __str__(self):
+        return f"{self.file.name} | {self.invoker_report}"
+
 
 __all__ = ["InvokerReport", "File"]
