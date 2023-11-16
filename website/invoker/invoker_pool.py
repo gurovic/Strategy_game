@@ -3,7 +3,6 @@ import logging
 from django.conf import settings
 
 from invoker.invoker import Invoker, InvokerStatus
-from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.utils import Singleton
 
 
@@ -23,7 +22,6 @@ class InvokerPool(metaclass=Singleton):
 
     def __init__(self):
         self.all_invokers_count = settings.MAX_INVOKERS_COUNT
-        self.invoker_multi_request_priority_queue = InvokerMultiRequestPriorityQueue()
         self.all_invokers = []
         for i in range(self.all_invokers_count):
             self.all_invokers.append(Invoker())
