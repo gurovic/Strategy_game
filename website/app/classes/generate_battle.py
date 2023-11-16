@@ -17,7 +17,7 @@ def save_file(new_file):
     return filename
 
 
-def generate_battle(game, ideal_solution: str):
+def generate_battle(play, ideal_solution: str):
     file_loader = FileLoader(ideal_solution)
     compiler_report_id = file_loader.get_compiler_report_id()
     compiler_report = CompilerReport.objects.get(pk=compiler_report_id)
@@ -27,7 +27,7 @@ def generate_battle(game, ideal_solution: str):
         PlayersInBattle(path=filename, strategy_id=0),
         PlayersInBattle(path=filename, strategy_id=1),
     ]
-    battle = Battle(game, players)
+    battle = Battle(play, players)
     battle.run()
     report = battle.get_report()
     battle_report = BattleReport(invoker_report=report, battle_id=battle.id)
