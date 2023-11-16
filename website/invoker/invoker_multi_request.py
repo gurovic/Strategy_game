@@ -1,8 +1,14 @@
 import typing
+import enum
 
-from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
+
+
+class Priority(enum.Enum):
+    GREEN = enum.auto()
+    YELLOW = enum.auto()
+    RED = enum.auto()
 
 
 class InvokerMultiRequest:
@@ -15,6 +21,7 @@ class InvokerMultiRequest:
         self.priority = priority
 
     def start(self):
+        from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
         invoker_pq = InvokerMultiRequestPriorityQueue()
         invoker_pq.add(self, self.priority)
 

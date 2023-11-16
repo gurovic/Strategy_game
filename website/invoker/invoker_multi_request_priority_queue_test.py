@@ -1,14 +1,14 @@
-import unittest
+from django.test import TestCase
 from unittest.mock import patch
 
 from threading import Thread
 
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
-from invoker.invoker_request import InvokerMultiRequest
+from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_pool import InvokerPool
 
 
-class TestInvokerMultiRequestPriorityQueue(unittest.TestCase):
+class TestInvokerMultiRequestPriorityQueue(TestCase):
     def test_unique(self):
         first_queue = InvokerMultiRequestPriorityQueue()
         second_queue = InvokerMultiRequestPriorityQueue()
@@ -93,9 +93,9 @@ class TestInvokerMultiRequestPriorityQueue(unittest.TestCase):
 
         queue = TempQueue()
         prev_invoker_pool = queue.invoker_pool
-        mock_invoker_pool.get_free_invokers_count.return_value = 4
+        mock_invoker_pool.free_invokers_count = 4
         mock_invoker_pool.get.return_value = [0, 1, 2, 3]
-        invoker_multi_request = InvokerMultiRequest()
+        invoker_multi_request = InvokerMultiRequest([])
         invoker_multi_request.run = mock_imr_run
         invoker_multi_request.invoker_requests_count = 100
         invoker_multi_request.id = 12345
@@ -114,9 +114,9 @@ class TestInvokerMultiRequestPriorityQueue(unittest.TestCase):
         ids = [1, 5, 12312, 0, 61351]
         for i in range(100):
             prev_invoker_pool = queue.invoker_pool
-            mock_invoker_pool.get_free_invokers_count.return_value = 4
+            mock_invoker_pool.free_invokers_count = 4
             mock_invoker_pool.get.return_value = [0, ] * invoker_requests_count[i % 4]
-            invoker_multi_request = InvokerMultiRequest()
+            invoker_multi_request = InvokerMultiRequest([])
             invoker_multi_request.run = mock_imr_run
             invoker_multi_request.invoker_requests_count = invoker_requests_count[i % 4]
             invoker_multi_request.id = ids[i % 5]
@@ -135,9 +135,9 @@ class TestInvokerMultiRequestPriorityQueue(unittest.TestCase):
         ids = [1, 5, 12312, 0, 61351]
         for i in range(100):
             prev_invoker_pool = queue.invoker_pool
-            mock_invoker_pool.get_free_invokers_count.return_value = 4
+            mock_invoker_pool.free_invokers_count = 4
             mock_invoker_pool.get.return_value = [0, ] * invoker_requests_count[i % 4]
-            invoker_multi_request = InvokerMultiRequest()
+            invoker_multi_request = InvokerMultiRequest([])
             invoker_multi_request.run = mock_imr_run
             invoker_multi_request.invoker_requests_count = invoker_requests_count[i % 4]
             invoker_multi_request.id = ids[i % 5]
@@ -145,7 +145,3 @@ class TestInvokerMultiRequestPriorityQueue(unittest.TestCase):
             queue.invoker_multi_request_queue.put((0, invoker_multi_request))
         queue.run()
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 0)
-
-
-if __name__ == '__main__':
-    unittest.main()

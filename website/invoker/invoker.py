@@ -1,5 +1,5 @@
 from invoker.filesystem import Directory, File
-from invoker.models import InvokerReport
+from invoker.models import InvokerReport, File as FileModel
 
 from django.conf import settings
 from django.utils import timezone
@@ -54,7 +54,7 @@ class NormalEnvironment(InvokerEnvironment):
         if preserve_files:
             return_dir = Directory()
             for file in preserve_files:
-                return_dir / File.load(file)
+                return_dir.add(File.load(file))
         else:
             return_dir = None
 
@@ -82,7 +82,7 @@ class Invoker:
         if files:
             file_system = Directory()
             for file in files:
-                file_system / File.load(file)
+                file_system.add(File.load(file))
         else:
             file_system = None
 
@@ -92,8 +92,12 @@ class Invoker:
         self.send_report(report, callback)
 
     def make_report(self, result: RunResult) -> InvokerReport:
+        if result.files:
+            files = [FileModel.objects.create()]
         return InvokerReport.objects.create(command=result.command, time_start=result.time_start,
-                                            time_end=result.time_end, exit_code=result.exit_code,
+                                            time_end=result.time_end, exit_code=result.exit_code, log=result.log,
+                                            status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE,
+                                            files=X
                                             )
 
     def send_report(self, report: InvokerReport, callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
