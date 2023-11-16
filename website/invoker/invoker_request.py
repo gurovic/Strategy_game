@@ -20,3 +20,6 @@ class InvokerRequest:
         self.report = report
         if self.callback:
             self.callback(report)
+
+
+__all__ = ["InvokerRequest"]
