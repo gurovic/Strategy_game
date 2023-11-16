@@ -2,7 +2,7 @@
 from queue import PriorityQueue
 import logging
 
-from invokerMultiRequest import InvokerMultiRequest
+from Strategy_game.invokersstructure.invokerMultiRequest import InvokerMultiRequest
 from invokerPool import InvokerPool
 from singleton import Singleton
 

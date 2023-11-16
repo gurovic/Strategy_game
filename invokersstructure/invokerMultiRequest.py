@@ -6,6 +6,7 @@ from django.utils import timezone
 from invokerRequest import InvokerRequest
 from invokerMultiRequestPriorityQueue import InvokerMultiRequestPriorityQueue
 
+
 class InvokerMultiRequest:
     def __init__(self, invoker_requests: [InvokerRequest], creator, priority):
         self.invoker_requests = invoker_requests
@@ -15,8 +16,8 @@ class InvokerMultiRequest:
         self.priority = priority
         self.invoker_reports = []
         self.pub_date = timezone.now()
-        self.invoker_priority_queue.add(self,self.priority)
-        self.id=random.randint(1,1000000000000)
+        self.invoker_priority_queue.add(self, self.priority)
+        self.id = random.randint(1, 1000000000000)
 
     def run(self, ids: [int]):
         # InvokerMultiRequest should pass the id[i] to his i InvokerRequest
@@ -27,7 +28,3 @@ class InvokerMultiRequest:
         self.invoker_reports.append(invoker_report)
         if len(self.invoker_reports) == len(self.invoker_requests):
             self.creator.notify(self.invoker_reports)
-
-
-
-

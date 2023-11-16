@@ -1,5 +1,4 @@
 import logging
-
 import SETTINGS
 
 from invoker import Invoker

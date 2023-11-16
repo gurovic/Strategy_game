@@ -7,9 +7,8 @@ from django.http import HttpResponse
 from django.template import loader
 from django.db import models
 
-from Strategy_game.invokersstructure.compiler import Compiler, CompilerReport
-from Strategy_game.invokersstructure.invokerRequest import InvokerRequest
-from Strategy_game.invokersstructure.invokerMultiRequest import InvokerMultiRequest
+from Strategy_game.website.app.models import CompilerReport, Compiler
+
 
 class FileLoader:
     # LOGGING TEXTS
@@ -19,7 +18,7 @@ class FileLoader:
     WRONG_FUNCTION_CALLING_ERROR = "Wrong calling of make_response function in class FileLoader with id {}"
     FILE_PATH_EXCEPTION = "FileLoader with id {} hadn't found file in {}"
     # OTHER CONSTS
-    AVAILABLE_FORMATS = ['.cpp','.py','.JAVA','.rs','.cs','.go','.hs','.kt','.P','.js','.dpr','.ts']
+    AVAILABLE_FORMATS = ['cpp', 'py', 'java', 'rs', 'cs', 'go', 'hs', 'kt', 'P', 'js', 'dpr', 'ts']
 
     def __init__(self, file_path: str):
         logging.basicConfig(level=logging.INFO, filename="../../../logs/boris.log", filemode='w',
@@ -29,7 +28,7 @@ class FileLoader:
         self.lang = self.get_format(file_path)
         self.compiler_report = None
         with open(self.file_path) as file:
-            self.compiler = Compiler(file, self.lang, self.notify())
+            self.compiler = Compiler(file.read(), self.lang, self.notify())
         logging.info(self.CREATED_FILE_LOADER.format(self.id, datetime.datetime.now().strftime("%Y%m%d")))
         self.compile()
 
@@ -67,6 +66,7 @@ class FileLoader:
             with open(file_path):
                 pass
             filename, file_extension = os.path.splitext(file_path)
+            file_extension = file_extension[1:]
         except:
             self.make_response("404")
             return None
