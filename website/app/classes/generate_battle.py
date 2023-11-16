@@ -2,6 +2,7 @@ from .battle import Battle
 from ..models.players_in_battle import PlayersInBattle
 from .file_loader import FileLoader
 from ..models.compiler import CompilerReport
+from ..models.battle_report import BattleReport
 
 
 def generate_filename():
@@ -29,4 +30,5 @@ def generate_battle(game, ideal_solution: str):
     battle = Battle(game, players)
     battle.run()
     report = battle.get_report()
+    battle_report = BattleReport(invoker_report=report, battle_id=battle.id)
     return report
