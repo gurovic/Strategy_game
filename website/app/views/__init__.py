@@ -1,1 +1,2 @@
-from .compiler_report_views import show, show_all
+from .compiler_report_views import *
+from .ideal_solution_test_views import *

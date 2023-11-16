@@ -5,4 +5,3 @@ class PlayersInBattle(models.Model):
     path = models.TextField(editable=False, blank=True, null=True, verbose_name="Путь к файлу")
     strategy_id = models.IntegerField(default=0, verbose_name="id стратегии в Battle")
     is_winner = models.BooleanField(default=False, verbose_name="Победитель")
-    user = models.ForeignKey('app.Users', on_delete=models.CASCADE, verbose_name='Создатель инвокера')
