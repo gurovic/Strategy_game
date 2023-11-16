@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typing
 import enum
 
@@ -5,10 +7,10 @@ from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
 
 
-class Priority(enum.Enum):
-    GREEN = enum.auto()
-    YELLOW = enum.auto()
-    RED = enum.auto()
+class Priority(enum.IntEnum):
+    GREEN = 0
+    YELLOW = 1
+    RED = 2
 
 
 class InvokerMultiRequest:
@@ -19,6 +21,9 @@ class InvokerMultiRequest:
         self.invoker_requests_count = len(invoker_requests)
         self.invoker_request_ended = 0
         self.priority = priority
+
+    def __lt__(self, other: InvokerMultiRequest):
+        return self.priority < other.priority
 
     def start(self):
         from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
