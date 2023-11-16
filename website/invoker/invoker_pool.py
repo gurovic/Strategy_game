@@ -30,8 +30,6 @@ class InvokerPool:
         if invoker.status == InvokerStatus.WORKING:
             invoker.status = InvokerStatus.FREE
             logging.info(f"Invoker with id: {self.all_invokers.index(invoker)} was transferred from WORKING to FREE")
-        else:
-            logging.warning(f"Invoker with id: {self.all_invokers.index(invoker)} was transferred from FREE to FREE")
 
     def get(self, need_count: int):
         if self.free_invokers_count < need_count:

@@ -1,7 +1,12 @@
 from django.test import TestCase
 
-from invoker.invoker_pool import InvokerPool
-from invoker.invoker_pool import LowInvokerCap
+from invoker.invoker_pool import InvokerPool, LowInvokerCap
+
+
+class TestLowInvokerCap(TestCase):
+    def test_str(self):
+        exception = LowInvokerCap(2, 1)
+        self.assertEquals(str(exception), "Need 2 but have only 1")
 
 
 class TestInvokerPool(TestCase):
