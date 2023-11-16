@@ -3,18 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>File Upload</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+        table {
+            border-radius: 10px;
+            background: #292936;
+            font-family: 'Raleway', sans-serif;
+            color: white;
+            padding: 10px 0 10px 0;
+        }
+        table tr:first-child {
+            color: #efd00c;
+            font-weight: bold;
+        }
+        td {
+            padding: 5px 15px;
+        }
+        a {
+            text-decoration: none;
+            color: #626262;
+        }
+        a:hover {
+            color: #949494;
+        }
+        a:active {
+            color: #a6a6a6;
+        }
+    </style>
 </head>
 <body>
 {% if compiler_reports %}
-    <ul>
-    {% for report in compiler_reports %}
-        <li>
-            <p>{{report.id}}</p>
-            <p>{{report.compiler_file}}</p>
-            <a href="http://localhost:8000/app/compiler-report/{{report.id}}/">go there</a>
-        </li>
-    {% endfor %}
-        </ul>
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>File name</td>
+            <td>Link</td>
+        </tr>
+        {% for report in compiler_reports %}
+        <tr>
+            <td>{{report.id}}</td>
+            <td>{{report.compiled_file}}</td>
+            <td><a href="http://localhost:8000/app/compiler-report/{{report.id}}/">go there</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 {% else %}
     <p>Testing</p>
 {% endif %}

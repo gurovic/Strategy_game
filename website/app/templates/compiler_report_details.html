@@ -3,16 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>File Upload</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+        table {
+            background: #292936;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: 'Raleway',sans-serif;
+            color: white;
+        }
+        table td {
+            padding: 5px 15px;
+        }
+        table td:first-child {
+            color: #efd00c;
+            padding-right: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 {% if compiler_report %}
     {% if compiler_report %}
-        <p>{{ compiler_report.compiler_file }}</p>
-        <p>{{ compiler_report.time }}</p>
-        <p>{{ compiler_report.date_created }}</p>
-        <p>{{ compiler_report.status }}</p>
-        <p>{{ compiler_report.error }}</p>
-        <p>{{ compiler_report.invoker_report }}</p>
+        <table>
+            <tr>
+                <td>File name</td>
+                <td>{{ compiler_report.compiled_file }}</td>
+            </tr>
+            <tr>
+                <td>Execution time</td>
+                <td>{{ compiler_report.time }}</td>
+            </tr>
+            <tr>
+                <td>Created Date</td>
+                <td>{{ compiler_report.date_created }}</td>
+            </tr>
+            <tr>
+                <td>Compilation Status</td>
+                <td>{{ compiler_report.status }}</td>
+            </tr>
+            <tr>
+                <td>Error text</td>
+                <td>{{ compiler_report.error }}</td>
+            </tr>
+            <tr>
+                <td>Invoker report</td>
+                <td>{{ compiler_report.invoker_report }}</td>
+            </tr>
+        </table>
     {% else %}
         <p>Compiled</p>
     {% endif %}
