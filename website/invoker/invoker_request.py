@@ -5,7 +5,7 @@ import typing
 
 
 class InvokerRequest:
-    def __init__(self, command: str, files: typing.Optional[typing.List[str]] = None, preserve_files: typing.Optional[typing.List[str]] = None, callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
+    def __init__(self, command: str, files: typing.Optional[list[str]] = None, preserve_files: typing.Optional[list[str]] = None, callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
         self.command = command
         self.files = files
         self.preserve_files = preserve_files

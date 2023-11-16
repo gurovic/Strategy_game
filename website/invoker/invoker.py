@@ -1,4 +1,4 @@
-from invoker.filesystem import Directory, File
+from invoker.filesystem import Directory, File, delete_directory
 from invoker.models import InvokerReport, File as FileModel
 
 from django.conf import settings
@@ -29,29 +29,31 @@ class RunResult:
     time_start: datetime
     time_end: datetime
 
-    files: typing.Optional[typing.List[File]] = None
+    files: typing.Optional[list[File]] = None
 
 
 class InvokerEnvironment(ABC):
     @abstractmethod
     def launch(self, command: str, file_system: typing.Optional[Directory] = None,
-               preserve_files: typing.Optional[typing.List[str]] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None) -> RunResult:
         ...
 
 
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
     def initialize_workdir(file_system: typing.Optional[Directory] = None) -> str:
-        with tempfile.TemporaryDirectory() as tmpdir:
+        tmpdir = tempfile.mkdtemp()
+        if file_system:
             file_system.make(tmpdir)
-            return tmpdir
+        return tmpdir
 
-    def launch(self, command: str, file_system: typing.Optional[Directory] = None,
-               preserve_files: typing.Optional[typing.List[str]] = None) -> RunResult:
+    def launch(self, command: list[str] | str, file_system: typing.Optional[Directory] = None,
+               preserve_files: typing.Optional[list[str]] = None) -> RunResult:
         work_dir = self.initialize_workdir(file_system)
 
         time_start = timezone.now()
-        result = subprocess.run(command, text=True, cwd=work_dir)
+        result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
+                                stdout=subprocess.PIPE, cwd=work_dir)
         time_end = timezone.now()
 
         if preserve_files:
@@ -60,6 +62,8 @@ class NormalEnvironment(InvokerEnvironment):
                 return_dir.append(File.load(file))
         else:
             return_dir = None
+
+        delete_directory(work_dir)
 
         return RunResult(
             command,
@@ -73,7 +77,7 @@ class NormalEnvironment(InvokerEnvironment):
 
 class DockerEnvironment(InvokerEnvironment):
     def launch(self, command: str, file_system: typing.Optional[Directory] = None,
-               preserve_files: typing.Optional[typing.List[str]] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None) -> RunResult:
         pass
 
 
@@ -82,8 +86,8 @@ class Invoker:
         self.status: InvokerStatus = InvokerStatus.FREE
         self.environment = DockerEnvironment() if settings.USE_DOCKER else NormalEnvironment()
 
-    def run(self, command: str, files: typing.Optional[typing.List[str]] = None,
-            preserve_files: typing.Optional[typing.List[str]] = None,
+    def run(self, command: str, files: typing.Optional[list[str]] = None,
+            preserve_files: typing.Optional[list[str]] = None,
             callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
         if files:
             file_system = Directory()
@@ -116,5 +120,5 @@ class Invoker:
             callback(report)
 
 
-__all__ = ["InvokerReport", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
+__all__ = ["Invoker", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
            "InvokerStatus"]

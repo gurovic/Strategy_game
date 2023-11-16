@@ -64,8 +64,8 @@ class File(_MakeAble):
 @dataclass
 class Directory(_MakeAble):
     name: typing.Optional[str] = None
-    files: typing.List[File] = field(default_factory=list)
-    directories: typing.List[Directory] = field(default_factory=list)
+    files: list[File] = field(default_factory=list)
+    directories: list[Directory] = field(default_factory=list)
 
     @classmethod
     def load(cls, path: _RawPathType) -> Directory:
@@ -119,4 +119,4 @@ class Directory(_MakeAble):
                 directory.make(path)
 
 
-__all__ = ["File", "Directory"]
+__all__ = ["File", "Directory", "delete_directory"]

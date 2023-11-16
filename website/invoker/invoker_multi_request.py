@@ -14,7 +14,7 @@ class Priority(enum.IntEnum):
 
 
 class InvokerMultiRequest:
-    def __init__(self, invoker_requests: typing.List[InvokerRequest], priority: Priority = Priority.GREEN):
+    def __init__(self, invoker_requests: list[InvokerRequest], priority: Priority = Priority.GREEN):
         self.subscribers = []
         self.claimed_reports = []
         self.invoker_requests = invoker_requests
