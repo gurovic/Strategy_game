@@ -6,7 +6,7 @@ from invoker.invoker import Invoker, InvokerStatus
 from invoker.utils import Singleton
 
 
-class DoNotHaveNeedInvokerCount(Exception):
+class LowInvokerCap(Exception):
     def __init__(self, need_count: int, max_count: int):
         self.need_count = need_count
         self.max_count = max_count
@@ -15,7 +15,7 @@ class DoNotHaveNeedInvokerCount(Exception):
         return f"Need {self.need_count} but have only {self.max_count}"
 
 
-class InvokerPool(metaclass=Singleton):
+class InvokerPool:
     GET_FREE_INVOKERS_COUNT_INVOKERS = "{'INFO:} Something got free Invokers count"
     FREE_INVOKER = "{'INFO:'} Invoker with id: {-1} was transferred from {'WORKING'} to {'FREE'}"
     GET_INVOKERS = "{'INFO:'} Invokers with ids: {[]} was got by InvokerMultiRequestQueue"
@@ -41,7 +41,7 @@ class InvokerPool(metaclass=Singleton):
 
     def get(self, need_count: int):
         if self.free_invokers_count < need_count:
-            raise DoNotHaveNeedInvokerCount(need_count, self.free_invokers_count)
+            raise LowInvokerCap(need_count, self.free_invokers_count)
 
         result = []
         for invoker in self.all_invokers:
