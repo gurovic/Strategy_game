@@ -63,7 +63,7 @@ class File(_MakeAble):
 
 @dataclass
 class Directory(_MakeAble):
-    name: str
+    name: typing.Optional[str] = None
     files: typing.List[File] = field(default_factory=list)
     directories: typing.List[Directory] = field(default_factory=list)
 
@@ -103,12 +103,15 @@ class Directory(_MakeAble):
     def make(self, path: _RawPathType):
         path = _get_path(path)
 
+        if self.name:
+            path = path / self.name
+
         if not self.is_empty():
             try:
                 create_directory(path)
-                logging.debug(f"Directory {path/self.name} was successfully created")
+                logging.debug(f"Directory {path} was successfully created")
             except FileExistsError:
-                delete_directory(path/self.name)
+                delete_directory(path)
                 self.make(path)
             for file in self.files:
                 file.make(path)

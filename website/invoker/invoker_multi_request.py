@@ -1,4 +1,4 @@
-import random
+import typing
 
 from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport

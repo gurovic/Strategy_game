@@ -1,39 +1,23 @@
 from invoker.invoker import Invoker
-from invoker_log import InvokerLog
-from invoker.invoker_pool import InvokerPool
 from invoker.models import InvokerReport
-from datetime import datetime
-import os
+
+import typing
 
 
 class InvokerRequest:
-    def __init__(self, run_command, subscribers):
-        self.run_command = run_command
-        self.time_created = datetime.now()
-        self.subscribers = subscribers
-        self.return_report = None
+    def __init__(self, command: str, files: typing.Optional[typing.List[str]] = None, preserve_files: typing.Optional[typing.List[str]] = None, callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
+        self.command = command
+        self.files = files
+        self.preserve_files = preserve_files
+        self.callback = callback
 
-    def run(self, current_invoker, preserve_files):
-        self.time_created = datetime.now()
-        self.current_invoker = current_invoker
-        return_report = InvokerReport()
+        self.report = None
 
-        compile_report = self.current_invoker.compile_file(self.run_command, id)
-        return_report.compile_status = compile_report.compile_status
-        return_report.compile_error_text = compile_report.compile_error_text
+    def run(self, invoker: Invoker):
+        invoker.run(self.command, files=self.files, preserve_files=self.preserve_files, callback=self.notify)
 
-        if return_report.compile_status == 'OK':
-            run_report = self.current_invoker.run_file(compile_report.file, id)
-            return_report.run_status = run_report.run_status
-            return_report.run_error_text = compile_report.run_error_text
+    def notify(self, report: InvokerReport):
+        self.report = report
 
-        InvokerPool.free(id)
-
-        return_report.time_start = self.time_created
-        return_report.time_end = datetime.now()
-        InvokerLog.add_invoker(return_report)
-        self.return_report = return_report
-        return return_report
-
-    def notify(self):
-        InvokerMultiRequest.notify(self.return_report)
+        if self.callback:
+            self.callback(report)
