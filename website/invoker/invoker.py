@@ -112,8 +112,7 @@ class Invoker:
 
         return report
 
-    def send_report(self, report: InvokerReport,
-                    callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
+    def send_report(self, report: InvokerReport, callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
         if callback:
             callback(report)
 
