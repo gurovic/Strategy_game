@@ -15,6 +15,7 @@ class Priority(enum.IntEnum):
 
 class InvokerMultiRequest:
     def __init__(self, invoker_requests: list[InvokerRequest], priority: Priority = Priority.GREEN):
+        self.queue_notify = None
         self.subscribers = []
         self.claimed_reports = []
         self.invoker_requests = invoker_requests
@@ -44,6 +45,8 @@ class InvokerMultiRequest:
         self.invoker_request_ended += 1
         self.claimed_reports.append(invoker_report)
         if self.invoker_request_ended == self.invoker_requests_count:
+            if self.queue_notify:
+                self.queue_notify()
             for subscriber in self.subscribers:
                 subscriber.notify(self.claimed_reports)
 
