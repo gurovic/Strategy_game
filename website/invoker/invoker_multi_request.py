@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 import enum
 
-import invoker.invoker_multi_request_priority_queue as IMRPQ
+from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
 
@@ -27,7 +27,7 @@ class InvokerMultiRequest:
         return self.priority > other.priority
 
     def start(self):
-        invoker_pq = IMRPQ.InvokerMultiRequestPriorityQueue()
+        invoker_pq = InvokerMultiRequestPriorityQueue()
         invoker_pq.add(self)
 
     def run(self, invokers):
