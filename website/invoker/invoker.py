@@ -40,7 +40,7 @@ class RunResult:
 class InvokerEnvironment(ABC):
     @abstractmethod
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timeout: typing.Optional[int] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
         ...
 
 
@@ -54,14 +54,14 @@ class NormalEnvironment(InvokerEnvironment):
         return tmpdir
 
     def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timeout: typing.Optional[int] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
         work_dir = self.initialize_workdir(file_system)
 
         time_start = timezone.now()
 
         try:
             result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
-                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timeout)
+                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timelimit)
             return_code = result.returncode
             timeout_error = False
         except subprocess.TimeoutExpired as exc:
@@ -83,7 +83,7 @@ class NormalEnvironment(InvokerEnvironment):
             return_code,
             time_start,
             time_end,
-            timeout,
+            timelimit,
             timeout_error,
             input_dir,
             preserve_dir
@@ -92,7 +92,7 @@ class NormalEnvironment(InvokerEnvironment):
 
 class DockerEnvironment(InvokerEnvironment):
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timeout: typing.Optional[int] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
         pass
 
 
@@ -102,11 +102,11 @@ class Invoker:
         self.environment = DockerEnvironment() if settings.USE_DOCKER else NormalEnvironment()
 
     def run(self, command: str, files: typing.Optional[list[str | File]] = None,
-            preserve_files: typing.Optional[list[str]] = None,
+            preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
             callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
         file_system = [file if isinstance(file, File) else File.load(file) for file in files] if files else None
 
-        result = self.environment.launch(command, file_system, preserve_files=preserve_files)
+        result = self.environment.launch(command, file_system, preserve_files=preserve_files, timelimit=timelimit)
 
         report = self.make_report(result)
         self.send_report(report, callback)
