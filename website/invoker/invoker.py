@@ -11,6 +11,7 @@ from datetime import datetime
 from pathlib import Path
 import subprocess
 import tempfile
+import logging
 import typing
 import enum
 import io
@@ -59,12 +60,16 @@ class NormalEnvironment(InvokerEnvironment):
 
         time_start = timezone.now()
 
+        logging.debug(f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
+
         try:
             result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
                                     stdout=subprocess.PIPE, cwd=work_dir, timeout=timelimit)
             return_code = result.returncode
             timeout_error = False
+            logging.debug(f"Command \"{command}\" launch was ended with exit code {return_code}!")
         except subprocess.TimeoutExpired as exc:
+            logging.debug(f"Command \"{command}\" launch time was exceeded timelimit!")
             result = exc
             return_code = None
             timeout_error = True
