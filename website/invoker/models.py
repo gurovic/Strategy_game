@@ -25,7 +25,7 @@ class InvokerReport(models.Model):
     time_end = models.DateTimeField(blank=True, verbose_name="Время завершения")
 
     exit_code = models.IntegerField(verbose_name="Код выхода")
-    log = models.TextField(blank=True, verbose_name="Лог")
+    output = models.TextField(blank=True, verbose_name="Лог")
 
     status = models.IntegerField(choices=Status.choices, default=Status.OK, verbose_name="Статус")
     error = models.TextField(editable=False, blank=True, null=True, verbose_name="Ошибка")
