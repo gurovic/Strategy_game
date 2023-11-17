@@ -13,7 +13,7 @@ class InvokerReport(models.Model):
     time_end = models.DateTimeField(blank=True, verbose_name="Время завершения")
 
     exit_code = models.IntegerField(verbose_name="Код выхода")
-    log = models.TextField(blank=True, verbose_name="Лог")
+    output = models.TextField(blank=True, verbose_name="Output")
 
     status = models.IntegerField(choices=Status.choices, default=Status.OK, verbose_name="Статус")
     error = models.TextField(editable=False, blank=True, null=True, verbose_name="Ошибка")
@@ -30,7 +30,8 @@ class InvokerReport(models.Model):
 
 
 class File(models.Model):
-    invoker_report = models.ForeignKey(InvokerReport, on_delete=models.CASCADE, related_name="files", verbose_name="Инвокер репорт")
+    invoker_report = models.ForeignKey(InvokerReport, on_delete=models.CASCADE, related_name="files",
+                                       verbose_name="Инвокер репорт")
     name = models.CharField(max_length=100, verbose_name="Название")
     file = models.FileField(upload_to="invoker_report_files", verbose_name="Файл")
 
