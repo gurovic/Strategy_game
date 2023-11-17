@@ -65,4 +65,3 @@ class TestInvokerMultiRequest(TestCase):
             invoker_multi_request.notify(invoker_report)
 
         mock.notify.assert_called_with(invoker_reports)
-
