@@ -3,7 +3,6 @@ from __future__ import annotations
 import typing
 import enum
 
-from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
 
@@ -27,12 +26,15 @@ class InvokerMultiRequest:
         return self.priority > other.priority
 
     def start(self):
+        # Костыль. Если кто-то знает, как пофиксить подскажите плс <==Circular Import==>
+        from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
         invoker_pq = InvokerMultiRequestPriorityQueue()
         invoker_pq.add(self)
 
     def run(self, invokers):
-        for (invoker, invoker_request) in zip(invokers, self.invoker_requests):
-            invoker_request.run(invoker)
+        for (current_invoker, invoker_request) in zip(invokers, self.invoker_requests):
+            invoker_request.callback = self.notify
+            invoker_request.run(current_invoker)
 
     def notify(self, invoker_report: InvokerReport):
         self.invoker_request_ended += 1

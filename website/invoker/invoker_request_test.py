@@ -18,6 +18,7 @@ class TestInvokerRequest(TestCase):
     @patch("invoker.models.InvokerReport")
     def test_notify(self, mock_invoker_report):
         mock = Mock()
-        invoker_request = InvokerRequest("echo Hello World", callback=mock)
+        invoker_request = InvokerRequest("echo Hello World")
+        invoker_request.callback = mock
         invoker_request.notify(mock_invoker_report)
         mock.assert_called()
