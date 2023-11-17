@@ -24,8 +24,10 @@ class InvokerReport(models.Model):
     time_start = models.DateTimeField(blank=True, verbose_name="Время начала")
     time_end = models.DateTimeField(blank=True, verbose_name="Время завершения")
 
-    exit_code = models.IntegerField(verbose_name="Код выхода")
+    exit_code = models.IntegerField(blank=True, null=True, verbose_name="Код выхода")
     output = models.TextField(blank=True, verbose_name="Лог")
+
+    timelimit = models.PositiveIntegerField(blank=True, null=True, verbose_name="Ограничение по времени")
 
     status = models.IntegerField(choices=Status.choices, default=Status.OK, verbose_name="Статус")
     error = models.TextField(editable=False, blank=True, null=True, verbose_name="Ошибка")
