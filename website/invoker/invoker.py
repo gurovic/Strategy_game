@@ -25,7 +25,7 @@ class InvokerStatus(enum.Enum):
 class RunResult:
     command: str
 
-    log: str
+    output: str
     exit_code: int
 
     time_start: datetime
@@ -102,22 +102,27 @@ class Invoker:
 
     def make_report(self, result: RunResult) -> InvokerReport:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
-                                              time_end=result.time_end, exit_code=result.exit_code, log=result.log,
+                                              time_end=result.time_end, exit_code=result.exit_code,
+                                              output=result.output,
                                               status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE,
                                               )
         if result.input_files:
             for file in result.input_files:
-                report.input_files.add(FileModel.objects.create(file=FileDjango(io.BytesIO(file.source.encode()), name=file.name), name=file.name))
+                report.input_files.add(
+                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source.encode()), name=file.name),
+                                             name=file.name))
             report.save()
 
         if result.preserved_files:
             for file in result.preserved_files:
-                report.preserved_files.add(FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
+                report.preserved_files.add(
+                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
             report.save()
 
         return report
 
-    def send_report(self, report: InvokerReport, callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
+    def send_report(self, report: InvokerReport,
+                    callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
         if callback:
             callback(report)
 

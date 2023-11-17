@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('time_start', models.DateTimeField(blank=True, verbose_name='Время начала')),
                 ('time_end', models.DateTimeField(blank=True, verbose_name='Время завершения')),
                 ('exit_code', models.IntegerField(verbose_name='Код выхода')),
-                ('log', models.TextField(blank=True, verbose_name='Лог')),
+                ('output', models.TextField(blank=True, verbose_name='Результат')),
                 ('status', models.IntegerField(choices=[(0, 'Ok'), (1, 'Re'), (2, 'Tl')], default=0, verbose_name='Статус')),
                 ('error', models.TextField(blank=True, editable=False, null=True, verbose_name='Ошибка')),
             ],
