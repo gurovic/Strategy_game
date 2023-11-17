@@ -10,7 +10,6 @@ from invoker.invoker_request import InvokerRequest
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.filesystem import File
 
-from abc import ABC, abstractmethod
 import typing
 
 
@@ -25,20 +24,19 @@ class NotSupportedLanguage(ValueError):
 CompilerReportSubscriber: typing.Type = typing.Callable[[CompilerReport], None]
 
 
-class AbstractCompile(ABC):
+class AbstractCompile:
     def __init__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
         self.source = source
         self.lang = lang
 
         self.callback = callback
 
-    @abstractmethod
     def command(self) -> (str, str | File, str):
-        ...
+        """Return compile command, input file and output file name"""
     
     def compile(self):
         command, input_file, output_file = self.command()
-        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file], callback=self.notify)], priority=Priority.RED)
+        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file])], priority=Priority.RED).subscribe(self)
         queue = InvokerMultiRequestPriorityQueue()
         queue.add(request)
 
@@ -52,23 +50,21 @@ class AbstractCompile(ABC):
                                              error=report.error, compiled_file=report.files.get(name=self.command()[2]).file)
 
     def send_report(self, report: CompilerReport):
-        self.callback(report)
+        if self.callback:
+            self.callback(report)
 
 
 class CPPCompile(AbstractCompile):
     INPUT_FILE_NAME = "main.cpp"
     OUTPUT_FILE_NAME = "compiled"
 
-    def command(self):
+    def command(self) -> (str, str | File, str):
         file = File(self.INPUT_FILE_NAME, self.source)
         return f"g++ -o {self.OUTPUT_FILE_NAME} {file.name}", file, self.OUTPUT_FILE_NAME
 
 
 class DoNothingCompile(AbstractCompile):
     FILE_NAME = "compiled.{}"
-
-    def command(self):
-        pass
 
     def compile(self):
         report = CompilerReport.objects.create(status=CompilerReport.Status.OK,
@@ -98,4 +94,5 @@ class Compiler:
         self.command.compile()
 
     def notify(self, report: CompilerReport):
-        self.callback(report)
+        if self.callback:
+            self.callback(report)
