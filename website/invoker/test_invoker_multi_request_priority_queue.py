@@ -28,13 +28,13 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
         self.assertEqual(queues[0], queues[1])
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.run")
-    @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest")
-    def test_addition(self, mock_invoker_multi_request, mock_run):
+    def test_addition(self, mock_run):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
         queue = TempQueue()
-        queue.add(mock_invoker_multi_request, 0)
+        mock_invoker_multi_request = InvokerMultiRequest([], Priority.GREEN)
+        queue.add(mock_invoker_multi_request)
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 1)
         self.assertTrue(mock_run.called)
 
@@ -55,7 +55,8 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
         mock_invoker_pool.get.return_value = [0, 1, 2, 3]
         queue.invoker_pool = mock_invoker_pool
         mock_invoker_multi_request.invoker_requests_count = 4
-        queue.invoker_multi_request_queue.put((0, mock_invoker_multi_request))
+        mock_invoker_multi_request.priority = Priority.RED
+        queue.invoker_multi_request_queue.put(mock_invoker_multi_request)
         queue.run()
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 0)
 
@@ -74,13 +75,13 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
             mock_invoker_multi_request = InvokerMultiRequest([], i)
             mock_invoker_multi_request.run = mock_imr_run
             mock_invoker_multi_request.invoker_requests_count = 4
-            queue.invoker_multi_request_queue.put((i, mock_invoker_multi_request))
+            queue.invoker_multi_request_queue.put(mock_invoker_multi_request)
 
         for i in range(3):
             mock_invoker_multi_request = InvokerMultiRequest([], i)
             mock_invoker_multi_request.run = mock_imr_run
             mock_invoker_multi_request.invoker_requests_count = 6
-            queue.invoker_multi_request_queue.put((i, mock_invoker_multi_request))
+            queue.invoker_multi_request_queue.put(mock_invoker_multi_request)
         queue.run()
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 5)
 
@@ -96,7 +97,8 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
         invoker_multi_request = InvokerMultiRequest([])
         invoker_multi_request.run = mock_imr_run
         invoker_multi_request.invoker_requests_count = 100
-        queue.add(invoker_multi_request, Priority.RED)
+        invoker_multi_request.priority = Priority.RED
+        queue.add(invoker_multi_request)
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 1)
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
@@ -108,12 +110,13 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
         queue = TempQueue()
         invoker_requests_count = [1, 2, 3, 4]
         for i in range(100):
-            queue.invoker_pool.free_invokers_count = 4
+            queue.invoker_pool.free_invokers_count = 6
             queue.invoker_pool.get.return_value = [0, ] * invoker_requests_count[i % 4]
             invoker_multi_request = InvokerMultiRequest([])
             invoker_multi_request.run = mock_imr_run
             invoker_multi_request.invoker_requests_count = invoker_requests_count[i % 4]
-            queue.add(invoker_multi_request, Priority.GREEN)
+            invoker_multi_request.priority = Priority.GREEN
+            queue.add(invoker_multi_request)
             self.assertEqual(queue.invoker_multi_request_queue.qsize(), 0)
             self.assertTrue(invoker_multi_request.run.called)
 
@@ -131,6 +134,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
             invoker_multi_request = InvokerMultiRequest([])
             invoker_multi_request.run = mock_imr_run
             invoker_multi_request.invoker_requests_count = invoker_requests_count[i % 4]
-            queue.invoker_multi_request_queue.put((Priority.RED, invoker_multi_request))
+            invoker_multi_request.priority = Priority.RED
+            queue.invoker_multi_request_queue.put(invoker_multi_request)
         queue.run()
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 0)

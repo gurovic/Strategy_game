@@ -17,17 +17,17 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
         if self.invoker_multi_request_queue.empty():
             return
         free_invokers_count = self.invoker_pool.free_invokers_count
-        priority, invoker_multi_request = self.invoker_multi_request_queue.get()
+        invoker_multi_request = self.invoker_multi_request_queue.get()
         need_invokers_count = invoker_multi_request.invoker_requests_count
         if need_invokers_count > free_invokers_count:
-            self.invoker_multi_request_queue.put((priority, invoker_multi_request))
+            self.invoker_multi_request_queue.put(invoker_multi_request)
         else:
             free_invokers = self.invoker_pool.get(need_invokers_count)
             invoker_multi_request.run(free_invokers)
             self.run()
 
-    def add(self, invoker_multi_request: InvokerMultiRequest, priority):
-        self.invoker_multi_request_queue.put((priority, invoker_multi_request))
+    def add(self, invoker_multi_request: InvokerMultiRequest):
+        self.invoker_multi_request_queue.put(invoker_multi_request)
         self.run()
 
     def notify(self):
