@@ -1,3 +1,7 @@
+import io
+
+from django.core.files import File as FileDjango
+
 from app.models import CompilerReport
 
 from invoker.models import InvokerReport
@@ -61,8 +65,17 @@ class CPPCompile(AbstractCompile):
 
 
 class DoNothingCompile(AbstractCompile):
+    FILE_NAME = "compiled.{}"
+
     def command(self):
         pass
+
+    def compile(self):
+        report = CompilerReport.objects.create(status=CompilerReport.Status.OK,
+                                               compiled_file=FileDjango(io.StringIO(self.source),
+                                                                        name=self.FILE_NAME.format(self.lang))
+                                               )
+        self.send_report(report)
 
 
 class Compiler:
