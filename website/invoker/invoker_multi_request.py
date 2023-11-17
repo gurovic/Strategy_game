@@ -31,6 +31,9 @@ class InvokerMultiRequest:
         invoker_pq = InvokerMultiRequestPriorityQueue()
         invoker_pq.add(self)
 
+    def subscribe(self, instance):
+        self.subscribers.append(instance)
+
     def run(self, invokers):
         for (current_invoker, invoker_request) in zip(invokers, self.invoker_requests):
             invoker_request.callback = self.notify
