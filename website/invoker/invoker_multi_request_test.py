@@ -65,3 +65,9 @@ class TestInvokerMultiRequest(TestCase):
             invoker_multi_request.notify(invoker_report)
 
         mock.notify.assert_called_with(invoker_reports)
+
+    def test_subscribe(self):
+        mock = Mock()
+        invoker_multi_request = InvokerMultiRequest([])
+        invoker_multi_request.subscribe(mock)
+        self.assertEqual(invoker_multi_request.subscribers[0], mock)
