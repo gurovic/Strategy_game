@@ -28,7 +28,7 @@ class InvokerMultiRequest:
     def start(self):
         from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
         invoker_pq = InvokerMultiRequestPriorityQueue()
-        invoker_pq.add(self, self.priority)
+        invoker_pq.add(self)
 
     def run(self, invokers):
         for (invoker, invoker_request) in zip(invokers, self.invoker_requests):
