@@ -8,9 +8,9 @@ from invoker.models import InvokerReport
 
 
 class Priority(enum.IntEnum):
-    GREEN = 3
+    GREEN = 1
     YELLOW = 2
-    RED = 1
+    RED = 3
 
 
 class InvokerMultiRequest:
@@ -23,7 +23,7 @@ class InvokerMultiRequest:
         self.priority = priority
 
     def __lt__(self, other: InvokerMultiRequest):
-        return self.priority < other.priority
+        return self.priority > other.priority
 
     def start(self):
         from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
