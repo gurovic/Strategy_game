@@ -29,12 +29,12 @@ class AbstractCompile(ABC):
         self.callback = callback
 
     @abstractmethod
-    def command(self) -> (str, str | File):
+    def command(self) -> (str, str | File, str):
         ...
     
     def compile(self):
-        command, output_file = self.command()
-        request = InvokerMultiRequest([InvokerRequest(command, preserve_files=[output_file], callback=self.notify)], priority=Priority.RED)
+        command, input_file, output_file = self.command()
+        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file], callback=self.notify)], priority=Priority.RED)
         queue = InvokerMultiRequestPriorityQueue()
         queue.add(request)
 
@@ -47,7 +47,9 @@ class AbstractCompile(ABC):
         compiler_report.time = report.time_end = report.time_start
         compiler_report.status = CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR
         compiler_report.error = report.error
+        compiler_report.compiled_file = report.files.filter(name=self.command()[1])
         compiler_report.save()
+
         return compiler_report
 
     def send_report(self, report: CompilerReport):

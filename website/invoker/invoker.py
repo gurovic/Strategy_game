@@ -106,7 +106,7 @@ class Invoker:
                                               )
         if result.files:
             for file in result.files:
-                FileModel.objects.create(file=FileDjango(file.source, name=file.name), invoker_report=report)
+                FileModel.objects.create(file=FileDjango(file.source, name=file.name), name=file.name, invoker_report=report)
 
         return report
 

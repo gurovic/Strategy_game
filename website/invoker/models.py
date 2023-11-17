@@ -30,7 +30,8 @@ class InvokerReport(models.Model):
 
 
 class File(models.Model):
-    invoker_report = models.ForeignKey(InvokerReport, on_delete=models.CASCADE, verbose_name="Инвокер репорт")
+    invoker_report = models.ForeignKey(InvokerReport, on_delete=models.CASCADE, related_name="files", verbose_name="Инвокер репорт")
+    name = models.CharField(max_length=100, verbose_name="Название")
     file = models.FileField(upload_to="invoker_report_files", verbose_name="Файл")
 
     class Meta:
@@ -38,7 +39,7 @@ class File(models.Model):
         verbose_name_plural = "Файлы"
 
     def __str__(self):
-        return f"{self.file.name} | {self.invoker_report}"
+        return f"{self.name} | {self.invoker_report}"
 
 
 __all__ = ["InvokerReport", "File"]
