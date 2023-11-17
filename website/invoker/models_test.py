@@ -35,6 +35,10 @@ class TestFile(TestCase):
         invoker_report = InvokerReport.objects.create(command="Ok", time_start=timezone.now(), time_end=timezone.now(), exit_code=0)
         File.objects.create(invoker_report=invoker_report, file=FileDjango(open(__file__, "r"), name="test"))
 
+    def tearDown(self):
+        for file in File.objects.all():
+            file.file.delete()
+
     def test_str(self):
         file = File.objects.first()
 
