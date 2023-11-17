@@ -7,8 +7,8 @@ from django.http import HttpResponse
 from django.template import loader
 from django.db import models
 
-from Strategy_game.website.app.models import CompilerReport, Compiler
-
+from app.models import CompilerReport
+from .compiler import Compiler
 
 class FileLoader:
     # LOGGING TEXTS
