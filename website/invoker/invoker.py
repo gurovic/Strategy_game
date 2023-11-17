@@ -24,12 +24,14 @@ class InvokerStatus(enum.Enum):
 @dataclass
 class RunResult:
     command: str
-
     output: str
-    exit_code: int
+    exit_code: int | None
 
     time_start: datetime
     time_end: datetime
+
+    timelimit: typing.Optional[int] = None
+    exceeded_timelimit: bool = False
 
     input_files: typing.Optional[list[File]] = None
     preserved_files: typing.Optional[list[File]] = None
@@ -38,7 +40,7 @@ class RunResult:
 class InvokerEnvironment(ABC):
     @abstractmethod
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None, timeout: typing.Optional[int] = None) -> RunResult:
         ...
 
 
@@ -52,12 +54,21 @@ class NormalEnvironment(InvokerEnvironment):
         return tmpdir
 
     def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None, timeout: typing.Optional[int] = None) -> RunResult:
         work_dir = self.initialize_workdir(file_system)
 
         time_start = timezone.now()
-        result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
-                                stdout=subprocess.PIPE, cwd=work_dir)
+
+        try:
+            result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
+                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timeout)
+            return_code = result.returncode
+            timeout_error = False
+        except subprocess.TimeoutExpired as exc:
+            result = exc
+            return_code = None
+            timeout_error = True
+
         time_end = timezone.now()
 
         input_dir = [file for file in file_system] if file_system else None
@@ -69,9 +80,11 @@ class NormalEnvironment(InvokerEnvironment):
         return RunResult(
             command,
             result.stdout,
-            result.returncode,
+            return_code,
             time_start,
             time_end,
+            timeout,
+            timeout_error,
             input_dir,
             preserve_dir
         )
@@ -79,7 +92,7 @@ class NormalEnvironment(InvokerEnvironment):
 
 class DockerEnvironment(InvokerEnvironment):
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None, timeout: typing.Optional[int] = None) -> RunResult:
         pass
 
 
