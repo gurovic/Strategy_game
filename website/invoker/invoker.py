@@ -1,4 +1,4 @@
-from invoker.filesystem import Directory, File, delete_directory
+from invoker.filesystem import File, delete_directory
 from invoker.models import InvokerReport, File as FileModel
 
 from django.conf import settings
@@ -34,20 +34,21 @@ class RunResult:
 
 class InvokerEnvironment(ABC):
     @abstractmethod
-    def launch(self, command: str, file_system: typing.Optional[Directory] = None,
+    def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
                preserve_files: typing.Optional[list[str]] = None) -> RunResult:
         ...
 
 
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
-    def initialize_workdir(file_system: typing.Optional[Directory] = None) -> str:
+    def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
         tmpdir = tempfile.mkdtemp()
         if file_system:
-            file_system.make(tmpdir)
+            for file in file_system:
+                file.make(tmpdir)
         return tmpdir
 
-    def launch(self, command: list[str] | str, file_system: typing.Optional[Directory] = None,
+    def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
                preserve_files: typing.Optional[list[str]] = None) -> RunResult:
         work_dir = self.initialize_workdir(file_system)
 
@@ -76,7 +77,7 @@ class NormalEnvironment(InvokerEnvironment):
 
 
 class DockerEnvironment(InvokerEnvironment):
-    def launch(self, command: str, file_system: typing.Optional[Directory] = None,
+    def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
                preserve_files: typing.Optional[list[str]] = None) -> RunResult:
         pass
 
@@ -89,12 +90,7 @@ class Invoker:
     def run(self, command: str, files: typing.Optional[list[str]] = None,
             preserve_files: typing.Optional[list[str]] = None,
             callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
-        if files:
-            file_system = Directory()
-            for file in files:
-                file_system.add(File.load(file))
-        else:
-            file_system = None
+        file_system = [File.load(file) for file in files] if files else None
 
         result = self.environment.launch(command, file_system, preserve_files=preserve_files)
 
