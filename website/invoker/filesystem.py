@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from abc import ABCMeta, abstractmethod
+from dataclasses import dataclass
 from pathlib import Path
 import logging
 import shutil
@@ -17,10 +16,6 @@ def _get_path(raw_path: _RawPathType) -> Path:
     return Path(raw_path)
 
 
-def create_directory(directory: _RawPathType):
-    _get_path(directory).mkdir()
-
-
 def delete_directory(directory: _RawPathType):
     shutil.rmtree(_get_path(directory), ignore_errors=True)
 
@@ -33,14 +28,8 @@ def delete_file(file: _RawPathType):
     _get_path(file).unlink()
 
 
-class _MakeAble(metaclass=ABCMeta):
-    @abstractmethod
-    def make(self, path: Path):
-        ...
-
-
 @dataclass
-class File(_MakeAble):
+class File:
     name: str
     source: bytes
 
@@ -61,4 +50,4 @@ class File(_MakeAble):
             self.make(path)
 
 
-__all__ = ["File", "delete_directory", "create_directory", "write_file", "delete_file"]
+__all__ = ["File", "delete_directory", "write_file", "delete_file"]
