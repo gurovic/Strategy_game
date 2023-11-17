@@ -30,7 +30,7 @@ class TestAbstractCompile(TestCase):
     def test_notify(self, mock_make_report: Mock, mock_send_report: Mock):
         report = Mock()
         compiler = self.CompileTest("test", lang="py")
-        compiler.notify(report)
+        compiler.notify([report])
 
         mock_make_report.assert_called_with(report)
         mock_send_report.assert_called()
@@ -44,7 +44,7 @@ class TestAbstractCompile(TestCase):
         compiler = self.CompileTest("test", lang="py")
         compiler.make_report(mock)
 
-        mock_compiler_report.assert_called_once_with(invoker_report=mock, time=mock.time_end - mock.time_start, status=CompilerReport.Status.COMPILATION_ERROR, error=mock.error, compiled_file=mock.files.get().file)
+        mock_compiler_report.assert_called_once_with(invoker_report=mock, time=mock.time_end - mock.time_start, status=CompilerReport.Status.COMPILATION_ERROR, error=mock.error, compiled_file=mock.preserved_files.get().file)
 
     @patch("app.models.compiler_report.CompilerReport")
     def test_send_report(self, mock_compiler_report: Mock):
