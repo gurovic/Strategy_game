@@ -37,7 +37,7 @@ class InvokerMultiRequest:
     def notify(self, invoker_report: InvokerReport):
         self.invoker_request_ended += 1
         self.claimed_reports.append(invoker_report)
-        if self.invoker_request_ended >= self.invoker_requests_count:
+        if self.invoker_request_ended == self.invoker_requests_count:
             for subscriber in self.subscribers:
                 subscriber.notify(self.claimed_reports)
 
