@@ -87,10 +87,10 @@ class Invoker:
         self.status: InvokerStatus = InvokerStatus.FREE
         self.environment = DockerEnvironment() if settings.USE_DOCKER else NormalEnvironment()
 
-    def run(self, command: str, files: typing.Optional[list[str]] = None,
+    def run(self, command: str, files: typing.Optional[list[str | File]] = None,
             preserve_files: typing.Optional[list[str]] = None,
             callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
-        file_system = [File.load(file) for file in files] if files else None
+        file_system = [file if isinstance(file, File) else File.load(file) for file in files] if files else None
 
         result = self.environment.launch(command, file_system, preserve_files=preserve_files)
 

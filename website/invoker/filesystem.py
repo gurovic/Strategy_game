@@ -31,7 +31,7 @@ def delete_file(file: _RawPathType):
 @dataclass
 class File:
     name: str
-    source: bytes
+    source: str | bytes
 
     @classmethod
     def load(cls, path: _RawPathType) -> File:
@@ -43,7 +43,7 @@ class File:
         path = _get_path(path)
 
         if not (path/self.name).exists():
-            write_file(path/self.name, self.source)
+            write_file(path/self.name, self.source if isinstance(self.source, bytes) else bytes(self.source))
             logging.debug(f"File {path/self.name} was successfully created")
         else:
             delete_file(path/self.name)
