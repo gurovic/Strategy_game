@@ -18,5 +18,4 @@ def post_new(request, id):
         report = generate_battle(game)
         return render(request, 'ideal_solution_loader.html', {'report': report, 'game': game})
     else:
-        form = IdealSolutionPostForm()
-        return render(request,'ideal_solution_loader.html', {'form':form, 'game':game})
+        return render(request,'ideal_solution_loader.html', {'game':game})
