@@ -4,8 +4,6 @@ import random
 from ..models.game import Game
 from .battle import Battle
 from ..models.players_in_battle import PlayersInBattle
-from .file_loader import FileLoader
-from ..models.compiler import CompilerReport
 from ..models.battle_report import BattleReport
 
 

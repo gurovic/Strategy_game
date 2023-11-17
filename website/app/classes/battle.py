@@ -3,12 +3,12 @@ import random
 
 from ..models import PlayersInBattle
 from invoker.invoker_request import InvokerRequest
-from ..models.invoker_report import InvokerReport
-from invoker.invoker_multi_request import InvokerMultiRequest
+from invoker.models import InvokerReport
+from invoker.invoker_multi_request import InvokerMultiRequest, Priority
 
 
 class Battle:
-    PRIORITY = 10
+    PRIORITY = Priority.GREEN  # TODO change
 
     def __init__(self, game, players: [PlayersInBattle]):
         self.id = random.randint(1, 1000000000000000000)
@@ -28,7 +28,8 @@ class Battle:
         self.invoker_requests = [InvokerRequest(self.get_running_command(self.game.play), self.game.play)]
         for player in self.players:
             self.invoker_requests.append(InvokerRequest(self.get_running_command(player.path), player.path))
-        self.invoker_multi_request = InvokerMultiRequest(self.invoker_requests, self, self.PRIORITY)
+        self.invoker_multi_request = InvokerMultiRequest(self.invoker_requests, self.PRIORITY)
+        self.invoker_multi_request.subscribers.append(self)
 
     def notify(self, report: InvokerReport):
         self.report = report
@@ -36,5 +37,4 @@ class Battle:
     def get_report(self):
         while self.report == None:
             pass
-        # self.report.battle_id = self.id  # TODO предложить Вове это добавить, чтобы можно было как нибудь понимать к какому Battle относится это репорт
         return self.report

@@ -1,13 +1,15 @@
 import unittest
 import datetime
 
+from django.test import TestCase
+
 from threading import Lock, Thread
 
 from strategy_game.website.app.classes.file_loader import FileLoader
 from ..models import CompilerReport
 
 
-class TestSingleton(unittest.TestCase):
+class TestSingleton(TestCase):
     def test_creating(self):
         a = FileLoader('strategy_game/test_solutions/draught.cpp')
         self.assertGreater(1000000000000000001, a.id)
@@ -26,6 +28,3 @@ class TestSingleton(unittest.TestCase):
         a.notify(CompilerReport())
         self.assertEqual(a.compiler_report, report)
 
-
-if __name__ == '__main__':
-    unittest.main()

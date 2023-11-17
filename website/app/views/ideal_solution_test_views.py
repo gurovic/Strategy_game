@@ -1,4 +1,4 @@
-from ..classes.generate_battle import generate_battle, save_file
+from ..classes.generate_battle import generate_battle
 from ..models.game import Game
 
 from django.shortcuts import render
