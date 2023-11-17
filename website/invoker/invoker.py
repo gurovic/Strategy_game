@@ -31,7 +31,8 @@ class RunResult:
     time_start: datetime
     time_end: datetime
 
-    files: typing.Optional[list[File]] = None
+    input_files: typing.Optional[list[File]] = None
+    preserved_files: typing.Optional[list[File]] = None
 
 
 class InvokerEnvironment(ABC):
@@ -59,12 +60,9 @@ class NormalEnvironment(InvokerEnvironment):
                                 stdout=subprocess.PIPE, cwd=work_dir)
         time_end = timezone.now()
 
-        if preserve_files:
-            return_dir = []
-            for file in preserve_files:
-                return_dir.append(File.load(Path(work_dir) / file))
-        else:
-            return_dir = None
+        input_dir = [file for file in file_system] if file_system else None
+
+        preserve_dir = [File.load(Path(work_dir) / file) for file in preserve_files] if preserve_files else None
 
         delete_directory(work_dir)
 
@@ -74,7 +72,8 @@ class NormalEnvironment(InvokerEnvironment):
             result.returncode,
             time_start,
             time_end,
-            return_dir
+            input_dir,
+            preserve_dir
         )
 
 
@@ -106,9 +105,15 @@ class Invoker:
                                               time_end=result.time_end, exit_code=result.exit_code, log=result.log,
                                               status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE,
                                               )
-        if result.files:
-            for file in result.files:
-                FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name, invoker_report=report)
+        if result.input_files:
+            for file in result.input_files:
+                report.input_files.add(FileModel.objects.create(file=FileDjango(io.BytesIO(file.source.encode()), name=file.name), name=file.name))
+            report.save()
+
+        if result.preserved_files:
+            for file in result.preserved_files:
+                report.preserved_files.add(FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
+            report.save()
 
         return report
 

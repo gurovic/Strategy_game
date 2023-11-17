@@ -40,14 +40,14 @@ class AbstractCompile:
         queue = InvokerMultiRequestPriorityQueue()
         queue.add(request)
 
-    def notify(self, report: InvokerReport):
-        compiler_report = self.make_report(report)
+    def notify(self, report: list[InvokerReport]):
+        compiler_report = self.make_report(report[0])
         self.send_report(compiler_report)
 
     def make_report(self, report: InvokerReport):
         return CompilerReport.objects.create(invoker_report=report, time=report.time_end - report.time_start,
                                              status=CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR,
-                                             error=report.error, compiled_file=report.files.get(name=self.command()[2]).file)
+                                             error=report.error, compiled_file=report.preserved_files.get(name=self.command()[2]).file)
 
     def send_report(self, report: CompilerReport):
         if self.callback:
