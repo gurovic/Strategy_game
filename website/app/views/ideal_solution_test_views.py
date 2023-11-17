@@ -1,4 +1,3 @@
-from ..models.ideal_solution_form import IdealSolutionPostForm
 from ..classes.generate_battle import generate_battle, save_file
 from ..models.game import Game
 
