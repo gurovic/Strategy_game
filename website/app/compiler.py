@@ -22,7 +22,7 @@ CompilerReportSubscriber: typing.Type = typing.Callable[[CompilerReport], None]
 
 
 class AbstractCompile(ABC):
-    def __int__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
+    def __init__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
         self.source = source
         self.lang = lang
 
@@ -43,23 +43,21 @@ class AbstractCompile(ABC):
         self.send_report(compiler_report)
 
     def make_report(self, report: InvokerReport):
-        compiler_report = CompilerReport(invoker_report=report)
-        compiler_report.time = report.time_end = report.time_start
-        compiler_report.status = CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR
-        compiler_report.error = report.error
-        compiler_report.compiled_file = report.files.filter(name=self.command()[1])
-        compiler_report.save()
-
-        return compiler_report
+        return CompilerReport.objects.create(invoker_report=report, time=report.time_end - report.time_start,
+                                             status=CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR,
+                                             error=report.error, compiled_file=report.files.get(name=self.command()[2]).file)
 
     def send_report(self, report: CompilerReport):
         self.callback(report)
 
 
 class CPPCompile(AbstractCompile):
+    INPUT_FILE_NAME = "main.cpp"
+    OUTPUT_FILE_NAME = "compiled"
+
     def command(self):
-        file = File("main.cpp", self.source)
-        return f"g++ -o compiled {file.name}", file
+        file = File(self.INPUT_FILE_NAME, self.source)
+        return f"g++ -o {self.OUTPUT_FILE_NAME} {file.name}", file, self.OUTPUT_FILE_NAME
 
 
 class DoNothingCompile(AbstractCompile):

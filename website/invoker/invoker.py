@@ -8,10 +8,12 @@ from django.core.files import File as FileDjango
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 import subprocess
 import tempfile
 import typing
 import enum
+import io
 
 
 class InvokerStatus(enum.Enum):
@@ -60,7 +62,7 @@ class NormalEnvironment(InvokerEnvironment):
         if preserve_files:
             return_dir = []
             for file in preserve_files:
-                return_dir.append(File.load(file))
+                return_dir.append(File.load(Path(work_dir) / file))
         else:
             return_dir = None
 
@@ -106,7 +108,7 @@ class Invoker:
                                               )
         if result.files:
             for file in result.files:
-                FileModel.objects.create(file=FileDjango(file.source, name=file.name), name=file.name, invoker_report=report)
+                FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name, invoker_report=report)
 
         return report
 
