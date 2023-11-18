@@ -1,6 +1,6 @@
 from django.db import models
 
-STATUS = {"NS": "Not Started", "OK" : "OK", "RE": "Runtime Error", "TL" : "Time Limit Exceded"}
+STATUS = {"NS": "Not Started", "OK": "OK", "RE": "Runtime Error", "TL": "Time Limit Exceeded"}
 
 
 class InvokerReport(models.Model):
@@ -20,4 +20,3 @@ class InvokerReport(models.Model):
         self.time_end = time_end
         self.program_status = program_status
         self.program_error_text = program_error_text
-
