@@ -23,7 +23,7 @@ class InvokerPool:
 
     @property
     def free_invokers_count(self):
-        logging.info("Something got free Invokers count")
+        logging.info("Something asked for free Invokers count")
         return len(list(filter(lambda x: x.status == InvokerStatus.FREE, self.all_invokers)))
 
     def free(self, invoker: Invoker):
