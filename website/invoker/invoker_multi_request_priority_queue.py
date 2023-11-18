@@ -1,7 +1,6 @@
 # Created at 2023/10/09
 from queue import PriorityQueue
 from django.conf import settings
-import logging
 
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_pool import InvokerPool
