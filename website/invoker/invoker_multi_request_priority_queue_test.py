@@ -55,7 +55,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
         mock_invoker_pool.get.return_value = [0, 1, 2, 3]
         queue.invoker_pool = mock_invoker_pool
         mock_invoker_multi_request.invoker_requests_count = 4
-        mock_invoker_multi_request.priority = Priority.RED
+        mock_invoker_multi_request.priority = Priority.YELLOW
         queue.invoker_multi_request_queue.put(mock_invoker_multi_request)
         queue.run()
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 0)
