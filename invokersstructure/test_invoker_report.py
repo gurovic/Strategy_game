@@ -1,5 +1,5 @@
 import django.test
-from invokersstructure.InvokerReport import *
+from invoker_report import *
 
 
 class TestInvokerReport(django.test.TestCase):
