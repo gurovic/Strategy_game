@@ -18,4 +18,4 @@ def post_new(request, id):
         report = generate_battle(game)
         return render(request, 'ideal_solution_loader.html', {'report': report, 'game': game})
     else:
-        return render(request,'ideal_solution_loader.html', {'game':game})
+        return render(request,'ideal_solution_loader.html', {'game': game})

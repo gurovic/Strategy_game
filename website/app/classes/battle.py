@@ -33,8 +33,9 @@ class Battle:
 
     def notify(self, report: InvokerReport):
         self.report = report
+        self.status = True
 
-    async def get_report(self):
+    def get_report(self):  # TODO возможно стоит сделать async
         while self.report == None:
             pass
         return self.report
