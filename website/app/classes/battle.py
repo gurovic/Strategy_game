@@ -34,7 +34,7 @@ class Battle:
     def notify(self, report: InvokerReport):
         self.report = report
 
-    def get_report(self):
+    async def get_report(self):
         while self.report == None:
             pass
         return self.report

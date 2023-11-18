@@ -2,5 +2,5 @@ from django.db import models
 
 
 class BattleReport(models.Model):
-    invoker_report = models.ForeignKey('app.InvokerReport', on_delete=models.CASCADE, verbose_name='InvokerReport')
+    invoker_report = models.ForeignKey('invoker.models.InvokerReport', on_delete=models.CASCADE, verbose_name='InvokerReport')
     battle_id = models.IntegerField(default=0, verbose_name='Battle id')

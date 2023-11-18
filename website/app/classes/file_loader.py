@@ -21,26 +21,40 @@ class FileLoader:
     AVAILABLE_FORMATS = ['cpp', 'py', 'java', 'rs', 'cs', 'go', 'hs', 'kt', 'P', 'js', 'dpr', 'ts']
 
     def __init__(self, file_path: str):
-        logging.basicConfig(level=logging.INFO, filename="../../../logs/boris.log", filemode='w',
+        self.compiler_report = None
+        logging.basicConfig(level=logging.INFO, filename="strategy_game/website/logs/file_loader.log", filemode='w',
                             format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
         self.id = random.randint(1, 1000000000000000000)
         self.file_path = file_path
         self.lang = self.get_format(file_path)
-        self.compiler_report = None
-        with open(self.file_path) as file:
-            self.compiler = Compiler(file.read(), self.lang, self.notify())
+        try:
+            with open(self.file_path) as file:
+                self.compiler = Compiler(file.read(), self.lang, self.notify())
+        except:
+            return
         logging.info(self.CREATED_FILE_LOADER.format(self.id, datetime.datetime.now().strftime("%Y%m%d")))
         self.compile()
 
     def make_response(self, exc: str):
         if exc == 'formatEXE':
             date = datetime.datetime.now().strftime("%Y%m%d")
-            report = CompilerReport(None, 0, date, "ERROR", "Wrong file format", None)
+            report = CompilerReport(compiled_file=None,
+                                    time=0,
+                                    datetime_created=date,
+                                    error="Wrong file format",
+                                    status=2,
+                                    invoker_report=None)
             self.compiler_report = report
         elif exc == '404':
             logging.error(self.FILE_PATH_EXCEPTION.format(self.id, self.file_path))
             date = datetime.datetime.now().strftime("%Y%m%d")
-            report = CompilerReport(None, 0, date, "ERROR", "No such file found {}".format(self.file_path), None)
+            report = CompilerReport(
+                compiled_file=None,
+                time=0,
+                datetime_created=date,
+                status=2,
+                error="No such file found {}".format(self.file_path),
+                invoker_report=None)
             self.compiler_report = report
         else:
             logging.error(self.WRONG_FUNCTION_CALLING_ERROR.format(self.id))
