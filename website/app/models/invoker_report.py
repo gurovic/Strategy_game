@@ -9,8 +9,8 @@ class InvokerReport(models.Model):
     running_file = models.FileField(default=None)
     time_start = models.TimeField(default=None)
     time_end = models.TimeField(default=None)
-    program_status = models.CharField(default=STATUS["NS"])
-    program_error_text = models.CharField(default=None)
+    program_status = models.CharField(default=STATUS["NS"], max_length=80)
+    program_error_text = models.CharField(default=None, max_length=80)
 
     def notify(self, program_type, invoker_id, running_file, time_start, time_end, program_status, program_error_text):
         self.program_type = program_type

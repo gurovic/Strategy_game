@@ -1,1 +1,1 @@
-from invoker_report import *
+from app.models.invoker_report import *

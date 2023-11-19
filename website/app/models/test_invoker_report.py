@@ -1,15 +1,11 @@
 import django.test
-from invokersstructure.invoker_report import *
+from app.models.invoker_report import *
 
 
 class TestInvokerReport(django.test.TestCase):
-    def test_different(self):
-        a = InvokerReport
-        b = InvokerReport
-        self.assertEqual(a, b)
 
     def test_origin(self):
-        a = InvokerReport
+        a = InvokerReport()
         self.assertEqual(a.invoker_id, -1)
         self.assertEqual(a.program_type, '')
         self.assertEqual(a.running_file, None)
