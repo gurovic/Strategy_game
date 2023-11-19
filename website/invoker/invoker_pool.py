@@ -1,10 +1,9 @@
-import logging
+import logging, multiset
 
 from django.conf import settings
 
 from invoker.invoker import Invoker, InvokerStatus
 from invoker.utils import Singleton
-
 
 
 class LowInvokerCap(Exception):
@@ -20,30 +19,37 @@ class InvokerPool(metaclass=Singleton):
     def __init__(self):
         self.all_invokers_count = settings.MAX_INVOKERS_COUNT
         self.all_invokers = []
+        self.free_invokers = multiset.Multiset()
         for i in range(self.all_invokers_count):
-            self.all_invokers.append(Invoker())
+            new_invoker = Invoker()
+            self.all_invokers.append(new_invoker)
+            self.free_invokers.add(new_invoker)
 
     @property
     def free_invokers_count(self):
         logging.info("Something asked for free Invokers count")
-        return len(list(filter(lambda x: x.status == InvokerStatus.FREE, self.all_invokers)))
+        return len(self.free_invokers)
 
     def free(self, invoker: Invoker):
         if invoker.status == InvokerStatus.WORKING:
+            self.free_invokers.add(invoker)
             invoker.status = InvokerStatus.FREE
             logging.info(f"Invoker with id: {self.all_invokers.index(invoker)} was transferred from WORKING to FREE")
+        else:
+            logging.info("We've lost our Invoker")
 
     def get(self, need_count: int):
         if self.free_invokers_count < need_count:
             raise LowInvokerCap(need_count, self.free_invokers_count)
 
         result = []
-        for invoker in self.all_invokers:
-            if invoker.status == InvokerStatus.FREE:
-                invoker.status = InvokerStatus.WORKING
-                result.append(invoker)
+        for invoker in self.free_invokers:
+            invoker.status = InvokerStatus.WORKING
+            result.append(invoker)
             if len(result) == need_count:
                 break
+        for i in result:
+            self.free_invokers.remove(i)
         return result
 
 

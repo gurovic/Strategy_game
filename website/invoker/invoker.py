@@ -117,7 +117,13 @@ class Invoker:
         report = self.make_report(result)
         self.send_report(report, callback)
 
-        self.status = InvokerStatus.FREE
+        self.free()
+
+    def free(self):
+        # <== Костыль (Circular Import) ==>
+        from invoker.invoker_pool import InvokerPool
+        current_pool = InvokerPool()
+        current_pool.free(self)
 
     def make_report(self, result: RunResult) -> InvokerReport:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
