@@ -8,12 +8,15 @@ from invoker.invoker_multi_request import InvokerMultiRequest, Priority
 
 
 class TestInvokerMultiRequestPriorityQueue(TestCase):
-    def test_unique(self):
+
+    @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
+    def test_unique(self, mock_pool):
         first_queue = InvokerMultiRequestPriorityQueue()
         second_queue = InvokerMultiRequestPriorityQueue()
         self.assertEqual(id(first_queue), id(second_queue))
 
-    def test_async_unique(self):
+    @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
+    def test_async_unique(self, mock_pool):
         queues = []
 
         def create():
@@ -27,8 +30,9 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
         creator2.join()
         self.assertEqual(queues[0], queues[1])
 
+    @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.run")
-    def test_addition(self, mock_run):
+    def test_addition(self, mock_run, mock_pool):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
@@ -38,15 +42,16 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 1)
         self.assertTrue(mock_run.called)
 
+    @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.run")
-    def test_notify(self, mock_run):
+    def test_notify(self, mock_run, mock_pool):
         queue = InvokerMultiRequestPriorityQueue()
         queue.notify()
         self.assertTrue(mock_run.called)
 
-    @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
-    def test_run_one_possible(self, mock_invoker_pool, mock_invoker_multi_request):
+    @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest")
+    def test_run_one_possible(self, mock_invoker_multi_request, mock_invoker_pool):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 

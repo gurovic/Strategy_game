@@ -3,6 +3,8 @@ import logging
 from django.conf import settings
 
 from invoker.invoker import Invoker, InvokerStatus
+from invoker.utils import Singleton
+
 
 
 class LowInvokerCap(Exception):
@@ -14,9 +16,9 @@ class LowInvokerCap(Exception):
         return f"Need {self.need_count} but have only {self.usable_count}"
 
 
-class InvokerPool:
-    def __init__(self, max_invoker_count):
-        self.all_invokers_count = max_invoker_count
+class InvokerPool(metaclass=Singleton):
+    def __init__(self):
+        self.all_invokers_count = settings.MAX_INVOKERS_COUNT
         self.all_invokers = []
         for i in range(self.all_invokers_count):
             self.all_invokers.append(Invoker())

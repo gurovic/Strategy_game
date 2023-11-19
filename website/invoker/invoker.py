@@ -60,7 +60,8 @@ class NormalEnvironment(InvokerEnvironment):
 
         time_start = timezone.now()
 
-        logging.debug(f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
+        logging.debug(
+            f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
 
         try:
             result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
