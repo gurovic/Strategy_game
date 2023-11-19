@@ -30,6 +30,7 @@ class Battle:
             self.invoker_requests.append(InvokerRequest(self.get_running_command(player.path), player.path))
         self.invoker_multi_request = InvokerMultiRequest(self.invoker_requests, self.PRIORITY)
         self.invoker_multi_request.subscribers.append(self)
+        self.invoker_multi_request.start()
 
     def notify(self, report: InvokerReport):
         self.report = report
