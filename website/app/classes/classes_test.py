@@ -4,7 +4,8 @@ import asyncio
 from django.test import TestCase
 
 from .file_loader import FileLoader
-from ..models import CompilerReport, PlayersInBattle, Game, InvokerReport
+from ..models import CompilerReport, PlayersInBattle, Game
+from invoker.models import InvokerReport
 from .battle import Battle
 from .generate_battle import *
 

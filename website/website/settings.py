@@ -142,5 +142,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-MAX_INVOKERS_COUNT = 4
+MAX_INVOKERS_COUNT = 16
 USE_DOCKER = False
