@@ -18,12 +18,12 @@ class TestAbstractCompile(TestCase):
         def command(self) -> (str, str | File, str):
             return "test", "test", "test"
 
-    @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.add")
-    def test_compile(self, mock_imrpq_add: Mock):
+    @patch("app.compiler.InvokerMultiRequestPriorityQueue")
+    def test_compile(self, mock_queue: Mock):
         compiler = self.CompileTest("test", "test")
         compiler.compile()
-
-        mock_imrpq_add.assert_called()
+        mock_queue = mock_queue()
+        mock_queue.add.assert_called()
 
     @patch("app.compiler.AbstractCompile.send_report")
     @patch("app.compiler.AbstractCompile.make_report")
@@ -44,7 +44,9 @@ class TestAbstractCompile(TestCase):
         compiler = self.CompileTest("test", lang="py")
         compiler.make_report(mock)
 
-        mock_compiler_report.assert_called_once_with(invoker_report=mock, time=mock.time_end - mock.time_start, status=CompilerReport.Status.COMPILATION_ERROR, error=mock.error, compiled_file=mock.preserved_files.get().file)
+        mock_compiler_report.assert_called_once_with(invoker_report=mock, time=mock.time_end - mock.time_start,
+                                                     status=CompilerReport.Status.COMPILATION_ERROR, error=mock.error,
+                                                     compiled_file=mock.preserved_files.get().file)
 
     @patch("app.models.compiler_report.CompilerReport")
     def test_send_report(self, mock_compiler_report: Mock):
