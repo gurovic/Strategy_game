@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+        body { font-family: 'Raleway', sans-serif; }
+        table {
+            border-radius: 10px;
+            background: #292936;
+            color: white;
+            padding: 10px 0 10px 0;
+        }
+        table td:first-child {
+            color: #efd00c;
+            font-weight: bold;
+        }
+        td {
+            padding: 5px 15px;
+        }
+        a {
+            text-decoration: none;
+            color: #626262;
+        }
+        a:hover {
+            color: #949494;
+        }
+        a:active {
+            color: #a6a6a6;
+        }
+        input:active, :hover, :focus {
+            outline: 0;
+            outline-offset: 0;
+        }
+        input[type='submit'] {
+            margin-top: 2em;
+            font-weight: bolder;
+            padding: .7em 2.7em;
+            border-radius: 10px;
+            border: 1px solid black;
+            /*background: #2842ff;*/
+        }
+    </style>
+</head>
+<body>
+{% if feedback %}
+    <table>
+        <tr>
+            <td>Make a battle</td>
+            <td><a href="http://localhost:8000/app/post-ideal-solution/new/{{feedback.id}}/">click here</a></td>
+        </tr>
+    </table>
+{% else %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td><p>Name:</p></td>
+                <td><input type="text" name="name"></td>
+            </tr>
+            <tr>
+                <td><p>Number of players:</p></td>
+                <td><input type="text" name="number_of_players"></td>
+            </tr>
+            <tr>
+                <td><p>Ideal solution:</p></td>
+                <td><input type="file" name="ideal_solution"></td>
+            </tr>
+            <tr>
+                <td><p>Play:</p></td>
+                <td><input type="file" name="play"></td>
+            </tr>
+        </table>
+        <input type="submit" value="Сохранить">
+    </form>
+{% endif %}
+</body>
+</html>
