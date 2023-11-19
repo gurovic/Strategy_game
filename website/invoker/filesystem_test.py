@@ -14,7 +14,7 @@ class TestFunctions(TestCase):
     def test_path_get_path(self):
         path = Path(__file__)
         self.assertEquals(_get_path(path), path)
-        
+
     @patch("pathlib.Path.write_bytes")
     def test_write_file(self, mock_write_bytes: Mock):
         write_file("test.txt", b"test")

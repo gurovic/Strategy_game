@@ -32,8 +32,10 @@ class InvokerReport(models.Model):
     status = models.IntegerField(choices=Status.choices, default=Status.OK, verbose_name="Статус")
     error = models.TextField(editable=False, blank=True, null=True, verbose_name="Ошибка")
 
-    input_files = models.ManyToManyField(File, blank=True, related_name="input_invoker", verbose_name="Загружённые файлы")
-    preserved_files = models.ManyToManyField(File, blank=True, related_name="preserved_invoker", verbose_name="Сохранённые файлы")
+    input_files = models.ManyToManyField(File, blank=True, related_name="input_invoker",
+                                         verbose_name="Загружённые файлы")
+    preserved_files = models.ManyToManyField(File, blank=True, related_name="preserved_invoker",
+                                             verbose_name="Сохранённые файлы")
 
     def __str__(self):
         return f"\"{self.command}\" - {self.get_status_display()}"
