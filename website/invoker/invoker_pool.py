@@ -1,4 +1,4 @@
-import logging, multiset
+import logging
 
 from django.conf import settings
 
@@ -19,7 +19,7 @@ class InvokerPool(metaclass=Singleton):
     def __init__(self):
         self.all_invokers_count = settings.MAX_INVOKERS_COUNT
         self.all_invokers = []
-        self.free_invokers = multiset.Multiset()
+        self.free_invokers = set()
         for i in range(self.all_invokers_count):
             new_invoker = Invoker()
             self.all_invokers.append(new_invoker)
@@ -32,8 +32,8 @@ class InvokerPool(metaclass=Singleton):
 
     def free(self, invoker: Invoker):
         if invoker.status == InvokerStatus.WORKING:
-            self.free_invokers.add(invoker)
             invoker.status = InvokerStatus.FREE
+            self.free_invokers.add(invoker)
             logging.info(f"Invoker with id: {self.all_invokers.index(invoker)} was transferred from WORKING to FREE")
         else:
             logging.info("We've lost our Invoker")

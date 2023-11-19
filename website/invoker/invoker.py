@@ -65,7 +65,7 @@ class NormalEnvironment(InvokerEnvironment):
 
         try:
             result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
-                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timelimit)
+                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timelimit, shell=True)
             return_code = result.returncode
             timeout_error = False
             logging.debug(f"Command \"{command}\" launch was ended with exit code {return_code}!")
