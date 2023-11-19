@@ -8,7 +8,7 @@ from django.template import loader
 from django.db import models
 
 from app.models import CompilerReport
-from .compiler import Compiler
+from app.compiler import Compiler
 
 class FileLoader:
     # LOGGING TEXTS

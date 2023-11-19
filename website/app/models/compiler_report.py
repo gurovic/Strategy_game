@@ -1,5 +1,7 @@
 from django.db import models
 
+import datetime
+
 
 class CompilerReport(models.Model):
 
@@ -10,11 +12,11 @@ class CompilerReport(models.Model):
         TIMELIMIT = 3
 
     compiled_file = models.FileField(upload_to="compiler_report", null=True, blank=True, verbose_name="Файл")
-    time = models.DurationField(verbose_name="Время выполнения")
+    time = models.DurationField(default=datetime.timedelta, verbose_name="Время выполнения")
     datetime_created = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     status = models.IntegerField(choices=Status.choices, default=Status.OK, verbose_name="Статус")
     error = models.TextField(editable=False, blank=True, null=True, verbose_name="Ошибка")
-    invoker_report = models.ForeignKey("invoker.InvokerReport", on_delete=models.CASCADE, verbose_name="Репорт инвокера")
+    invoker_report = models.ForeignKey("invoker.InvokerReport", null=True, blank=True, on_delete=models.CASCADE, verbose_name="Репорт инвокера")
 
     def __str__(self):
         if self.status == self.Status.OK:

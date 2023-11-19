@@ -1,4 +1,4 @@
-from ..models.compiler import CompilerReport
+from app.models.compiler_report import CompilerReport
 
 from django.shortcuts import render
 

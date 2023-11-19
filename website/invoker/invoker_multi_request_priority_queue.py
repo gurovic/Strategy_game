@@ -1,7 +1,5 @@
 # Created at 2023/10/09
 from queue import PriorityQueue
-from django.conf import settings
-import logging
 
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_pool import InvokerPool
@@ -11,7 +9,7 @@ from invoker.utils import Singleton
 class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
     def __init__(self):
         self.invoker_multi_request_queue = PriorityQueue()
-        self.invoker_pool = InvokerPool(settings.MAX_INVOKERS_COUNT)
+        self.invoker_pool = InvokerPool()
 
     def run(self):
         if self.invoker_multi_request_queue.empty():
@@ -27,6 +25,7 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
             self.run()
 
     def add(self, invoker_multi_request: InvokerMultiRequest):
+        InvokerMultiRequest.queue_notify = self.notify
         self.invoker_multi_request_queue.put(invoker_multi_request)
         self.run()
 
