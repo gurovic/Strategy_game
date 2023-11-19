@@ -10,5 +10,4 @@ class CompilerReportAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(InvokerReport)
 admin.site.register(Game)

@@ -2,9 +2,9 @@ import datetime
 import random
 
 from ..models import PlayersInBattle
-from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
 from invoker.invoker_multi_request import InvokerMultiRequest, Priority
+from invoker.invoker_request import InvokerRequest
 
 
 class Battle:
@@ -25,7 +25,7 @@ class Battle:
         return f"start {path}"
 
     def run(self):
-        self.invoker_requests = [InvokerRequest(self.get_running_command(self.game.play), self.game.play)]
+        self.invoker_requests = [InvokerRequest(self.get_running_command(self.game.play))]
         for player in self.players:
             self.invoker_requests.append(InvokerRequest(self.get_running_command(player.path), player.path))
         self.invoker_multi_request = InvokerMultiRequest(self.invoker_requests, self.PRIORITY)

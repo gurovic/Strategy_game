@@ -29,7 +29,7 @@ class FileLoader:
         self.lang = self.get_format(file_path)
         try:
             with open(self.file_path) as file:
-                self.compiler = Compiler(file.read(), self.lang, self.notify())
+                self.compiler = Compiler(file.read(), self.lang, self.notify)
         except:
             return
         logging.info(self.CREATED_FILE_LOADER.format(self.id, datetime.datetime.now().strftime("%Y%m%d")))
@@ -63,10 +63,12 @@ class FileLoader:
         if not self.lang in self.AVAILABLE_FORMATS:
             return self.make_response("formatEXE")
         elif self.compiler_report is None:
+            print('compiling started')
             logging.info(self.STARTING_COMPILATION.format(self.id, self.file_path))
             self.compiler.compile()
 
     def notify(self, compiler_report):
+        print('compiling finished')
         logging.info(self.CREATOR_NOTIFYING.format(self.id, datetime.datetime.now()))
         self.compiler_report = compiler_report
 

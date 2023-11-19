@@ -40,7 +40,7 @@ class AbstractCompile:
         queue = InvokerMultiRequestPriorityQueue()
         queue.add(request)
 
-    def notify(self, report: list[InvokerReport]):
+    def notify(self, report: typing.List[InvokerReport]):
         compiler_report = self.make_report(report[0])
         self.send_report(compiler_report)
 

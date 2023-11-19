@@ -26,7 +26,7 @@ class InvokerStatus(enum.Enum):
 class RunResult:
     command: str
     output: str
-    exit_code: int | None
+    exit_code: int
 
     time_start: datetime
     time_end: datetime
@@ -34,28 +34,28 @@ class RunResult:
     timelimit: typing.Optional[int] = None
     exceeded_timelimit: bool = False
 
-    input_files: typing.Optional[list[File]] = None
-    preserved_files: typing.Optional[list[File]] = None
+    input_files: typing.Optional[typing.List[File]] = None
+    preserved_files: typing.Optional[typing.List[File]] = None
 
 
 class InvokerEnvironment(ABC):
     @abstractmethod
-    def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
+    def launch(self, command: str, file_system: typing.Optional[typing.List[File]] = None,
+               preserve_files: typing.Optional[typing.List[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
         ...
 
 
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
-    def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
+    def initialize_workdir(file_system: typing.Optional[typing.List[File]] = None) -> str:
         tmpdir = tempfile.mkdtemp()
         if file_system:
             for file in file_system:
                 file.make(tmpdir)
         return tmpdir
 
-    def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
+    def launch(self, command, file_system: typing.Optional[typing.List[File]] = None,
+               preserve_files: typing.Optional[typing.List[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
         work_dir = self.initialize_workdir(file_system)
 
         time_start = timezone.now()
@@ -97,8 +97,8 @@ class NormalEnvironment(InvokerEnvironment):
 
 
 class DockerEnvironment(InvokerEnvironment):
-    def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
+    def launch(self, command: str, file_system: typing.Optional[typing.List[File]] = None,
+               preserve_files: typing.Optional[typing.List[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
         pass
 
 
@@ -107,8 +107,8 @@ class Invoker:
         self.status: InvokerStatus = InvokerStatus.FREE
         self.environment = DockerEnvironment() if settings.USE_DOCKER else NormalEnvironment()
 
-    def run(self, command: str, files: typing.Optional[list[str | File]] = None,
-            preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
+    def run(self, command: str, files=None,
+            preserve_files: typing.Optional[typing.List[str]] = None, timelimit: typing.Optional[int] = None,
             callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
         file_system = [file if isinstance(file, File) else File.load(file) for file in files] if files else None
 
