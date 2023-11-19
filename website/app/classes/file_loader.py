@@ -22,7 +22,7 @@ class FileLoader:
 
     def __init__(self, file_path: str):
         self.compiler_report = None
-        logging.basicConfig(level=logging.INFO, filename="strategy_game/website/logs/file_loader.log", filemode='w',
+        logging.basicConfig(level=logging.INFO, filename="logs/file_loader.log", filemode='w',
                             format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
         self.id = random.randint(1, 1000000000000000000)
         self.file_path = file_path

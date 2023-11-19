@@ -69,7 +69,7 @@ class GenerateBattleTest(TestCase):
     def test_save_file(self):
         with open('strategy_game/test_solutions/draughts.cpp', 'r') as new_file:
             file = new_file.read()
-        filename = save_file(file, 'cpp')
+        filename = save_file(file)
         self.assertEqual(type(filename), str)
         with open(filename, 'r') as file2:
             new_file = file2.read()
@@ -78,7 +78,7 @@ class GenerateBattleTest(TestCase):
     def test_generate_filename(self):
         filename = generate_filename('cpp')
         self.assertEqual(type(filename), str)
-        self.assertEqual(filename[:5], "file_")
+        self.assertEqual(filename[:43], "strategy_game/test_solution/generated/file_")
         self.assertEqual(filename[-3:],'cpp')
 
     def test_generate_battle(self):

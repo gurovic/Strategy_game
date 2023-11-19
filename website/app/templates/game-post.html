@@ -44,15 +44,22 @@
     </style>
 </head>
 <body>
-{% if feedback %}
+{% if response %}
+    <p>{{ response }}</p>
+{% elif feedback %}
+    <p>{{ ideal_solution_report }}</p>
+    <p>{{ play_report }}</p>
     <table>
         <tr>
             <td>Make a battle</td>
             <td><a href="http://localhost:8000/app/post-ideal-solution/new/{{feedback.id}}/">click here</a></td>
         </tr>
     </table>
+{% elif ideal_solution_report %}
+    <p>{{ ideal_solution_report }}</p>
+    <p>{{ play_report }}</p>
 {% else %}
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
             <tr>

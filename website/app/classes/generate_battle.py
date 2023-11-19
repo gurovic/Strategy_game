@@ -10,14 +10,20 @@ from ..models.battle_report import BattleReport
 def generate_filename(file_format: str):
     date = datetime.datetime.now()
     id = random.randint(1, 1000000000000)
-    return "file_" + str(date) + "_" + str(id) + "." + file_format  # TODO make right directory
+    return "file_" + str(date) + "_" + str(
+        id) + "." + file_format  # TODO make right directory
 
 
-def save_file(new_file, file_format: str):
+def get_format(file):
+    return 'cpp'  # TODO
+
+
+def save_file(new_file):
+    file_format = get_format(new_file)
     filename = generate_filename(file_format)
-    file = open(filename, 'w')
-    file.write(new_file)
-    file.close()
+    with open(filename, 'wb+') as destination:
+        for chunk in new_file.chunks():
+            destination.write(chunk)
     return filename
 
 
