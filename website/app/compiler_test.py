@@ -103,7 +103,7 @@ class TestCompiler(TestCase):
         compiler.command.compile.assert_called_once()
 
     @patch("invoker.models.InvokerReport")
-    def test_notify(self, mock_invoker_report):
+    def test_notify(self, mock_invoker_report : Mock):
         mock = Mock()
         invoker_request = Compiler("test", lang="py", callback=mock)
         invoker_request.notify(mock_invoker_report)

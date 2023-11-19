@@ -1,5 +1,5 @@
 from django.test import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from threading import Thread
 
@@ -32,7 +32,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.run")
-    def test_addition(self, mock_run, mock_pool):
+    def test_addition(self, mock_run : Mock, mock_pool : Mock):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
@@ -44,14 +44,14 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.run")
-    def test_notify(self, mock_run, mock_pool):
+    def test_notify(self, mock_run : Mock, mock_pool : Mock):
         queue = InvokerMultiRequestPriorityQueue()
         queue.notify()
         self.assertTrue(mock_run.called)
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest")
-    def test_run_one_possible(self, mock_invoker_multi_request, mock_invoker_pool):
+    def test_run_one_possible(self, mock_invoker_multi_request : Mock, mock_invoker_pool : Mock):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
@@ -67,7 +67,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest.run")
-    def test_run_mixed(self, mock_imr_run, mock_invoker_pool):
+    def test_run_mixed(self, mock_imr_run : Mock, mock_invoker_pool : Mock):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
@@ -92,7 +92,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest.run")
-    def test_add_then_run_overflow_request_count(self, mock_imr_run, mock_invoker_pool):
+    def test_add_then_run_overflow_request_count(self, mock_imr_run : Mock, mock_invoker_pool : Mock):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
@@ -108,7 +108,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest.run")
-    def test_add_then_run(self, mock_imr_run, mock_invoker_pool):
+    def test_add_then_run(self, mock_imr_run : Mock, mock_invoker_pool : Mock):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
@@ -127,7 +127,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequest.run")
-    def test_add_multiple_then_run(self, mock_imr_run, mock_invoker_pool):
+    def test_add_multiple_then_run(self, mock_imr_run : Mock, mock_invoker_pool : Mock):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 

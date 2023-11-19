@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from invoker.invoker_pool import InvokerPool, LowInvokerCap
 
@@ -21,7 +21,7 @@ class TestInvokerPool(TestCase):
         self.assertEqual(first_pool, second_pool)
 
     @patch("invoker.invoker_pool.settings")
-    def test_invoker_count(self, mock_settings):
+    def test_invoker_count(self, mock_settings : Mock):
         for invokers_count in range(1, 100):
             mock_settings.MAX_INVOKERS_COUNT = invokers_count
 
@@ -32,7 +32,7 @@ class TestInvokerPool(TestCase):
             self.assertEqual(len(pool.all_invokers), mock_settings.MAX_INVOKERS_COUNT)
 
     @patch("invoker.invoker_pool.settings")
-    def test_get_invokers(self, mock_settings):
+    def test_get_invokers(self, mock_settings : Mock):
         mock_settings.MAX_INVOKERS_COUNT = 16
 
         class TestPool(InvokerPool):
@@ -47,7 +47,7 @@ class TestInvokerPool(TestCase):
         self.assertEqual(len(second_group), 6)
 
     @patch("invoker.invoker_pool.settings")
-    def test_free_invokers_count(self, mock_settings):
+    def test_free_invokers_count(self, mock_settings : Mock):
         mock_settings.MAX_INVOKERS_COUNT = 100
 
         class TestPool(InvokerPool):
@@ -63,7 +63,7 @@ class TestInvokerPool(TestCase):
         self.assertEqual(pool.free_invokers_count, 0)
 
     @patch("invoker.invoker_pool.settings")
-    def test_free_invokers(self, mock_settings):
+    def test_free_invokers(self, mock_settings : Mock):
         mock_settings.MAX_INVOKERS_COUNT = 100
 
         class TestPool(InvokerPool):
