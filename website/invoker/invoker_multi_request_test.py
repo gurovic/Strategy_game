@@ -8,42 +8,44 @@ from invoker.invoker import Invoker
 
 
 class TestInvokerMultiRequest(TestCase):
-    @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.add")
-    def test_start(self, mock_queue_add: Mock):
-        invoker_request = InvokerRequest("Test")
-
-        invoker_multi_request = InvokerMultiRequest([invoker_request])
+    @patch("invoker.invoker_multi_request.InvokerRequest")
+    @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue")
+    def test_start(self, mock_queue: Mock, mock_request: Mock):
+        invoker_multi_request = InvokerMultiRequest([mock_request])
         invoker_multi_request.start()
+        mock_queue = mock_queue()
+        mock_add = mock_queue.add
+        mock_add.assert_called_with(invoker_multi_request)
 
-        mock_queue_add.assert_called_with(invoker_multi_request)
-
-    @patch("invoker.invoker_request.InvokerRequest.run")
-    def test_run(self, mock_request_run: Mock):
-        invoker_requests = [InvokerRequest("Test") for _ in range(3)]
-        invokers = [Invoker() for _ in range(3)]
+    @patch("invoker.invoker.Invoker")
+    @patch("invoker.invoker_multi_request.InvokerRequest")
+    def test_run(self, mock_request: Mock, mock_invoker: Mock):
+        invoker_requests = [mock_request() for _ in range(3)]
+        invokers = [mock_invoker() for _ in range(3)]
 
         invoker_multi_request = InvokerMultiRequest(invoker_requests)
         invoker_multi_request.run(invokers)
 
-        for invoker in invokers:
-            mock_request_run.assert_any_call(invoker)
+        for (invoker, request) in zip(invokers, invoker_requests):
+            request.run.assert_called_with(invoker)
 
-    def test_notify(self):
+    @patch("invoker.invoker_multi_request.InvokerRequest")
+    def test_notify(self, mock_request: Mock):
         mock = Mock()
 
-        invoker_request = InvokerRequest("Test")
         invoker_report = InvokerReport()
 
-        invoker_multi_request = InvokerMultiRequest([invoker_request])
+        invoker_multi_request = InvokerMultiRequest([mock_request])
         invoker_multi_request.subscribers = [mock]
 
         invoker_multi_request.notify(invoker_report)
         mock.notify.assert_called()
 
-    def test_not_all_notify(self):
+    @patch("invoker.invoker_multi_request.InvokerRequest")
+    def test_not_all_notify(self, mock_request: Mock):
         mock = Mock()
 
-        invoker_requests = [InvokerRequest("Test") for _ in range(2)]
+        invoker_requests = [mock_request for _ in range(2)]
         invoker_report = InvokerReport()
 
         invoker_multi_request = InvokerMultiRequest(invoker_requests)
@@ -52,10 +54,11 @@ class TestInvokerMultiRequest(TestCase):
         invoker_multi_request.notify(invoker_report)
         mock.notify.assert_not_called()
 
-    def test_all_notify(self):
+    @patch("invoker.invoker_multi_request.InvokerRequest")
+    def test_all_notify(self, mock_request: Mock):
         mock = Mock()
 
-        invoker_requests = [InvokerRequest("Test") for _ in range(3)]
+        invoker_requests = [mock_request for _ in range(3)]
         invoker_reports = [InvokerReport() for _ in range(3)]
 
         invoker_multi_request = InvokerMultiRequest(invoker_requests)
