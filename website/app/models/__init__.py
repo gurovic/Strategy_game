@@ -1,2 +1,1 @@
-from app.models.compiler import CompilerReport
-from app.models.invoker import InvokerReport
+from app.models.compiler_report import CompilerReport

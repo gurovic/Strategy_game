@@ -1,12 +1,15 @@
-from app.models import CompilerReport, InvokerReport
+from app.models import CompilerReport
+from invoker.models import InvokerReport
+
+from django.utils import timezone
 from django.test import TestCase
-from unittest.mock import patch
+
 from datetime import timedelta
 
 
 class CompilerReportTestCase(TestCase):
     def setUp(self):
-        invoker_report = InvokerReport.objects.create()
+        invoker_report = InvokerReport.objects.create(time_start=timezone.now(), time_end=timezone.now(), exit_code=0)
         CompilerReport.objects.create(status=CompilerReport.Status.OK, time=timedelta(microseconds=1), invoker_report=invoker_report)
         CompilerReport.objects.create(status=CompilerReport.Status.COMPILER_ERROR, error="Test", time=timedelta(microseconds=1), invoker_report=invoker_report)
         CompilerReport.objects.create(status=CompilerReport.Status.COMPILATION_ERROR, error="Test", time=timedelta(microseconds=1), invoker_report=invoker_report)

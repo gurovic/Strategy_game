@@ -1,3 +1,8 @@
+from app.models import CompilerReport
+
 from django.contrib import admin
 
-# Register your models here.
+
+@admin.register(CompilerReport)
+class CompilerReportAdmin(admin.ModelAdmin):
+    pass
