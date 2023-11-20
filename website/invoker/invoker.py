@@ -102,10 +102,20 @@ class DockerEnvironment(InvokerEnvironment):
         pass
 
 
+class NoInvokerPoolCallbackData(Exception):
+
+    def __init__(self, invoker_id: int):
+        self.invoker_id = invoker_id
+
+    def __str__(self):
+        return f"No pool connected to invoker: {self.invoker_id}"
+
+
 class Invoker:
     def __init__(self):
         self.status: InvokerStatus = InvokerStatus.FREE
         self.environment = DockerEnvironment() if settings.USE_DOCKER else NormalEnvironment()
+        self.callback_free_myself = None
 
     def run(self, command: str, files: typing.Optional[list[str | File]] = None,
             preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
@@ -120,10 +130,10 @@ class Invoker:
         self.free()
 
     def free(self):
-        # <== Костыль (Circular Import) ==>
-        from invoker.invoker_pool import InvokerPool
-        current_pool = InvokerPool()
-        current_pool.free(self)
+        if self.callback_free_myself:
+            self.callback_free_myself(self)
+        else:
+            raise NoInvokerPoolCallbackData(id(self))
 
     def make_report(self, result: RunResult) -> InvokerReport:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
