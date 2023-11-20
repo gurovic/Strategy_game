@@ -17,6 +17,7 @@ class LowInvokerCap(Exception):
 
 class InvokerPool(metaclass=Singleton):
     def __init__(self):
+        print('creating IPool')
         self.all_invokers_count = settings.MAX_INVOKERS_COUNT
         self.all_invokers = []
         self.free_invokers = set()
