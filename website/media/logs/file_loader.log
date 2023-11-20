@@ -1,2 +1,46 @@
-06:47:31 FileLoader with id 424174640337083356 was created at 20231120
-06:47:31 FileLoader with id 424174640337083356 started compilation of it's file (path: file_2023-11-20 06:47:31.336074_476866544698.cpp)
+10:26:21 FileLoader with id 738111272364083644 was created at 20231120
+10:26:21 FileLoader with id 738111272364083644 started compilation of it's file (path: file_2023-11-20 10:26:21.896620_499853410564.cpp)
+10:26:21 Something asked for free Invokers count
+10:26:21 Something asked for free Invokers count
+10:26:21 Internal Server Error: /app/post-game/new/
+Traceback (most recent call last):
+  File "/home/boriskiva/PycharmProjects/Strategy_game/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/views/game_views.py", line 20, in post_new
+    ideal_solution_report = compile(request.FILES['ideal_solution'])
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/views/game_views.py", line 12, in compile
+    file_loader = FileLoader(path)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/classes/file_loader.py", line 36, in __init__
+    self.compile()
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/classes/file_loader.py", line 68, in compile
+    self.compiler.compile()
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/compiler.py", line 94, in compile
+    self.command.compile()
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/compiler.py", line 41, in compile
+    queue.add(request)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request_priority_queue.py", line 31, in add
+    self.run()
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request_priority_queue.py", line 25, in run
+    invoker_multi_request.run(free_invokers)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request.py", line 42, in run
+    invoker_request.run(current_invoker)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_request.py", line 17, in run
+    invoker.run(self.command, files=self.files, preserve_files=self.preserve_files, callback=self.notify)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker.py", line 115, in run
+    result = self.environment.launch(command, file_system, preserve_files=preserve_files, timelimit=timelimit)
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker.py", line 82, in launch
+    preserve_dir = [File.load(Path(work_dir) / file) for file in preserve_files] if preserve_files else None
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker.py", line 82, in <listcomp>
+    preserve_dir = [File.load(Path(work_dir) / file) for file in preserve_files] if preserve_files else None
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/filesystem.py", line 40, in load
+    return cls(path.name, path.read_bytes())
+  File "/usr/lib/python3.8/pathlib.py", line 1229, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.8/pathlib.py", line 1222, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/usr/lib/python3.8/pathlib.py", line 1078, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp0_dql7c5/compiled'
+11:14:34 /home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/views/ideal_solution_test_views.py changed, reloading.

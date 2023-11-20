@@ -4,7 +4,7 @@ import asyncio
 from django.test import TestCase
 
 from .file_loader import FileLoader
-from ..models import CompilerReport, PlayersInBattle, Game
+from ..models import CompilerReport, PlayerInBattle, Game
 from invoker.models import InvokerReport
 from .battle import Battle
 from .generate_battle import *
@@ -37,7 +37,7 @@ class TestFileLoader(TestCase):
 class BattleTest(TestCase):
     def test_creating(self):
         game = Game()
-        players = [PlayersInBattle()]
+        players = [PlayerInBattle()]
         a = Battle(game, players)
         self.assertEqual(a.game, game)
         self.assertEqual(a.players, players)
@@ -47,7 +47,7 @@ class BattleTest(TestCase):
 
     def test_running(self):
         game = Game()
-        players = [PlayersInBattle()]
+        players = [PlayerInBattle()]
         a = Battle(game, players)
         a.run()
         new_invoker_report = InvokerReport(time=datetime.datetime.now(), status=1)
@@ -58,7 +58,7 @@ class BattleTest(TestCase):
 
     def test_get_report(self):
         game = Game()
-        players = [PlayersInBattle()]
+        players = [PlayerInBattle()]
         a = Battle(game, players)
         new_invoker_report = InvokerReport(time=datetime.datetime.now(), status=1)
         a.notify(new_invoker_report)

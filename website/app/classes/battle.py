@@ -1,7 +1,7 @@
 import datetime
 import random
 
-from ..models import PlayersInBattle
+from ..models import PlayerInBattle
 from invoker.models import InvokerReport
 from invoker.invoker_multi_request import InvokerMultiRequest, Priority
 from invoker.invoker_request import InvokerRequest
@@ -10,7 +10,7 @@ from invoker.invoker_request import InvokerRequest
 class Battle:
     PRIORITY = Priority.GREEN  # TODO change
 
-    def __init__(self, game, players: [PlayersInBattle]):
+    def __init__(self, game, players: [PlayerInBattle]):
         self.id = random.randint(1, 1000000000000000000)
         self.game = game
         self.players = players
@@ -36,7 +36,7 @@ class Battle:
         self.report = report
         self.status = True
 
-    def get_report(self):  # TODO возможно стоит сделать async
+    def get_report(self):
         while self.report == None:
             pass
         return self.report

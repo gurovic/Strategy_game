@@ -4,7 +4,6 @@ from django.shortcuts import render
 
 
 def show(request, id):
-    # TODO нам нужно взять из таблицы с COMPILE_REPORT нужный COMPILE_REPORT и вывести его на HTML-страницу
     compiler_report = None
     while True:
         try:
