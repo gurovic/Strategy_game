@@ -9,7 +9,6 @@ from invoker.utils import Singleton
 class InvokerMultiRequestPriorityQueue:
     def __init__(self):
         self.invoker_multi_request_queue = PriorityQueue()
-        print("Pool Created")
         self.invoker_pool = InvokerPool()
 
     def run(self):
