@@ -22,6 +22,7 @@ class InvokerPool(metaclass=Singleton):
         self.free_invokers = set()
         for i in range(self.all_invokers_count):
             new_invoker = Invoker()
+            new_invoker.callback_free_myself = self.free
             self.all_invokers.append(new_invoker)
             self.free_invokers.add(new_invoker)
 
