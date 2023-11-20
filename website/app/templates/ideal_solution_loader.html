@@ -3,49 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Battle Details</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-        * { font-family: 'Raleway', sans-serif; }
-        input {
-            display: block;
-        }
-        input:active, :hover, :focus {
-            outline: 0;
-            outline-offset: 0;
-        }
-        input[type='submit'] {
-            font-weight: bolder;
-            padding: .7em 2.7em;
-            border-radius: 10px;
-            border: 1px solid black;
-            /*background: #2842ff;*/
-        }
-        form {
-            background: white;
-        }
-        table {
-            background: #292936;
-            padding: 10px;
-            border-radius: 10px;
-            font-family: 'Raleway',sans-serif;
-            color: white;
-            margin-bottom: 3em;
-        }
-        table td {
-            padding: 5px 15px;
-        }
-        table td:first-child {
-            color: #efd00c;
-            padding-right: 20px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 {% if report %}
     <p>report should be here</p>
 {% else %}
-    <table>
+    <table class="table1">
         <tr>
             <td>Name:</td>
             <td>{{game.name}}</td>

@@ -3,28 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>File Upload</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-        table {
-            background: #292936;
-            padding: 10px;
-            border-radius: 10px;
-            font-family: 'Raleway',sans-serif;
-            color: white;
-        }
-        table td {
-            padding: 5px 15px;
-        }
-        table td:first-child {
-            color: #efd00c;
-            padding-right: 20px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 {% if compiler_report %}
-    <table>
+    <table class="table1">
         <tr>
             <td>File name</td>
             <td>{{ compiler_report.compiled_file }}</td>
