@@ -67,7 +67,7 @@ class InvokerPool:
         return cls.instance
 
     def __init__(self):
-        logging.basicConfig(level=logging.INFO, filename="../../logs/InvokerPool.log", filemode='w',
+        logging.basicConfig(level=logging.INFO, filename="../../media/logs/InvokerPool.log", filemode='w',
                             format='%(asctime)s %(message)s', datefmt='%I:%M:%S')
         self.invoker_multi_request_priority_queue = InvokerMultiRequestPriorityQueue()
         self.free_invokers_count = self.ALL_INVOKERS_COUNT

@@ -23,10 +23,12 @@ def post_new(request):
             game = Game(name=request.POST['name'], number_of_players=request.POST['number_of_players'],
                         ideal_solution=ideal_solution_report.compiled_file, play=play_report.compiled_file)
             game.save()
-            return render(request, 'game-post.html', {'feedback': game, 'ideal_solution_report': ideal_solution_report,
+            return render(request, 'game-post.html', {'feedback': game,
+                                                      'ideal_solution_report': ideal_solution_report,
                                                       'play_report': play_report})
         else:
-            return render(request, 'game-post.html', {'ideal_solution_report': ideal_solution_report,
-                                                      'play_report': play_report})
+            return render(request, 'game-post.html', {
+                'ideal_solution_report': ideal_solution_report,
+                'play_report': play_report})
     else:
         return render(request, 'game-post.html', {'game': Game()})
