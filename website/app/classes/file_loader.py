@@ -2,6 +2,7 @@ import datetime
 import logging
 import random
 import os
+import time
 
 from django.http import HttpResponse
 from django.template import loader
@@ -9,6 +10,7 @@ from django.db import models
 
 from app.models import CompilerReport
 from app.compiler import Compiler
+
 
 class FileLoader:
     # LOGGING TEXTS
@@ -73,8 +75,8 @@ class FileLoader:
         self.compiler_report = compiler_report
 
     def get_compiler_report_id(self):
-        while self.compiler_report == None:
-            pass
+        while self.compiler_report is None:
+            time.sleep(1)
         return self.compiler_report.id
 
     def get_format(self, file_path: str):
