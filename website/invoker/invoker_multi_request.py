@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing
 import enum
 
+from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
 
@@ -15,7 +16,7 @@ class Priority(enum.IntEnum):
 
 class InvokerMultiRequest:
     def __init__(self, invoker_requests: list[InvokerRequest], priority: Priority = Priority.GREEN):
-        self.queue_notify = None
+        self.queue_notify_callback = None
         self.subscribers = []
         self.claimed_reports = []
         self.invoker_requests = invoker_requests
@@ -27,8 +28,6 @@ class InvokerMultiRequest:
         return self.priority > other.priority
 
     def start(self):
-        # Костыль. Если кто-то знает, как пофиксить подскажите плс <==Circular Import==>
-        from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
         invoker_pq = InvokerMultiRequestPriorityQueue()
         invoker_pq.add(self)
 
@@ -45,8 +44,8 @@ class InvokerMultiRequest:
         self.invoker_request_ended += 1
         self.claimed_reports.append(invoker_report)
         if self.invoker_request_ended == self.invoker_requests_count:
-            if self.queue_notify:
-                self.queue_notify()
+            if self.queue_notify_callback:
+                self.queue_notify_callback()
             for subscriber in self.subscribers:
                 subscriber.notify(self.claimed_reports)
 

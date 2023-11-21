@@ -9,7 +9,7 @@ from invoker.invoker import Invoker
 
 class TestInvokerMultiRequest(TestCase):
     @patch("invoker.invoker_multi_request.InvokerRequest")
-    @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue")
+    @patch("invoker.invoker_multi_request.InvokerMultiRequestPriorityQueue")
     def test_start(self, mock_queue: Mock, mock_request: Mock):
         invoker_multi_request = InvokerMultiRequest([mock_request])
         invoker_multi_request.start()
