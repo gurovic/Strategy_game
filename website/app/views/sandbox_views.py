@@ -13,11 +13,12 @@ def compile(file):
     return compiler_report
 
 
-def show(request,id):
+def show(request, id):
     if request.method == 'POST':
         strategy = compile(request.FILES['strategy'])
         game = Game.objects.get(pk=id)
-        sandbox = Sand
+        sandbox = Sandbox(game, strategy)
+        report = sandbox.get_report()
         return render(request, "sandbox_views.html", {"report": report})
     else:
-        return
+        return render(request, 'sandbox_views.html', {})
