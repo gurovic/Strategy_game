@@ -16,12 +16,6 @@ class Sandbox:
     def run_battle(self):
         self.battle.run()
 
-    def notify(self, report):
-        self.report = report
-
     def get_report(self):
-        while True:
-            if self.report is not None:
-                return self.report
-            else:
-                time.sleep(1)
+        self.report = self.battle.get_report()
+        return self.report
