@@ -16,6 +16,7 @@ def compile(file):
 
 def show(request, id):
     if request.method == 'POST':
-        pass
+        strategy = compile(request.FILES['strategy'])
+        game = Game.objects.get(pk=id)
     else:
         return render(request, "")
