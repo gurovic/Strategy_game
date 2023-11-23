@@ -1,6 +1,6 @@
 from ..models.game import Game
 from ..models import CompilerReport
-from ..classes import FileLoader, save_file
+from ..classes import FileLoader, save_file, Sandbox
 
 from django.shortcuts import render
 from django import forms
@@ -18,5 +18,7 @@ def show(request, id):
     if request.method == 'POST':
         strategy = compile(request.FILES['strategy'])
         game = Game.objects.get(pk=id)
+        sandbox = Sandbox(game, strategy)
+        report = sandbox.get_report()
     else:
         return render(request, "")
