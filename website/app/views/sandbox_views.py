@@ -14,5 +14,8 @@ def compile(file):
     return compiler_report
 
 
-def show():
-    pass
+def show(request, id):
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request, "")

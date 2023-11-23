@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sandbox views</title>
+</head>
+<body>
+
+{% if report %}
+
+{% else %}
+    <form method="POST" action="">
+    {% csrf_token %}
+    <input type="file" name="strategy">
+    <input type="submit">
+    </form>
+{% endif %}
+
+</body>
+</html>
