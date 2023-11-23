@@ -6,7 +6,9 @@
 </head>
 <body>
 
-{% if report %}
+{% if failed_report %}
+    <p>{{ failed_report }}</p>
+{% elif report %}
     <p>{{ report }}</p>
 {% else %}
     <form method="POST" action="">

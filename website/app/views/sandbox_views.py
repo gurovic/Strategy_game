@@ -17,9 +17,12 @@ def compile(file):
 def show(request, id):
     if request.method == 'POST':
         strategy = compile(request.FILES['strategy'])
-        game = Game.objects.get(pk=id)
-        sandbox = Sandbox(game, strategy)
-        report = sandbox.get_report()
-        return render(request, 'sandbox_views.html', {'report': report})
+        if strategy.status == 0:
+            game = Game.objects.get(pk=id)
+            sandbox = Sandbox(game, strategy)
+            report = sandbox.get_report()
+            return render(request, 'sandbox_views.html', {'report': report})
+        else:
+            return render(request, 'sandbox_views.html', {'failed_report': strategy})
     else:
         return render(request, "sandbox_views.html", {})
