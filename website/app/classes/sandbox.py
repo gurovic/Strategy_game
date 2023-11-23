@@ -1,3 +1,5 @@
+import time
+
 from .battle import Battle
 from app.models import PlayersInBattle
 
@@ -16,3 +18,10 @@ class Sandbox:
 
     def notify(self, report):
         self.report = report
+
+    def get_report(self):
+        while True:
+            if self.report is not None:
+                return self.report
+            else:
+                time.sleep(1)
