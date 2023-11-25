@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Sandbox views</title>
+    <link rel="stylesheet" href="../../media/style/views_style.css">
 </head>
 <body>
 
 {% if failed_report %}
-    <form class="form1">
+    <form>
+    <table class="form-with-td">
         <tr>
             <td><p>compiled file</p></td>
             <td><p>{{ failed_report.compiled_file }}</p></td>
@@ -32,13 +34,16 @@
             <td><p>invoker_report</p></td>
             <td><p>{{ failed_report.invoker_report }}</p></td>
         </tr>
+    </table>
     </form>
 {% elif report %}
-    <form class="form1">
+    <form class="form-with-td">
+    <table class="form-with-td">
         <tr>
             <td><p>command</p></td>
             <td><p>{{ failed_report.command }}</p></td>
         </tr>
+    </table>
     </form>
 {% else %}
     <form method="POST" action="">
