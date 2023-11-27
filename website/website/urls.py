@@ -18,11 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from app.views.view_upload_game import file_upload
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('upload_game/', file_upload)
 ]
 
 #if settings.DEBUG:
