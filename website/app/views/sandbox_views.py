@@ -1,3 +1,5 @@
+import time
+
 from ..models.game import Game
 from ..models import CompilerReport
 from ..classes import FileLoader, save_file, Sandbox
@@ -9,8 +11,22 @@ from django import forms
 def compile(file):
     path = save_file(file)
     file_loader = FileLoader(path)
-    compiler_report_id = file_loader.get_compiler_report_id()
-    compiler_report = CompilerReport.objects.get(pk=compiler_report_id)
+
+    compiler_report_id = None
+    while compiler_report_id is None:
+        try:
+            compiler_report_id = file_loader.get_compiler_report_id()
+        except:
+            compiler_report_id = None
+            time.sleep(1)
+
+    compiler_report = None
+    while compiler_report is None:
+        try:
+            compiler_report = CompilerReport.objects.get(pk=compiler_report_id)
+        except:
+            compiler_report = None
+            time.sleep(1)
     return compiler_report
 
 
