@@ -14,7 +14,7 @@ class Tournament(models.Model):
     running_results_status = models.CharField(max_length=1, choices=[("N", "Not started"), ("I", "In processing"), ("F", "Finished")], default="N")
 
 
-class PlayersInTournament(models.Model):
+class PlayerInTournament(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     strategy = models.FilePathField(null=True)
