@@ -14,8 +14,11 @@ class TournamentSystemRoundRobin(TournamentSystem):
     def calculate_places(self):
         pass
 
+    def finish(self):
+        pass
+
     def write_battle_result(self, battle):
         pass
 
-    def finish(self):
+    def notify(self):
         pass
