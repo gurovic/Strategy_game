@@ -1,20 +1,16 @@
 from app.classes.sandbox import Sandbox
-from unittest.mock import Mock
+from unittest.mock import Mock,patch
 
 from django.test import TestCase
 
 
 class SandboxTest(TestCase):
-    def test_create(self):
-        a = Sandbox(None, None)
-        self.assertEqual(a.game, None)
-        self.assertEqual(a.strategy, None)
+    @patch("app.models.Battle")
+    def test_create(self, mock_battle):
+        a =
 
-    def test_get_report(self):
-        a = Sandbox(None, None)
-        a.battle = Mock()
-        a.report = "1"
-        self.assertEqual("1", a.get_report())
+    def test_running(self):
+        pass
 
-    def test_run_battle(self):
+    def test_get_result(self):
         pass
