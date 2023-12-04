@@ -1,2 +1,0 @@
-class PlayerInTournament:
-    pass
