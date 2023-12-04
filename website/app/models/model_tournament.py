@@ -7,8 +7,8 @@ from .model_battle import Battle, PlayersInBattles
 class Tournament(models.Model):
     name = models.CharField(max_length=255, default='tournament')
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
-    players = models.ManyToManyField(User, through='PlayersInTournament')
-    system = models.CharField()
+    players = models.ManyToManyField(User, through='PlayersInTournament', null=True)
+    system = models.CharField(null=True)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
     running_results_status = models.CharField(max_length=1, choices=[("N", "Not started"), ("I", "In processing"), ("F", "Finished")], default="N")
