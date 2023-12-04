@@ -9,12 +9,27 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from threading import Thread
 import subprocess
 import tempfile
 import logging
 import typing
+import shlex
 import enum
 import io
+
+
+class StdIn(typing.Protocol):
+    def write(self, data: str):
+        ...
+
+
+class StdOut(typing.Protocol):
+    def read(self) -> str:
+        ...
+
+    def readline(self) -> str:
+        ...
 
 
 class InvokerStatus(enum.Enum):
@@ -34,55 +49,75 @@ class RunResult:
     timelimit: typing.Optional[int] = None
     exceeded_timelimit: bool = False
 
+    label: typing.Optional[str] = None
+
     input_files: typing.Optional[list[File]] = None
     preserved_files: typing.Optional[list[File]] = None
 
 
-class InvokerEnvironment(ABC):
+class InvokerProcess(ABC):
+    stdin: StdIn
+    stdout: StdOut
+
+    def __init__(self, *args, label: typing.Optional[str] = None,
+                 preserve_files: typing.Optional[list[str]] = None,
+                 timelimit: typing.Optional[int] = None,
+                 callback: typing.Optional[typing.Callable[[RunResult], None]] = None,
+                 **kwargs):
+        self.label = label
+        self.preserve_files = preserve_files
+        self.timelimit = timelimit
+        self.callback = callback
+        self._run_result = None
+        super().__init__(*args, **kwargs)
+
+        if self.callback:
+            self.register_callback()
+
+    def register_callback(self):
+        Thread(target=self._wait_for_end).start()
+
     @abstractmethod
-    def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
+    def wait(self, timeout: typing.Optional[int] = None):
         ...
 
+    @abstractmethod
+    def kill(self):
+        ...
 
-class NormalEnvironment(InvokerEnvironment):
-    @staticmethod
-    def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
-        tmpdir = tempfile.mkdtemp()
-        if file_system:
-            for file in file_system:
-                file.make(tmpdir)
-        return tmpdir
+    def connect(self, input: str) -> str:
+        self.stdin.write(input)
+        return self.stdout.readline()
 
-    def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
-        work_dir = self.initialize_workdir(file_system)
-
-        time_start = timezone.now()
-
-        logging.debug(
-            f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
-
+    def _wait_for_end(self):
         try:
-            result = subprocess.run(command.split() if isinstance(command, str) else command, text=True,
-                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timelimit, shell=True)
-            return_code = result.returncode
-            timeout_error = False
-            logging.debug(f"Command \"{command}\" launch was ended with exit code {return_code}!")
+            self.wait(self.timelimit)
         except subprocess.TimeoutExpired as exc:
-            logging.debug(f"Command \"{command}\" launch time was exceeded timelimit!")
-            result = exc
-            return_code = None
-            timeout_error = True
+            self.kill()
+        self.send_callback()
 
-        time_end = timezone.now()
+    def send_callback(self):
+        self.callback(self.run_result)
 
-        input_dir = [file for file in file_system] if file_system else None
+    @abstractmethod
+    def make_run_result(self) -> RunResult:
+        ...
 
-        preserve_dir = [File.load(Path(work_dir) / file) for file in preserve_files] if preserve_files else None
+    @property
+    def run_result(self) -> RunResult:
+        if not self._run_result:
+            self._run_result = self.make_run_result()
+        return self._run_result
 
-        delete_directory(work_dir)
 
+class NormalProcess(subprocess.Popen, InvokerProcess):
+    def __init__(self, *args, work_dir: typing.Optional[str] = None, **kwargs):
+        self.work_dir = work_dir
+        super().__init__(*args, cwd=work_dir, text=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True,
+                         **kwargs)
+
+    def make_run_result(self) -> RunResult:
+        preserve_dir = [File.load(Path(self.work_dir) / file) for file in self.preserve_files] if self.preserve_files else None
         return RunResult(
             command,
             result.stdout,
@@ -90,15 +125,58 @@ class NormalEnvironment(InvokerEnvironment):
             time_start,
             time_end,
             timelimit,
-            timeout_error,
-            input_dir,
+            timelimit_error,
+            label,
+            file_system,
             preserve_dir
         )
 
 
+class InvokerEnvironment(ABC):
+    process: typing.Type[InvokerProcess]
+
+    def __init__(self, callback: typing.Callable[[RunResult], None]):
+        self.callback = callback
+
+    @abstractmethod
+    def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
+               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
+               label: typing.Optional[str] = None) -> RunResult:
+        ...
+
+
+class NormalEnvironment(InvokerEnvironment):
+    process = NormalProcess
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.work_dir = self.initialize_workdir()
+
+    @staticmethod
+    def initialize_workdir() -> str:
+        return tempfile.mkdtemp()
+
+    def place_file_system(self, file_system: typing.Optional[list[File]] = None):
+        if file_system:
+            for file in file_system:
+                file.make(self.work_dir)
+
+    def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
+               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
+               label: typing.Optional[str] = None) -> NormalProcess:
+        self.place_file_system(file_system)
+
+        return self.process(shlex.shlex(command) if isinstance(command, str) else command)
+
+    def notify(self, run_result: RunResult):
+        delete_directory(self.work_dir)
+        self.callback(run_result)
+
+
 class DockerEnvironment(InvokerEnvironment):
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
+               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
+               label: typing.Optional[str] = None) -> RunResult:
         pass
 
 
@@ -114,18 +192,22 @@ class NoInvokerPoolCallbackData(Exception):
 class Invoker:
     def __init__(self):
         self.status: InvokerStatus = InvokerStatus.FREE
-        self.environment = DockerEnvironment() if settings.USE_DOCKER else NormalEnvironment()
+        self.environment = DockerEnvironment if settings.USE_DOCKER else NormalEnvironment
         self.callback_free_myself = None
+        self._callback = None
 
     def run(self, command: str, files: typing.Optional[list[str | File]] = None,
             preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
-            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
+            label: typing.Optional[str] = None,
+            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None) -> InvokerProcess:
         file_system = [file if isinstance(file, File) else File.load(file) for file in files] if files else None
 
-        result = self.environment.launch(command, file_system, preserve_files=preserve_files, timelimit=timelimit)
+        self._callback = callback
+        return self.environment(self.notify).launch(command, file_system, preserve_files=preserve_files, timelimit=timelimit, label=label)
 
+    def notify(self, result: RunResult):
         report = self.make_report(result)
-        self.send_report(report, callback)
+        self.send_report(report)
 
         self.free()
 
@@ -156,10 +238,9 @@ class Invoker:
 
         return report
 
-    def send_report(self, report: InvokerReport,
-                    callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
-        if callback:
-            callback(report)
+    def send_report(self, report: InvokerReport):
+        if self._callback:
+            self._callback(report)
 
 
 __all__ = ["Invoker", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",

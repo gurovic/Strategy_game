@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import typing
 import enum
 
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
