@@ -1,8 +1,8 @@
-10:26:21 FileLoader with id 738111272364083644 was created at 20231120
-10:26:21 FileLoader with id 738111272364083644 started compilation of it's file (path: file_2023-11-20 10:26:21.896620_499853410564.cpp)
-10:26:21 Something asked for free Invokers count
-10:26:21 Something asked for free Invokers count
-10:26:21 Internal Server Error: /app/post-game/new/
+12:14:29 FileLoader with id 991249863614998296 was created at 20231204
+12:14:29 FileLoader with id 991249863614998296 started compilation of it's file (path: file_2023-12-04 12:14:29.195389_821506782131.cpp)
+12:14:29 Something asked for free Invokers count
+12:14:29 Something asked for free Invokers count
+12:14:29 Internal Server Error: /app/post-game/new/
 Traceback (most recent call last):
   File "/home/boriskiva/PycharmProjects/Strategy_game/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
     response = get_response(request)
@@ -12,17 +12,17 @@ Traceback (most recent call last):
     ideal_solution_report = compile(request.FILES['ideal_solution'])
   File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/views/game_views.py", line 12, in compile
     file_loader = FileLoader(path)
-  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/classes/file_loader.py", line 36, in __init__
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/classes/file_loader.py", line 38, in __init__
     self.compile()
-  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/classes/file_loader.py", line 68, in compile
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/classes/file_loader.py", line 70, in compile
     self.compiler.compile()
   File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/compiler.py", line 94, in compile
     self.command.compile()
   File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/compiler.py", line 41, in compile
     queue.add(request)
-  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request_priority_queue.py", line 31, in add
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request_priority_queue.py", line 30, in add
     self.run()
-  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request_priority_queue.py", line 25, in run
+  File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request_priority_queue.py", line 24, in run
     invoker_multi_request.run(free_invokers)
   File "/home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/invoker/invoker_multi_request.py", line 42, in run
     invoker_request.run(current_invoker)
@@ -42,5 +42,13 @@ Traceback (most recent call last):
     return io.open(self, mode, buffering, encoding, errors, newline,
   File "/usr/lib/python3.8/pathlib.py", line 1078, in _opener
     return self._accessor.open(self, flags, mode)
-FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp0_dql7c5/compiled'
-11:14:34 /home/boriskiva/PycharmProjects/Strategy_game/strategy_game/website/app/views/ideal_solution_test_views.py changed, reloading.
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpxducd033/compiled'
+12:15:21 Not Found: /app/static/css/style.css
+12:15:23 Not Found: /app/static/css/style.css
+12:15:33 Not Found: /app/static/css/style.css
+12:15:34 Not Found: /app/static/css/style.css
+12:15:34 Not Found: /app/static/css/style.css
+12:15:34 Not Found: /app/static/css/style.css
+12:15:51 Not Found: /app/static/css/style.css
+12:15:51 Not Found: /favicon.ico
+12:15:53 Not Found: /app/static/css/style.css
