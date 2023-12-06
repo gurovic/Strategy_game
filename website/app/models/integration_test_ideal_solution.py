@@ -5,12 +5,12 @@ from unittest.mock import patch
 class IntegrationTest(TestCase):
     @patch("File")
     @patch("FileLoader")
-    def test_upload(self, File):
+    def test_upload(self, file, fileloader):
+        report = fileloader(file)
+        TestCase.assertEqual(report.compiler_report.status, "OK")
 
-        pass
-
-    def test_creating_battle(self):
-        pass
+    @patch("Battle")
+    def test_creating_battle(self, battle, ):
 
     def test_run(self):
         pass
