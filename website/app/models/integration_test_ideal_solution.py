@@ -7,10 +7,11 @@ class IntegrationTest(TestCase):
     @patch("FileLoader")
     def test_upload(self, file, fileloader):
         report = fileloader(file)
-        TestCase.assertEqual(report.compiler_report.status, "OK")
+        TestCase.assertEqual(report.compiler_report.status, "OK", "Failed")
 
     @patch("Battle")
-    def test_creating_battle(self, battle, ):
+    def test_creating_battle(self, battle):
+        pass
 
     def test_run(self):
         pass
