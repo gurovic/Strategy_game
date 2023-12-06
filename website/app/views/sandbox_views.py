@@ -9,8 +9,13 @@ from django import forms
 
 
 def compile(file):
+    file_loader_report = None
     path = save_file(file)
-    file_loader = FileLoader(path)
+
+    def notify(report):
+        file_loader_report = report
+
+    file_loader = FileLoader(path, notify)
 
     compiler_report_id = None
     while compiler_report_id is None:
