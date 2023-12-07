@@ -1,11 +1,9 @@
 use std::string::String;
 use std::io::{self, Stdin, Stdout, Write};
 
-use serde_json::json;
 use serde::{Deserialize, Serialize};
 
 use indexmap::IndexMap;
-
 
 type Player = i32;
 
@@ -21,9 +19,17 @@ impl Read for Stdin {
 }
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
+struct PlayData {
+    state: &'static str,
+    player: Option<Player>,
+    data: Option<&'static str>,
+    points: Option<Vec<i32>>
+}
+
+#[derive(PartialEq, Debug, Serialize, Deserialize)]
 pub struct PlayerMove {
-    player: Player,
-    data: String
+    pub player: Player,
+    pub data: String
 }
 
 #[derive(PartialEq, Debug)]
@@ -51,8 +57,14 @@ impl<R: Read, T: Write> Battle<R, T> {
         }
     }
 
-    pub fn send_to(&mut self, player: Player, data: &str) {
-        let output = json!({"type": "state", "player": player, "data": data}).to_string();
+    pub fn send_to(&mut self, player: Player, data: &'static str) {
+        let play_data = PlayData {
+            state: "play",
+            player: Some(player),
+            data: Some(data),
+            points: None,
+        };
+        let output = serde_json::to_string(&play_data).unwrap();
         writeln!(self.stdout, "{}", output).unwrap();
     }
 
@@ -80,10 +92,20 @@ impl<R: Read, T: Write> Battle<R, T> {
         self.points.insert(player, points + count);
     }
 
-    pub fn end(&mut self) {
+    pub fn end_due(&mut self, data: Option<&'static str>) {
         self.points.sort_keys();
-        let output = json!({"type": "end", "points": self.points.values().cloned().collect::<Vec<i32>>()}).to_string();
+        let play_data = PlayData {
+            state: "end",
+            points: Some(self.points.values().cloned().collect::<Vec<i32>>()),
+            player: None,
+            data
+        };
+        let output = serde_json::to_string(&play_data).unwrap();
         write!(self.stdout, "{}", output).unwrap();
+    }
+
+    pub fn end(&mut self) {
+        self.end_due(None);
     }
 }
 

@@ -48,7 +48,7 @@ fn battle_send_to() {
     let mut battle = Battle {num_players: 3, points: IndexMap::from([(1, 2), (2, 4), (3, 6)]), stdin: io::stdin(), stdout: &mut buffer};
     battle.send_to(2, "test");
 
-    buffer.assert("{\"data\":\"test\",\"player\":2,\"type\":\"state\"}");
+    buffer.assert("{\"state\":\"play\",\"player\":2,\"data\":\"test\",\"points\":null}");
 }
 
 #[test]
@@ -94,11 +94,21 @@ fn battle_add_points_remove() {
 }
 
 #[test]
+fn battle_end_due() {
+    let mut buffer = TestWrite::new();
+
+    let mut battle = Battle {num_players: 3, points: IndexMap::from([(1, 2), (2, 4), (3, 6)]), stdin: io::stdin(), stdout: &mut buffer};
+    battle.end_due(Some("test"));
+
+    buffer.assert("{\"state\":\"end\",\"player\":null,\"data\":\"test\",\"points\":[2,4,6]}");
+}
+
+#[test]
 fn battle_end() {
     let mut buffer = TestWrite::new();
 
     let mut battle = Battle {num_players: 3, points: IndexMap::from([(1, 2), (2, 4), (3, 6)]), stdin: io::stdin(), stdout: &mut buffer};
     battle.end();
 
-    buffer.assert("{\"points\":[2,4,6],\"type\":\"end\"}");
+    buffer.assert("{\"state\":\"end\",\"player\":null,\"data\":null,\"points\":[2,4,6]}");
 }
