@@ -82,7 +82,7 @@ impl<R: Read, T: Write> Battle<R, T> {
 
     pub fn end(&mut self) {
         self.points.sort_keys();
-        let output = json!({"type": "end", "points": self.points.values().cloned().collect::<Vec<Player>>()}).to_string();
+        let output = json!({"type": "end", "points": self.points.values().cloned().collect::<Vec<i32>>()}).to_string();
         write!(self.stdout, "{}", output).unwrap();
     }
 }
