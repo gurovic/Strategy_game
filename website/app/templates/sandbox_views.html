@@ -46,10 +46,10 @@
     </table>
     </form>
 {% else %}
-    <form method="POST" action="">
-    {% csrf_token %}
-    <input type="file" name="strategy">
-    <input type="submit">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="strategy">
+        <input type="submit">
     </form>
 {% endif %}
 

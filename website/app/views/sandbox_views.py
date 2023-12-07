@@ -1,4 +1,5 @@
 import time
+from typing import Any
 
 from ..models.game import Game
 from ..models import CompilerReport
@@ -8,36 +9,28 @@ from django.shortcuts import render
 from django import forms
 
 
-def compile(file):
-    file_loader_report = None
+def get_compiler_report(file):
+    class ToNotify:
+        def __init__(self):
+            self.report = None
+            self.compiler_report = None
+
+        def notify(self, report):
+            self.report = report
+            self.compiler_report = CompilerReport.objects.get(pk=self.report)
+
     path = save_file(file)
+    file_loader_report_receiver = ToNotify()
+    file_loader = FileLoader(path, file_loader_report_receiver.notify)
 
-    def notify(report):
-        file_loader_report = report
-
-    file_loader = FileLoader(path, notify)
-
-    compiler_report_id = None
-    while compiler_report_id is None:
-        try:
-            compiler_report_id = file_loader.get_compiler_report_id()
-        except:
-            compiler_report_id = None
-            time.sleep(1)
-
-    compiler_report = None
-    while compiler_report is None:
-        try:
-            compiler_report = CompilerReport.objects.get(pk=compiler_report_id)
-        except:
-            compiler_report = None
-            time.sleep(1)
-    return compiler_report
+    while file_loader_report_receiver.compiler_report is None:
+        time.sleep(1)
+    return file_loader_report_receiver.compiler_report
 
 
 def show(request, id):
     if request.method == 'POST':
-        strategy = compile(request.FILES['strategy'])
+        strategy = get_compiler_report(request.FILES['strategy'])
         if strategy.status == 0:
             game = Game.objects.get(pk=id)
             sandbox = Sandbox(game, strategy)
