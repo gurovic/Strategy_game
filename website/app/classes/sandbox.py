@@ -18,4 +18,4 @@ class Sandbox:
 
     def notify(self, report):
         self.report = report
-        self.creator(self.report)
+        self.creator(report)
