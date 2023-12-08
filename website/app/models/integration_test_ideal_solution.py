@@ -1,21 +1,18 @@
 from django.test import TestCase
-from unittest.mock import patch
 
 
 class IntegrationTest(TestCase):
-    @patch("File")
-    @patch("FileLoader")
-    def test_upload(self, file, fileloader):
-        report = fileloader(file)
+    def test_upload(self, file):
+        report = FileLoader(file)
         TestCase.assertEqual(report.compiler_report.status, "OK", "Failed")
 
-    @patch("Battle")
-    def test_creating_battle(self, battle):
-        pass
+    def test_creating_battle(self, game, players, creator):
+        battle = Battle(game, players, creator)
 
-    def test_run(self):
-        pass
-
+    def test_run(self, game, players, creator):
+        battle = Battle(game, players, creator)
+        battle.run()
+        TestCase.assertEqual(battle.report, "OK", "Failed")
     def test_create_response(self):
         pass
 
