@@ -35,8 +35,8 @@ def show(request, id):
             game = Game.objects.get(pk=id)
             sandbox = Sandbox(game, strategy)
             report = sandbox.get_report()
-            return render(request, 'sandbox_views.html', {'report': report})
+            return render(request, 'sandbox.html', {'report': report})
         else:
-            return render(request, 'sandbox_views.html', {'failed_report': strategy})
+            return render(request, 'sandbox.html', {'failed_report': strategy})
     else:
-        return render(request, "sandbox_views.html", {})
+        return render(request, "sandbox.html", {})
