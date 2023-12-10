@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from Strategy_game.sandbox.models.sandbox import Sandbox
+from Strategy_game.sandbox.forms import SandboxForm
 
 
-def sandbox_button(request):
-    return render(request, 'sandbox/sandbox_button.html', {})
+def run_sandboxForm(request):
+    form=SandboxForm()#создали экземпляр
+    return render(request, 'sandbox/sandboxform.html', {'form': form})
 
-def show(request, id):
+def run_sandbox(request, id):
     if request.method == 'POST':
         strategy = get_compiler_report(request.FILES['strategy'])
         if strategy.status == 0:
