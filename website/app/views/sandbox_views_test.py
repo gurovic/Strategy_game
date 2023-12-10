@@ -13,12 +13,6 @@ class TestSandboxViews(TestCase):
             status=0,
         )
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
     def test_views_url_exists(self):
         response = self.client.get('/app/sandbox/0')
         self.assertEqual(response.status_code, 200)
