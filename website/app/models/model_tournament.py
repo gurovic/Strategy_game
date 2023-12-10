@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .model_game import Game
 from .model_tournament_system import TournamentSystem
 from .model_battle import Battle, PlayersInBattles
-
+from datetime import datetime
 
 class Tournament(models.Model):
     class Status(models.IntegerChoices):
@@ -19,6 +19,15 @@ class Tournament(models.Model):
     end_time = models.DateTimeField(null=True)
     running_results_status = models.IntegerField(choices=Status.choices, default=Status.NOT_STARTED)
 
+    def start(self):
+        self.start_time = datetime.now()
+        self.system.calculate_places(self.system.run_tournament(self), self.players)
+        self.running_results_status = True
+
+    def end(self):
+        self.end_time = datetime.now()
+        self.running_results_status = False
+        
 
 class PlayerInTournament(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)
