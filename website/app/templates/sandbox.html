@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sandbox views</title>
-    <link rel="stylesheet" href="../../media/style/views_style.css">
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}
+    Sandbox
+{% endblock title %}
 
+{% block header %}
+    Sandbox
+{% endblock header %}
+
+{% block content %}
 {% if failed_report %}
     <form>
     <table class="form-with-td">
@@ -41,7 +42,7 @@
     <table class="form-with-td">
         <tr>
             <td><p>command</p></td>
-            <td><p>{{ report.command }}</p></td>
+            <td><p>{{ failed_report.command }}</p></td>
         </tr>
     </table>
     </form>
@@ -52,6 +53,4 @@
         <input type="submit">
     </form>
 {% endif %}
-
-</body>
-</html>
+{% endblock content %}
