@@ -1,36 +1,36 @@
 import time
-from typing import Any
 
 from ..models.game import Game
 from ..models import CompilerReport
 from ..classes import FileLoader, save_file, Sandbox
 
 from django.shortcuts import render
-from django import forms
 
 
-def get_compiler_report(file):
-    class ToNotify:
-        def __init__(self):
-            self.report = None
-            self.compiler_report = None
+class CompileFile:
+    def __init__(self, file):
+        self.report = None
+        self.compiler_report = None
+        self.file = file
 
-        def notify(self, report):
-            self.report = report
-            self.compiler_report = CompilerReport.objects.get(pk=self.report)
+    def run(self):
+        path = save_file(self.file)
+        file_loader = FileLoader(path, self.notify)
 
-    path = save_file(file)
-    file_loader_report_receiver = ToNotify()
-    file_loader = FileLoader(path, file_loader_report_receiver.notify)
-
-    while file_loader_report_receiver.compiler_report is None:
-        time.sleep(1)
-    return file_loader_report_receiver.compiler_report
+    def notify(self, report):
+        self.report = report
+        self.compiler_report = CompilerReport.objects.get(pk=self.report)
 
 
 def show(request, id):
     if request.method == 'POST':
-        strategy = get_compiler_report(request.FILES['strategy'])
+        file_compiler = CompileFile(request.FILES['strategy'])
+        file_compiler.run()
+        strategy = None
+        while strategy is None:
+            time.sleep(0.1)
+            strategy = file_compiler.compiler_report
+
         if strategy.status == 0:
             game = Game.objects.get(pk=id)
             sandbox = Sandbox(game, strategy)
