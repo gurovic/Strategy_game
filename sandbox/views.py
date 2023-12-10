@@ -3,11 +3,11 @@ from Strategy_game.sandbox.models.sandbox import Sandbox
 from Strategy_game.sandbox.forms import SandboxForm
 
 
-def run_sandboxForm(request):
+def run_SandboxForm(request):
     form=SandboxForm()#создали экземпляр
     return render(request, 'sandbox/sandboxform.html', {'form': form})
 
-def run_sandbox(request, id):
+def run_Sandbox(request, id):
     if request.method == 'POST':
         strategy = get_compiler_report(request.FILES['strategy'])
         if strategy.status == 0:

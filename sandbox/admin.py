@@ -1,5 +1,5 @@
 from django.contrib import admin
-from run_sandbox import Button
+from Strategy_game.sandbox.forms import SandboxForm
 
-admin.site.register(Button)
+admin.site.register(SandboxForm)
 # Register your models here.
