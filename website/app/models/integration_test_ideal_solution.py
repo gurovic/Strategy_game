@@ -8,23 +8,28 @@ from .players_in_battle import PlayersInBattle
 
 class IntegrationTest(TestCase):
     def test_upload(self):
-        file = File()
+        File.objects.create(file=FileDjango(open(__file__, "r"), name="test"), name="test")
+        file = File.objects.get(name="test")
         report = FileLoader(file)
-        TestCase.assertEqual(report.compiler_report.status, "OK", "Failed upload")
+        self.assertEqual(report.compiler_report.status, "OK")
 
     def test_creating_battle(self):
-        game = Game()
-        players = PlayersInBattle()
+        game = Game(id=1)
+        players = []
+        ideal_solution_path = "/path/"
+        for i in range(game.number_of_players):
+            new_player = PlayersInBattle(ideal_solution_path)
+            players.append(new_player)
         battle = Battle(game, players)
-        TestCase.assertEqual(battle.game, game, "Failed creating: different game types")
-        TestCase.assertEqual(battle.players, players, "Failed: different players' lists")
+        self.assertEqual(battle.game, game)
+        self.assertEqual(battle.players, players)
 
     def test_run(self):
         game = Game()
         players = PlayersInBattle()
         battle = Battle(game, players)
         battle.run()
-        TestCase.assertEqual(battle.report, "OK", "Failed running")
+        self.assertEqual(battle.report, "OK")
 
     def test_create_response(self):
         pass
