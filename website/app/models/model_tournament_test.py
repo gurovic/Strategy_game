@@ -1,8 +1,15 @@
 import unittest
 from unittest.mock import Mock, patch
+from model_tournament import Tournament, PlayerInTournament
 from datetime import datetime
+from django.utils import timezone
 
-class TournamentTest(unittest.TestCase):
+
+class TestTournament(unittest.TestCase):
+    def setUp(self):
+        Tournament.objects.create(running_results_status=Tournament.Status.NOT_STARTED, name="Some tournament", start_time=timezone.now(), end_time=timezone.now())
+        Tournament.objects.create(running_results_status=Tournament.Status.IN_PROCESSING, name="Some tournament", start_time=timezone.now(), end_time=timezone.now())
+        Tournament.objects.create(running_results_status=Tournament.Status.FINISHED, name="Some tournament", start_time=timezone.now(), end_time=timezone.now())
 
     @patch('model_tournament.datetime')
     def test_start(self, mock_datetime):
