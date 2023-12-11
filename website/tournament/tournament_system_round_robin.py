@@ -1,4 +1,4 @@
-from tournament_system import TournamentSystem
+from tournamentsystem import TournamentSystem
 from app.models.battle import Battle
 
 class TournamentSystemRoundRobin(TournamentSystem):
