@@ -1,3 +1,5 @@
+import time
+
 from ..models.game import Game
 from ..models import CompilerReport
 from ..classes import FileLoader, save_file, Sandbox
@@ -5,20 +7,36 @@ from ..classes import FileLoader, save_file, Sandbox
 from django.shortcuts import render
 
 
-def compile(file):
-    path = save_file(file)
-    file_loader = FileLoader(path)
-    compiler_report_id = file_loader.get_compiler_report_id()
-    compiler_report = CompilerReport.objects.get(pk=compiler_report_id)
-    return compiler_report
+class CompileFile:
+    def __init__(self, file):
+        self.report = None
+        self.compiler_report = None
+        self.file = file
+
+    def run(self):
+        path = save_file(self.file)
+        file_loader = FileLoader(path, self.notify)
+
+    def notify(self, report):
+        self.report = report
+        self.compiler_report = CompilerReport.objects.get(pk=self.report)
 
 
 def show(request, id):
     if request.method == 'POST':
-        strategy = compile(request.FILES['strategy'])
-        game = Game.objects.get(pk=id)
-        sandbox = Sandbox(game, strategy)
-        report = sandbox.get_report()
-        return render(request, "sandbox_views.html", {"report": report})
+        file_compiler = CompileFile(request.FILES['strategy'])
+        file_compiler.run()
+        strategy = None
+        while strategy is None:
+            time.sleep(0.1)
+            strategy = file_compiler.compiler_report
+
+        if strategy.status == 0:
+            game = Game.objects.get(pk=id)
+            sandbox = Sandbox(game, strategy)
+            report = sandbox.get_report()
+            return render(request, 'sandbox.html', {'report': report})
+        else:
+            return render(request, 'sandbox.html', {'failed_report': strategy})
     else:
-        return render(request, 'sandbox_views.html', {})
+        return render(request, "sandbox.html", {})
