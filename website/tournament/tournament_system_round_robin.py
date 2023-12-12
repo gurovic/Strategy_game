@@ -4,6 +4,7 @@ from app.models.battle import Battle
 class TournamentSystemRoundRobin(TournamentSystem):
     def __init__(self, tournament):
         super().__init__(tournament)
+
         self.battle_count = len(self.tournament.players)*(len(self.tournament.players)-1)/2
 
     def run_tournament(self):
@@ -28,7 +29,7 @@ class TournamentSystemRoundRobin(TournamentSystem):
 
     def notify(self, battle):
         self.battle_count -= 1
-        self.battles.append(battle)
+        self.tournament.battles.append(battle)
         self.write_battle_result(battle)
         if self.battle_count == 0:
             places = self.calculate_places()
