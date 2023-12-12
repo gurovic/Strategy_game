@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .model_game import Game
-from .model_tournament_system import TournamentSystem
-from .model_battle import Battle, PlayersInBattles
+
+from app.models import Game, TournamentSystem
 from datetime import datetime
 
 class Tournament(models.Model):

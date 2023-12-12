@@ -1,5 +1,5 @@
 from app.models import CompilerReport
-from .models import Tournament
+from app.models.model_tournament import Tournament
 
 from django.contrib import admin
 
