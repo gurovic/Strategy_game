@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from app.models import Game
+from .game import Game
 
 
 class Battle(models.Model):

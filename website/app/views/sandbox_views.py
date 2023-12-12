@@ -1,6 +1,7 @@
 import time
 
-from app.models import Game, CompilerReport
+from app.models.game import Game
+from app.models.compiler_report import CompilerReport
 from app.classes import FileLoader, save_file, Sandbox
 
 from django.shortcuts import render

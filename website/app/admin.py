@@ -1,4 +1,4 @@
-from app.models import CompilerReport
+from app.models.compiler_report import CompilerReport
 from app.models.model_tournament import Tournament
 
 from django.contrib import admin

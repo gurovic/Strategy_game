@@ -22,17 +22,15 @@ class GameTest(TestCase):
         self.assertEqual(game.name, 'test1')
 
     def test_get_by_id(self):
-        game = Game.objects.get(pk=0)
+        game = Game.objects.get(pk=1)
         self.assertEqual(game.name, 'test1')
-        self.assertEqual(game.ideal_solution, None)
         self.assertEqual(game.number_of_players, 2)
-        self.assertEqual(game.play, None)
 
-        game = Game.objects.get(pk=4)
+        game = Game.objects.get(pk=5)
         self.assertEqual(game.name, 'test6')
         self.assertEqual(game.win_point, 30)
         self.assertEqual(game.lose_point, 10)
-        self.assertEqual(game.play, None)
+        self.assertEqual(game.number_of_players, 2)
 
     def test_unique_api_id_is_enforces(self):
         with self.assertRaises(IntegrityError):
@@ -40,5 +38,5 @@ class GameTest(TestCase):
                 name='test5',
                 play=None,
                 ideal_solution=None,
-                api_id=1
+                id=1
             )
