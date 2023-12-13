@@ -1,5 +1,4 @@
-from .battle import Battle
-from app.models.players_in_battle import PlayersInBattle
+from app.models.model_battle import Battle, PlayersInBattles
 
 
 class Sandbox:
@@ -7,9 +6,9 @@ class Sandbox:
         self.game = game
         self.strategy = strategy
         self.creator = creator
-        players = [PlayersInBattle(player=strategy, strategy_id=0)]
+        players = [PlayersInBattles(player=strategy, strategy_id=0)]
         for i in range(self.game.number_of_players - 1):
-            players.append(PlayersInBattle(player=self.game.ideal_solution, strategy_id=i+1))
+            players.append(PlayersInBattles(player=self.game.ideal_solution, strategy_id=i+1))
         self.battle = Battle(self.game, players)
         self.report = None
 
