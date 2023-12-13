@@ -1,14 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
+
 from .model_game import Game
 from .model_tournament_system import TournamentSystem
-from .model_battle import Battle, PlayersInBattles
-from datetime import datetime
+
 
 class Tournament(models.Model):
     class Status(models.IntegerChoices):
         NOT_STARTED = 0
-        IN_PROCESSING= 1
+        IN_PROCESSING = 1
         FINISHED = 2
 
     name = models.CharField(max_length=255, default='tournament')
@@ -28,11 +29,3 @@ class Tournament(models.Model):
         self.end_time = datetime.now()
         self.running_results_status = False
         
-
-class PlayerInTournament(models.Model):
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-    strategy = models.FilePathField(null=True)
-    place = models.PositiveIntegerField()
-    number_of_wins = models.PositiveIntegerField(default=0)
-    number_of_points = models.PositiveIntegerField(default=0)
