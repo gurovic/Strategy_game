@@ -28,4 +28,4 @@ class Tournament(models.Model):
     def end(self):
         self.end_time = datetime.now()
         self.running_results_status = False
-        
+
