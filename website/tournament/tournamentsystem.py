@@ -15,5 +15,5 @@ class TournamentSystem:
     def write_battles_results(self, battle):
         pass
 
-    def notify(self):
-        pass
+    def notify(self, winner):
+        self.write_battle_results(winner)

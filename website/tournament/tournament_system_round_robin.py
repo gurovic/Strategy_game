@@ -4,33 +4,32 @@ from app.models.battle import Battle
 class TournamentSystemRoundRobin(TournamentSystem):
     def __init__(self, tournament):
         super().__init__(tournament)
-
         self.battle_count = len(self.tournament.players)*(len(self.tournament.players)-1)/2
 
     def run_tournament(self):
-        for i in range(len(self.tournament.players)):
-            for j in range(i+1, len(self.tournament.players)):
-                battle = Battle(self.tournament.game, list([self.tournament.players[i], self.tournament.players[j]]), self)
+        participants = list(zip(self.tournament.players.keys(), self.tournament.players.values()))
+        for i in range(len(participants)):
+            for j in range(i+1, len(participants)):
+                battle = Battle(self.tournament.game, list([participants[i][1], participants[j][1]]), self)
+                self.tournament.battles.append(battle)
                 battle.run()
 
     def calculate_places(self):
-        places = self.tournament.players
-        places = sorted(places, key = lambda x: (x.number_of_wins, x.number_of_points))
-        return places
+        places = list(zip(self.tournament.players.keys(), self.tournament.players.values()))
+        places = sorted(places, key = lambda x: x[1].number_of_points)
+        number = 1
+        for place in places:
+            place[1].place = number
+            number += 1
 
     def finish(self):
         self.tournament.end()
 
-    def write_battle_result(self, battle):
-        if battle.players[0].iswinner:
-            battle.players[0].number_of_wins += 1
-        elif battle.players[1].iswinner:
-            battle.players[1].number_of_wins += 1
-
-    def notify(self, battle):
+    def write_battle_results(self, winner):
+        self.tournament.players[winner].number_of_points += 1
         self.battle_count -= 1
-        self.tournament.battles.append(battle)
-        self.write_battle_result(battle)
         if self.battle_count == 0:
-            places = self.calculate_places()
+            self.calculate_places()
             self.finish()
+
+
