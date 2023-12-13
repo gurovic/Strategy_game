@@ -1,9 +1,16 @@
+from typing import Any
+
 from django.test import TestCase
 from unittest.mock import Mock, patch
 from datetime import datetime
 from django.utils import timezone
 
 from .tournament import Tournament
+
+
+def validate_time(time):
+    now = timezone.now()
+    return now - timezone.timedelta(days=1) <= time <= now
 
 
 class TestTournament(TestCase):
@@ -13,14 +20,23 @@ class TestTournament(TestCase):
 
     def test_auto_time_add(self):
         test_tournament = Tournament.objects.create(name="test3", max_of_players=3)
-        self.assertEqual(test_tournament.start_time.was_published_recently(), True)
+        self.assertEqual(validate_time(test_tournament.start_time), True)
 
     def test_start_tournament(self):
-        pass
+        test_tournament = Tournament.objects.create(max_of_players=3, name="test4")
+        test_tournament.start()
+        self.assertEqual(test_tournament.status, Tournament.Status.WAITING_SOLUTIONS)
 
-    @patch('app.models.tournament.Tournament.system')
-    def test_end_tournament(self, mock_system):
-        pass
+    @patch('app.models.Tournament.system')
+    def test_end_tournament(self, mock_tournament_system):
+        mock_tournament_system.return_value = 6
+
+        test_tournament = Tournament.objects.create(max_of_players=3, name="test4")
+        test_tournament.system = mock_tournament_system
+        test_tournament.end()
+        self.assertEqual(test_tournament.status, Tournament.Status.IN_PROGRESS)
 
     def test_notify(self):
-        pass
+        test_tournament = Tournament.objects.create(max_of_players=3, name="test4")
+        test_tournament.notify()
+        self.assertEqual(test_tournament.status, Tournament.Status.FINISHED)
