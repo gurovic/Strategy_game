@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 
-from .model_game import Game
+from .game import Game
 from .model_tournament_system import TournamentSystem
 
 
