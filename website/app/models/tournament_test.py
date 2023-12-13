@@ -3,39 +3,24 @@ from unittest.mock import Mock, patch
 from datetime import datetime
 from django.utils import timezone
 
-from model_tournament import Tournament
+from .tournament import Tournament
 
 
 class TestTournament(TestCase):
     def setUp(self):
-        Tournament.objects.create(running_results_status=Tournament.Status.NOT_STARTED, name="Some tournament", start_time=timezone.now(), end_time=timezone.now())
-        Tournament.objects.create(running_results_status=Tournament.Status.IN_PROCESSING, name="Some tournament", start_time=timezone.now(), end_time=timezone.now())
-        Tournament.objects.create(running_results_status=Tournament.Status.FINISHED, name="Some tournament", start_time=timezone.now(), end_time=timezone.now())
+        Tournament.objects.create(name="test1", max_of_players=3)
+        Tournament.objects.create(name="test2", max_of_players=5)
 
-    @patch('model_tournament.datetime')
-    def test_start(self, mock_datetime):
-        mock_datetime.now.return_value = datetime(2023, 1, 1, 12, 0, 0)
-        system_mock = Mock()
-        players_mock = Mock()
-        start_time = datetime(2023, 1, 1, 12, 0)
-        system_mock.calculate_places(system_mock.run_tournament(), players_mock)
-        running_results_status = True
+    def test_auto_time_add(self):
+        test_tournament = Tournament.objects.create(name="test3", max_of_players=3)
+        self.assertEqual(test_tournament.start_time.was_published_recently(), True)
 
-        self.assertEqual(start_time, datetime(2023, 1, 1, 12, 0, 0))
-        system_mock.run_tournament.assert_called_once()
-        system_mock.calculate_places.assert_called_once_with(
-            system_mock.run_tournament.return_value, players_mock)
-        self.assertTrue(running_results_status)
+    def test_start_tournament(self):
+        pass
 
-    @patch('model_tournament.datetime')
-    def test_end(self, mock_datetime):
-        mock_datetime.now.return_value = datetime(2023, 1, 1, 13, 0, 0)
-        end_time = datetime(2023, 1, 1, 13, 0)
-        running_results_status = False
+    @patch('app.models.tournament.Tournament.system')
+    def test_end_tournament(self, mock_system):
+        pass
 
-        self.assertEqual(end_time, datetime(2023, 1, 1, 13, 0, 0))
-        self.assertFalse(running_results_status)
-
-
-if __name__ == '__main__':
-    unittest.main()
+    def test_notify(self):
+        pass
