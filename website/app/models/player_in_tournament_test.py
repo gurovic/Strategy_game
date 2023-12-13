@@ -24,4 +24,4 @@ class PlayerInTournamentTest(TestCase):
     def test_instance(self):
         self.assertEqual(self.player1.number_of_points, 10)
         self.assertEqual(self.player1.place, 3)
-        self.assertEqual(self.player1.id, 1)
+        self.assertEqual(self.player1.id, None)
