@@ -92,7 +92,7 @@ impl<R: Read, T: Write> Battle<R, T> {
         self.points.insert(player, points + count);
     }
 
-    pub fn end_due(&mut self, data: Option<&'static str>) {
+    fn end_battle(&mut self, data: Option<&'static str>) {
         self.points.sort_keys();
         let play_data = PlayData {
             state: "end",
@@ -104,8 +104,12 @@ impl<R: Read, T: Write> Battle<R, T> {
         write!(self.stdout, "{}", output).unwrap();
     }
 
+    pub fn end_due(&mut self, data: &'static str) {
+        self.end_battle(Some(data));
+    }
+
     pub fn end(&mut self) {
-        self.end_due(None);
+        self.end_battle(None);
     }
 }
 
