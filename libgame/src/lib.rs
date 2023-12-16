@@ -1,4 +1,4 @@
-mod battle;
+pub mod battle;
 
 use std::io::{Stdin, Stdout};
 use battle::Battle;
