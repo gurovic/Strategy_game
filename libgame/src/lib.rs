@@ -8,7 +8,7 @@ use clap::Parser;
 
 #[derive(Parser)]
 pub struct Cli {
-    players: i32
+    players: isize
 }
 
 fn get_battle_from_cli(args: Cli) -> Battle<Stdin, Stdout> {
