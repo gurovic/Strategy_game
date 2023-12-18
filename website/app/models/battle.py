@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .model_game import Game
-
 
 class Battle(models.Model):
+    subscriber = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     start_time = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattles')
@@ -11,15 +10,11 @@ class Battle(models.Model):
     total_time = models.TimeField()
     logs = models.FileField()
 
+    def __init__(self, game, players, subscriber):
+        self.game = game
+        self.players = players
+        self.subscriber = subscriber
+
     def start(self):
         # starts a battle, simultaneously records the progress of the battle in a log file
         pass
-
-
-class PlayersInBattles(models.Model):
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
-    battle = models.ForeignKey(Battle, on_delete=models.CASCADE)
-    strategy = models.FilePathField(null=True)
-    is_win = models.BooleanField(default=False)
-    points = models.IntegerField()  # 1, 1/2, 0 like win/draw/lose, or points at the end of battle
-    number = models.PositiveIntegerField()
