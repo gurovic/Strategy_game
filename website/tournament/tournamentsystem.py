@@ -12,8 +12,8 @@ class TournamentSystem:
     def finish(self):
         self.tournament.end()
 
-    def write_battles_results(self, battle):
+    def write_battle_result(self, results, numbers):
         pass
 
     def notify(self, results, numbers):
-        self.write_battle_results(results, numbers)
+        self.write_battle_result(results, numbers)
