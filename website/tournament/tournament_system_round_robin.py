@@ -25,9 +25,10 @@ class TournamentSystemRoundRobin(TournamentSystem):
     def finish(self):
         self.tournament.end()
 
-    def write_battle_results(self, results, numbers):
+    def write_battle_result(self, results, numbers):
         for result in results:
-            numbers[result[0]] += result[1]
+            self.tournament.players[numbers[result[0]].user].number_of_points += result[1]
+            self.tournament.players[numbers[result[0]].user].save()
         self.battle_count -= 1
         if self.battle_count == 0:
             self.calculate_places()
