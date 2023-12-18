@@ -12,7 +12,5 @@ class SandboxFormTest(TestCase):
             self.CHOICES.append(x.name)
         self.asserequal(allGames, SandboxForm)
 
-    def test_run_sandbox(self):
-        pass
 
 # Create your tests here.
