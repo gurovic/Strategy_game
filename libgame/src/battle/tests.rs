@@ -98,7 +98,7 @@ fn battle_end_due() {
     let mut buffer = TestWrite::new();
 
     let mut battle = Battle {num_players: 3, points: IndexMap::from([(1, 2), (2, 4), (3, 6)]), stdin: io::stdin(), stdout: &mut buffer};
-    battle.end_due(Some("test"));
+    battle.end_due("test");
 
     buffer.assert("{\"state\":\"end\",\"player\":null,\"data\":\"test\",\"points\":[2,4,6]}");
 }
