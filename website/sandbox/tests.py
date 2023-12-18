@@ -1,5 +1,5 @@
 from django.test import TestCase
-from sandbox.forms import SandboxForm
+from Strategy_game.sandbox.forms import SandboxForm
 from Strategy_game.sandbox.models.game import Game
 from unittest.mock import Mock
 

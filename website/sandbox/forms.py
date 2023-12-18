@@ -1,6 +1,6 @@
 from django import forms
 # from Strategy_game.sandbox.forms import SandboxForm
-from Strategy_game.sandbox.models.game import Game  # не знаю, где они хранятся
+from Strategy_game.sandbox.models.game import Game
 from Strategy_game.sandbox.models.sandbox import Sandbox
 
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from Strategy_game.sandbox.models.sandbox import Sandbox
+from Strategy_game.sandbox.models.game import Game
 from Strategy_game.sandbox.forms import SandboxForm
 
 
