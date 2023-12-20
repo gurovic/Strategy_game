@@ -4,7 +4,6 @@ from app.models import Battle
 
 
 class PlayersInBattle(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, verbose_name='Игрок')
     number = models.IntegerField(default=0, unique=True, verbose_name='Номер в батле')
     battle = models.ForeignKey(Battle, null=True, default=None, on_delete=models.CASCADE, verbose_name='Battle')
     number_of_points = models.IntegerField(default=0, verbose_name='number of point')
