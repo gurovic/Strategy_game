@@ -1,5 +1,4 @@
 {% load static %}
-<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +15,9 @@
         <form method="post">
             {% csrf_token %}
             <h2>Форма создания турнира</h2>
+            {{ form }}
+
+
             <input type="text" placeholder="Игра (по которой проводится турнир)" class="form-control"><br>
             <input type="number" placeholder="Максимальное количество игроков в турнире" class="form-control"><br>
             <button class="btn btn-success" type="submit"> Сохранить данные </button>
