@@ -15,11 +15,13 @@
         <form method="post">
             {% csrf_token %}
             <h2>Форма создания турнира</h2>
-            {{ form }}
-
-
-            <input type="text" placeholder="Игра (по которой проводится турнир)" class="form-control"><br>
-            <input type="number" placeholder="Максимальное количество игроков в турнире" class="form-control"><br>
+            {{ form.name }}<br>
+            {{ form.game }}<br>
+            {{ form.system }}<br>
+            {{ form.start_time }}<br>
+            {{ form.end_time }}<br>
+            {{ form.max_of_players }}<br>
+            <span>{{ error }}</span>
             <button class="btn btn-success" type="submit"> Сохранить данные </button>
         </form>
     </div>
