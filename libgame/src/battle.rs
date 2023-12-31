@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use indexmap::IndexMap;
 
-type Player = isize;
+pub type Player = isize;
 
 pub trait Read {
     fn read_line(&mut self, buffer: &mut String) -> io::Result<usize>;
@@ -14,15 +14,16 @@ pub trait Read {
 
 impl Read for Stdin {
     fn read_line(&mut self, buffer: &mut String) -> io::Result<usize> {
-        Ok(buffer.len())
+        Stdin::read_line(self, buffer)
     }
 }
+
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 struct PlayData {
     state: &'static str,
     player: Option<Player>,
-    data: Option<&'static str>,
+    data: Option<String>,
     points: Option<Vec<isize>>
 }
 
@@ -57,11 +58,11 @@ impl<R: Read, T: Write> Battle<R, T> {
         }
     }
 
-    pub fn send_to(&mut self, player: Player, data: &'static str) {
+    pub fn send_to(&mut self, player: Player, data: &str) {
         let play_data = PlayData {
             state: "play",
             player: Some(player),
-            data: Some(data),
+            data: Some(String::from(data)),
             points: None,
         };
         let output = serde_json::to_string(&play_data).unwrap();
@@ -92,19 +93,22 @@ impl<R: Read, T: Write> Battle<R, T> {
         self.points.insert(player, points + count);
     }
 
-    fn end_battle(&mut self, data: Option<&'static str>) {
+    fn end_battle(&mut self, data: Option<&str>) {
         self.points.sort_keys();
         let play_data = PlayData {
             state: "end",
             points: Some(self.points.values().cloned().collect::<Vec<isize>>()),
             player: None,
-            data
+            data: match data {
+                Some(value) => Some(String::from(value)),
+                None => None
+            }
         };
         let output = serde_json::to_string(&play_data).unwrap();
-        write!(self.stdout, "{}", output).unwrap();
+        writeln!(self.stdout, "{}", output).unwrap();
     }
 
-    pub fn end_due(&mut self, data: &'static str) {
+    pub fn end_due(&mut self, data: &str) {
         self.end_battle(Some(data));
     }
 
