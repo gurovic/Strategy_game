@@ -23,3 +23,4 @@ class PlayersInBattles(models.Model):
     is_win = models.BooleanField(default=False)
     points = models.IntegerField()  # 1, 1/2, 0 like win/draw/lose, or points at the end of battle
     number = models.PositiveIntegerField()
+    
