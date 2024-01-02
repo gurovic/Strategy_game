@@ -1,7 +1,6 @@
 import unittest
-from unittest.mock import Mock, patch
-from tournamentsystem import TournamentSystem
-from tournament import Tournament
+from unittest.mock import Mock
+from website.app.models.tournamentsystem import TournamentSystem
 
 
 class TestTournamentSystem(unittest.TestCase):

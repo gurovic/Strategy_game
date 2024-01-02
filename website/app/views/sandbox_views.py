@@ -2,7 +2,9 @@ import time
 
 from ..models.game import Game
 from ..models import CompilerReport
-from ..classes import FileLoader, save_file, Sandbox
+from invoker.filesystem import write_file
+from ..models.sandbox import Sandbox
+from invoker.file_loader import FileLoader
 
 from django.shortcuts import render
 

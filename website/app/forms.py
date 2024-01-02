@@ -1,4 +1,4 @@
-from models.tournament import Tournament
+from .models.tournament import Tournament
 from django.forms import ModelForm, TextInput, DateTimeInput, NumberInput
 
 

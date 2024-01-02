@@ -1,6 +1,6 @@
 import unittest
-from unittest.mock import Mock, patch
-from tournament_system_round_robin import TournamentSystemRoundRobin
+from unittest.mock import Mock
+from website.app.models.tournament_system_round_robin import TournamentSystemRoundRobin
 class TestTournamentSystemRoundRobin(unittest.TestCase):
     def test_init(self):
         mock_tournament = Mock()

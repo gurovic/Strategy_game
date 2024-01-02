@@ -2,9 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 
-from .model_battle import Battle
+from .battle import Battle
 from .game import Game
-from .model_tournament_system import TournamentSystem
+from .tournamentsystem import TournamentSystem
+
 
 
 class Tournament(models.Model):
@@ -18,8 +19,8 @@ class Tournament(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Game')
     players = models.ManyToManyField(User, through='PlayerInTournament', null=True, blank=True, verbose_name='Players')
     system = models.ForeignKey(TournamentSystem, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Tournament System')
-    start_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Start Time')
-    end_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Finish time')
+    start_time = models.DateTimeField(null=True, verbose_name='Start Time')
+    end_time = models.DateTimeField(null=True, verbose_name='Finish time')
     status = models.IntegerField(choices=Status.choices, default=Status.NOT_STARTED, verbose_name='Status')
     battles = models.ManyToManyField(Battle, blank=True, verbose_name='Battle')
     max_of_players = models.IntegerField(default=2, verbose_name='Maximum number of players')

@@ -1,10 +1,10 @@
 from django import forms
-from sandbox.models.game import Game
-from sandbox.models.sandbox import Sandbox
+from .models.game import Game
+from .models.sandbox import Sandbox
 
 
 class SandboxForm(forms.Form):
-    num_game = forms.ChoiceField(label="Game", choices=Game.objects.all())
+    #num_game = forms.ChoiceField(label="Game", choices=Game.objects.all())
     user_strategy = forms.FileField(label="Your strategy")
 
     def run_sandbox(self):
