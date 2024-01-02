@@ -1,5 +1,5 @@
-from website.app.models.tournamentsystem import TournamentSystem
-from app.models.battle import Battle
+from .tournamentsystem import TournamentSystem
+from .battle import Battle
 
 class TournamentSystemRoundRobin(TournamentSystem):
     def __init__(self, tournament):

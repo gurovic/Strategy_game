@@ -1,5 +1,5 @@
-from Strategy_game.website.sandbox.forms import SandboxForm
-from Strategy_game.website.sandbox.models.game import Game
+from .sandbox_forms import SandboxForm
+from .models.game import Game
 
 from django.test import TestCase
 
