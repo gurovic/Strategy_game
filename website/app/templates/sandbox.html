@@ -50,6 +50,17 @@
     <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="strategy">
+        <label>
+            <select name="language">
+                <option selected="selected">---- SELECT ----</option>
+                <option>c++</option>
+                <option>c#</option>
+                <option>c</option>
+                <option>javascript</option>
+                <option>java</option>
+                <option>python</option>
+            </select>
+        </label>
         <input type="submit">
     </form>
 {% endif %}
