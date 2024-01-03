@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Goldman&display=swap');
 * { font-family: 'Raleway', sans-serif; }
 
 table {
@@ -32,4 +33,8 @@ input:active, :hover, :focus {
 
 form {
     background: white;
+}
+.author {
+    position: absolute;
+    bottom: 5px;
 }

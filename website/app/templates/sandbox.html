@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block style %}
+    <link rel="stylesheet" href="../../static/css/sandbox.css">
+{% endblock %}
+
 {% block title %}
     Sandbox
 {% endblock title %}
@@ -8,59 +12,47 @@
 {% endblock header %}
 
 {% block content %}
-{% if failed_report %}
-    <form>
-    <table class="form-with-td">
-        <tr>
-            <td><p>compiled file</p></td>
-            <td><p>{{ failed_report.compiled_file }}</p></td>
-        </tr>
-        <tr>
-            <td><p>time</p></td>
-            <td><p>{{ failed_report.time }}</p></td>
-        </tr>
-        <tr>
-            <td><p>datetime_created</p></td>
-            <td><p>{{ failed_report.datetime_created }}</p></td>
-        </tr>
-        <tr>
-            <td><p>status</p></td>
-            <td><p>{{ failed_report.status }}</p></td>
-        </tr>
-        <tr>
-            <td><p>error</p></td>
-            <td><p>{{ failed_report.error }}</p></td>
-        </tr>
-        <tr>
-            <td><p>invoker_report</p></td>
-            <td><p>{{ failed_report.invoker_report }}</p></td>
-        </tr>
-    </table>
-    </form>
-{% elif report %}
-    <form class="form-with-td">
-    <table class="form-with-td">
-        <tr>
-            <td><p>command</p></td>
-            <td><p>{{ report.command }}</p></td>
-        </tr>
-    </table>
-    </form>
-{% else %}
-    <form method="POST" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="strategy">
-        <select name="language">
-            <p>Choose language</p>
-            <option selected="selected">---- SELECT ----</option>
-            <option>c++</option>
-            <option>c#</option>
-            <option>c</option>
-            <option>javascript</option>
-            <option>java</option>
-            <option>python</option>
-        </select>
-        <input type="submit">
-    </form>
-{% endif %}
+
+    {% if status == 'subscribe to compiler' %}
+    {% elif status == 'subscribe to sandbox' %}
+    {% elif status == 'receive compiler report' %}
+    {% elif status == 'receive sandbox report' %}
+    {% else %}
+        <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="strategy">
+
+            <p style="display: inline-block;">Choose language for your code: </p>
+            <select style="display: inline-block;" name="language">
+                <option selected="selected">---- SELECT ----</option>
+                <option>c++</option>
+                <option>c#</option>
+                <option>c</option>
+                <option>javascript</option>
+                <option>java</option>
+                <option>python</option>
+            </select>
+
+            <input style="margin-bottom: 20px;" type="submit" onclick="loading()">
+        </form>
+    {% endif %}
+
+    <div id="loader-content">
+        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+             x="0px" y="0px"
+             width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+             xml:space="preserve">
+        <path fill="#000"
+              d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+            <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25"
+                              dur="0.6s" repeatCount="indefinite"></animateTransform>
+        </path>
+  </svg>
+    </div>
+    <script>
+        function loading() {
+            document.getElementById('compilation-form').style.display = 'none';
+            document.getElementById('loader-content').style.display = 'block';
+        }
+    </script>
 {% endblock content %}
