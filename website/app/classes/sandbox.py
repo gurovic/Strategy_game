@@ -6,10 +6,13 @@ class Sandbox:
         self.game = game
         self.strategy = strategy
         self.creator = creator
-        players = [PlayersInBattle(file_solution=strategy, number=0)]
+        self.battle = Battle.objects.create(self.game)
+        player = PlayersInBattle.objects.create(file_solution=strategy, number=0)
+        self.players = [player]
         for i in range(self.game.number_of_players - 1):
-            players.append(PlayersInBattle(file_solution=self.game.ideal_solution, number=i+1))
-        self.battle = Battle(self.game, players)
+            player = PlayersInBattle.objects.create(file_solution=self.game.ideal_solution, number=i + 1,
+                                                    battle=self.battle)
+            self.players.append(player)
         self.report = None
 
     def run_battle(self):
