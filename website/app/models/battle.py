@@ -15,12 +15,4 @@ class Battle(models.Model):
         # starts a battle, simultaneously records the progress of the battle in a log file
         pass
 
-
-class PlayersInBattles(models.Model):
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
-    battle = models.ForeignKey(Battle, on_delete=models.CASCADE)
-    strategy = models.FilePathField(null=True)
-    is_win = models.BooleanField(default=False)
-    points = models.IntegerField()  # 1, 1/2, 0 like win/draw/lose, or points at the end of battle
-    number = models.PositiveIntegerField()
     
