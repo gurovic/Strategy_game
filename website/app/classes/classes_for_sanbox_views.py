@@ -14,7 +14,6 @@ class CompilerNotifyReceiver:
     }
 
     def __init__(self, file, lang):
-        self.compiler = None
         self.report = None
         self.compiler_report = None
         self.file = file
