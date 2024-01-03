@@ -1,7 +1,6 @@
 import time
 
-from ..models.game import Game
-from ..models import CompilerReport
+from ..models import CompilerReport, Game
 from ..classes.sandbox import Sandbox
 from ..compiler import Compiler
 
