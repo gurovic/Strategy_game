@@ -16,7 +16,7 @@ class CompileFile:
         self.file = file
 
     def run(self):
-        path = save_file(self.file)
+        path = write_file(self.file)
         file_loader = FileLoader(path, self.notify)
 
     def notify(self, report):
