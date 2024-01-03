@@ -5,6 +5,8 @@ from django.urls import reverse
 from unittest.mock import Mock, patch
 
 from app.models import CompilerReport
+from app.views.sandbox_views import show, SandboxNotifyReceiver, CompilerNotifyReceiver
+
 
 class TestSandboxViews(TestCase):
     def setUpTestData():
