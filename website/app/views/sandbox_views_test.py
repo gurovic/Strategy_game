@@ -20,7 +20,7 @@ class TestSandboxViews(TestCase):
     def test_views_use_correct_template(self):
         response = self.client.get('/app/sandbox/0')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'sandbox_views.html')
+        self.assertTemplateUsed(response, 'sandbox.html')
 
     def test_views_use_correct_context(self):
         response = self.client.get('/app/sandbox/0')
