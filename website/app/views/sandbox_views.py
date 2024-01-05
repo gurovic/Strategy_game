@@ -3,9 +3,8 @@ import csv
 from django.shortcuts import render
 
 from ..models import CompilerReport, Game
-from ..classes import Sandbox, SandboxNotifyReceiver, CompilerNotifyReceiver
+from ..classes import Sandbox, SandboxNotifyReceiver, CompilerNotifyReceiver, LANGUAGES
 from ..compiler import Compiler
-from ..classes.classes_for_sanbox_views import LANGUAGES
 
 
 def show(request, game_id):
