@@ -12,6 +12,22 @@
 {% endblock header %}
 
 {% block content %}
+    <script>
+        function loading() {
+            {#document.getElementById('compilation-form').style.display = 'none';#}
+            document.getElementById('loader-content').style.display = 'block';
+        }
+        function wait() {
+            console.log(1);
+            {% if report == None %}
+                setTimeout(function () {
+                    location.reload();
+                }, 1000)
+            {% else %}
+                return 1;
+            {% endif %}
+        }
+    </script>
 
     {% if status == 'receive compiler report' %}
 
@@ -19,18 +35,18 @@
             wait();
             document.getElementById('loader-content').style.display = 'none';
         </script>
-        <table style="margin-bottom: 50px;" class="form-with-td">
+        <table class="m-b-50 form-with-td">
             <tr>
                 <td>Report</td>
                 <td>{{ report }}</td>
             </tr>
         </table>
-        {% if report.status == OK %}
+        {% if report.status == 0 %}
             <form id="sandbox-form" method="POST" action="" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input style="display: none;" type="text" name="type" value="sandbox">
-                <input style="display: none;" name="compiler_report_id" value="{{ compiler_report.id }}">
-                <input type="submit" value="Запустить sandbox">
+                <input class="d-none" type="text" name="type" value="sandbox">
+                <input class="d-none" name="compiler_report_id" value="{{ compiler_report.id }}">
+                <input onclick="loading()" type="submit" value="Запустить sandbox">
             </form>
         {% endif %}
 
@@ -51,18 +67,18 @@
 
         <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <input style="display: none;" type="text" name="type" value="compiler">
+            <input class="d-none" type="text" name="type" value="compiler">
             <input type="file" name="strategy">
 
-            <p style="display: inline-block;">Choose language for your code: </p>
-            <select style="display: inline-block;" name="language">
+            <p class="d-inline-block">Choose language for your code: </p>
+            <select class="d-inline-block" name="language">
                 <option selected="selected">---- SELECT ----</option>
                 {% for language in available_languages %}
                     <option>{{ language }}</option>
                 {% endfor %}
             </select>
 
-            <input value="запустить компиляцию файла" style="margin-bottom: 20px;" type="submit" onclick="loading()">
+            <input value="запустить компиляцию файла" class="m-b-20" type="submit" onclick="loading()">
         </form>
 
     {% else %}
@@ -84,21 +100,4 @@
         </path>
   </svg>
     </div>
-    <script>
-        function loading() {
-            {#document.getElementById('compilation-form').style.display = 'none';#}
-            document.getElementById('loader-content').style.display = 'block';
-        }
-
-        function wait() {
-            console.log(1);
-            {% if report == None %}
-                setTimeout(function () {
-                    location.reload();
-                }, 1000)
-            {% else %}
-                return 1;
-            {% endif %}
-        }
-    </script>
 {% endblock content %}

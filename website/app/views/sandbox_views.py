@@ -20,6 +20,7 @@ def show(request, game_id):
             #     compiled_file=file_object,
             #     status=CompilerReport.Status.OK,
             # )
+            # report.save()
             # file_compiler.notify(report)
             file_compiler.run()
 
