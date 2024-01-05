@@ -14,6 +14,7 @@ class Sandbox:
                                                     battle=self.battle)
             self.players.append(player)
         self.battle.players.set(self.players)
+        self.battle.save()
 
     def run_battle(self):
         self.battle.run()
