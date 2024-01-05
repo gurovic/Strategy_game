@@ -7,8 +7,6 @@ from ..classes import Sandbox, SandboxNotifyReceiver, CompilerNotifyReceiver
 from ..compiler import Compiler
 from ..classes.classes_for_sanbox_views import LANGUAGES
 
-TYPE = 'test'
-
 
 def show(request, game_id):
     game = Game.objects.get(pk=game_id)
@@ -18,14 +16,12 @@ def show(request, game_id):
             lang = request.POST['language']
             file_compiler = CompilerNotifyReceiver(file_object, lang)
 
-            if TYPE == 'test':
-                report = CompilerReport.objects.create(
-                    compiled_file=file_object,
-                    status=CompilerReport.Status.OK,
-                )
-                file_compiler.notify(report)
-            else:
-                file_compiler.run()
+            # report = CompilerReport.objects.create(
+            #     compiled_file=file_object,
+            #     status=CompilerReport.Status.OK,
+            # )
+            # file_compiler.notify(report)
+            file_compiler.run()
 
             return render(request, 'sandbox.html',
                           {'status': 'receive compiler report', 'compiler_report': file_compiler.report, 'game': game})
@@ -36,11 +32,9 @@ def show(request, game_id):
             sandbox = SandboxNotifyReceiver(game, compiler_report.compiled_file)
 
             try:
-                if TYPE == 'test':
-                    report = {}
-                    sandbox.notify(report)
-                else:
-                    sandbox.run()
+                # report = {}
+                # sandbox.notify(report)
+                sandbox.run()
             except ():
                 return render(request, 'sandbox.html', {'status': 'none'})
 
