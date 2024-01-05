@@ -40,7 +40,7 @@ def show(request, game_id):
                     sandbox.notify(report)
                 else:
                     sandbox.run()
-            except (CompilerReport.DoesNotExist):
+            except ():
                 return render(request, 'sandbox.html', {'status': 'none'})
 
             return render(request, 'sandbox.html',
