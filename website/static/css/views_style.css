@@ -17,7 +17,7 @@ table td {
     font-weight: bold;
 }
 
-input[type='submit'] {
+input[type='submit'], input[type='button'] {
     font-weight: bolder;
     padding: .7em 2.7em;
     border-radius: 10px;
@@ -35,6 +35,12 @@ form {
     background: white;
 }
 .author {
+    z-index: 1000;
     position: absolute;
     bottom: 5px;
+}
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }

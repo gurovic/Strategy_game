@@ -91,7 +91,6 @@ class Compiler:
         self.command: AbstractCompile = self.COMMANDS[self.lang](self.source, self.lang, callback=self.notify)
 
     def compile(self):
-        print('2.1.1')
         self.command.compile()
 
     def notify(self, report: CompilerReport):
