@@ -13,9 +13,7 @@
 
 {% block content %}
 
-    {% if status == 'failed' %}
-        <p>FAILED SOMETHING</p>
-    {% elif status == 'receive compiler report' %}
+    {% if status == 'receive compiler report' %}
         <script>
             wait();
             document.getElementById('loader-content').style.display = 'none';

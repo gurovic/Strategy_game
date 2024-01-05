@@ -34,11 +34,14 @@ def show(request, game_id):
             game = Game.objects.get(pk=game_id)
             sandbox = SandboxNotifyReceiver(game, compiler_report.compiled_file)
 
-            if TYPE == 'test':
-                report = {}
-                sandbox.notify(report)
-            else:
-                sandbox.run()
+            try:
+                if TYPE == 'test':
+                    report = {}
+                    sandbox.notify(report)
+                else:
+                    sandbox.run()
+            except (CompilerReport.DoesNotExist):
+                return render(request, 'sandbox.html', {'status': 'none'})
 
             return render(request, 'sandbox.html',
                           {'status': 'subscribe to sandbox', 'game': game, 'sandbox_report': sandbox.report})
