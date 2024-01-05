@@ -9,7 +9,8 @@ from app.views.sandbox_views import show, SandboxNotifyReceiver, CompilerNotifyR
 
 
 class TestSandboxViews(TestCase):
-    def setUpTestData():
+    @classmethod
+    def setUpTestData(cls):
         Game.objects.create(id=0)
         CompilerReport.objects.create(
             compiled_file=None,
