@@ -43,9 +43,6 @@ class TestSandboxNotifyReceiver(TestCase):
 
 
 class TestCompilerNotifyReceiver(TestCase):
-    def setUp(self):
-        pass
-
     def test_lang(self):
         langs = ['c++', 'python']
         res = ['cpp', 'py']
