@@ -18,16 +18,6 @@
         <script>
             wait();
             document.getElementById('loader-content').style.display = 'none';
-
-            function wait() {
-                console.log(1);
-                {% if compiler_report == None %}
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000)                {% else %}
-                    return 1;
-                {% endif %}
-            }
         </script>
         <table style="margin-bottom: 50px;" class="form-with-td">
             <tr>
@@ -49,17 +39,6 @@
         <script>
             wait();
             document.getElementById('loader-content').style.display = 'none';
-
-            function wait() {
-                console.log('reloading');
-                {% if sandbox_report == None %}
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000)
-                {% else %}
-                    return 1;
-                {% endif %}
-            }
         </script>
         <table class="form-with-td">
             <tr>
@@ -109,6 +88,17 @@
         function loading() {
             {#document.getElementById('compilation-form').style.display = 'none';#}
             document.getElementById('loader-content').style.display = 'block';
+        }
+
+        function wait() {
+            console.log(1);
+            {% if report == None %}
+                setTimeout(function () {
+                    location.reload();
+                }, 1000)
+            {% else %}
+                return 1;
+            {% endif %}
         }
     </script>
 {% endblock content %}

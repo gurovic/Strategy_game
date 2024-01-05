@@ -24,7 +24,7 @@ def show(request, game_id):
             file_compiler.run()
 
             return render(request, 'sandbox.html',
-                          {'status': 'receive compiler report', 'compiler_report': file_compiler.report, 'game': game})
+                          {'status': 'receive compiler report', 'report': file_compiler.report, 'game': game})
         elif request.POST['type'] == 'sandbox':
             compiler_report_id = request.POST['compiler_report_id']
             compiler_report = CompilerReport.objects.get(pk=compiler_report_id)
@@ -39,7 +39,7 @@ def show(request, game_id):
                 return render(request, 'sandbox.html', {'status': 'none'})
 
             return render(request, 'sandbox.html',
-                          {'status': 'subscribe to sandbox', 'game': game, 'sandbox_report': sandbox.report})
+                          {'status': 'subscribe to sandbox', 'game': game, 'report': sandbox.report})
         else:
             return render(request, 'sandbox.html', {'status': 'failed', 'game': game})
     else:
