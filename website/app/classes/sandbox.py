@@ -2,10 +2,10 @@ from ..models import Battle, PlayersInBattle
 
 
 class Sandbox:
-    def __init__(self, game, strategy, creator):
+    def __init__(self, game, strategy, callback):
         self.game = game
         self.strategy = strategy
-        self.creator = creator
+        self.callback = callback
         self.battle = Battle.objects.create(game=self.game)
         player = PlayersInBattle.objects.create(file_solution=strategy, number=0)
         self.players = [player]
@@ -20,4 +20,4 @@ class Sandbox:
         self.battle.run()
 
     def notify(self, report):
-        self.creator(report)
+        self.callback(report)
