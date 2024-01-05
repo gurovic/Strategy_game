@@ -4,12 +4,13 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from unittest.mock import Mock, patch
 
-from app.models import CompilerReport
+from app.models import CompilerReport, Game
 from app.views.sandbox_views import show, SandboxNotifyReceiver, CompilerNotifyReceiver
 
 
 class TestSandboxViews(TestCase):
     def setUpTestData():
+        Game.objects.create(id=0)
         CompilerReport.objects.create(
             compiled_file=None,
             status=0,
