@@ -1,2 +1,3 @@
 from .sandbox import Sandbox
-from .classes_for_sanbox_views import CompilerNotifyReceiver, SandboxNotifyReceiver
+from .compiler_notify_receiver import CompilerNotifyReceiver
+from .sandbox_notify_receiver import SandboxNotifyReceiver
