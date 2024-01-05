@@ -1,6 +1,5 @@
-from ..compiler import Compiler
-from ..models import CompilerReport
 from .sandbox import Sandbox
+
 
 class SandboxNotifyReceiver:
     def __init__(self, game, strategy):
