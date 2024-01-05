@@ -2,22 +2,22 @@ from ..compiler import Compiler
 from ..models import CompilerReport
 from .sandbox import Sandbox
 
+LANGUAGES = {
+    'c++': 'cpp',
+    'c#': 'cs',
+    'c': 'c',
+    'python': 'py',
+    'javascript': 'js',
+    'java': 'Java',
+}
+
 
 class CompilerNotifyReceiver:
-    LANGUAGE = {
-        'c++': 'cpp',
-        'c#': 'cs',
-        'c': 'c',
-        'python': 'py',
-        'javascript': 'js',
-        'java': 'Java',
-    }
-
     def __init__(self, file, lang):
         self.report = None
         self.compiler_report = None
         self.file = file
-        self.lang = self.LANGUAGE[lang]
+        self.lang = LANGUAGES[lang]
         self.compiler = Compiler(self.file, self.lang, self.notify)
 
     def run(self):

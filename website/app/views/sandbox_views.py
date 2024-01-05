@@ -5,6 +5,7 @@ from django.shortcuts import render
 from ..models import CompilerReport, Game
 from ..classes import Sandbox, SandboxNotifyReceiver, CompilerNotifyReceiver
 from ..compiler import Compiler
+from ..classes.classes_for_sanbox_views import LANGUAGES
 
 TYPE = 'test'
 
@@ -48,4 +49,4 @@ def show(request, game_id):
         else:
             return render(request, 'sandbox.html', {'status': 'failed', 'game': game})
     else:
-        return render(request, "sandbox.html", {'status': 'filling compilation form', 'game': game})
+        return render(request, "sandbox.html", {'status': 'filling compilation form', 'game': game, 'available_languages': LANGUAGES})

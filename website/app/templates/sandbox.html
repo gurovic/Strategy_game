@@ -14,6 +14,7 @@
 {% block content %}
 
     {% if status == 'receive compiler report' %}
+
         <script>
             wait();
             document.getElementById('loader-content').style.display = 'none';
@@ -28,7 +29,6 @@
                 {% endif %}
             }
         </script>
-
         <table style="margin-bottom: 50px;" class="form-with-td">
             <tr>
                 <td>Report</td>
@@ -43,7 +43,9 @@
                 <input type="submit" value="Запустить sandbox">
             </form>
         {% endif %}
+
     {% elif status == 'receive sandbox report' %}
+
         <script>
             wait();
             document.getElementById('loader-content').style.display = 'none';
@@ -59,14 +61,15 @@
                 {% endif %}
             }
         </script>
-
         <table class="form-with-td">
             <tr>
                 <td>report</td>
                 <td>{{ sandbox_report }}</td>
             </tr>
         </table>
+
     {% elif status == 'filling compilation form' %}
+
         <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             <input style="display: none;" type="text" name="type" value="compiler">
@@ -75,16 +78,14 @@
             <p style="display: inline-block;">Choose language for your code: </p>
             <select style="display: inline-block;" name="language">
                 <option selected="selected">---- SELECT ----</option>
-                <option>c++</option>
-                <option>c#</option>
-                <option>c</option>
-                <option>javascript</option>
-                <option>java</option>
-                <option>python</option>
+                {% for language in available_languages %}
+                    <option>{{ language }}</option>
+                {% endfor %}
             </select>
 
             <input value="запустить компиляцию файла" style="margin-bottom: 20px;" type="submit" onclick="loading()">
         </form>
+
     {% else %}
         <div class="error-container">
             <h1>STATUS ERROR</h1>
@@ -108,32 +109,6 @@
         function loading() {
             {#document.getElementById('compilation-form').style.display = 'none';#}
             document.getElementById('loader-content').style.display = 'block';
-        }
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-        function send_request(items) {
-            loading();
-
-            let formData = new FormData(document.getElementById('sandbox-form'))
-            console.log(document.getElementById('sandbox-form'))
-            formData.append('report', report)
-            formData.append('type', 'sandbox')
-            console.log(formData)
-
-            try {
-                fetch('', {
-                    method: 'POST',
-                    headers: {
-                        "X-CSRFToken": getCookie("csrftoken")
-                    },
-                    body: formData,
-                })
-            } catch (e) {
-                console.log(e);
-            }
         }
     </script>
 {% endblock content %}
