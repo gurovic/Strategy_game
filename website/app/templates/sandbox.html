@@ -15,7 +15,6 @@
 
     {% if status == 'failed' %}
         <p>FAILED SOMETHING</p>
-    {% elif status == 'subscribe to sandbox' %}
     {% elif status == 'receive compiler report' %}
         <script>
             wait();
@@ -24,8 +23,9 @@
             function wait() {
                 console.log(1);
                 {% if compiler_report == None %}
-                    location.reload();
-                {% else %}
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000)                {% else %}
                     return 1;
                 {% endif %}
             }
@@ -46,7 +46,29 @@
             </form>
         {% endif %}
     {% elif status == 'receive sandbox report' %}
-    {% else %}
+        <script>
+            wait();
+            document.getElementById('loader-content').style.display = 'none';
+
+            function wait() {
+                console.log('reloading');
+                {% if sandbox_report == None %}
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000)
+                {% else %}
+                    return 1;
+                {% endif %}
+            }
+        </script>
+
+        <table class="form-with-td">
+            <tr>
+                <td>report</td>
+                <td>{{ sandbox_report }}</td>
+            </tr>
+        </table>
+    {% elif status == 'filling compilation form' %}
         <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             <input style="display: none;" type="text" name="type" value="compiler">
@@ -65,6 +87,11 @@
 
             <input value="запустить компиляцию файла" style="margin-bottom: 20px;" type="submit" onclick="loading()">
         </form>
+    {% else %}
+        <div class="error-container">
+            <h1>STATUS ERROR</h1>
+            <p>Either something in files was wrong or we have some problems in server.</p>
+        </div>
     {% endif %}
 
     <div id="loader-content">
