@@ -1,44 +1,45 @@
 import time
-
-from ..models.game import Game
-from ..models import CompilerReport
-from invoker.filesystem import write_file
-from ..models.sandbox import Sandbox
-from invoker.file_loader import FileLoader
-
+import csv
 from django.shortcuts import render
 
-
-class CompileFile:
-    def __init__(self, file):
-        self.report = None
-        self.compiler_report = None
-        self.file = file
-
-    def run(self):
-        path = write_file(self.file)
-        file_loader = FileLoader(path, self.notify)
-
-    def notify(self, report):
-        self.report = report
-        self.compiler_report = CompilerReport.objects.get(pk=self.report)
+from ..models import CompilerReport, Game
+from ..classes import Sandbox, SandboxNotifyReceiver, CompilerNotifyReceiver, LANGUAGES
+from ..compiler import Compiler
 
 
-def show(request, id):
+def show(request, game_id):
+    game = Game.objects.get(pk=game_id)
     if request.method == 'POST':
-        file_compiler = CompileFile(request.FILES['strategy'])
-        file_compiler.run()
-        strategy = None
-        while strategy is None:
-            time.sleep(0.1)
-            strategy = file_compiler.compiler_report
+        if request.POST['type'] == 'compiler':
+            file_object = request.FILES['strategy']
+            lang = request.POST['language']
+            file_compiler = CompilerNotifyReceiver(file_object, lang)
 
-        if strategy.status == 0:
-            game = Game.objects.get(pk=id)
-            sandbox = Sandbox(game, strategy)
-            report = sandbox.get_report()
-            return render(request, 'sandbox.html', {'report': report})
+            # report = CompilerReport.objects.create(
+            #     compiled_file=file_object,
+            #     status=CompilerReport.Status.OK,
+            # )
+            # report.save()
+            # file_compiler.notify(report)
+            file_compiler.run()
+
+            return render(request, 'sandbox.html',
+                          {'status': 'receive compiler report', 'report': file_compiler.report, 'game': game})
+        elif request.POST['type'] == 'sandbox':
+            compiler_report_id = request.POST['compiler_report_id']
+            compiler_report = CompilerReport.objects.get(pk=compiler_report_id)
+            sandbox = SandboxNotifyReceiver(game, compiler_report.compiled_file)
+
+            try:
+                # report = {}
+                # sandbox.notify(report)
+                sandbox.run()
+            except ():
+                return render(request, 'sandbox.html', {'status': 'none'})
+
+            return render(request, 'sandbox.html',
+                          {'status': 'receive sandbox report', 'game': game, 'report': sandbox.report})
         else:
-            return render(request, 'sandbox.html', {'failed_report': strategy})
+            return render(request, 'sandbox.html', {'status': 'failed', 'game': game})
     else:
-        return render(request, "sandbox.html", {})
+        return render(request, "sandbox.html", {'status': 'filling compilation form', 'game': game, 'available_languages': LANGUAGES})

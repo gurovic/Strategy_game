@@ -4,18 +4,19 @@
     <meta charset="utf-8" />
     <title>{% block title %}Default title{% endblock title %}</title>
     <link rel="stylesheet" href="/static/css/views_style.css">
+    {% block style %}{% endblock %}
 </head>
 <body>
     <h1>
         {% block header %}{% endblock header %}
     </h1>
 
-    <div>
+    <div class="content">
         {% block content%}{% endblock content %}
     </div>
 
-    <div>
-        MyCorp. 2022. All rights reserved.
+    <div class="author">
+        <storng class="txt-f-Goldman">Algoforces</storng>. 2023-2024. All rights reserved.
     </div>
 </body>
 </html>

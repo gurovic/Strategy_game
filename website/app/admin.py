@@ -1,10 +1,8 @@
-from .models import CompilerReport
-from .models import Tournament
-#from .sandbox_forms import SandboxForm
+from .models import CompilerReport, Tournament, Game
 
 from django.contrib import admin
 
 
 admin.register(CompilerReport)
-#admin.site.register(SandboxForm)
+admin.site.register(Game)
 admin.register(Tournament)
