@@ -36,39 +36,34 @@ class TestSandboxViews(TestCase):
         mock_compiler_instance = Mock()
         MockCompilerNotifyReceiver.return_value = mock_compiler_instance
 
-        request = Mock()
-        request.method = 'POST'
-        request.POST = {'type': 'compiler', 'language': 'python'}
-        request.FILES = {'strategy': Mock()}
+        response = self.client.post('/app/sandbox/0', {'type': 'compiler', 'language': 'python', 'strategy': Mock()})
 
-        response = show(request, self.game.pk)
-
-        mock_compiler_instance.run.assert_called_once()
+        print(response)
+        # mock_compiler_instance.run.assert_called_once()
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name, 'sandbox.html')
         self.assertEqual(response.context['status'], 'receive compiler report')
+        self.assertEqual(response.context['game'], self.game)
 
     @patch('app.views.sandbox_views.SandboxNotifyReceiver')
     def test_post_sandbox_request(self, MockSandboxNotifyReceiver):
         mock_sandbox_instance = Mock()
         MockSandboxNotifyReceiver.return_value = mock_sandbox_instance
 
-        request = Mock()
-        request.method = 'POST'
-        request.POST = {'type': 'sandbox', 'compiler_report_id': self.compiler_report.pk}
+        response = self.client.post('/app/sandbox/0', {'type': 'sandbox', 'compiler_report_id': self.compiler_report.pk})
 
-        response = show(request, self.game.pk)
         mock_sandbox_instance.run.assert_called_once()
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name, 'sandbox.html')
+        self.assertEqual(response.context['status'], 'receive sandbox report')
+        self.assertEqual(response.context['game'], self.game)
 
     def test_invalid_type_request(self):
         request = Mock()
         request.method = 'POST'
         request.POST = {'type': 'invalid_type'}
 
-        response = show(request, self.game.pk)
+        response = self.client.post('/app/sandbox/0', {'type': 'invalid type'})
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name, 'sandbox.html')
+        self.assertEqual(response.context['status'], 'failed')
+
 

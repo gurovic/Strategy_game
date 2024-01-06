@@ -38,7 +38,7 @@ def show(request, game_id):
                 return render(request, 'sandbox.html', {'status': 'none'})
 
             return render(request, 'sandbox.html',
-                          {'status': 'subscribe to sandbox', 'game': game, 'report': sandbox.report})
+                          {'status': 'receive sandbox report', 'game': game, 'report': sandbox.report})
         else:
             return render(request, 'sandbox.html', {'status': 'failed', 'game': game})
     else:
