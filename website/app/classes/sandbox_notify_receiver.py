@@ -1,8 +1,9 @@
+from django.db.models import FileField
 from .sandbox import Sandbox
 
 
 class SandboxNotifyReceiver:
-    def __init__(self, game, strategy):
+    def __init__(self, game, strategy: FileField):
         self.report = None
         self.game = game
         self.strategy = strategy

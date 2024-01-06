@@ -45,7 +45,7 @@
             <form id="sandbox-form" method="POST" action="" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input class="d-none" type="text" name="type" value="sandbox">
-                <input class="d-none" name="compiler_report_id" value="{{ compiler_report.id }}">
+                <input class="d-none" name="compiler_report_id" value="{{ report.id }}">
                 <input onclick="loading()" type="submit" value="Запустить sandbox">
             </form>
         {% endif %}
