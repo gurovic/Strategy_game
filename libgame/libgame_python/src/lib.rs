@@ -87,17 +87,10 @@ fn get_battle() -> PyResult<Py<Battle>> {
     Ok(Python::with_gil(|py| Py::new(py, Battle::new(battle)).unwrap()))
 }
 
-#[pyfunction]
-fn get_raw_battle(num_players: isize) -> PyResult<Py<Battle>> {
-    let battle = get_raw_battle_rust(num_players);
-    Ok(Python::with_gil(|py| Py::new(py, Battle::new(battle)).unwrap()))
-}
-
 
 #[pymodule]
 fn libgame(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_battle, m)?)?;
-    m.add_function(wrap_pyfunction!(get_raw_battle, m)?)?;
     m.add_class::<PlayerMove>()?;
     m.add_class::<Battle>()?;
     Ok(())

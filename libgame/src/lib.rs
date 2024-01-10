@@ -5,7 +5,7 @@ use battle::Battle;
 use std::env;
 
 
-pub fn get_raw_battle(num_players: isize) -> Battle<Stdin, Stdout> {
+fn get_raw_battle(num_players: isize) -> Battle<Stdin, Stdout> {
     Battle::<Stdin, Stdout>::new(num_players)
 }
 
