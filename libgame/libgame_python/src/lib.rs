@@ -8,7 +8,9 @@ use std::io::{Stdin, Stdout};
 
 #[pyclass]
 pub struct PlayerMove {
+    #[pyo3(get)]
     pub player: Player,
+    #[pyo3(get)]
     pub data: String
 }
 
@@ -96,5 +98,7 @@ fn get_raw_battle(num_players: isize) -> PyResult<Py<Battle>> {
 fn libgame(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_battle, m)?)?;
     m.add_function(wrap_pyfunction!(get_raw_battle, m)?)?;
+    m.add_class::<PlayerMove>()?;
+    m.add_class::<Battle>()?;
     Ok(())
 }
