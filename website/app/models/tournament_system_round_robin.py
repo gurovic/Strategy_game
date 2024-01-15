@@ -15,7 +15,7 @@ class TournamentSystemRoundRobin(TournamentSystem):
             for j in range(i+1, len(participants)):
                 battle = Battle(self.tournament.game, list([participants[i][1], participants[j][1]]), self)
                 self.tournament.battles.append(battle)
-                battle.run()
+                battle.start()
 
     def calculate_places(self):
         places = list(zip(self.tournament_players.keys(), self.tournament_players.values()))
