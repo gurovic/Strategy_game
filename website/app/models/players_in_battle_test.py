@@ -13,7 +13,9 @@ class PlayersInBattleTest(TestCase):
         player = PlayersInBattle.objects.create(player=None, number=4)
         self.assertEqual(player.number, 4)
 
-    def test_unique_api_id_is_enforced(self):
-        """ Test that two movies with same api_id are not allowed."""
-        with self.assertRaises(IntegrityError):
-            PlayersInBattle.objects.create(player=None, number=2)
+    def test_creating(self):
+        player = PlayersInBattle.objects.create(number=4, number_of_points=100, place=1)
+        self.assertEqual(player.number_of_points, 100)
+        self.assertEqual(player.number, 4)
+        self.assertEqual(player.place, 1)
+        self.assertEqual(type(player), PlayersInBattle)

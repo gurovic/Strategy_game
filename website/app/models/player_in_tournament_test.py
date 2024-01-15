@@ -12,7 +12,6 @@ class PlayerInTournamentTest(TestCase):
         PlayerInTournament.objects.create(number_of_points=50, place=1)
 
     def test_unique_api_id_is_enforced(self):
-        """ Test that two movies with same api_id are not allowed."""
         with self.assertRaises(IntegrityError):
             PlayerInTournament.objects.create(number_of_points=60, place=0, id=1)
 
