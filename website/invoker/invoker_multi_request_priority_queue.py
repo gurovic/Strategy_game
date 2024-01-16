@@ -11,7 +11,7 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
         self.invoker_pool = None
 
     def run(self):
-        if self.invoker_pool is not None: # <-- Костыль -->
+        if self.invoker_pool is None: # <-- Костыль -->
             self.invoker_pool = InvokerPool() # <-- Singleton Init inside Singleton -->
         if self.invoker_multi_request_queue.empty():
             return
