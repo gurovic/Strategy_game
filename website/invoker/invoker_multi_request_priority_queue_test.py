@@ -32,11 +32,12 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.run")
-    def test_addition(self, mock_run: Mock, mock_pool: Mock):
+    def test_addition(self, mock_run: Mock, mock_invoker_pool: Mock):
         class TempQueue(InvokerMultiRequestPriorityQueue):
             pass
 
         queue = TempQueue()
+        queue.invoker_pool = mock_invoker_pool
         mock_invoker_multi_request = InvokerMultiRequest([], Priority.GREEN)
         queue.add(mock_invoker_multi_request)
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 1)
@@ -44,8 +45,9 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
 
     @patch("invoker.invoker_multi_request_priority_queue.InvokerPool")
     @patch("invoker.invoker_multi_request_priority_queue.InvokerMultiRequestPriorityQueue.run")
-    def test_notify(self, mock_run: Mock, mock_pool: Mock):
+    def test_notify(self, mock_run: Mock, mock_invoker_pool: Mock):
         queue = InvokerMultiRequestPriorityQueue()
+        queue.invoker_pool = mock_invoker_pool
         queue.notify()
         self.assertTrue(mock_run.called)
 
@@ -72,7 +74,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
             pass
 
         queue = TempQueue()
-
+        queue.invoker_pool = mock_invoker_pool
         queue.invoker_pool.free_invokers_count = 4
         queue.invoker_pool.get.return_value = [0, 1, 2, 3]
 
@@ -97,6 +99,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
             pass
 
         queue = TempQueue()
+        queue.invoker_pool = mock_invoker_pool
         queue.invoker_pool.free_invokers_count = 4
         queue.invoker_pool.get.return_value = [0, 1, 2, 3]
         invoker_multi_request = InvokerMultiRequest([])
@@ -113,6 +116,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
             pass
 
         queue = TempQueue()
+        queue.invoker_pool = mock_invoker_pool
         invoker_requests_count = [1, 2, 3, 4]
         for i in range(100):
             queue.invoker_pool.free_invokers_count = 6
@@ -132,6 +136,7 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
             pass
 
         queue = TempQueue()
+        queue.invoker_pool = mock_invoker_pool
         invoker_requests_count = [1, 2, 3, 4]
         for i in range(100):
             queue.invoker_pool.free_invokers_count = 4
