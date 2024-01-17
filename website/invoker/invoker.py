@@ -81,7 +81,8 @@ class NormalEnvironment(InvokerEnvironment):
         input_dir = [file for file in file_system] if file_system else None
 
         path = Path(work_dir)
-        preserve_dir = [File.load(path / file) for file in preserve_files if (path / file).exists()] if preserve_files else None
+        preserve_dir = [File.load(path / file) for file in preserve_files if
+                        (path / file).exists()] if preserve_files else None
 
         delete_directory(work_dir)
 
@@ -147,14 +148,16 @@ class Invoker:
             for file in result.input_files:
                 report.input_files.add(
                     FileModel.objects.create(
-                        file=FileDjango(file.source, name=file.name), name=file.name))
+                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
+                                        name=file.name), name=file.name))
             report.save()
 
         if result.preserved_files:
             for file in result.preserved_files:
                 report.preserved_files.add(
                     FileModel.objects.create(
-                        file=FileDjango(file.source, name=file.name), name=file.name))
+                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
+                                        name=file.name), name=file.name))
             report.save()
 
         return report
