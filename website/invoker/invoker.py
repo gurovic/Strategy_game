@@ -80,7 +80,8 @@ class NormalEnvironment(InvokerEnvironment):
 
         input_dir = [file for file in file_system] if file_system else None
 
-        preserve_dir = [File.load(Path(work_dir) / file) for file in preserve_files] if preserve_files else None
+        path = Path(work_dir)
+        preserve_dir = [File.load(path / file) for file in preserve_files if (path / file).exists()] if preserve_files else None
 
         delete_directory(work_dir)
 
