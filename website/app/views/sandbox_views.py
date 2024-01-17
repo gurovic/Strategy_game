@@ -11,16 +11,9 @@ def show(request, game_id):
     game = Game.objects.get(pk=game_id)
     if request.method == 'POST':
         if request.POST['type'] == 'compiler':
-            file_object = request.FILES['strategy']
+            file_object = request.FILES['strategy'].read()
             lang = request.POST['language']
             file_compiler = CompilerNotifyReceiver(file_object, lang)
-
-            # report = CompilerReport.objects.create(
-            #     compiled_file=file_object,
-            #     status=CompilerReport.Status.OK,
-            # )
-            # report.save()
-            # file_compiler.notify(report)
             file_compiler.run()
 
             return render(request, 'sandbox.html',
