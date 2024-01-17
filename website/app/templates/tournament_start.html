@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/css/sandbox.css">
+    <link rel="stylesheet" href="/static/css/tournament_start.css">
+{% endblock %}
+
+{% block title %}
+    Start tournament
+{% endblock %}
+
+{% block header %}
+    {% if status == 'failed' %}
+    {% else %}
+        Start tournament {{ tournament.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {% if status == 'posting tournament' %}
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="submit" value="start tournament">
+        </form>
+
+    {% elif stats == 'getting report' %}
+
+        <script></script>
+        <table class="table-with-tr">
+            <tr>
+                <td>Place</td>
+                <td>Name</td>
+                <td>Points</td>
+            </tr>
+            {%  %}
+        </table>
+
+    {% else %}
+
+        <div class="error-container">
+            <h1>STATUS ERROR</h1>
+            <p>Either something in files was wrong or we have some problems in server.</p>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
