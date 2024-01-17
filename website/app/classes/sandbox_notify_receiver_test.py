@@ -1,21 +1,24 @@
+from unittest.mock import patch, Mock
+
 from django.test import TestCase
 
 from .sandbox_notify_receiver import SandboxNotifyReceiver
 
 
 class TestSandboxNotifyReceiver(TestCase):
-    def test_create(self):
-        class MockGame:
-            number_of_players = 0
+    @patch('app.classes.sandbox_notify_receiver.Sandbox')
+    def test_create(self, mock_sandbox):
+        mock_sandbox_instance = Mock()
+        mock_sandbox.return_value = mock_sandbox_instance
 
-        a = SandboxNotifyReceiver(MockGame, None)
-        self.assertEqual(a.report, None)
-        self.assertEqual(a.game, MockGame)
-        self.assertEqual(a.strategy, None)
+        sandbox = SandboxNotifyReceiver(None, None)
+        self.assertEqual(sandbox.report, None)
+        self.assertEqual(sandbox.strategy, None)
 
-    def test_run(self):
-        class MockGame:
-            number_of_players = 0
+    @patch('app.classes.sandbox_notify_receiver.Sandbox')
+    def test_run(self, mock_sandbox):
+        mock_sandbox_instance = Mock()
+        mock_sandbox.return_value = mock_sandbox_instance
 
         class MockSandbox:
             count = 0
@@ -23,16 +26,17 @@ class TestSandboxNotifyReceiver(TestCase):
             def run_battle(self):
                 self.count += 1
 
-        a = SandboxNotifyReceiver(MockGame, None)
-        a.sandbox = MockSandbox()
-        a.run()
-        self.assertEqual(a.sandbox.count, 1)
+        sandbox = SandboxNotifyReceiver(None, None)
+        sandbox.sandbox = MockSandbox()
+        sandbox.run()
+        self.assertEqual(sandbox.sandbox.count, 1)
 
-    def test_notify(self):
-        class MockGame:
-            number_of_players = 0
+    @patch('app.classes.sandbox_notify_receiver.Sandbox')
+    def test_notify(self, mock_sandbox):
+        mock_sandbox_instance = Mock()
+        mock_sandbox.return_value = mock_sandbox_instance
 
         report = 'done'
-        a = SandboxNotifyReceiver(MockGame, None)
-        a.notify(report)
-        self.assertEqual(a.report, report)
+        sandbox = SandboxNotifyReceiver(None, None)
+        sandbox.notify(report)
+        self.assertEqual(sandbox.report, report)
