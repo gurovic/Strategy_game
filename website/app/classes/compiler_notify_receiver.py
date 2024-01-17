@@ -11,10 +11,10 @@ LANGUAGES = {
 
 
 class CompilerNotifyReceiver:
-    def __init__(self, file, lang):
+    def __init__(self, file_content, lang):
         self.report = None
         self.compiler_report = None
-        self.file = file
+        self.file = file_content
         self.lang = LANGUAGES[lang]
         self.compiler = Compiler(self.file, self.lang, self.notify)
 
