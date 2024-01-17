@@ -146,17 +146,14 @@ class Invoker:
             for file in result.input_files:
                 report.input_files.add(
                     FileModel.objects.create(
-                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
-                                        name=file.name),
-                        name=file.name))
+                        file=FileDjango(file.source, name=file.name), name=file.name))
             report.save()
 
         if result.preserved_files:
             for file in result.preserved_files:
                 report.preserved_files.add(
                     FileModel.objects.create(
-                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
-                                        name=file.name), name=file.name))
+                        file=FileDjango(file.source, name=file.name), name=file.name))
             report.save()
 
         return report
