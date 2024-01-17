@@ -84,6 +84,7 @@ class Compiler:
         self.source = source
         self.lang = lang
         self.callback = callback
+        self.report = None
 
         if self.lang not in self.COMMANDS:
             raise NotSupportedLanguage(self.lang)
@@ -94,5 +95,6 @@ class Compiler:
         self.command.compile()
 
     def notify(self, report: CompilerReport):
+        self.report = report
         if self.callback:
             self.callback(report)
