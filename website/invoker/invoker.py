@@ -27,6 +27,7 @@ class InvokerStatus(enum.Enum):
 class RunResult:
     command: str
     output: str
+    error: str
     exit_code: int | None
 
     time_start: datetime
@@ -66,7 +67,7 @@ class NormalEnvironment(InvokerEnvironment):
 
         try:
             result = subprocess.run(shlex.split(command) if isinstance(command, str) else command, text=True,
-                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timelimit)
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_dir, timeout=timelimit)
             return_code = result.returncode
             timeout_error = False
             logging.debug(f"Command \"{command}\" launch was ended with exit code {return_code}!")
@@ -75,7 +76,7 @@ class NormalEnvironment(InvokerEnvironment):
             result = exc
             return_code = None
             timeout_error = True
-
+        print(result)
         time_end = timezone.now()
 
         input_dir = [file for file in file_system] if file_system else None
@@ -89,6 +90,7 @@ class NormalEnvironment(InvokerEnvironment):
         return RunResult(
             command,
             result.stdout,
+            result.stderr,
             return_code,
             time_start,
             time_end,
@@ -139,10 +141,12 @@ class Invoker:
             raise NoInvokerPoolCallbackData(id(self))
 
     def make_report(self, result: RunResult) -> InvokerReport:
+        print("OUTPUT--> ", result.output)
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
                                               status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE,
+                                              error=result.error
                                               )
         if result.input_files:
             for file in result.input_files:
