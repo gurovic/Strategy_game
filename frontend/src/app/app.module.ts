@@ -11,6 +11,7 @@ import { SandboxComponent } from './components/sandbox/sandbox.component';
 import { WikiComponent } from './components/wiki/wiki.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { LoginComponent } from './components/login/login.component';
+import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LoginComponent } from './components/login/login.component';
     SandboxComponent,
     WikiComponent,
     ContactUsComponent,
-    LoginComponent
+    LoginComponent,
+    BottomBarComponent
   ],
   imports: [
     BrowserModule,

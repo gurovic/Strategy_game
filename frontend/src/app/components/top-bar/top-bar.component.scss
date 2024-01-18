@@ -6,7 +6,7 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
 }
 
 .logo {
@@ -28,7 +28,7 @@
   padding-right: calc(25% - 200px);
 
   li:hover {
-    color: var(--color-primary);
+    color: var(--color-accent);
     cursor: pointer;
   }
 }
@@ -51,7 +51,7 @@
 
 .content {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   display: flex;
   justify-content: space-between;
   align-content: center;
@@ -63,13 +63,12 @@
   --btn-transition: .3s;
   --btn-animation-duration: 1.2s;
   --btn-letter-spacing: .1rem;
-
   --btn-default-bg: #020024;
   --btn-hover-bg: #20222A;
   --hover-btn-color: #15ca0c;
   --default-btn-color: #fff;
 
-  padding: var(--btn-padding);
+  padding-right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,7 +189,8 @@
 }
 
 :nth-child(1 of .circle-element) {
-  background: radial-gradient(rgb(255, 219, 0), rgba(255, 92, 0, 0.22));
+  background: rgb(0, 255, 16);
+  //background: radial-gradient(rgb(0, 255, 16), rgba(255, 92, 0, 0.22));
   left: 28%;
   top: -10px;
   width: 300px;
@@ -198,7 +198,8 @@
 }
 
 :nth-child(2 of .circle-element) {
-  background: radial-gradient(rgb(255, 0, 0), rgba(214, 0, 255, 0));
+  background: rgb(123, 0, 255);
+  //background: radial-gradient(rgb(123, 0, 255), rgba(214, 0, 255, 0));
   left: 39%;
   top: -5px;
   width: 200px;
@@ -206,7 +207,8 @@
 }
 
 :nth-child(3 of .circle-element) {
-  background: radial-gradient(rgb(170, 0, 255), rgba(214, 0, 255, 0));
+  background: rgb(239, 0, 0);
+  //background: radial-gradient(rgb(239, 0, 0), rgba(214, 0, 255, 0));
   left: 47%;
   top: -100px;
   width: 250px;
@@ -214,7 +216,8 @@
 }
 
 :nth-child(4 of .circle-element) {
-  background: radial-gradient(rgb(255, 0, 186), rgba(214, 0, 255, 0));
+  background: rgb(199, 255, 0);
+  //background: radial-gradient(rgb(199, 255, 0), rgba(214, 0, 255, 0));
   left: 60%;
   top: -30px;
   width: 200px;
@@ -258,6 +261,7 @@
     transform: translateY(0);
   }
 }
+
 @keyframes closeup {
   0% {
     transform: translateY(0);

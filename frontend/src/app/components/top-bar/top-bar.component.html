@@ -28,13 +28,12 @@
 
 <div id="dropdown-menu" class="menu-content">
     <ul class="dropdown-links">
-        <li (click)="go_link('')">Home</li>
-        <li (click)="go_link('contests')">Competitions</li>
-        <li (click)="go_link('sandbox')">Sandbox</li>
-        <li (click)="go_link('wiki')">Wiki</li>
-        <li (click)="go_link('about')">About</li>
-        <li (click)="go_link('contact')">Contact Us</li>
+        <li (click)="go_link('');close_menu()">Home</li>
+        <li (click)="go_link('contests');close_menu()">Competitions</li>
+        <li (click)="go_link('sandbox');close_menu()">Sandbox</li>
+        <li (click)="go_link('wiki');close_menu()">Wiki</li>
+        <li (click)="go_link('about');close_menu()">About</li>
+        <li (click)="go_link('contact');close_menu()">Contact Us</li>
     </ul>
 </div>
-
 
