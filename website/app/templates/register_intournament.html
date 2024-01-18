@@ -5,8 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <form method="POST" action=" ">
-        <input type="">
-    </form>
+    {% if status == 'not registered' %}
+        <form method="POST" action=" ">
+            <input type="submit" value="register">
+        </form>
+
+    {% elif status == 'registered' %}
+        <p class="d-inline-block">You have succesfully registered! Congratulations! </p>
+    {%  else %}
+        <p class="d-inline-block">Sorry, you can't register for this tournament, because the number of players is already maximum </p>
+    {% endif %}
 
 {% endblock %}
