@@ -1,4 +1,67 @@
+/* IMPORTS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Raleway');
+@import url('https://fonts.googleapis.com/css2?family=Goldman');
+@import url('https://fonts.googleapis.com/css2?family=Rubik');
 
+
+/* TAGS STYLES */
+html, body {
+  width: 100vw;
+  height: 100vh;
+  scroll-behavior: smooth;
+  overflow: hidden;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style-type: none;
+  display: inline-block;
+}
+h1,h2,h3,h4,h5,h6,p,a,input,div,span,button {
+  font-family: 'Raleway', sans-serif;
+}
+input {
+  outline-offset: 0;
+  outline: 0;
+}
+button {
+  outline-offset: 0;
+  outline: 0;
+}
+
+/* SCROLL BAR */
+.scroll-bar::-webkit-scrollbar {
+  width: 10px;
+}
+.scroll-bar::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgba(239, 238, 224, 0.25);
+}
+.scroll-bar::-webkit-scrollbar-button {
+  display: none;
+}
+.scroll-bar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #FACD66;
+}
+.scroll-bar {
+  scrollbar-width: thin;
+  scrollbar-color: #6969dd #e0e0e0;
+}
+
+/* GLOBAL VARIABLES */
+/* size */
+body {
+  --login-box-width: min(100%, 300px);
+  --top-bar-height: 70px;
+}
+/* color */
+body {
+  --background-dark: #1D2123;
+}
