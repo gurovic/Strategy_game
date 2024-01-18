@@ -5,18 +5,22 @@
             Alkocode
         </div>
         <ul class="links">
-            <li (click)="go_link('contests')">Competitions</li>
-            <li (click)="go_link('sandbox')">Sandbox</li>
-            <li (click)="go_link('wiki')">Wiki</li>
-            <li (click)="go_link('about')">About</li>
-            <li (click)="go_link('contact')">Contact Us</li>
+            <li (click)="go_link('contests')" content="Competitions">Competitions</li>
+            <li (click)="go_link('sandbox')" content="Sandbox">Sandbox</li>
+            <li (click)="go_link('wiki')" content="Wiki">Wiki</li>
+            <li (click)="go_link('about')" content="About">About</li>
+            <li (click)="go_link('contact')" content="Contact Us">Contact Us</li>
         </ul>
         <div class="login" (click)="go_link('login')">
             <span>Login</span>
         </div>
         <!-- Mobile -->
         <div (click)="interact_menu()" class="mobile-menu-button">
-            <img alt="assets/menu-svg.svg" src="assets/menu-svg.svg">
+            <svg viewBox="0 0 100 100">
+                <rect class="menu-svg-rect" x="0" y="15" width="100" height="10"/>
+                <rect class="menu-svg-rect" x="0" y="45" width="100" height="10"/>
+                <rect class="menu-svg-rect" x="0" y="75" width="100" height="10"/>
+            </svg>
         </div>
         <!-- Decorations -->
         <div class="circle-element"></div>
@@ -28,12 +32,12 @@
 
 <div id="dropdown-menu" class="menu-content">
     <ul class="dropdown-links">
-        <li (click)="go_link('');close_menu()">Home</li>
-        <li (click)="go_link('contests');close_menu()">Competitions</li>
-        <li (click)="go_link('sandbox');close_menu()">Sandbox</li>
-        <li (click)="go_link('wiki');close_menu()">Wiki</li>
-        <li (click)="go_link('about');close_menu()">About</li>
-        <li (click)="go_link('contact');close_menu()">Contact Us</li>
+        <li (click)="go_link('');">Home</li>
+        <li (click)="go_link('contests');">Competitions</li>
+        <li (click)="go_link('sandbox');">Sandbox</li>
+        <li (click)="go_link('wiki');">Wiki</li>
+        <li (click)="go_link('about');">About</li>
+        <li (click)="go_link('contact');">Contact Us</li>
     </ul>
 </div>
 

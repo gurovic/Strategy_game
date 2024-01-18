@@ -15,26 +15,32 @@ html, body {
   overflow: hidden;
   color: var(--text-white)
 }
+
 body {
   display: flex;
   flex-wrap: wrap;
 }
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 li {
   list-style-type: none;
   display: inline-block;
 }
-h1,h2,h3,h4,h5,h6,p,a,input,div,span,button {
+
+h1, h2, h3, h4, h5, h6, p, a, input, div, span, button {
   font-family: 'Raleway', sans-serif;
 }
+
 input {
   outline-offset: 0;
   outline: 0;
 }
+
 button {
   outline-offset: 0;
   outline: 0;
@@ -44,20 +50,24 @@ button {
 .scroll-bar::-webkit-scrollbar {
   width: 10px;
 }
+
 .scroll-bar::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: rgba(239, 238, 224, 0.25);
 }
+
 .scroll-bar::-webkit-scrollbar-button {
   display: none;
 }
+
 .scroll-bar::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: var(--background-ldark);
 }
+
 .scroll-bar {
   scrollbar-width: thin;
-  overflow-y: scroll!important;
+  overflow-y: scroll !important;
   scrollbar-color: var(--background-ldark) var(--background-dark);
 }
 
@@ -68,11 +78,13 @@ body {
   --login-box-width: min(100%, 300px);
   --top-bar-height: 70px;
 }
+
 // fonts
 body {
   --f-raleway: 'Raleway', sans-serif;
   --f-rubik: 'Rubik', sans-serif;
 }
+
 /* color */
 body {
   --background-dark: #020024;
@@ -83,4 +95,13 @@ body {
   --color-secondary: #20222A;
   --color-accent: #00ffa1;
   --color-accent-second: #99ff91;
+}
+
+@media screen and (max-width: 900px) {
+  .scroll-bar {
+    &::-webkit-scrollbar {
+      width: 0;
+      display: none;
+    }
+  }
 }
