@@ -13,7 +13,13 @@ def start_tournament(request, tournament_id):
         tournament.end()
         # we get the current result of the battle and return it to display in the html part
         left_battles = tournament.system.battle_count
-
-        return render(request, 'tournament_start.html', {'status': 'OK', 'tournament': tournament})
+        players = tournament.players.objects.all()
+        players.sort(key=lambda x: x.score, reverse=True)
+        return_players = []
+        for i in range(len(players)):
+            return_players.append({'place': i, 'score': players[i].score, 'name': players[i].player})
+        return render(request, 'tournament_start.html',
+                      {'status': 'OK', 'tournament': tournament, 'left_battles': left_battles,
+                       'players': return_players})
 
     return render(request, 'tournament_start.html', {'status': 'OK', 'tournament': tournament})

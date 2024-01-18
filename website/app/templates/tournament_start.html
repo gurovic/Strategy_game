@@ -34,7 +34,13 @@
                 <td>Name</td>
                 <td>Points</td>
             </tr>
-            {%  %}
+            {% for player in players %}
+                <tr>
+                    <td>{{ player.place }}</td>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.score }}</td>
+                </tr>
+            {% endfor %}
         </table>
 
     {% else %}
