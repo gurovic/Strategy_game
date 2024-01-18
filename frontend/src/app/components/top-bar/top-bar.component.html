@@ -1,5 +1,40 @@
 <main class="top-bar">
-
-
-
+    <div class="content">
+        <!-- Top Bar -->
+        <div class="logo" (click)="go_link('')">
+            Alkocode
+        </div>
+        <ul class="links">
+            <li (click)="go_link('contests')">Competitions</li>
+            <li (click)="go_link('sandbox')">Sandbox</li>
+            <li (click)="go_link('wiki')">Wiki</li>
+            <li (click)="go_link('about')">About</li>
+            <li (click)="go_link('contact')">Contact Us</li>
+        </ul>
+        <div class="login" (click)="go_link('login')">
+            <span>Login</span>
+        </div>
+        <!-- Mobile -->
+        <div (click)="interact_menu()" class="mobile-menu-button">
+            <img alt="assets/menu-svg.svg" src="assets/menu-svg.svg">
+        </div>
+        <!-- Decorations -->
+        <div class="circle-element"></div>
+        <div class="circle-element"></div>
+        <div class="circle-element"></div>
+        <div class="circle-element"></div>
+    </div>
 </main>
+
+<div id="dropdown-menu" class="menu-content">
+    <ul class="dropdown-links">
+        <li (click)="go_link('')">Home</li>
+        <li (click)="go_link('contests')">Competitions</li>
+        <li (click)="go_link('sandbox')">Sandbox</li>
+        <li (click)="go_link('wiki')">Wiki</li>
+        <li (click)="go_link('about')">About</li>
+        <li (click)="go_link('contact')">Contact Us</li>
+    </ul>
+</div>
+
+

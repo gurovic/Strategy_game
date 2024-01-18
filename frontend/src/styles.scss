@@ -13,6 +13,11 @@ html, body {
   height: 100vh;
   scroll-behavior: smooth;
   overflow: hidden;
+  color: var(--text-white)
+}
+body {
+  display: flex;
+  flex-wrap: wrap;
 }
 * {
   box-sizing: border-box;
@@ -61,11 +66,17 @@ body {
   --login-box-width: min(100%, 300px);
   --top-bar-height: 70px;
 }
+// fonts
+body {
+  --f-raleway: 'Raleway', sans-serif;
+  --f-rubik: 'Rubik', sans-serif;
+}
 /* color */
 body {
-  --background-dark: #20222A;
+  --background-dark: #020024;
+  --background-ldark: #030034;
   --text-white: #ebe9fc;
   --color-primary: #15ca0c;
-  --color-secondary: #020024;
+  --color-secondary: #20222A;
   --color-accent: #00ffa1;
 }
