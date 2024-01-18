@@ -2,11 +2,12 @@
   position: relative;
   width: 100vw;
   height: var(--top-bar-height);
-  background-color: var(--background-dark);
+  background-color: var(--background-ddark);
+  box-shadow: 0px -3px 10px 2px var(--text-white);
   display: flex;
   justify-content: center;
   overflow: hidden;
-  z-index: 2;
+  z-index: 1;
 }
 
 .logo {
@@ -25,6 +26,7 @@
   text-decoration: none;
   font-size: 1.4em;
   font-family: "Rubik", sans-serif;
+  letter-spacing: 1px;
   padding-right: calc(25% - 200px);
 
   li:hover {
@@ -182,7 +184,7 @@
 }
 
 .circle-element {
-  filter: blur(80px);
+  filter: blur(300px);
   position: absolute;
   border-radius: 100%;
   z-index: -1;
@@ -241,6 +243,7 @@
   padding: 40px 30px;
   background-color: var(--background-ldark);
   transition-duration: .5s;
+  z-index: 1;
   transform: translateY(-100%);
 }
 

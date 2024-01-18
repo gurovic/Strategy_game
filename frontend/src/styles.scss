@@ -52,17 +52,19 @@ button {
   display: none;
 }
 .scroll-bar::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: #FACD66;
+  border-radius: 4px;
+  background-color: var(--background-ldark);
 }
 .scroll-bar {
   scrollbar-width: thin;
-  scrollbar-color: #6969dd #e0e0e0;
+  overflow-y: scroll!important;
+  scrollbar-color: var(--background-ldark) var(--background-dark);
 }
 
 /* GLOBAL VARIABLES */
 /* size */
 body {
+  background-color: var(--background-dark);
   --login-box-width: min(100%, 300px);
   --top-bar-height: 70px;
 }
@@ -74,9 +76,11 @@ body {
 /* color */
 body {
   --background-dark: #020024;
+  --background-ddark: #00001f;
   --background-ldark: #030034;
   --text-white: #ebe9fc;
   --color-primary: #15ca0c;
   --color-secondary: #20222A;
   --color-accent: #00ffa1;
+  --color-accent-second: #99ff91;
 }
