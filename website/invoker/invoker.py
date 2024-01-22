@@ -13,7 +13,6 @@ import subprocess
 import tempfile
 import logging
 import typing
-import shlex
 import enum
 import io
 
@@ -66,8 +65,8 @@ class NormalEnvironment(InvokerEnvironment):
             f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
 
         try:
-            result = subprocess.run(shlex.split(command) if isinstance(command, str) else command, text=True,
-                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_dir, timeout=timelimit)
+            result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_dir,
+                                    timeout=timelimit, shell=True)
             return_code = result.returncode
             timeout_error = False
             logging.debug(f"Command \"{command}\" launch was ended with exit code {return_code}!")
