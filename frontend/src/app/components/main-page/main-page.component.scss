@@ -1,0 +1,51 @@
+.content {
+  width: 100%;
+  min-height: 100%;
+  height: fit-content;
+  overflow: hidden;
+
+  position: relative;
+}
+
+.background {
+  width: 100%;
+  min-height: 100%;
+  height: fit-content;
+  padding: 10em 3em;
+
+  position: absolute;
+
+  svg {
+    max-width: 650px;
+    width: 90%;
+  }
+}
+.vertical-line {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+
+  position: absolute;
+  top: 0;
+
+  z-index: -1;
+
+  font-size: 1.3em;
+  letter-spacing: 10px;
+
+  color: var(--color-accent);
+}
+
+
+.block-content {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+
+}
+.first-content {
+  h1 {
+    font-size: 3em;
+    width: 10em;
+    text-align: center;
+  }
+}

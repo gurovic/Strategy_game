@@ -74,7 +74,7 @@ button {
 /* GLOBAL VARIABLES */
 /* size */
 body {
-  background-color: var(--background-dark);
+  background-color: var(--background-ddark);
   --login-box-width: min(100%, 300px);
   --top-bar-height: 70px;
 }
@@ -88,7 +88,7 @@ body {
 /* color */
 body {
   --background-dark: #020024;
-  --background-ddark: #00001f;
+  --background-ddark: #000015;
   --background-ldark: #030034;
   --text-white: #ebe9fc;
   --color-primary: #15ca0c;
