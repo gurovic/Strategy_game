@@ -19,7 +19,6 @@ def start_tournament(request, tournament_id):
         for i in range(len(players)):
             return_players.append({'place': i, 'score': players[i].score, 'name': players[i].player})
         return render(request, 'tournament_start.html',
-                      {'status': 'OK', 'tournament': tournament, 'left_battles': left_battles,
+                      {'status': 'getting report', 'tournament': tournament, 'left_battles': left_battles,
                        'players': return_players})
-
-    return render(request, 'tournament_start.html', {'status': 'OK', 'tournament': tournament})
+    return render(request, 'tournament_start.html', {'status': 'posting tournament', 'tournament': tournament})
