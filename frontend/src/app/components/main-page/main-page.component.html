@@ -15,8 +15,15 @@
   <div class="block-content">
     <h1>Learn new languages</h1>
 
-    <div>
-
+    <div class="horizontal-scrolling__container">
+      <div class="horizontal-scrolling__items">
+        <div class="horizontal-scrolling__item">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
+        </div>
+        <div class="horizontal-scrolling__item">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
+        </div>
+      </div>
     </div>
   </div>
 
@@ -25,7 +32,7 @@
   </div>
 
   <div class="block-content">
-    <h1></h1>
+    <h1>Watch battles visualization</h1>
   </div>
 
   <div class="background">

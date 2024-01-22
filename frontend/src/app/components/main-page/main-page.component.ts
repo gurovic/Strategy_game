@@ -7,6 +7,18 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./main-page.component.scss']
 })
 export class MainPageComponent implements AfterViewInit {
+  public svg_filenames = [
+    'assets/logos_for_main_page/csharp.svg',
+    'assets/logos_for_main_page/c++.svg',
+    'assets/logos_for_main_page/c.svg',
+    'assets/logos_for_main_page/go.svg',
+    'assets/logos_for_main_page/java.svg',
+    'assets/logos_for_main_page/js.svg',
+    'assets/logos_for_main_page/kotlin.svg',
+    'assets/logos_for_main_page/python.svg',
+    'assets/logos_for_main_page/rust.svg',
+    'assets/logos_for_main_page/ts.svg',
+  ]
 
   constructor(
     private router: Router,
@@ -32,8 +44,6 @@ export class MainPageComponent implements AfterViewInit {
       }
     })
   }
-
-
 
   getRandomInt(max:number): number {
     return Math.floor(Math.random() * max);
