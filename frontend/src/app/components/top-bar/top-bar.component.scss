@@ -163,6 +163,7 @@
   border-bottom: 1px solid #000210;
   transition-duration: .5s;
   transform: translateY(-100%);
+  z-index: 90;
 }
 
 @media screen and (max-width: 900px) {
