@@ -33,10 +33,11 @@ class AbstractCompile:
 
     def command(self) -> (str, str | File, str):
         """Return compile command, input file and output file name"""
-    
+
     def compile(self):
         command, input_file, output_file = self.command()
-        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file])], priority=Priority.RED).subscribe(self)
+        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file])],
+                                      priority=Priority.RED).subscribe(self)
         queue = InvokerMultiRequestPriorityQueue()
         queue.add(request)
 
@@ -45,9 +46,12 @@ class AbstractCompile:
         self.send_report(compiler_report)
 
     def make_report(self, report: InvokerReport):
-        return CompilerReport.objects.create(invoker_report=report, time=report.time_end - report.time_start,
-                                             status=CompilerReport.Status.TIMELIMIT if report.status == InvokerReport.Status.TL else CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR,
-                                             error=report.error, compiled_file=report.preserved_files.get(name=self.command()[2]).file if report.status == InvokerReport.Status.OK else None)
+        return CompilerReport.objects.create(
+            invoker_report=report,
+            time=report.time_end - report.time_start,
+            status=CompilerReport.Status.TIMELIMIT if report.status == InvokerReport.Status.TL else CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR,
+            error=report.error,
+            compiled_file=report.preserved_files.get(name=self.command()[2]).file if report.status == InvokerReport.Status.OK else None)
 
     def send_report(self, report: CompilerReport):
         if self.callback:
