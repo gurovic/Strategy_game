@@ -47,7 +47,7 @@ class AbstractCompile:
     def make_report(self, report: InvokerReport):
         return CompilerReport.objects.create(invoker_report=report, time=report.time_end - report.time_start,
                                              status=CompilerReport.Status.TIMELIMIT if report.status == InvokerReport.Status.TL else CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR,
-                                             error=report.error, compiled_file=report.preserved_files.get(name=self.command()[2]).file)
+                                             error=report.error, compiled_file=report.preserved_files.get(name=self.command()[2]).file if report.status == InvokerReport.Status.OK else None)
 
     def send_report(self, report: CompilerReport):
         if self.callback:
