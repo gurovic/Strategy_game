@@ -12,6 +12,7 @@ import { WikiComponent } from './components/wiki/wiki.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { LoginComponent } from './components/login/login.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgOptimizedImage
   ],
   providers: [],
   bootstrap: [AppComponent]
