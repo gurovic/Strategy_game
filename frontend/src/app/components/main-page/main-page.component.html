@@ -1,43 +1,103 @@
 <main class="content">
 
-  <div class="block-content">
+  <div class="block-content hidden">
     <h1>
       <span>Improve your coding</span>
       <span>skills with us.</span>
     </h1>
-    <p>Platform for game coding competitions.</p>
+    <p class="after-header">Amazing platform for game coding competitions. Let's bring game coding to life again
+      together.</p>
 
-    <div class="button start-button">
-      <p>Start coding.</p>
+    <div class="w-full flex justify-center buttons-container">
+      <div (click)="router.navigate(['register'])" class="button start-button">
+        <p>Start coding</p>
+      </div>
+      <div class="button">
+        <p (click)="router.navigate(['wiki'])">read docs</p>
+      </div>
     </div>
   </div>
 
-  <div class="block-content">
+  <div class="block-content hidden">
     <h1>Learn new languages</h1>
 
+    <p></p>
+
     <div class="horizontal-scrolling__container">
-      <div class="horizontal-scrolling__items">
+      <div class="horizontal-scrolling__items right-scroll">
         <div class="horizontal-scrolling__item">
           <img *ngFor="let filename of svg_filenames" src="{{filename}}">
         </div>
         <div class="horizontal-scrolling__item">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
+        </div>
+      </div>
+      <div class="horizontal-scrolling__items left-scroll">
+        <div class="horizontal-scrolling__item">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
+        </div>
+        <div class="horizontal-scrolling__item">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
+          <img *ngFor="let filename of svg_filenames" src="{{filename}}">
           <img *ngFor="let filename of svg_filenames" src="{{filename}}">
         </div>
       </div>
     </div>
   </div>
 
-  <div class="block-content">
-    <h1>Compete to others</h1>
+  <div class="block-content hidden">
+    <div class="content">
+      <div class="left">
+        <h1>Compete to others</h1>
+        <p>Moreover we provide rating changes after tournament finishes.</p>
+      </div>
+      <div>
+        <h2 class="number">11.5M+</h2>
+        <p>rounds were held</p>
+        <h2 class="number">21K+</h2>
+        <p>users registered</p>
+        <h2 class="number">0.0000$</h2>
+        <p>money took by us</p>
+      </div>
+    </div>
   </div>
 
-  <div class="block-content">
-    <h1>Watch battles visualization</h1>
+  <div class="block-content hidden">
+    <h1>Our priorities</h1>
+
+    <div class="container">
+      <div class="little_container">
+        <div class="card little-card1 little-card__hide">
+          <p class="header">Fast</p>
+          <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
+            you will like to.</p>
+        </div>
+        <div class="card little-card2 little-card__hide">
+          <p class="header">Fast</p>
+          <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
+            you will like to.</p>
+        </div>
+      </div>
+      <div class="little_container">
+        <div class="card little-card3 little-card__hide">
+          <p class="header">Fast</p>
+          <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
+            you will like to.</p>
+        </div>
+        <div class="card little-card4 little-card__hide">
+          <p class="header">Fast</p>
+          <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
+            you will like to.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="background">
-    <p class="vertical-line" style="left: 20em;"></p>
-    <p class="vertical-line" style="left: 5em;"></p>
+<!--        <p class="vertical-line" style="left: 20em;"></p>-->
+<!--        <p class="vertical-line" style="left: 5em;"></p>-->
   </div>
 
 </main>

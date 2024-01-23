@@ -21,17 +21,18 @@ export class MainPageComponent implements AfterViewInit {
   ]
 
   constructor(
-    private router: Router,
+    public router: Router,
     private route: ActivatedRoute,
   ) { }
 
   ngAfterViewInit(): void {
     let vertical_01_lines = document.getElementsByClassName('vertical-line')!;
     for (let i = 0; i < vertical_01_lines.length; i++) {
+      let line_content = this.generate_01_text_line();
+      console.log(line_content);
       // @ts-ignore
-      vertical_01_lines[i].innerText=this.generate_01_text_line();
+      vertical_01_lines[i].innerText = line_content;
     }
-    console.log(1);
 
     addEventListener("scroll", (event)=>{
       console.log(1);
@@ -43,6 +44,32 @@ export class MainPageComponent implements AfterViewInit {
         element.style.top = `${y*2}px`
       }
     })
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        let class_name = 'show';
+        console.log(entry);
+        if (entry.isIntersecting)
+          entry.target.classList.add(class_name);
+        else
+          entry.target.classList.remove(class_name);
+      });
+    });
+    const cards_observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        let class_name = 'little-card__show';
+        console.log(entry);
+        if (entry.isIntersecting)
+          entry.target.classList.add(class_name);
+        else
+          entry.target.classList.remove(class_name);
+      });
+    });
+
+    const hiddenElements = document.querySelectorAll('.hidden');
+    const hiddenCards = document.querySelectorAll('.little-card__hide');
+    hiddenElements.forEach((el) => observer.observe(el));
+    hiddenCards.forEach((el) => cards_observer.observe(el));
   }
 
   getRandomInt(max:number): number {
