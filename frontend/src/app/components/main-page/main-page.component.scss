@@ -93,14 +93,56 @@
 
       &:nth-child(1) {
         background: linear-gradient(90deg, rgba(140,1,250,1) 0%, rgba(2,0,36,1) 100%);
+        transition-duration: 1s;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          opacity: 0;
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 0;
+          border-radius: 1000px;
+          background-color: rgba(140,1,250,1);
+          z-index: -1;
+          transition: all 250ms
+        }
+        &:hover {
+          color: #e8e8e8;
+        }
+        &:hover::before {
+          width: 100%;
+          opacity: 1;
+        }
       }
       &:nth-child(2) {
         border: 1px solid var(--text-white);
+        transition-duration: 1s;
+        &:hover {
+          background: var(--text-white);
+          p {
+            color: var(--background-ddark) !important;
+          }
+        }
       }
     }
   }
   &:nth-child(2) {
+    z-index: 30;
     height: 300px;
+    display: flex;
+    justify-content: center;
+
+    .center-card {
+      margin-top: 40px;
+      border-radius: 30px;
+      padding: 30px 30px;
+      max-width: min(100%, 400px);
+      min-height: 100px;
+    }
   }
 
   &:nth-child(3) {
@@ -237,6 +279,9 @@
         left: calc(10vw * 10);
         position: relative;
       }
+    }
+    &:not(:first-child) {
+      margin-top: 30px;
     }
   }
   @keyframes infiniteRightScroll {

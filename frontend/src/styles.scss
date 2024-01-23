@@ -71,6 +71,10 @@ button {
   overflow-y: scroll !important;
   scrollbar-color: var(--background-ldark) var(--background-dark);
 }
+.glass-bg {
+  background: radial-gradient(90.16% 143.01% at 15.32% 21.04%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 77.08%, rgba(255, 255, 255, 0.27) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  backdrop-filter: blur(40px);
+}
 
 /* GLOBAL VARIABLES */
 /* size */

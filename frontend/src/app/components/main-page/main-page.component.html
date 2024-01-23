@@ -9,11 +9,11 @@
       together.</p>
 
     <div class="w-full flex justify-center buttons-container">
-      <div (click)="router.navigate(['register'])" class="button start-button">
+      <div (click)="go('register')" class="button start-button">
         <p>Start coding</p>
       </div>
       <div class="button">
-        <p (click)="router.navigate(['wiki'])">read docs</p>
+        <p (click)="go('wiki')">read docs</p>
       </div>
     </div>
   </div>
@@ -21,7 +21,10 @@
   <div class="block-content hidden">
     <h1>Learn new languages</h1>
 
-    <p></p>
+    <div class="glass-bg center-card">
+      <h2 style="color:#8016EA; font-weight: 700; font-size: max(15px, min(20px, 5vw));">Here you can code in almost all popular languages</h2>
+      <p style="color: var(--background-ddark)">We support compilation of more than 10+ programming languages</p>
+    </div>
 
     <div class="horizontal-scrolling__container">
       <div class="horizontal-scrolling__items right-scroll">
@@ -69,24 +72,14 @@
 
     <div class="container">
       <div class="little_container">
-        <div class="card little-card1 little-card__hide">
-          <p class="header">Fast</p>
-          <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
-            you will like to.</p>
-        </div>
-        <div class="card little-card2 little-card__hide">
+        <div class="card little-card__hide">
           <p class="header">Fast</p>
           <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
             you will like to.</p>
         </div>
       </div>
       <div class="little_container">
-        <div class="card little-card3 little-card__hide">
-          <p class="header">Fast</p>
-          <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
-            you will like to.</p>
-        </div>
-        <div class="card little-card4 little-card__hide">
+        <div class="card little-card__hide">
           <p class="header">Fast</p>
           <p class="text">We provide fast battle results right after the tour finished. Also you can see them any time
             you will like to.</p>
@@ -96,8 +89,9 @@
   </div>
 
   <div class="background">
-<!--        <p class="vertical-line" style="left: 20em;"></p>-->
-<!--        <p class="vertical-line" style="left: 5em;"></p>-->
+    <!--        <p class="vertical-line" style="left: 20em;"></p>-->
+    <!--        <p class="vertical-line" style="left: 5em;"></p>-->
+
   </div>
 
 </main>
