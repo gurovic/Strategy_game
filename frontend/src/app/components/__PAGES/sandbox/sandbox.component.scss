@@ -4,9 +4,11 @@
 }
 
 .top-part {
+  --screen-width: min(1440px, 100vw);
+  --image-width:   max(500px, .6*var(--screen-width));
   width:           100%;
-  height:          fit-content;
-  padding:         10em 3em 0;
+  min-height:      var(--image-width);
+  padding:         0 3em 0;
   display:         flex;
   justify-content: center;
   flex-direction:  column;
@@ -16,7 +18,7 @@
 
   .background {
     img {
-      width:    max(500px, 60%);
+      width:    var(--image-width);
       top:      0;
       right:    -200px;
       z-index:  -1;
@@ -25,7 +27,6 @@
   }
 
   .content {
-
     h1 {
       font-size:      max(3em, min(5em, 10vw));
       font-weight:    800;
@@ -84,8 +85,8 @@
 }
 
 .tasks_archive__container {
-  width: 100%;
-  height: fit-content;
+  width:   100%;
+  height:  fit-content;
   padding: 5em 0;
 
   .tasks_archive__list {
@@ -98,5 +99,5 @@
 }
 
 @media screen and (max-width: 600px) {
-  .to_hide600 { display: none!important; }
+  .to_hide600 { display: none !important; }
 }

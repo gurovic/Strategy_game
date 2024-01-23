@@ -18,6 +18,12 @@
   font-size: 2em;
   font-family: var(--f-rubik);
   padding: 0 .5em 4px;
+
+  &::before {
+    position: absolute;
+    content: "Only";
+    color: #FFA31A;
+  }
 }
 
 #menu-icon, #moving-rect {
