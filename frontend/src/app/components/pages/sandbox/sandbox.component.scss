@@ -1,0 +1,102 @@
+.main-content {
+  width:  100%;
+  height: auto;
+}
+
+.top-part {
+  width:           100%;
+  height:          fit-content;
+  padding:         10em 3em 0;
+  display:         flex;
+  justify-content: center;
+  flex-direction:  column;
+  position:        relative;
+
+  @media screen and (max-width: 600px) { padding: 10em 0 0 0; }
+
+  .background {
+    img {
+      width:    max(500px, 60%);
+      top:      0;
+      right:    -200px;
+      z-index:  -1;
+      position: absolute;
+    }
+  }
+
+  .content {
+
+    h1 {
+      font-size:      max(3em, min(5em, 10vw));
+      font-weight:    800;
+      letter-spacing: 2px;
+      line-height:    100%;
+    }
+
+    p {
+      font-size:      max(1em, min(1.5em, 10vw));
+      color:          #999999;
+      text-transform: uppercase;
+    }
+
+    .button {
+      margin-top:          20px;
+      padding:             10px 40px;
+      border:              2px solid white;
+      font-size:           max(15px, min(20px, 3vw));
+      width:               fit-content;
+      height:              fit-content;
+      border-radius:       1000px;
+      text-transform:      uppercase;
+      font-weight:         bolder;
+      transition-duration: 250ms;
+
+      &:hover {
+        background: #ffffff;
+        color:      var(--background-ddark);
+      }
+    }
+  }
+
+  .bottom-content {
+    margin-top: 10em;
+
+    .daily-solvers {
+      padding:         20px 0;
+      display:         flex;
+      justify-content: center;
+      flex-direction:  row;
+      flex-wrap:       wrap;
+      background:      #000000;
+      grid-column-gap: 50px;
+      position:        absolute;
+      left:            min(0px, calc((-100vw + 1440px) / 2));
+      right:           min(0px, calc((-100vw + 1440px) / 2));
+      bottom:          0;
+    }
+
+    .place {
+      display:        flex;
+      flex-direction: row;
+      font-family:    var(--f-rubik);
+    }
+  }
+}
+
+.tasks_archive__container {
+  width: 100%;
+  height: fit-content;
+  padding: 5em 0;
+
+  .tasks_archive__list {
+
+  }
+
+  .tasks_archive__card {
+
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .to_hide600 { display: none!important; }
+}

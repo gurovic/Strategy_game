@@ -2,7 +2,7 @@ import {Component, AfterViewInit, HostListener} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
-  selector: 'app-main-page',
+  selector: 'app-background_svgs',
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.scss']
 })
