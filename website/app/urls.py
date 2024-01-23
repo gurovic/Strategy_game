@@ -9,8 +9,8 @@ from .views import sandbox_views, tournament_views, tournament_register_views
 urlpatterns = [
     path('sandbox/<int:game_id>', sandbox_views.show),
     path('tournament/', tournament_views.start_page, name="tounrament_startpage"),
-    path('tournament/create/', tournament_views.create_tounament, name="create_tournament")
-    path('tournament/register/<int::tournament_id>/<int::user_id>', tournament_register_views.register)
+    path('tournament/create/', tournament_views.create_tounament, name="create_tournament"),
+    path('tournament/register/<int:tournament_id>/<int:user_id>', tournament_register_views.register)
     #path('sandbox', app.views.sandbox.run_SandboxForm, name='SandboxForm'),
     #path('sandbox/run/<int:id>', app.views.run_Sandbox),
 
