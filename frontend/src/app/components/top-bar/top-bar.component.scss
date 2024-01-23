@@ -18,11 +18,10 @@
   font-size: 2em;
   font-family: var(--f-rubik);
   padding: 0 .5em 4px;
-  &::before {
-    position: absolute;
-    content: "Only";
-    color: #FFA31A;
-  }
+}
+
+#menu-icon, #moving-rect {
+  transition-duration: 1s;
 }
 
 .links {
@@ -144,16 +143,22 @@
 
 .mobile-menu-button {
   display: none;
-  padding-right: 30px;
+  position: relative;
+  height: 100%;
+  margin-right: 20px;
 
-  svg {
-    * {
-      transform-origin: center;
-      transition-duration: .5s;
-    }
-
-    width: 40px;
-    filter: invert(1);
+  svg:not(.menu) {
+    width: 70px;
+    top: calc((100% - 70px) / 2);
+    right: 10px;
+  }
+  svg { position: absolute; }
+  .menu {
+    top: calc((100% - 30px) / 2);
+    right: 30px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
   }
 }
 
@@ -170,6 +175,8 @@
   transform: translateY(-100%);
   z-index: 90;
 }
+
+
 
 @media screen and (max-width: 900px) {
   .top-bar {

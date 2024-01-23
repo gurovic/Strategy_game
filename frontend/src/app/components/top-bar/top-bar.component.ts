@@ -29,19 +29,12 @@ export class TopBarComponent implements OnInit {
 
   open_menu() {
     let menu = document.getElementById('dropdown-menu')!;
-    let rects = document.getElementsByClassName('menu-svg-rect')!;
+
     // @ts-ignore
-    rects[0].style.transform = 'rotate(-180deg) translateY(30px)'
-    // @ts-ignore
-    rects[0].style.opacity = '0';
-    // @ts-ignore
-    rects[1].style.opacity = '.8';
-    // @ts-ignore
-    rects[1].style.transform = 'rotate(180deg)'
-    // @ts-ignore
-    rects[2].style.transform = 'rotate(-180deg) translateY(-30px)'
-    // @ts-ignore
-    rects[2].style.opacity = '0';
+    document.getElementById('moving-rect')!.style.x='0px';
+    document.getElementById('moving-rect')!.style.width='36px';
+    document.getElementById('menu-icon')!.style.transform = 'rotate(90deg)';
+
     menu.style.display = 'block';
     setTimeout(() => {
       menu.style.transform = 'translateY(0)';
@@ -50,19 +43,12 @@ export class TopBarComponent implements OnInit {
 
   close_menu() {
     let menu = document.getElementById('dropdown-menu')!;
-    let rects = document.getElementsByClassName('menu-svg-rect')!;
+
     // @ts-ignore
-    rects[0].style.transform = 'rotate(0deg) translateY(0px)'
-    // @ts-ignore
-    rects[0].style.opacity = '1';
-    // @ts-ignore
-    rects[1].style.opacity = '1';
-    // @ts-ignore
-    rects[1].style.transform = 'translateX(0px)'
-    // @ts-ignore
-    rects[2].style.transform = 'rotate(0deg) translateY(0px)'
-    // @ts-ignore
-    rects[2].style.opacity = '1';
+    document.getElementById('moving-rect')!.style.x='12.6486';
+    document.getElementById('moving-rect')!.style.width='23.3514';
+    document.getElementById('menu-icon')!.style.transform = '';
+
     menu.style.transform = 'translateY(-100%)';
     setTimeout(() => {
       menu.style.display = 'none';
