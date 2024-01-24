@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input} from '@angular/core';
 import {ArchiveTask} from "../../__PAGES/sandbox/sandbox.component";
 
 @Component({
@@ -14,20 +14,20 @@ export class ArchiveTaskComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-  //   setting random background for 'mini-card__item'
+    //   setting random background for 'mini-card__item'
     let items = document.getElementsByClassName('mini-card__item')!;
     const backgrounds = [
       '#9a06d5', '#342ef8', '#e317a8', '#0ed738',
       '#07a6e0', '#0217fd', '#06d560', '#d506c4',
     ];
     const color = [
-      0,0,1,1,
-      1,0,1,0,
+      0, 0, 1, 1,
+      1, 0, 1, 0,
     ]
     for (let i = 0; i < items.length; i++) {
       let item = items[i];
-      let index= Math.floor(Math.random()*backgrounds.length)
-      let clr = (color[index]==1? 'var(--background-ddark)' : 'var(--text-white)');
+      let index = Math.floor(Math.random() * backgrounds.length)
+      let clr = (color[index] == 1 ? 'var(--background-ddark)' : 'var(--text-white)');
       // @ts-ignore
       item.style.background = backgrounds[index];
       // @ts-ignore

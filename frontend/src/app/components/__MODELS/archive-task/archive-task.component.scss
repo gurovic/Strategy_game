@@ -26,9 +26,7 @@
     .content {
       height: 100px;
 
-      @media screen and (min-width: 800px) {
-        height: 110px;
-      }
+      @media screen and (min-width: 800px) { height: 110px; }
     }
   }
 }
@@ -43,9 +41,7 @@
   position:            absolute;
   overflow:            hidden;
 
-  @media screen and (min-width: 800px) {
-    height: 80px;
-  }
+  @media screen and (min-width: 800px) { height: 80px; }
 }
 
 .mini-card__container {
@@ -54,16 +50,14 @@
   grid-column-gap: 10px;
   grid-row-gap:    20px;
 
-  @media screen and (min-width: 800px) {
-    margin-top: 10px;
-  }
+  @media screen and (min-width: 800px) { margin-top: 10px; }
 
   .mini-card__item {
-    padding: 1px 10px;
-    background: #9a06d5;
-    color: var(--background-ddark);
+    padding:       1px 10px;
+    background:    #9a06d5;
+    color:         var(--background-ddark);
     border-radius: 1000px;
-    font-size: 10px;
-    font-weight: 600;
+    font-size:     10px;
+    font-weight:   600;
   }
 }
