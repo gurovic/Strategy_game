@@ -1,1 +1,2 @@
 Django~=4.2.7
+libgame_file/libgame_python/target/wheels/libgame-0.1.0-cp311-none-win_amd64.whl
