@@ -14,7 +14,11 @@
     {% elif status == 'registered' %}
         <p class="d-inline-block">You have succesfully registered! Congratulations! </p>
     {%  else %}
-        <p class="d-inline-block">Sorry, you can't register for this tournament, because the number of players is already maximum </p>
+        {% if status == 'already registered' %}
+            <p class="d-inline-block"> You have already registered for the tournament </p>
+        {% else %}
+            <p class="d-inline-block">Sorry, you can't register for this tournament, because the number of players is already maximum </p>
+        {% endif %}
     {% endif %}
 
 {% endblock %}

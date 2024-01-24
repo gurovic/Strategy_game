@@ -18,6 +18,8 @@ def register(request, tournament_id, user_id):
             ourplayer = PlayerInTournament.objects.create(player=ouruser, tournament=ourtournament, file_solution=None)
             ourtournament.players.add(ouruser)
             return render(request, 'register_intournament.html', {'status': 'registered'})
+        elif try_to_get_player != None:
+            return render(request, 'register_intournament.html', {'status': 'already registered'})
         else:
             return render(request, 'register_intournament.html', {'status': 'denied registration'})
 
