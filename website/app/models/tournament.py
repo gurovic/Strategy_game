@@ -36,7 +36,7 @@ class Tournament(models.Model):
     def end(self):
         self.status = self.Status.IN_PROGRESS
         tournament_system = None
-        if self.system == 0:
+        if self.system == self.System.ROUND_ROBIN:
             tournament_system = TournamentSystemRoundRobin(self)
         self.system.run_tournament()
 
