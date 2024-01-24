@@ -1,5 +1,7 @@
 import {Component, AfterViewInit, HostListener} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {Profile} from "../../../interface/profile";
+import {ProfileService} from "../../../services/profile.service";
 
 @Component({
   selector: 'app-background_svgs',
@@ -19,14 +21,18 @@ export class MainPageComponent implements AfterViewInit {
     'assets/logos_for_main_page/rust.svg',
     'assets/logos_for_main_page/ts.svg',
   ]
+  public user: Profile = {};
 
   constructor(
     public router: Router,
     private route: ActivatedRoute,
+    private profile_service: ProfileService,
   ) {
   }
 
   ngAfterViewInit(): void {
+    this.user = this.profile_service.get_user();
+    if (this.user.registered) this.router.navigate(['contests']);
     ///////////////////// observers ///// /////////
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
