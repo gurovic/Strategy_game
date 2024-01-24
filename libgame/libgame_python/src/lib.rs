@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 
-use libgame_core::{get_battle as get_battle_rust, get_raw_battle as get_raw_battle_rust};
+use libgame_core::get_battle as get_battle_rust;
 use libgame_core::battle::{Battle as BattleRust, Player, PlayerMove as PlayerMoveRust};
 
 use std::io::{Stdin, Stdout};
