@@ -1,8 +1,10 @@
-from .models import CompilerReport, Tournament, Game
+from .models import CompilerReport, Tournament, Game, PlayerInTournament
 
 from django.contrib import admin
 
 
-admin.register(CompilerReport)
+admin.site.register(CompilerReport)
 admin.site.register(Game)
-admin.register(Tournament)
+admin.site.register(Tournament)
+admin.site.register(PlayerInTournament)
+
