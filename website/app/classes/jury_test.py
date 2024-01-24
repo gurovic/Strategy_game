@@ -8,7 +8,7 @@ from ...invoker.invoker_request import InvokerRequest
 
 
 class TestJury(TestCase):
-    @patch("invoker.invoker.InvokerProcess.rear")
+    @patch("invoker.invoker.InvokerProcess.read")
     @patch("invoker.invoker.InvokerProcess.write")
     def test_perform_play_command(self, mock_read: Mock, mock_write: Mock):
         play_command = {"state": "play", "player": 1, "data": "some data to player"}
