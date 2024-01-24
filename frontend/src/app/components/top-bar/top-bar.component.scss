@@ -17,13 +17,17 @@
   font-weight: 700;
   font-size:   2em;
   font-family: var(--f-rubik);
-  padding:     0 .5em 4px;
+  padding:     10px .5em 10px;
 
-  &::before {
-    position: absolute;
-    content:  "Only";
-    color:    #ffa31a;
+  img {
+    height: calc(var(--top-bar-height) - 20px);
   }
+
+  //&::before {
+  //  position: absolute;
+  //  content:  "Only";
+  //  color:    #ffa31a;
+  //}
 }
 
 #menu-icon, #moving-rect { transition-duration: 1s; }
