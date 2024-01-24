@@ -1,8 +1,7 @@
 .bottom-bar {
-  position: relative;
-  bottom: 0;
+  position: absolute;
   width: 100vw;
-  height: fit-content;
+  left:0;
   background-color: var(--background-dark);
   border-top: 3px solid var(--background-ldark);
   display: flex;
@@ -12,6 +11,7 @@
 }
 
 .footer-menu {
+  height: fit-content;
   display: flex;
   flex-wrap: wrap;
   width: 1440px;
