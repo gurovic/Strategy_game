@@ -20,6 +20,11 @@ body {
   flex-wrap: wrap;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
 * {
   user-select: none;
   box-sizing:  border-box;
