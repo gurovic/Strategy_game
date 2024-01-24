@@ -2,49 +2,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Raleway');
-@import url('https://fonts.googleapis.com/css2?family=Goldman');
-@import url('https://fonts.googleapis.com/css2?family=Rubik');
-
+@import url("https://fonts.googleapis.com/css2?family=Raleway");
+@import url("https://fonts.googleapis.com/css2?family=Goldman");
+@import url("https://fonts.googleapis.com/css2?family=Rubik");
 
 /* TAGS STYLES */
 html, body {
-  width: 100vw;
-  height: 100vh;
+  width:           100vw;
+  height:          100vh;
   scroll-behavior: smooth;
-  overflow: hidden;
-  color: var(--text-white)
+  overflow:        hidden;
+  color:           var(--text-white)
 }
 
 body {
-  display: flex;
+  display:   flex;
   flex-wrap: wrap;
 }
 
 * {
   user-select: none;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  box-sizing:  border-box;
+  margin:      0;
+  padding:     0;
 }
 
 li {
   list-style-type: none;
-  display: inline-block;
+  display:         inline-block;
 }
 
 h1, h2, h3, h4, h5, h6, p, a, input, div, span, button {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 input {
   outline-offset: 0;
-  outline: 0;
+  outline:        0;
 }
 
 button {
   outline-offset: 0;
-  outline: 0;
+  outline:        0;
 }
 
 /* SCROLL BAR */
@@ -53,7 +52,7 @@ button {
 }
 
 .scroll-bar::-webkit-scrollbar-track {
-  border-radius: 10px;
+  border-radius:    10px;
   background-color: rgba(239, 238, 224, 0.25);
 }
 
@@ -62,58 +61,59 @@ button {
 }
 
 .scroll-bar::-webkit-scrollbar-thumb {
-  border-radius: 4px;
+  border-radius:    4px;
   background-color: var(--background-ldark);
 }
 
 .scroll-bar {
   scrollbar-width: thin;
-  overflow-y: scroll !important;
+  overflow-y:      scroll !important;
   scrollbar-color: var(--background-ldark) var(--background-dark);
 }
+
 .glass-bg {
-  background: radial-gradient(90.16% 143.01% at 15.32% 21.04%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 77.08%, rgba(255, 255, 255, 0.27) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  background:      radial-gradient(90.16% 143.01% at 15.32% 21.04%, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 77.08%, rgba(0, 0, 0, 0.27) 100%);
   backdrop-filter: blur(40px);
 }
 
 /* GLOBAL VARIABLES */
 /* size */
 body {
-  background-color: var(--background-ddark);
+  background-color:  var(--background-ddark);
   --login-box-width: min(100%, 300px);
-  --top-bar-height: 70px;
+  --top-bar-height:  70px;
 }
 
 // fonts
 body {
-  --f-raleway: 'Raleway', sans-serif;
-  --f-rubik: 'Rubik', sans-serif;
+  --f-raleway: "Raleway", sans-serif;
+  --f-rubik:   "Rubik", sans-serif;
 }
 
 /* color */
 body {
-  --background-dark: #020024;
-  --background-ddark: #000015;
-  --background-ldark: #110f42;
-  --text-white: #ffffff;
-  --color-primary: #15ca0c;
-  --color-secondary: #20222A;
-  --color-accent: #00ffa1;
+  --background-dark:     #020024;
+  --background-ddark:    #000015;
+  --background-ldark:    #110f42;
+  --text-white:          #ffffff;
+  --color-primary:       #15ca0c;
+  --color-secondary:     #20222a;
+  --color-accent:        #00ffa1;
   --color-accent-second: #99ff91;
 }
 
 @media screen and (max-width: 900px) {
   .scroll-bar {
     &::-webkit-scrollbar {
-      width: 0;
+      width:   0;
       display: none;
     }
   }
 }
 
 .body {
-  display: flex;
-  align-items: center;
-  align-content: center;
+  display:        flex;
+  align-items:    center;
+  align-content:  center;
   flex-direction: column;
 }

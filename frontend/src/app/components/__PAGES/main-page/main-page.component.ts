@@ -31,7 +31,6 @@ export class MainPageComponent implements AfterViewInit {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         let class_name = 'show';
-        console.log(entry);
         if (entry.isIntersecting)
           entry.target.classList.add(class_name);
         else
@@ -41,7 +40,6 @@ export class MainPageComponent implements AfterViewInit {
     const cards_observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         let class_name = 'little-card__show';
-        console.log(entry);
         if (entry.isIntersecting)
           entry.target.classList.add(class_name);
         else

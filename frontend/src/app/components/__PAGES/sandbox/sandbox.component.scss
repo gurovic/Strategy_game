@@ -1,20 +1,20 @@
 .main-content {
   width:  100%;
   height: auto;
+
+  @media screen and (max-width: 600px) { padding: 0; }
+  @media screen and (min-width: 600px) { padding: 0 3em; }
 }
 
 .top-part {
-  --screen-width: min(1440px, 100vw);
-  --image-width:   max(500px, .6*var(--screen-width));
+  --screen-width:  min(1440px, 100vw);
+  --image-width:   max(500px, .6 * var(--screen-width));
   width:           100%;
   min-height:      var(--image-width);
-  padding:         0 3em 0;
   display:         flex;
   justify-content: center;
   flex-direction:  column;
   position:        relative;
-
-  @media screen and (max-width: 600px) { padding: 10em 0 0 0; }
 
   .background {
     img {
@@ -69,8 +69,8 @@
       background:      #000000;
       grid-column-gap: 50px;
       position:        absolute;
-      left:            min(0px, calc((-100vw + 1440px) / 2));
-      right:           min(0px, calc((-100vw + 1440px) / 2));
+      left:            -100vw;
+      right:           -100vw;
       bottom:          0;
     }
 
@@ -87,8 +87,19 @@
   height:  fit-content;
   padding: 5em 0;
 
-  .tasks_archive__list {
+  .header {
+    font-size: max(2em, min(3em, 10vw));
+  }
 
+  .tasks_archive__list {
+    display:         flex;
+    justify-content: space-around;
+    align-content:   center;
+    align-items:     center;
+    flex-wrap:       wrap;
+    flex-direction:  row;
+    grid-column-gap: 20px;
+    grid-row-gap: 40px;
   }
 
   .tasks_archive__card {

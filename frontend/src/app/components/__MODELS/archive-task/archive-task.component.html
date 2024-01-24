@@ -1,0 +1,15 @@
+<main class="body">
+  <div class="background">
+    <img [src]="task.bg_path">
+  </div>
+
+  <div class="content glass-bg">
+    <div class="mini-card__container" style="margin-bottom: 10px;">
+      <div class="mini-card__item" *ngFor="let tag of task.tags">
+        <p>{{tag}}</p>
+      </div>
+    </div>
+    <h1 style="font-size: 20px; font-weight: 600; margin-left: 10px;">{{ task.name }}</h1>
+    <p style="font-size: 15px; margin-top: 3px;">solvers: {{ task.contributors }}</p>
+  </div>
+</main>

@@ -32,9 +32,13 @@
 
 
   <div class="tasks_archive__container">
+    <p class="header" style="margin-bottom: 20px;">All tasks</p>
     <div class="tasks_archive__list">
 
-
+      <app-archive-task
+        *ngFor="let task of tasks_array; index as i;"
+        [task]="task"
+      ></app-archive-task>
 
     </div>
   </div>
