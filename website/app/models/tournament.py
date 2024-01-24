@@ -39,3 +39,4 @@ class Tournament(models.Model):
         if self.system == 0:
             tournament_system = TournamentSystemRoundRobin(self)
         self.system.run_tournament()
+
