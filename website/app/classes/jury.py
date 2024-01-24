@@ -19,11 +19,11 @@ class Jury:
 
     def perform_play_command(self):
         play_command = self.play_process.read()
-        if play_command.state == "play":
-            player = play_command.player
-            data = play_command.data
+        if play_command["state"] == "play":
+            player = play_command["player"]
+            data = play_command["data"]
             self.strategies_process[player].write(data)
         else:
             self.game_state = GameState.END
-            players_points = play_command.points
+            players_points = play_command["points"]
             # return points to invoker_reports using invoker_request.report_callback
