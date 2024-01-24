@@ -4,7 +4,9 @@ import libgame
 def validate(player_move: libgame.PlayerMove):
     return player_move.data.isnumeric()
 
+
 def main():
+
     battle = libgame.get_battle()
     if battle.num_players != 2:
         raise ValueError("Only two user can play!")
