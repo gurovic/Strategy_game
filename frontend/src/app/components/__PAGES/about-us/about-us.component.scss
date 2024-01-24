@@ -1,3 +1,45 @@
 .body {
+  width:  100%;
+  height: fit-content;
+}
 
+.top {
+  width:          100%;
+  height:         fit-content;
+  display:        flex;
+  flex-direction: row;
+
+  .top__background {
+
+  }
+
+  .top__content {
+
+  }
+}
+
+.content__container {
+  .content__item {
+
+  }
+
+  .our-team__container {
+
+  }
+
+  .developing__container {
+
+  }
+
+  .our-blog__container {
+
+  }
+
+  .our-partners__container {
+
+  }
+
+  .lets-talk__container {
+
+  }
 }

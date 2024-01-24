@@ -14,7 +14,7 @@ const routes: Routes = [
     {path: 'wiki', component: WikiComponent},
     {path: 'sandbox', component: SandboxComponent},
     {path: 'contests', component: ContestsComponent},
-    {path: 'contact', component: ContactUsComponent},
+    // {path: 'contact', component: ContactUsComponent},
     {path: 'login', component: LoginComponent}
 ];
 
