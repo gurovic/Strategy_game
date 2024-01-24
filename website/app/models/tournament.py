@@ -38,5 +38,5 @@ class Tournament(models.Model):
         tournament_system = None
         if self.system == self.System.ROUND_ROBIN:
             tournament_system = TournamentSystemRoundRobin(self)
-        self.system.run_tournament()
+        self.tournament_system.run_tournament()
 
