@@ -59,9 +59,9 @@
     .header { font-size: max(2em, min(3em, 5vw)); }
 
     .text {
-      font-size:  max(13px, min(15px, 3vmin));
+      font-size:  max(13px, min(20px, 3vmin));
       text-align: justify;
-      max-width: min(100vw, 600px);
+      max-width: min(100vw, 800px);
       padding: 10px;
     }
   }
