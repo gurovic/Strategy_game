@@ -1,6 +1,11 @@
 .body {
-  width:  100%;
-  height: fit-content;
+  width:          100%;
+  height:         fit-content;
+  display:        flex;
+  flex-direction: column;
+  position:       relative;
+  padding: 0 20px;
+  @media screen and (min-width: 600px) { padding: 0 3em; }
 }
 
 .top {
@@ -8,37 +13,128 @@
   height:         fit-content;
   display:        flex;
   flex-direction: row;
+  position:       relative;
+  overflow:       visible;
 
   .top__background {
-
+    width:    100%;
+    height:   100%;
+    overflow: visible;
+    position: absolute;
+    top:      0;
+    left:     0;
+    z-index:  -1;
   }
 
   .top__content {
+    width:   100%;
+    padding: 10em 0;
 
+    h1 {
+      font-size:   max(3em, min(5em, 5vw));
+      font-weight: bold;
+      line-height: 100%;
+
+      @media screen and (min-width: 600px) { max-width: 70%; }
+    }
+
+    p {
+      margin-top:     10px;
+      color:          #999999;
+      text-transform: uppercase;
+      font-weight:    bolder;
+    }
   }
 }
 
 .content__container {
+  width: 100%;
+
   .content__item {
+    position: relative;
+    width: 100%;
 
+    &:not(:first-child) { margin-top: 7vmin; }
+
+    .header { font-size: max(2em, min(3em, 5vw)); }
+
+    .text {
+      font-size:  max(13px, min(15px, 3vmin));
+      text-align: justify;
+      max-width: min(100vw, 600px);
+      padding: 10px;
+    }
   }
 
+  // our team
   .our-team__container {
+    .scroll-items__container {
+      margin-top: 20px;
+      width:      100%;
+      height:     400px;
+      overflow-x: scroll;
+      position:   relative;
 
+      &::-webkit-scrollbar {
+        display: none;
+        width:   0;
+      }
+
+      .scroll-items__blocks {
+        position:        absolute;
+        top:             0;
+        left:            0;
+        width:           max-content;
+        height:          max-content;
+        grid-column-gap: 40px;
+        z-index:         1000;
+        display:         flex;
+
+        .scroll-items__block {
+          display:        flex;
+          flex-direction: column;
+          align-items:    center;
+          align-content:  center;
+          transition-duration: 1s;
+
+          img {
+            width:         300px;
+            height:        300px;
+            border-radius: 100%;
+            margin-bottom: 10px;
+
+            @media screen and (max-width: 400px) {
+              width: 200px;
+              height: 200px;
+            }
+          }
+
+          p { font-size: max(15px, min(20px, 3vmin)); }
+        }
+
+        .image-hidden { opacity: 0; }
+
+        .image-show { opacity: 1; }
+      }
+    }
   }
 
+  // how the problem was developed
   .developing__container {
 
   }
 
+  // our blog
   .our-blog__container {
 
   }
 
+  // our partners
   .our-partners__container {
 
   }
 
+  // let talk
   .lets-talk__container {
 
   }
