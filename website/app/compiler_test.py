@@ -38,6 +38,7 @@ class TestAbstractCompile(TestCase):
     @patch("app.models.compiler_report.CompilerReport.objects.create")
     def test_make_report(self, mock_compiler_report: Mock):
         mock = Mock()
+        mock.status = CompilerReport.Status.OK
         mock.time_start = datetime.datetime.now()
         mock.time_end = datetime.datetime.now()
 
@@ -45,7 +46,7 @@ class TestAbstractCompile(TestCase):
         compiler.make_report(mock)
 
         mock_compiler_report.assert_called_once_with(invoker_report=mock, time=mock.time_end - mock.time_start,
-                                                     status=CompilerReport.Status.COMPILATION_ERROR, error=mock.error,
+                                                     status=CompilerReport.Status.OK, error=mock.error,
                                                      compiled_file=mock.preserved_files.get().file)
 
     @patch("app.models.compiler_report.CompilerReport")
