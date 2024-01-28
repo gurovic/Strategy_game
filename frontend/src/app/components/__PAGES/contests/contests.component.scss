@@ -9,8 +9,10 @@
 }
 
 .time-line__container__laptop {
-  display:  flex;
-  position: relative;
+  width:           100%;
+  display:         flex;
+  position:        relative;
+  grid-column-gap: 20px;
 
   .date-part {
     width: 30%;
@@ -23,33 +25,46 @@
     grid-row-gap:   3vmin;
 
     .contest-card__item {
-      width:         100%;
-      display:       flex;
-      background:    #ffffff;
-      border-radius: 20px;
-      position:      relative;
+      --size:              200px;
+      height:              max-content;
+      width:               100%;
+      display:             flex;
+      border-radius:       20px;
+      transition-duration: 1s;
+      position:            relative;
 
       .image-part {
-        img {
-          height: 100%;
+        height: var(--size);
+        width:  calc(var(--size) + 50px);
+
+        .backgr-image {
+          height: var(--size);
+          width:  calc(var(--size) + 50px);
         }
 
         .arrow {
           position: absolute;
           top:      0;
           left:     -5px;
-          height:   100%;
+          height:   var(--size);
           fill:     var(--background-ddark);
         }
       }
 
       .text-part {
-        padding: 1vmin 3vmin;
+        width:                      calc(100% - var(--size) - 50px);
+        height:                     var(--size);
+        padding:                    1vmin 3vmin;
+        background:                 #ffffff;
+        border-bottom-right-radius: 20px;
+        border-top-right-radius:    20px;
+        transition-duration:        1s;
+        overflow: hidden;
 
         .name {
           color:       #ff5c00;
           font-weight: 700;
-          font-size:   max(20px, min(35px, 5vw));
+          font-size:   min(30px, 2vmin);
         }
 
         .about-contest {
@@ -72,17 +87,32 @@
             }
           }
         }
-      }
 
-      .bottom-part {
+        .bottom-part {
+          display:        flex;
+          flex-direction: column;
+          color:          #000000;
 
+          .about-text {
+            p { font-weight: 600; }
+          }
+
+          .buttons-part {
+            margin-top:      10px;
+            display:         flex;
+            justify-content: space-between;
+
+            .read-more-btn {
+              color:       #ff5c00;
+              font-weight: 600;
+            }
+          }
+        }
       }
     }
   }
 
   .vertical-line {
-    position:   absolute;
-    top:        0;
     height:     100vh;
     width:      2px;
     background: #999999;
@@ -93,7 +123,7 @@
   display: none;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1000px) {
   .time-line__container__mobile { display: flex !important; }
   .time-line__container__laptop { display: none !important; }
 }

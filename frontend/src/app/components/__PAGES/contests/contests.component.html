@@ -16,12 +16,12 @@
 	<div class="vertical-line"></div>
 
 	<div class="contest-part">
-	    <div class="contest-card__item" *ngFor="let card of cards">
+	    <div [id]="'card'+card_index" class="contest-card__item" *ngFor="let card of cards; index as card_index">
 		<div class="image-part">
 		    <img class="arrow" src="assets/background_svgs/contest_backgrounds/arrow.svg">
-		    <img [src]="card.picture_path">
+		    <img class="backgr-image" [src]="card.picture_path">
 		</div>
-		<div class="text-part">
+		<div [id]="'text-part-of-card-'+card_index" class="text-part">
 		    <h1 class="name">{{card.name }}</h1>
 		    <div class="about-contest">
 			<p class="date-text">
@@ -43,7 +43,14 @@
 		    <div style="height: 2px; width: 100%; background: #000000;"></div>
 
 		    <div class="bottom-part">
-
+			<div class="about-text">
+			    <p *ngIf="this.opened != card_index">{{get_text(card.about_text)}}</p>
+			    <p *ngIf="this.opened == card_index">{{card.about_text}}</p>
+			</div>
+			<div class="buttons-part">
+			    <div class="read-more-btn" (click)="show_more_about_text(card_index)"><p>Read more</p></div>
+			    <div class="register-btn"><p>Register</p></div>
+			</div>
 		    </div>
 		</div>
 	    </div>
