@@ -44,8 +44,7 @@
 
 		    <div class="bottom-part">
 			<div class="about-text">
-			    <p *ngIf="this.opened != card_index">{{get_text(card.about_text)}}</p>
-			    <p *ngIf="this.opened == card_index">{{card.about_text}}</p>
+			    <p [id]="'card-text-'+card_index">{{get_text(card.about_text)}}</p>
 			</div>
 			<div class="buttons-part">
 			    <div class="read-more-btn" (click)="show_more_about_text(card_index)"><p>Read more</p></div>

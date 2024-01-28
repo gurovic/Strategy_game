@@ -8,6 +8,10 @@
   @media screen and (min-width: 800px) { padding: 0 30px; }
 }
 
+.top-part {
+
+}
+
 .time-line__container__laptop {
   width:           100%;
   display:         flex;
@@ -25,7 +29,7 @@
     grid-row-gap:   3vmin;
 
     .contest-card__item {
-      --size:              200px;
+      --size:              250px;
       height:              max-content;
       width:               100%;
       display:             flex;
@@ -38,8 +42,10 @@
         width:  calc(var(--size) + 50px);
 
         .backgr-image {
-          height: var(--size);
-          width:  calc(var(--size) + 50px);
+          height:          var(--size);
+          width:           calc(var(--size) + 50px);
+          object-fit:      cover;
+          object-position: 100% center;
         }
 
         .arrow {
@@ -53,18 +59,18 @@
 
       .text-part {
         width:                      calc(100% - var(--size) - 50px);
-        height:                     var(--size);
+        height:                     max(var(max-content), var(--size));
         padding:                    1vmin 3vmin;
         background:                 #ffffff;
         border-bottom-right-radius: 20px;
         border-top-right-radius:    20px;
-        transition-duration:        1s;
-        overflow: hidden;
+        overflow:                   hidden;
+        transition-duration:        .5s;
 
         .name {
           color:       #ff5c00;
           font-weight: 700;
-          font-size:   min(30px, 2vmin);
+          font-size:   min(30px, 4vmin);
         }
 
         .about-contest {
@@ -94,6 +100,8 @@
           color:          #000000;
 
           .about-text {
+            margin-top: 20px;
+
             p { font-weight: 600; }
           }
 
@@ -101,10 +109,23 @@
             margin-top:      10px;
             display:         flex;
             justify-content: space-between;
+            margin-bottom:   10px;
+
+            p {
+              font-size:   20px;
+              font-weight: 600;
+            }
 
             .read-more-btn {
               color:       #ff5c00;
               font-weight: 600;
+            }
+
+            .register-btn {
+              padding:       10px 20px;
+              background:    #ff5c00;
+              border-radius: 10px;
+              color:         #ffffff;
             }
           }
         }
