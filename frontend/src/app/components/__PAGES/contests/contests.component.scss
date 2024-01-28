@@ -1,0 +1,99 @@
+.body {
+  width:   100%;
+  height:  max-content;
+  display: flex;
+  padding: 0;
+
+  @media screen and (max-width: 1440px) and (min-width: 800px) { padding: 0 3em; }
+  @media screen and (min-width: 800px) { padding: 0 30px; }
+}
+
+.time-line__container__laptop {
+  display:  flex;
+  position: relative;
+
+  .date-part {
+    width: 30%;
+  }
+
+  .contest-part {
+    width:          70%;
+    display:        flex;
+    flex-direction: column;
+    grid-row-gap:   3vmin;
+
+    .contest-card__item {
+      width:         100%;
+      display:       flex;
+      background:    #ffffff;
+      border-radius: 20px;
+      position:      relative;
+
+      .image-part {
+        img {
+          height: 100%;
+        }
+
+        .arrow {
+          position: absolute;
+          top:      0;
+          left:     -5px;
+          height:   100%;
+          fill:     var(--background-ddark);
+        }
+      }
+
+      .text-part {
+        padding: 1vmin 3vmin;
+
+        .name {
+          color:       #ff5c00;
+          font-weight: 700;
+          font-size:   max(20px, min(35px, 5vw));
+        }
+
+        .about-contest {
+          display:         flex;
+          justify-content: space-between;
+
+          p {
+            font-family:     var(--f-rubik);
+            display:         flex;
+            justify-content: center;
+            align-items:     center;
+            align-content:   center;
+            color:           #000000;
+            font-size:       max(10px, min(15px, 3vw));
+            font-weight:     600;
+            grid-column-gap: 10px;
+
+            svg {
+              width: max(10px, min(15px, 3vw));
+            }
+          }
+        }
+      }
+
+      .bottom-part {
+
+      }
+    }
+  }
+
+  .vertical-line {
+    position:   absolute;
+    top:        0;
+    height:     100vh;
+    width:      2px;
+    background: #999999;
+  }
+}
+
+.time-line__container__mobile {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  .time-line__container__mobile { display: flex !important; }
+  .time-line__container__laptop { display: none !important; }
+}

@@ -26,10 +26,10 @@ body {
 }
 
 * {
-  user-select: none;
   box-sizing:  border-box;
   margin:      0;
   padding:     0;
+  caret-color: transparent;
 }
 
 li {
@@ -49,6 +49,13 @@ input {
 button {
   outline-offset: 0;
   outline:        0;
+}
+
+img {
+  -moz-user-select:    none;
+  -webkit-user-select: none;
+  user-select:         none;
+  pointer-events:      none;
 }
 
 /* SCROLL BAR */

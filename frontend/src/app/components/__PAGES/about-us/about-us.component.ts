@@ -20,7 +20,6 @@ export class AboutUsComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void {
     //========== making scrolling cards ===============
     const our_team_images_observer = new IntersectionObserver((entries) => {
-      console.log(1);
       entries.forEach((entry) => {
         let new_class_name = 'image-show';
         if (entry.isIntersecting)

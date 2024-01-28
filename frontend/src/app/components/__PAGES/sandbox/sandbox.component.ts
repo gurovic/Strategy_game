@@ -19,14 +19,14 @@ export class SandboxComponent implements OnInit {
       name: "LOL Lovers",
       link: 'bruh',
       contributors: 2193,
-      bg_path: 'assets/background_svgs/task_backgrounds/img.png',
+      bg_path: '/assets/background_svgs/task_backgrounds/img.png',
       tags: ['strategy', '2players'],
     },
     {
       name: "LOL Lovers",
       link: 'bruh',
       contributors: 2193,
-      bg_path: 'assets/background_svgs/task_backgrounds/img_1.png',
+      bg_path: '/assets/background_svgs/task_backgrounds/img.png',
       tags: ['strategy', '2players'],
     },
     {
