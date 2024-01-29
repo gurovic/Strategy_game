@@ -1,4 +1,4 @@
-from ...invoker.invoker_multi_request import InvokerMultiRequest
+from ..invoker.invoker_multi_request import InvokerMultiRequest
 
 import enum
 
@@ -9,22 +9,16 @@ class GameState(enum.Enum):
 
 
 class Jury:
-   def __init__(self, invoker_multi_request: InvokerMultiRequest):
+    def __init__(self, invoker_multi_request: InvokerMultiRequest):
         self.invoker_multi_request = invoker_multi_request
-
-        self.play_invoker_request = None
+        self.play_invoker_request = 0
         self.strategies_invoker_requests = []
-        self.get_invoker_requests()
-
-        self.play_process = None
+        self.play_process = 0
         self.strategies_process = []
-        self.get_processes()
-
         self.game_state = GameState.PLAY
 
     def get_invoker_requests(self):
-        invoker_requests = self.invoker_multi_request.invoker_requests
-        for invoker_request in invoker_requests:
+        for invoker_request in self.invoker_multi_request.invoker_requests:
             if invoker_request.type == InvokerRequestType.PLAY:
                 self.play_invoker_request = invoker_request
             else:
@@ -37,11 +31,11 @@ class Jury:
 
     def perform_play_command(self):
         play_command = self.play_process.read()
-        if play_command["state"] == "play":
-            player = play_command["player"]
-            data = play_command["data"]
+        if play_command.state == "play":
+            player = play_command.player
+            data = play_command.data
             self.strategies_process[player].write(data)
         else:
             self.game_state = GameState.END
-            players_points = play_command["points"]
+            players_points = play_command.points
             # return points to invoker_reports using invoker_request.report_callback
