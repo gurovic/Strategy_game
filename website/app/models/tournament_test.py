@@ -23,12 +23,9 @@ class TestTournament(TestCase):
         test_tournament.start()
         self.assertEqual(test_tournament.status, Tournament.Status.WAITING_SOLUTIONS)
 
-    @patch('app.models.Tournament.system')
-    def test_end_tournament(self, mock_tournament_system):
-        mock_tournament_system.return_value = 6
+    def test_end_tournament(self):
 
         test_tournament = Tournament.objects.create(max_of_players=3, name="test4")
-        test_tournament.system = mock_tournament_system
         test_tournament.end()
         self.assertEqual(test_tournament.status, Tournament.Status.IN_PROGRESS)
 
