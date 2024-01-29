@@ -1,0 +1,74 @@
+<main class="body">
+
+    <div class="top">
+	<div class="top__background">
+	    <img style="top: -300px; right: -700px; transform: rotate(-90deg);" src="assets/background_svgs/background-object4.png">
+	</div>
+	<div class="top__content">
+	    <h1>Discover more about our team and goals.</h1>
+	    <p>You can see more information about us on this page.</p>
+	</div>
+    </div>
+
+    <div class="content__container">
+	<!-- our team -->
+	<div class="content__item our-team__container">
+	    <h1 class="header">Our team</h1>
+	    <div class="scroll-items__container">
+		<div class="scroll-items__blocks">
+		    <div class="scroll-items__block image-hidden" *ngFor="let member of members">
+			<img [src]="member.image_path" draggable="false">
+			<p>{{member.name}}</p>
+			<p>{{member.position}}</p>
+		    </div>
+		</div>
+	    </div>
+	</div>
+
+	<!-- how the project was developed -->
+	<div class="content__item developing__container">
+	    <h1 class="header">How our project was developed</h1>
+	    <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Purus faucibus ornare suspendisse sed. Nunc faucibus a pellentesque sit. Phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet. Massa id neque aliquam vestibulum. Odio euismod lacinia at quis risus sed vulputate odio. Vitae nunc sed velit dignissim. Nulla aliquet enim tortor at auctor. Vitae aliquet nec ullamcorper sit amet risus. Euismod lacinia at quis risus sed vulputate odio ut. Vitae turpis massa sed elementum tempus. Enim sed faucibus turpis in.</p>
+	</div>
+
+<!--	&lt;!&ndash; our blog &ndash;&gt;
+	<div class="content__item our-blog__container">
+	    <h1 class="header">Our blog</h1>
+	    <div class="cards__container">
+		<div class="cards__scroll-items">
+		    <div class="card">
+			<h1 class="card__header"></h1>
+			<p class="card__text"></p>
+		    </div>
+		</div>
+	    </div>
+	</div>-->
+
+	<!-- our partners -->
+	<div class="content__item our-partners__container">
+	    <h1 class="header">Our partners</h1>
+	    <p class="text">and even in this part we fucked up</p>
+	</div>
+
+	<!-- Let's talk! -->
+	<div class="content__item lets-talk__container">
+	    <h1 class="header">Let's talk!</h1>
+	    <div class="form-container">
+		<form class="form">
+		    <div class="form-group">
+			<label for="email">Company email</label>
+			<input type="text" id="email" name="email" required>
+		    </div>
+
+		    <div class="form-group">
+			<label for="textarea">What do you want to discuss?</label>
+			<textarea name="textarea" id="textarea" row="10" cols="50" required></textarea>
+		    </div>
+
+		    <button class="form-submit-btn" type="submit">Submit</button>
+		</form>
+	    </div>
+	</div>
+    </div>
+
+</main>
