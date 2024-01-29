@@ -3,10 +3,9 @@ from unittest.mock import patch, Mock
 
 from .jury import Jury
 
-from ...invoker.invoker_process import InvokerProcess
-from ...invoker.invoker_multi_request import InvokerMultiRequest
-from ...invoker.invoker_request import InvokerRequest, InvokerRequestType
-
+from invoker.invoker_process import InvokerProcess
+from invoker.invoker_multi_request import InvokerMultiRequest
+from invoker.invoker_request import InvokerRequest, InvokerRequestType
 
 
 class TestJury(TestCase):

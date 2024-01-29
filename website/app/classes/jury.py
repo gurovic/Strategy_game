@@ -1,5 +1,5 @@
-from ...invoker.invoker_multi_request import InvokerMultiRequest
-from ...invoker.invoker_request import InvokerRequestType
+from invoker.invoker_multi_request import InvokerMultiRequest
+from invoker.invoker_request import InvokerRequestType
 
 import enum
 
