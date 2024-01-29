@@ -1,6 +1,5 @@
 from django.db import models
 
-from . import Tournament
 from .tournamentsystem import TournamentSystem
 from .battle import Battle
 
