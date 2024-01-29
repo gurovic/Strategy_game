@@ -26,7 +26,7 @@ class TournamentSystemRoundRobin(TournamentSystem):
             number += 1
 
     def finish(self):
-        self.tournament.end()
+        self.tournament.notify()
 
     def write_battle_result(self, results, numbers):
         for result in results.keys():
