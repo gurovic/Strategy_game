@@ -13,23 +13,51 @@
 }
 
 .time-line__container__laptop {
+  --size:          250px;
+
   width:           100%;
   display:         flex;
   position:        relative;
-  grid-column-gap: 20px;
+  justify-content: center;
 
   .date-part {
-    width: 30%;
-  }
-
-  .contest-part {
-    width:          70%;
+    width:          min(30%, 100px);
     display:        flex;
     flex-direction: column;
     grid-row-gap:   3vmin;
 
+    .date-part__item {
+      height:          var(--size);
+      display:         flex;
+      justify-content: center;
+      align-items:     center;
+      align-content:   center;
+
+      p {
+        font-size:   min(30px, 5vmin);
+        font-weight: 600;
+        font-family: var(--f-rubik);
+
+        .small-text {
+          font-size: min(20px, 3vmin);
+        }
+      }
+    }
+  }
+
+  .contest-part {
+    width:           70%;
+    display:         flex;
+    flex-direction:  column;
+    justify-content: space-between;
+
+    .contest-card__items {
+      display:        flex;
+      flex-direction: column;
+      grid-row-gap:   3vmin;
+    }
+
     .contest-card__item {
-      --size:              250px;
       height:              max-content;
       width:               100%;
       display:             flex;
@@ -117,7 +145,6 @@
             }
 
             .read-more-btn {
-              color:       #ff5c00;
               font-weight: 600;
             }
 
@@ -126,8 +153,83 @@
               background:    #ff5c00;
               border-radius: 10px;
               color:         #ffffff;
+              transition:    background-color 250ms;
+
+              &:hover {
+                background-color: #d04900;
+              }
             }
           }
+        }
+      }
+    }
+
+    .past-competitions-btn {
+      background:    linear-gradient(90deg, #8016ea 4.82%, #ea16e2 93.31%);
+      padding:       1.5vmin 5vmin;
+      width:         fit-content;
+      border-radius: 15px;
+      position:      relative;
+      overflow:      visible;
+
+      p { font-size: min(30px, 3vmin); }
+
+      svg {
+        position:  absolute;
+        left:      0;
+        top:       50%;
+        transform: translateY(-50%) translateX(-100%);
+      }
+    }
+
+    .automatically-register-btn {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+      width: fit-content;
+      grid-column-gap: 20px;
+      position: relative;
+
+      .text {
+        font-family: var(--f-rubik);
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+      }
+
+      .container {
+        width: fit-content;
+
+        input {
+          z-index: 10;
+          //display: none;
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+
+        svg { overflow: visible; }
+
+        .path {
+          fill:              none;
+          stroke:            #ffffff;
+          stroke-width:      6;
+          stroke-linecap:    round;
+          stroke-linejoin:   round;
+          transition:        stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+          stroke-dasharray:  241 9999999;
+          stroke-dashoffset: 0;
+        }
+
+        input:checked ~ svg .path {
+          stroke-dasharray:  70.5096664428711 9999999;
+          stroke-dashoffset: -262.2723388671875;
         }
       }
     }
@@ -135,16 +237,26 @@
 
   .vertical-line {
     height:     100vh;
-    width:      2px;
-    background: #999999;
+    width:      3px;
+    margin:     0 40px 0 50px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 100%);
+    position:   relative;
+
+    svg {
+      bottom:    0;
+      left:      0;
+      position:  absolute;
+      transform: translateY(100%) translateX(calc(-50% + 1.5px));
+    }
   }
 }
 
 .time-line__container__mobile {
   display: none;
+
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1300px) {
   .time-line__container__mobile { display: flex !important; }
   .time-line__container__laptop { display: none !important; }
 }
