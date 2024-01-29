@@ -31,10 +31,10 @@ class TestSandboxViews(TestCase):
         response = self.client.get('/app/sandbox/0')
         self.assertEqual(response.status_code, 200)
 
-    @patch('app.views.sandbox_views.CompilerNotifyReceiver')
-    def test_post_compiler_request(self, MockCompilerNotifyReceiver):
+    @patch('app.views.sandbox_views.Compiler')
+    def test_post_compiler_request(self, CompilerMock):
         mock_compiler_instance = Mock()
-        MockCompilerNotifyReceiver.return_value = mock_compiler_instance
+        CompilerMock.return_value = mock_compiler_instance
 
         response = self.client.post('/app/sandbox/0', {'type': 'compiler', 'language': 'python', 'strategy': Mock()})
 

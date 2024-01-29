@@ -9,18 +9,22 @@ class GameState(enum.Enum):
 
 
 class Jury:
-    def __init__(self, invoker_multi_request: InvokerMultiRequest):
+   def __init__(self, invoker_multi_request: InvokerMultiRequest):
         self.invoker_multi_request = invoker_multi_request
-        self.play_invoker_request = 0
+
+        self.play_invoker_request = None
         self.strategies_invoker_requests = []
         self.get_invoker_requests()
-        self.play_process = 0
+
+        self.play_process = None
         self.strategies_process = []
         self.get_processes()
+
         self.game_state = GameState.PLAY
 
     def get_invoker_requests(self):
-        for invoker_request in self.invoker_multi_request.invoker_requests:
+        invoker_requests = self.invoker_multi_request.invoker_requests
+        for invoker_request in invoker_requests:
             if invoker_request.type == InvokerRequestType.PLAY:
                 self.play_invoker_request = invoker_request
             else:
