@@ -14,6 +14,7 @@ import { LoginComponent } from './components/__PAGES/login/login.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import {NgOptimizedImage} from "@angular/common";
 import { ArchiveTaskComponent } from './components/__MODELS/archive-task/archive-task.component';
+import { RegistrationComponent } from './components/__PAGES/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ArchiveTaskComponent } from './components/__MODELS/archive-task/archive
     ContactUsComponent,
     LoginComponent,
     BottomBarComponent,
-    ArchiveTaskComponent
+    ArchiveTaskComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
