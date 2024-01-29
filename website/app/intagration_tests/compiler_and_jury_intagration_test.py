@@ -19,9 +19,9 @@ class Test(unittest.TestCase):
         play_compiled = CompiledFile()
         solution_first_compiled = CompiledFile()
         solution_second_compiled = CompiledFile()
-        a = compiler.Compiler(play_code, "py", play_compiled.get_compiled_file)
-        b = compiler.Compiler(play_code, "py", solution_first_compiled.get_compiled_file)
-        c = compiler.Compiler(play_code, "py", solution_second_compiled.get_compiled_file)
+        compiler1 = compiler.Compiler(play_code, "py", play_compiled.get_compiled_file).compile()
+        compiler2 = compiler.Compiler(play_code, "py", solution_first_compiled.get_compiled_file).compile()
+        compiler3 = compiler.Compiler(play_code, "py", solution_second_compiled.get_compiled_file).compile()
         play_compiled_path = play_compiled.compiled_file
         solution_first_compiled_path = solution_first_compiled.compiled_file
         solution_second_compiled_path = solution_second_compiled.compiled_file
