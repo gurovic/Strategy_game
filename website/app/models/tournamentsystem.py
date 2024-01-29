@@ -1,9 +1,10 @@
 from django.db import models
+
+from app.models import Tournament
+
+
 class TournamentSystem(models.Model):
-    def __init__(self, tournament, *args, **kwargs):
-        models.Model.__init__(self, *args, **kwargs)
-        self.tournament = tournament
-        self.battles = []
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
     def run_tournament(self):
         pass
@@ -12,7 +13,7 @@ class TournamentSystem(models.Model):
         pass
 
     def finish(self):
-        self.tournament.end()
+        self.tournament.notify()
 
     def write_battle_result(self, results, numbers):
         pass
