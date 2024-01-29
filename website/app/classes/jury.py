@@ -1,5 +1,5 @@
-from ...invoker.invoker_multi_request import InvokerMultiRequest
-from ...invoker.invoker_request import InvokerRequestType
+from invoker.invoker_multi_request import InvokerMultiRequest
+from invoker.invoker_request import InvokerRequestType
 
 import enum
 
@@ -10,7 +10,7 @@ class GameState(enum.Enum):
 
 
 class Jury:
-   def __init__(self, invoker_multi_request: InvokerMultiRequest):
+    def __init__(self, invoker_multi_request: InvokerMultiRequest):
         self.invoker_multi_request = invoker_multi_request
 
         self.play_invoker_request = None
