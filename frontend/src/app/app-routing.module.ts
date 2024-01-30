@@ -7,6 +7,7 @@ import {SandboxComponent} from "./components/__PAGES/sandbox/sandbox.component";
 import {ContestsComponent} from "./components/__PAGES/contests/current/contests.component";
 import {ContactUsComponent} from "./components/__PAGES/contact-us/contact-us.component";
 import {LoginComponent} from "./components/__PAGES/login/login.component";
+import {LatestCompetitionsComponent} from "./components/__PAGES/contests/latest/latest-competitions.component";
 
 const routes: Routes = [
     {path: '', component: MainPageComponent},
@@ -14,7 +15,7 @@ const routes: Routes = [
     {path: 'wiki', component: WikiComponent},
     {path: 'sandbox', component: SandboxComponent},
     {path: 'contests/current', component: ContestsComponent},
-    // {path: 'contact', component: ContactUsComponent},
+    {path: 'contests/latest', component: LatestCompetitionsComponent},
     {path: 'login', component: LoginComponent}
 ];
 
