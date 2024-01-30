@@ -8,6 +8,7 @@ import {ContestsComponent} from "./components/__PAGES/contests/current/contests.
 import {ContactUsComponent} from "./components/__PAGES/contact-us/contact-us.component";
 import {LoginComponent} from "./components/__PAGES/login/login.component";
 import {LatestCompetitionsComponent} from "./components/__PAGES/contests/latest/latest-competitions.component";
+import {RegistrationComponent} from "./components/__PAGES/registration/registration.component";
 
 const routes: Routes = [
     {path: '', component: MainPageComponent},
@@ -16,7 +17,8 @@ const routes: Routes = [
     {path: 'sandbox', component: SandboxComponent},
     {path: 'contests/current', component: ContestsComponent},
     {path: 'contests/latest', component: LatestCompetitionsComponent},
-    {path: 'login', component: LoginComponent}
+    {path: 'login', component: LoginComponent},
+    {path: 'register', component: RegistrationComponent},
 ];
 
 @NgModule({
