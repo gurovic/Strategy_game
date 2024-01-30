@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './components/__PAGES/main-page/main-page.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { AboutUsComponent } from './components/__PAGES/about-us/about-us.component';
-import { ContestsComponent } from './components/__PAGES/contests/contests.component';
+import { ContestsComponent } from './components/__PAGES/contests/current/contests.component';
 import { SandboxComponent } from './components/__PAGES/sandbox/sandbox.component';
 import { WikiComponent } from './components/__PAGES/wiki/wiki.component';
 import { ContactUsComponent } from './components/__PAGES/contact-us/contact-us.component';
@@ -15,6 +15,7 @@ import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component
 import {NgOptimizedImage} from "@angular/common";
 import { ArchiveTaskComponent } from './components/__MODELS/archive-task/archive-task.component';
 import { RegistrationComponent } from './components/__PAGES/registration/registration.component';
+import { LatestCompetitionsComponent } from './components/__PAGES/contests/latest/latest-competitions.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { RegistrationComponent } from './components/__PAGES/registration/registr
     LoginComponent,
     BottomBarComponent,
     ArchiveTaskComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LatestCompetitionsComponent
   ],
   imports: [
     BrowserModule,

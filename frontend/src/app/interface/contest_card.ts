@@ -1,6 +1,7 @@
 export interface ContestCard {
     end_registration: string,
     name: string,
+    author: string,
     participants: number,
     about_text: string,
     picture_path: string,
@@ -8,6 +9,7 @@ export interface ContestCard {
 
 export let debug_cards: ContestCard[] = [
     {
+        author: 'bokisarik',
         end_registration: "December the 27",
         name: "Pre New Year Programming Contest",
         participants: 1283,
@@ -15,6 +17,7 @@ export let debug_cards: ContestCard[] = [
         picture_path: 'assets/background_svgs/contest_backgrounds/img.png',
     },
     {
+        author: 'physicus',
         end_registration: "December the 27",
         name: "Pre New Year Programming Contest",
         participants: 1283,

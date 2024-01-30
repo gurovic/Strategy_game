@@ -4,7 +4,7 @@
 
 	</div>
 	<div class="content">
-
+	    <h1 class="header">Current competitions.</h1>
 	</div>
     </div>
 
@@ -23,9 +23,10 @@
 
 	<div class="contest-part">
 	    <div class="contest-card__items">
-		<div [id]="'card'+card_index" class="contest-card__item" *ngFor="let card of cards; index as card_index">
+		<div [id]="'card'+card_index" class="contest-card__item"
+		     *ngFor="let card of cards; index as card_index">
 		<div class="image-part">
-		    <img class="arrow" src="assets/background_svgs/contest_backgrounds/arrow.svg">
+		    <img class="arrow" src="../../../../../assets/background_svgs/contest_backgrounds/arrow.svg">
 		    <img class="backgr-image" [src]="card.picture_path">
 		</div>
 		<div [id]="'text-part-of-card-'+card_index" class="text-part">
@@ -84,7 +85,9 @@
 		    <label class="container">
 		      <input type="checkbox">
 		      <svg viewBox="0 0 64 64" height="2em" width="2em">
-			<path d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16" pathLength="575.0541381835938" class="path"></path>
+			<path
+			    d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+			    pathLength="575.0541381835938" class="path"></path>
 		      </svg>
 		    </label>
 		    <div class="text">
@@ -98,7 +101,20 @@
 
     <div class="time-line__container__mobile">
 	<div class="card" *ngFor="let card of cards; index as card_index">
-
+	    <h1 class="header">{{ card.name }}</h1>
+	    <div class="about-round">
+		<p><b>Author:</b> {{card.author}}</p>
+		<p><b>Date:</b> {{card.end_registration}}</p>
+		<p><b>Contributors:</b> {{card.participants}}</p>
+	    </div>
+	    <div class="content">
+		<p>{{card.about_text}}</p>
+	    </div>
+	    <div class="buttons-container">
+		<div class="register-btn">
+		    <p>Register</p>
+		</div>
+	    </div>
 	</div>
     </div>
 </main>
