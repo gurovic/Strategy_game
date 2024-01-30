@@ -18,8 +18,26 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log('login');
     }
 
     login(): void {
+        // @ts-ignore
+        let email = document.getElementById('email').value;
+        // @ts-ignore
+        let password = document.getElementById('password').value;
+    }
+
+    show_text(id: string) {
+        let el = document.getElementById(id)!;
+        // @ts-ignore
+        if (el.type == 'password') el.type='text';
+        else { // @ts-ignore
+            el.type = 'password';
+        }
+    }
+
+    go(link: string) {
+        this.router.navigate([link]);
     }
 }
