@@ -52,6 +52,8 @@ class InvokerProcess(ABC):
         if self.callback:
             self.register_callback()
 
+
+
     def register_callback(self):
         Thread(target=self._wait_for_end).start()
 
