@@ -9,7 +9,7 @@ from invoker.invoker_process import InvokerProcess
 
 
 class TestJury(TestCase):
-    @patch('app.classes.jury.Jury.get_processes')
+    @patch("app.classes.jury.Jury.get_processes")
     def test_get_invoker_requests(self, mock_get_processes: Mock):
         play_invoker_request = InvokerRequest("command")
         play_invoker_request.type = InvokerRequestType.PLAY
@@ -41,5 +41,19 @@ class TestJury(TestCase):
         self.assertEqual(jury.play_process, play_process)
         self.assertEqual(jury.strategies_process, [strategy_process])
 
-    def test_perform_play_command(self):
-        pass
+    @patch("app.classes.jury.Jury.get_invoker_requests")
+    @patch("app.classes.jury.Jury.get_processes")
+    @patch("invoker.invoker_process.InvokerProcess.read")
+    @patch("invoker.invoker_process.InvokerProcess.write")
+    def test_perform_play_command(self, mock_write: Mock, mock_read: Mock, mock_get_processes: Mock, mock_get_invoker_requests: Mock):
+        play_command = {"state": "play", "player": 1, "data": "some data to player"}
+        mock_read.return_value = play_command
+
+        invoker_multi_request = Mock()
+        jury = Jury(invoker_multi_request)
+        jury.play_process = InvokerProcess()
+        jury.strategies_process = [InvokerProcess()]
+
+        jury.perform_play_command()
+
+        mock_write.assert_called_with("some data to player")
