@@ -3,9 +3,9 @@ from unittest.mock import patch, Mock
 
 from .jury import Jury
 
-from invoker.invoker_process import InvokerProcess
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
+from invoker.invoker_process import InvokerProcess
 
 
 class TestJury(TestCase):
@@ -24,7 +24,22 @@ class TestJury(TestCase):
         self.assertEqual(jury.strategies_invoker_requests, [strategy_invoker_request])
 
     def test_get_processes(self):
-        pass
+        play_process = InvokerProcess()
+        play_invoker_request = InvokerRequest("command")
+        play_invoker_request.type = InvokerRequestType.PLAY
+        play_invoker_request.process_callback = play_process
+
+        strategy_process = InvokerProcess()
+        strategy_invoker_request = InvokerRequest("command")
+        strategy_invoker_request.type = InvokerRequestType.STRATEGY
+        strategy_invoker_request.process_callback = strategy_process
+
+        invoker_multi_request = InvokerMultiRequest([strategy_invoker_request, play_invoker_request])
+
+        jury = Jury(invoker_multi_request)
+
+        self.assertEqual(jury.play_process, play_process)
+        self.assertEqual(jury.strategies_process, [strategy_process])
 
     def test_perform_play_command(self):
         pass
