@@ -13,7 +13,6 @@ import subprocess
 import tempfile
 import logging
 import typing
-import shlex
 import enum
 import io
 
@@ -27,6 +26,7 @@ class InvokerStatus(enum.Enum):
 class RunResult:
     command: str
     output: str
+    error: str
     exit_code: int | None
 
     time_start: datetime
@@ -65,8 +65,8 @@ class NormalEnvironment(InvokerEnvironment):
             f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
 
         try:
-            result = subprocess.run(shlex.split(command) if isinstance(command, str) else command, text=True,
-                                    stdout=subprocess.PIPE, cwd=work_dir, timeout=timelimit)
+            result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_dir,
+                                    timeout=timelimit, shell=True)
             return_code = result.returncode
             timeout_error = False
             logging.debug(f"Command \"{command}\" launch was ended with exit code {return_code}!")
@@ -80,13 +80,16 @@ class NormalEnvironment(InvokerEnvironment):
 
         input_dir = [file for file in file_system] if file_system else None
 
-        preserve_dir = [File.load(Path(work_dir) / file) for file in preserve_files] if preserve_files else None
+        path = Path(work_dir)
+        preserve_dir = [File.load(path / file) for file in preserve_files if
+                        (path / file).exists()] if preserve_files else None
 
         delete_directory(work_dir)
 
         return RunResult(
             command,
             result.stdout,
+            result.stderr,
             return_code,
             time_start,
             time_end,
@@ -140,19 +143,23 @@ class Invoker:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
+                                              error=result.error,
                                               status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE,
                                               )
         if result.input_files:
             for file in result.input_files:
                 report.input_files.add(
-                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source.encode()), name=file.name),
-                                             name=file.name))
+                    FileModel.objects.create(
+                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
+                                        name=file.name), name=file.name))
             report.save()
 
         if result.preserved_files:
             for file in result.preserved_files:
                 report.preserved_files.add(
-                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
+                    FileModel.objects.create(
+                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
+                                        name=file.name), name=file.name))
             report.save()
 
         return report

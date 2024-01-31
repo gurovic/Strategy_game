@@ -3,17 +3,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import sandbox_views, tournament_views
-from .views.game_upload_views import GameUploadView
+from .views import sandbox_views, tournament_views, tournament_start_view, tournament_register_views
 
 urlpatterns = [
     path('sandbox/<int:game_id>', sandbox_views.show),
     path('tournament/', tournament_views.start_page, name="tounrament_startpage"),
+    path('tournament/start/<int:tournament_id>', tournament_start_view.start_tournament),
     path('tournament/create/', tournament_views.create_tounament, name="create_tournament"),
-    path('game_upload/', GameUploadView.as_view(), name="game_upload")
-    #path('sandbox', app.views.sandbox.run_SandboxForm, name='SandboxForm'),
-    #path('sandbox/run/<int:id>', app.views.run_Sandbox),
-
+    path('tournament/register/<int:tournament_id>/<int:user_id>', tournament_register_views.register)
 ]
 
 if settings.DEBUG:

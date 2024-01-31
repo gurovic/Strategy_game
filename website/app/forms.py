@@ -1,5 +1,8 @@
 from .models.tournament import Tournament
 from django.forms import ModelForm, TextInput, DateTimeInput, NumberInput
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class TournamentForm(ModelForm):
@@ -33,3 +36,17 @@ class TournamentForm(ModelForm):
                 'placeholder': 'Максимальное количество игроков в турнире'
             })
         }
+
+class NewUserForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super(NewUserForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
