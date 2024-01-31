@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block style %}
+{% endblock %}
+
+{% block title %}
+    Game
+{% endblock title %}
+
+{% block header %}
+    Game
+{% endblock header %}
+
+{% block content %}
+
+    {% if status == 'receive compiler report' %}
+        
+        <script>
+            wait();
+        </script>
+        <table class="m-b-50 form-with-td">
+            <tr>
+                <td>Ideal_solution_report</td>
+            
+                {% if ideal_solution_report == 0 %}
+                    <td>Done</td>
+                {% else %}
+                    <td>ERROR</td>
+                {% endif %}
+            </tr>
+            
+            <tr>
+                <td>Play_report</td>
+            
+                {% if play_report == 0 %}
+                    <td>Done</td>
+                {% else %}
+                    <td>ERROR</td>
+                {% endif %}
+            </tr>
+            
+            <tr>
+                <td>Visualizer_report</td>
+            
+                {% if visualizer_report == 0 %}
+                    <td>Done</td>
+                {% else %}
+                    <td>ERROR</td>
+                {% endif %}
+            </tr>
+        </table>
+        <form id="uploaded-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>
+                <input class="d-none" type="text" name="type" value="Game">
+            </label>
+            <label>
+                <input class="d-none" name="ideal_solution_compiler_report_id" value="{{ ideal_solution_report.status }}">
+            </label>
+            <label>
+                <input class="d-none" name="play_compiler_report_id" value="{{ play_report.status }}">
+            </label>
+            <label>
+                <input class="d-none" name="visualizer_compiler_report_id" value="{{ visualizer_report.status }}">
+            </label>
+            <input type="submit" value="Загрузить Game">
+        </form>
+        
+    {% elif status == 'compilation' %}
+        <script>
+            wait();
+        </script>
+        <form id="compiling" method="POST"></form>
+            {% csrf_token %}
+            <label>
+                <input class="d-block" type="text" value="Compilation in progress">
+                <input class="d-none" type="text" name="type" value="compilation in progress">
+            </label>
+
+    {% elif status == 'filling compilation form' %}
+        
+        <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>
+                <input class="d-none" type="text" name="type" value="compiler">
+            </label>
+
+            <fieldset>
+                <legend>Информация об игре</legend>
+                {{ game_form.as_p }}
+            
+            <h3>Ideal Solution</h3>
+            <input type="file" name="ideal_solution">
+            <p class="d-inline-block">Language: </p>
+                <label>
+                    <select class="d-inline-block" name="ideal_solution_language">
+                        <option selected="selected">---- SELECT ----</option>
+                        {% for language in available_languages %}
+                            <option>{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <h3>Play</h3>
+            <input type="file" name="play">
+            <p class="d-inline-block">Language:</p>
+                <label>
+                    <select class="d-inline-block" name="play_language">
+                        <option selected="selected">---- SELECT ----</option>
+                        {% for language in available_languages %}
+                            <option>{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <h3>Visualizer</h3>
+            <input type="file" name="visualizer">
+            <p class="d-inline-block">Language: </p>
+                <label>
+                    <select class="d-inline-block" name="visualizer_language">
+                        <option selected="selected">---- SELECT ----</option>
+                        {% for language in available_languages %}
+                            <option>{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+            </fieldset>
+            
+            <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
+        </form>
+
+    {% else %}
+        <div class="error-container">
+            <h1>STATUS ERROR</h1>
+            <p>Either something in files was wrong or we have some problems in server.</p>
+        </div>
+    {% endif %}
+{% endblock content %}
