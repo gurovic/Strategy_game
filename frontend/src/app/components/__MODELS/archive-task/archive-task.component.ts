@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, Input} from '@angular/core';
-import {ArchiveTask} from "../../__PAGES/sandbox/sandbox.component";
+import {Router} from "@angular/router";
+import {SandboxTaskInterface} from "../../../interface/sandbox_task";
 
 @Component({
   selector: 'app-archive-task',
@@ -8,9 +9,11 @@ import {ArchiveTask} from "../../__PAGES/sandbox/sandbox.component";
 })
 export class ArchiveTaskComponent implements AfterViewInit {
   @Input()
-  public task: ArchiveTask = {};
+  public task: SandboxTaskInterface = {};
 
-  constructor() {
+  constructor(
+      private router: Router,
+  ) {
   }
 
   ngAfterViewInit(): void {
@@ -33,6 +36,10 @@ export class ArchiveTaskComponent implements AfterViewInit {
       // @ts-ignore
       item.style.color = clr;
     }
+  }
+
+  go(id: number) {
+    this.router.navigate(['sandbox/task/'+id]);
   }
 
 }

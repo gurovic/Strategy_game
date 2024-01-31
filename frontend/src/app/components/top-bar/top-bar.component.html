@@ -5,10 +5,7 @@
             <img style="" src="assets/OnlyCode.svg">
         </div>
         <ul class="links">
-            <li (click)="go_link('contests/current')" content="Competitions">Competitions</li>
-            <li (click)="go_link('sandbox')" content="Sandbox">Sandbox</li>
-            <li (click)="go_link('wiki')" content="Wiki">Wiki</li>
-            <li (click)="go_link('about')" content="About">About</li>
+            <li *ngFor="let url of top_bar_urls" (click)="go_link(url[0])">{{ url[1] }}</li>
         </ul>
         <div class="login" (click)="go_link('login')">
             <span>Login</span>
@@ -182,16 +179,13 @@
 <div id="dropdown-menu" class="menu-content">
     <ul class="dropdown-links" style="margin-bottom: 10px;">
         <li (click)="go_link('');">Home</li>
-        <li (click)="go_link('contests/current');">Competitions</li>
-        <li (click)="go_link('sandbox');">Sandbox</li>
-        <li (click)="go_link('wiki');">Wiki</li>
-        <li (click)="go_link('about');">About</li>
+	<li *ngFor="let url of top_bar_urls" (click)="go_link(url[0])">{{ url[1] }}</li>
     </ul>
 
     <hr style="width: 100vw; position: absolute; left: 0;">
 
     <ul class="dropdown-links" style="margin-top: 20px;">
-        <li (click)="go_link('register');">Register</li>
+	<li *ngFor="let url of left_bar_urls" (click)="go_link(url[0])">{{ url[1] }}</li>
     </ul>
 </div>
 

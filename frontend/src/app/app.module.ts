@@ -7,7 +7,7 @@ import {MainPageComponent} from './components/__PAGES/main-page/main-page.compon
 import {TopBarComponent} from './components/top-bar/top-bar.component';
 import {AboutUsComponent} from './components/__PAGES/about-us/about-us.component';
 import {ContestsComponent} from './components/__PAGES/contests/current/contests.component';
-import {SandboxComponent} from './components/__PAGES/sandbox/sandbox.component';
+import {SandboxComponent} from './components/__PAGES/sandbox/sandbox-container/sandbox.component';
 import {WikiComponent} from './components/__PAGES/wiki/wiki.component';
 import {ContactUsComponent} from './components/__PAGES/contact-us/contact-us.component';
 import {LoginComponent} from './components/__PAGES/login/login.component';
@@ -17,6 +17,8 @@ import {ArchiveTaskComponent} from './components/__MODELS/archive-task/archive-t
 import {RegistrationComponent} from './components/__PAGES/registration/registration.component';
 import {LatestCompetitionsComponent} from './components/__PAGES/contests/latest/latest-competitions.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { ConstestViewerComponent } from './components/__PAGES/contests/constest/constest-viewer.component';
+import { TaskViewerComponent } from './components/__PAGES/sandbox/task/task-viewer.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +34,9 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
         BottomBarComponent,
         ArchiveTaskComponent,
         RegistrationComponent,
-        LatestCompetitionsComponent
+        LatestCompetitionsComponent,
+        ConstestViewerComponent,
+        TaskViewerComponent
     ],
     imports: [
         BrowserModule,

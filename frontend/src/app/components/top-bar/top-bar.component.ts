@@ -7,6 +7,15 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./top-bar.component.scss']
 })
 export class TopBarComponent implements OnInit {
+  public top_bar_urls:string[][] = [
+      ["contests/current", "Competitions"],
+      ["sandbox/container", "Sandbox"],
+      ["wiki", "Wiki"],
+      ["about", "About"],
+  ]
+  public left_bar_urls: string[][] = [
+    ["login", "Log In"],
+  ]
 
   constructor(
     private router: Router,
