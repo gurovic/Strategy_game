@@ -1,5 +1,5 @@
 from app.models import PlayersInBattle
-
+# wtf is this??? there is a normal sandbox written by me in classes
 
 class Sandbox:
     def __init__(self, game, strategy):

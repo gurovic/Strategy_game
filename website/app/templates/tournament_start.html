@@ -25,29 +25,22 @@
             <input type="submit" value="start tournament">
         </form>
 
-    {% elif stats == 'getting report' %}
+    {% elif status == 'getting report' %}
 
-        <script></script>
-        <table class="table-with-tr">
-            <tr>
-                <td>Place</td>
-                <td>Name</td>
-                <td>Points</td>
-            </tr>
-            {% for player in players %}
-                <tr>
-                    <td>{{ player.place }}</td>
-                    <td>{{ player.name }}</td>
-                    <td>{{ player.score }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        <p>Tournament started</p>
+        <p>name: {{ tournament.name }}</p>
+        <p>game: {{ tournament.game }}</p>
+        <p>id: {{ tournament.id }}</p>
+        <p>system: {{ tournament.system }}</p>
+        <p>status: {{ tournament.status }}</p>
+        <p>max of players: {{ tournament.max_of_players }}</p>
 
     {% else %}
 
         <div class="error-container">
             <h1>STATUS ERROR</h1>
             <p>Either something in files was wrong or we have some problems in server.</p>
+            <p>{{ status }}</p>
         </div>
 
     {% endif %}

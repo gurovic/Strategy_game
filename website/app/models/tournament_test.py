@@ -20,16 +20,16 @@ class TestTournament(TestCase):
 
     def test_start_tournament(self):
         test_tournament = Tournament.objects.create(max_of_players=3, name="test4")
-        test_tournament.start()
+        test_tournament.start_tournament()
         self.assertEqual(test_tournament.status, Tournament.Status.WAITING_SOLUTIONS)
 
     def test_end_tournament(self):
 
         test_tournament = Tournament.objects.create(max_of_players=3, name="test4")
-        test_tournament.end()
+        test_tournament.end_registration()
         self.assertEqual(test_tournament.status, Tournament.Status.IN_PROGRESS)
 
     def test_notify(self):
         test_tournament = Tournament.objects.create(max_of_players=3, name="test4")
-        test_tournament.notify()
+        test_tournament.finish_tournament()
         self.assertEqual(test_tournament.status, Tournament.Status.FINISHED)
