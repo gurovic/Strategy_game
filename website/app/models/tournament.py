@@ -28,6 +28,9 @@ class Tournament(models.Model):
     battles = models.ManyToManyField(Battle, blank=True, verbose_name='Battle')
     max_of_players = models.IntegerField(default=2, verbose_name='Maximum number of players')
 
+    def __str__(self):
+        return self.name
+
     def start_tournament(self):
         print('!!!!!!!!! TOURNAMENT STARTED CORRECTLY !!!!!!!')
         self.status = self.Status.WAITING_SOLUTIONS
@@ -45,4 +48,5 @@ class Tournament(models.Model):
         if self.system == self.System.ROUND_ROBIN:
             tournament_system = TournamentSystemRoundRobin(self)
         tournament_system.run_tournament()
+        print(self.status)
         print('!!!!!!!!! TOURNAMENT ENDING REGISTRATION 2 !!!!!!!!!')

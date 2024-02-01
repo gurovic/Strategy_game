@@ -1,8 +1,9 @@
 import datetime
 
+from .game import Game
+from .battle import Battle
 from .tournamentsystem import TournamentSystem
 from .players_in_battle import PlayersInBattle
-from .battle import Battle
 
 
 class TournamentSystemRoundRobin(TournamentSystem):
@@ -19,16 +20,12 @@ class TournamentSystemRoundRobin(TournamentSystem):
         participants = list(zip(self.tournament_players.keys(), self.tournament_players.values()))
         for i in range(len(participants)):
             for j in range(i + 1, len(participants)):
-                battle = Battle.objects.create(game=self.tournament.game, start_time=datetime.date.today())
-                players = [
-                    PlayersInBattle.objects.create(file_solution=participants[i][1], number=0, battle=battle),
-                    PlayersInBattle.objects.create(file_solution=participants[j][1], number=1, battle=battle),
-                ]
-                print(players)
-                battle.players.set(players)
-                battle.save()
+                battle = Battle.objects.create(game=self.tournament.game)
+                PlayersInBattle.objects.create(file_solution=participants[i][1].file_solution, number=0, battle=battle)
+                PlayersInBattle.objects.create(file_solution=participants[j][1].file_solution, number=1, battle=battle)
                 self.tournament.battles.add(battle)
                 battle.start()
+        self.write_battle_result()
 
     def calculate_places(self):
         places = list(zip(self.tournament_players.keys(), self.tournament_players.values()))
@@ -41,11 +38,7 @@ class TournamentSystemRoundRobin(TournamentSystem):
     def finish(self):
         self.tournament.finish_tournament()
 
-    def write_battle_result(self, results, numbers):
-        for result in results.keys():
-            self.tournament.players[numbers[result].user].number_of_points += results[result]
-            self.tournament.players[numbers[result].user].save()
-        self.battle_count -= 1
-        if self.battle_count == 0:
-            self.calculate_places()
-            self.finish()
+    def write_battle_result(self):
+        # TODO
+        pass
+
