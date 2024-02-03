@@ -5,14 +5,26 @@ from .game import Game
 
 class Battle(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
-    start_time = models.DateTimeField(auto_now_add=True)
+    time_start = models.DateTimeField(auto_now_add=True)
+    time_finish = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
-    status = models.CharField(max_length=1, choices=[("O", "OK"), ("E", "Error"), ("T", "Time Limit"), ("N", "Not started")], default="N")  # by the rules or by errors
-    total_time = models.TimeField(default=0, blank=True)
+    status = models.CharField(max_length=1,
+                              choices=[("O", "OK"), ("E", "Error"), ("T", "Time Limit Exceeded"), ("N", "Not started")],
+                              default="N")  # by the rules or by errors
     logs = models.FileField(blank=True)
 
-    def start(self):
+    def __init__(self, subscriber, jury, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.subscriber = subscriber
+        self.moves = []
+        self.results = {}
+        self.jury = jury
+        self.numbers = []
+
+    def notify(self):
+        return {self.results, self.numbers}
+
+    def run(self):
+
         # starts a battle, simultaneously records the progress of the battle in a log file
         pass
-
-    
