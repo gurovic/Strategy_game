@@ -1,0 +1,112 @@
+.main-content {
+  width:  100%;
+  height: auto;
+
+  @media screen and (max-width: 600px) { padding: 0; }
+  @media screen and (min-width: 600px) { padding: 0 3em; }
+}
+
+.top-part {
+  --screen-width:  min(1440px, 100vw);
+  --image-width:   max(500px, .6 * var(--screen-width));
+  width:           100%;
+  min-height:      var(--image-width);
+  display:         flex;
+  justify-content: center;
+  flex-direction:  column;
+  position:        relative;
+
+  .background {
+    img {
+      width:    var(--image-width);
+      top:      0;
+      right:    -200px;
+      z-index:  -1;
+      position: absolute;
+    }
+  }
+
+  .content {
+    h1 {
+      font-size:      max(3em, min(5em, 10vw));
+      font-weight:    800;
+      letter-spacing: 2px;
+      line-height:    100%;
+    }
+
+    p {
+      font-size:      max(1em, min(1.5em, 10vw));
+      color:          #999999;
+      text-transform: uppercase;
+    }
+
+    .button {
+      margin-top:          50px;
+      padding:             10px 40px;
+      border:              2px solid white;
+      font-size:           max(15px, min(20px, 3vw));
+      width:               fit-content;
+      height:              fit-content;
+      border-radius:       1000px;
+      text-transform:      uppercase;
+      font-weight:         bolder;
+      transition-duration: 250ms;
+
+      &:hover {
+        background: #ffffff;
+        color:      var(--background-ddark);
+      }
+    }
+  }
+
+  .bottom-content {
+    .daily-solvers {
+      padding:         20px 0;
+      display:         flex;
+      justify-content: center;
+      flex-direction:  row;
+      flex-wrap:       wrap;
+      background:      #000000;
+      grid-column-gap: 50px;
+      position:        absolute;
+      left:            -100vw;
+      right:           -100vw;
+      bottom:          0;
+    }
+
+    .place {
+      display:        flex;
+      flex-direction: row;
+      font-family:    var(--f-rubik);
+    }
+  }
+}
+
+.tasks_archive__container {
+  width:   100%;
+  height:  fit-content;
+  padding: 5em 0;
+
+  .header {
+    font-size: max(2em, min(3em, 10vw));
+  }
+
+  .tasks_archive__list {
+    display:         flex;
+    justify-content: space-around;
+    align-content:   center;
+    align-items:     center;
+    flex-wrap:       wrap;
+    flex-direction:  row;
+    grid-column-gap: 20px;
+    grid-row-gap: 40px;
+  }
+
+  .tasks_archive__card {
+
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .to_hide600 { display: none !important; }
+}
