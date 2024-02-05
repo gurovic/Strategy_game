@@ -34,15 +34,17 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'jazzmin',
 
-    'django_q',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'app.apps.MyAppConfig',
     'invoker.apps.InvokerConfig',
+
+    'django_q',
 ]
 
 MIDDLEWARE = [
