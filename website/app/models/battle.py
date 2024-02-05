@@ -21,10 +21,10 @@ class Battle(models.Model):
         self.jury = jury
         self.numbers = []
 
-    def notify(self):
-        return {self.results, self.numbers}
-
     def run(self):
+        while self.jury.game_state == True:
+            self.moves.append(self)
+            self.jury.perform_play_command()
 
         # starts a battle, simultaneously records the progress of the battle in a log file
         pass
