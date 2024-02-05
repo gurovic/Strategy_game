@@ -1,3 +1,5 @@
+from Strategy_game.website.app.classes.jury import GameState
+from Strategy_game.website.app.models import PlayersInBattle
 from django.db import models
 from django.contrib.auth.models import User
 from .game import Game
@@ -13,18 +15,26 @@ class Battle(models.Model):
                               default="N")  # by the rules or by errors
     logs = models.FileField(blank=True)
 
-    def __init__(self, subscriber, jury, *args, **kwargs):
+    def __init__(self, subscriber, jury, jury_report, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.subscriber = subscriber
         self.moves = []
         self.results = {}
         self.jury = jury
+        self.jury_report = jury_report
         self.numbers = []
 
     def run(self):
-        while self.jury.game_state == True:
-            self.moves.append(self)
+        while self.jury.game_state is not GameState.END:
+            self.jury.get_processes()
             self.jury.perform_play_command()
 
-        # starts a battle, simultaneously records the progress of the battle in a log file
-        pass
+        for player in PlayersInBattle.objects.all().values(batlle=self):
+            player.number_of_points = self.jury_report.points[player.number]
+
+        dict(sorted(self.jury_report.points.items(), key=lambda item: item[1]))
+
+        for order in range(len(self.jury_report.points)):
+            self.results[order] = self.jury_report.points[1]
+            self.moves = self.jury_report.moves
+            self.results = self.jury_report.points[1]
+            self.numbers = self.jury_report.numbers
