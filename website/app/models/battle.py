@@ -28,13 +28,13 @@ class Battle(models.Model):
             self.jury.get_processes()
             self.jury.perform_play_command()
 
-        for player in PlayersInBattle.objects.all().values(batlle=self):
+        for player in PlayersInBattle.objects.filter(batlle=self):
             player.number_of_points = self.jury_report.points[player.number]
 
-        dict(sorted(self.jury_report.points.items(), key=lambda item: item[1]))
+        self.jury_report.points = dict(reversed(sorted(self.jury_report.points.items(), key=lambda item: item[1])))
 
-        for order in range(len(self.jury_report.points)):
-            self.results[order] = self.jury_report.points[1]
-            self.moves = self.jury_report.moves
-            self.results = self.jury_report.points[1]
-            self.numbers = self.jury_report.numbers
+        for order, player in enumerate(sorted(self.jury_report.points.keys()), start=1):
+            self.results[player] = order
+        self.moves = self.jury_report.moves
+        self.numbers = self.jury_report.numbers
+        self.status = self.jury_report.status
