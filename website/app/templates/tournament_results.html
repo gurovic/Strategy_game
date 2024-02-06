@@ -5,9 +5,13 @@
 {% endblock title %}
 
 {% block header %}
-    Results of tournament
+    Results of "{{ tournament.name }}"
 {% endblock header %}
 
 {% block content %}
-Содержимое главной страницы
+    {% if tournament.status != 3 %}
+        Results not available yet
+    {% else %}
+
+    {% endif %}
 {% endblock %}
