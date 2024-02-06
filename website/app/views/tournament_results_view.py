@@ -5,8 +5,11 @@ from ..models import Tournament, PlayerInTournament
 
 
 def start_page(request, tournament_id):
-    tournament = Tournament.objects.get(pk=tournament_id)
-    #players = PlayerInTournament.objects.get(tournament=tournament)
+    try:
+        tournament = Tournament.objects.get(pk=tournament_id)
+    except:
+        return HttpResponse("This tournament does not exist")
 
-    #if request.method == 'POST':
-    return render(request, 'tournament_results.html', {'tournament':tournament})
+    players = PlayerInTournament.objects.filter(tournament=tournament)
+
+    return render(request, 'tournament_results.html', {'tournament':tournament, 'players':players})

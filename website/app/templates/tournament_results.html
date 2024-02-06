@@ -11,7 +11,13 @@
 {% block content %}
     {% if tournament.status != 3 %}
         Results not available yet
+    {% else if ! players%}
+        No one is participating in this tournament
     {% else %}
-
+        <ul>
+        {% for question in latest_question_list %}
+            <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        {% endfor %}
+    </ul>
     {% endif %}
 {% endblock %}
