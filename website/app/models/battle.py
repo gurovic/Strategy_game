@@ -15,7 +15,7 @@ class Battle(models.Model):
                               default="N")  # by the rules or by errors
     logs = models.FileField(blank=True)
 
-    def __init__(self, subscriber, jury, jury_report, *args, **kwargs):
+    def __init__(self, jury, jury_report, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.moves = []
         self.results = {}
