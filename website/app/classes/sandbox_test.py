@@ -16,11 +16,10 @@ class SandboxTest(TestCase):
                 super().__init__(**kwargs)
                 self.number_of_players = 2
 
-        a = Sandbox(GameMock(), None, None)
-        self.assertEqual(mock_battle.call_count, 2)
-        self.assertEqual(mock_players_in_battle.call_count, 1)
-        # self.assertEqual(mock_game.call_count, 3)
-        self.assertEqual(a.strategy, None)
+        sandbox = Sandbox(GameMock(), None, None)
+        self.assertEqual(mock_battle.call_count, 0)
+        self.assertEqual(mock_players_in_battle.call_count, 0)
+        self.assertEqual(sandbox.strategy, None)
 
     @patch("app.classes.sandbox.Battle")
     @patch("app.classes.sandbox.PlayersInBattle")
@@ -38,10 +37,10 @@ class SandboxTest(TestCase):
             def run(self):
                 self.count_battle += 1
 
-        a = Sandbox(GameMock(), None, None)
-        a.battle = BattleMock()
-        a.run_battle()
-        self.assertEqual(a.battle.count_battle, 1)
+        sandbox = Sandbox(GameMock(), None, None)
+        sandbox.battle = BattleMock()
+        sandbox.run_battle()
+        self.assertEqual(sandbox.battle.count_battle, 1)
 
     @patch("app.classes.sandbox.Battle")
     @patch("app.classes.sandbox.PlayersInBattle")
@@ -51,12 +50,17 @@ class SandboxTest(TestCase):
                 super().__init__(**kwargs)
                 self.number_of_players = 2
 
-        def notify(report):
-            self.assertEqual(report, 1234567890)
+        class GetNotify:
+            def __init__(self):
+                self.report = None
 
-        a = Sandbox(GameMock(), None, notify)
-        a.notify(1234567890)
-        self.assertEqual(a.report, 1234567890)
+            def notify(self, report):
+                self.report = report
+
+        get_notify = GetNotify()
+        sandbox = Sandbox(GameMock(), None, get_notify.notify)
+        sandbox.notify(1234567890)
+        self.assertEqual(get_notify.report, 1234567890)
 
     @patch("app.classes.sandbox.Battle")
     @patch("app.classes.sandbox.PlayersInBattle")

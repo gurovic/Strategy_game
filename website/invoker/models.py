@@ -30,7 +30,7 @@ class InvokerReport(models.Model):
     timelimit = models.PositiveIntegerField(blank=True, null=True, verbose_name="Ограничение по времени")
 
     status = models.IntegerField(choices=Status.choices, default=Status.OK, verbose_name="Статус")
-    error = models.TextField(editable=False, blank=True, null=True, verbose_name="Ошибка")
+    error = models.TextField(blank=True, null=True, verbose_name="Ошибка")
 
     input_files = models.ManyToManyField(File, blank=True, related_name="input_invoker",
                                          verbose_name="Загружённые файлы")

@@ -8,9 +8,11 @@ from invoker.utils import Singleton
 class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
     def __init__(self):
         self.invoker_multi_request_queue = PriorityQueue()
-        self.invoker_pool = InvokerPool()
+        self.invoker_pool = None
 
     def run(self):
+        if self.invoker_pool is None: # <-- Костыль -->
+            self.invoker_pool = InvokerPool() # <-- Singleton Init inside Singleton -->
         if self.invoker_multi_request_queue.empty():
             return
         free_invokers_count = self.invoker_pool.free_invokers_count
@@ -24,7 +26,7 @@ class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
             self.run()
 
     def add(self, invoker_multi_request):
-        invoker_multi_request.queue_notify = self.notify
+        invoker_multi_request.queue_notify_callback = self.notify
         self.invoker_multi_request_queue.put(invoker_multi_request)
         self.run()
 

@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 
-use libgame_core::{get_battle as get_battle_rust, get_raw_battle as get_raw_battle_rust};
+use libgame_core::get_battle as get_battle_rust;
 use libgame_core::battle::{Battle as BattleRust, Player, PlayerMove as PlayerMoveRust};
 
 use std::io::{Stdin, Stdout};
@@ -8,7 +8,9 @@ use std::io::{Stdin, Stdout};
 
 #[pyclass]
 pub struct PlayerMove {
+    #[pyo3(get)]
     pub player: Player,
+    #[pyo3(get)]
     pub data: String
 }
 
@@ -85,16 +87,11 @@ fn get_battle() -> PyResult<Py<Battle>> {
     Ok(Python::with_gil(|py| Py::new(py, Battle::new(battle)).unwrap()))
 }
 
-#[pyfunction]
-fn get_raw_battle(num_players: isize) -> PyResult<Py<Battle>> {
-    let battle = get_raw_battle_rust(num_players);
-    Ok(Python::with_gil(|py| Py::new(py, Battle::new(battle)).unwrap()))
-}
-
 
 #[pymodule]
 fn libgame(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_battle, m)?)?;
-    m.add_function(wrap_pyfunction!(get_raw_battle, m)?)?;
+    m.add_class::<PlayerMove>()?;
+    m.add_class::<Battle>()?;
     Ok(())
 }
