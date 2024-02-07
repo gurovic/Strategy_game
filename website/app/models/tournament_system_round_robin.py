@@ -40,7 +40,6 @@ class TournamentSystemRoundRobin(TournamentSystem):
         self.tournament.finish_tournament()
 
     def write_battle_result(self):
-        #TODO
         points = {}
         for battle in self.tournament.battles:
             players = battle.players.through.objects.filter(battle=battle)

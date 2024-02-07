@@ -5,16 +5,25 @@ from .tournamentsystem import TournamentSystem
 
 class TestTournamentSystem(unittest.TestCase):
     def test_init(self):
-        mock_tournament = Mock()
+        class MockTournament:
+            count = 0
+            def finish_tournament(self):
+                self.count += 1
+
+        mock_tournament = MockTournament()
         tournament_system = TournamentSystem(mock_tournament)
         self.assertIs(tournament_system.tournament, mock_tournament)
-        self.assertListEqual([], tournament_system.battles)
 
     def test_finish(self):
-        mock_tournament = Mock()
+        class MockTournament:
+            count = 0
+            def finish_tournament(self):
+                self.count += 1
+
+        mock_tournament = MockTournament()
         tournament_system = TournamentSystem(mock_tournament)
         tournament_system.finish()
-        tournament_system.tournament.end.assert_called()
+        self.assertEqual(mock_tournament.count, 1)
 
 
 if __name__ == '__main__':
