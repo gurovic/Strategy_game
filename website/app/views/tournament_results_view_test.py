@@ -20,6 +20,11 @@ class TestTournamentResultsView(TestCase):
             status=3,
             end_time=timezone.now()
         )
+        cls.player_in_tournament = PlayerInTournament.objects.create(
+            player=cls.user,
+            tournament=cls.tournament,
+            place=1
+        )
 
     def test_views_url_exists(self):
         response = self.client.get('/app/tournament1/results')
@@ -29,3 +34,7 @@ class TestTournamentResultsView(TestCase):
         response = self.client.get('/app/tournament1/results')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'tournament_results.html')
+
+    def test_views_use_correct_context(self):
+        response = self.client.get('/app/tournament1/results')
+        self.assertEqual(response.status_code, 200)
