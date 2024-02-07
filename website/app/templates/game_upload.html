@@ -65,18 +65,23 @@
             <input type="submit" value="Загрузить Game">
         </form>
         
-    {% elif status == 'compilation' %}
+    {% elif status == 'compiling' %}
         <script>
             wait();
         </script>
-        <form id="compiling" method="POST"></form>
+        
+        <form id="compiling" method="POST">
             {% csrf_token %}
             <label>
-                <input class="d-block" type="text" value="Compilation in progress">
-                <input class="d-none" type="text" name="type" value="compilation in progress">
+                <input class="d-none" type="text" name="type" value="compilation">
             </label>
+            <label>
+                <input class="d-block" type="text" value="Compilation in progress">
+                <input value="Обновить стораницу" class="m-b-20" type="submit">
+            </label>
+        </form>
 
-    {% elif status == 'filling compilation form' %}
+    {% elif status == 'compilation form' %}
         
         <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
@@ -126,7 +131,7 @@
 
             </fieldset>
             
-            <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
+                <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
         </form>
 
     {% else %}
