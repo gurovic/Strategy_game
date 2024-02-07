@@ -35,6 +35,5 @@ class Battle(models.Model):
 
         for order, player in enumerate(sorted(self.jury_report.points.keys()), start=1):
             self.results[player] = order
-        self.moves = self.jury_report.moves
-        self.numbers = self.jury_report.numbers
+        self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
