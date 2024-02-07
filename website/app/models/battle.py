@@ -1,5 +1,5 @@
-from Strategy_game.website.app.classes.jury import GameState
-from Strategy_game.website.app.models import PlayersInBattle
+from ..classes.jury import GameState
+from ..models import PlayersInBattle
 from django.db import models
 from django.contrib.auth.models import User
 from .game import Game
