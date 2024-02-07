@@ -11,7 +11,7 @@ urlpatterns = [
     path('tournament/start/<int:tournament_id>', tournament_start_view.start_tournament),
     path('tournament/create/', tournament_views.create_tounament, name="create_tournament"),
     path('tournament/register/<int:tournament_id>/<int:user_id>', tournament_register_views.register),
-    path('tournament<int:tournament_id>/results', tournament_results_view.show)
+    path('tournament/<int:tournament_id>/results', tournament_results_view.show)
 ]
 
 if settings.DEBUG:
