@@ -22,6 +22,10 @@ class TestTournamentResultsView(TestCase):
         )
 
     def test_views_url_exists(self):
-        response = self.client.get('/app/tournament0/results')
+        response = self.client.get('/app/tournament1/results')
         self.assertEqual(response.status_code, 200)
 
+    def test_views_use_correct_template(self):
+        response = self.client.get('/app/tournament1/results')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'tournament_results.html')
