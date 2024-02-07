@@ -21,6 +21,7 @@ class TestTournamentResultsView(TestCase):
             end_time=timezone.now()
         )
 
-    def test_something(self):
-        self.assertEqual(True, True)  # add assertion here
+    def test_views_url_exists(self):
+        response = self.client.get('/app/tournament0/results')
+        self.assertEqual(response.status_code, 200)
 
