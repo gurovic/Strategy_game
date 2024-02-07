@@ -4,7 +4,7 @@ from django.shortcuts import render
 from ..models import Tournament, PlayerInTournament
 
 
-def start_page(request, tournament_id):
+def show(request, tournament_id):
     try:
         tournament = Tournament.objects.get(pk=tournament_id)
     except:
