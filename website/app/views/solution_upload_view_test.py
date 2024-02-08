@@ -30,4 +30,3 @@ class testUserSolutionUploadViews(TestCase):
         response = self.client.get('/app/tournament/upload_solution/0/0')
         self.assertEqual(response.status_code, 200)
 
-    def test_status_upload(self):
