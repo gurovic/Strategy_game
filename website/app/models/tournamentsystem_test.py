@@ -7,6 +7,7 @@ class TestTournamentSystem(unittest.TestCase):
     def test_init(self):
         class MockTournament:
             count = 0
+
             def finish_tournament(self):
                 self.count += 1
 
@@ -17,6 +18,7 @@ class TestTournamentSystem(unittest.TestCase):
     def test_finish(self):
         class MockTournament:
             count = 0
+
             def finish_tournament(self):
                 self.count += 1
 
