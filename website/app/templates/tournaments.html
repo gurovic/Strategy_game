@@ -9,20 +9,42 @@
 {% endblock header %}
 
 {% block content %}
-    {% if tournaments|length == 0 %}
-        There are no tournaments yet
+    <h2>Upcoming or current tournaments</h2>
+    {% if upcoming_or_current_tournaments|length == 0 %}
+        No future tournaments are planned yet
     {% else %}
         <table>
             <thead><th>Name</th><th>Game</th><th>Start time</th><th>End time</th><th>Before the start</th><th>Duration</th></thead>
             <tbody>
-        {% for tournament in tournaments %}
+        {% for tournament in upcoming_or_current_tournaments %}
             <tr>
-            <td> <li><a style="color:white;" href="/tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
-            <td> <li><a style="color:white;" href="/game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
+            <td> <li><a style="color:white;" href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
+            <td> <li><a style="color:white;" href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
             <td> {{ tournament.start_time }} </td>
             <td> {{ tournament.end_time }} </td>
             <td> {{ tournament.start_time|timeuntil }} </td>
             <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h2>Past tournaments</h2>
+    {% if past_tournaments|length == 0 %}
+        No tournament has been held yet
+    {% else %}
+        <table>
+            <thead><th>Name</th><th>Game</th><th>Start time</th><th>End time</th><th>Duration</th><th>Results</th></thead>
+            <tbody>
+        {% for tournament in past_tournaments %}
+            <tr>
+            <td> <li><a style="color:white;" href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
+            <td> <li><a style="color:white;" href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
+            <td> {{ tournament.start_time }} </td>
+            <td> {{ tournament.end_time }} </td>
+            <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
+            <td> <li><a style="color:white;" href="tournament/{{ tournament.id }}/results">Results</a></li> </td>
             </tr>
         {% endfor %}
             </tbody>
