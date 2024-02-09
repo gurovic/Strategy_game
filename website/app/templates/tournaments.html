@@ -32,7 +32,7 @@
             <td> {{ tournament.end_time }} </td>
             <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
             <td> {{ tournament.start_time|timeuntil }} </td>
-            <td> {{ tournament.player|length }} / {{ tournament.max_of_players }}</td>
+            <td> {{ tournament.players.all|length }} / {{ tournament.max_of_players }}</td>
             </tr>
         {% endfor %}
             </tbody>
