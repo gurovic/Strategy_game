@@ -14,7 +14,15 @@
         No future tournaments are planned yet
     {% else %}
         <table>
-            <thead><th>Name</th><th>Game</th><th>Start time</th><th>End time</th><th>Duration</th><th>Before the start</th></thead>
+            <thead>
+                <th>Name</th>
+                <th>Game</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th>Duration</th>
+                <th>Before the start</th>
+                <th>Already registered</th>
+            </thead>
             <tbody>
         {% for tournament in upcoming_or_current_tournaments %}
             <tr>
@@ -24,6 +32,7 @@
             <td> {{ tournament.end_time }} </td>
             <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
             <td> {{ tournament.start_time|timeuntil }} </td>
+            <td> {{ tournament.player|length }} / {{ tournament.max_of_players }}</td>
             </tr>
         {% endfor %}
             </tbody>
