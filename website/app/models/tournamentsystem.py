@@ -4,6 +4,7 @@ from django.db import models
 class TournamentSystem:
     def __init__(self, tournament):
         self.tournament = tournament
+        self.players_in_tournament = self.tournament.players.through.objects.filter(tournament=self.tournament)
 
     def run_tournament(self):
         pass
