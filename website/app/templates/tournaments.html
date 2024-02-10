@@ -26,8 +26,8 @@
             <tbody>
         {% for tournament in upcoming_or_current_tournaments %}
             <tr>
-            <td> <li><a style="color:white;" href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
-            <td> <li><a style="color:white;" href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
+            <td> <li><a href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
+            <td> <li><a href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
             <td> {{ tournament.start_time }} </td>
             <td> {{ tournament.end_time }} </td>
             <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
@@ -48,12 +48,12 @@
             <tbody>
         {% for tournament in past_tournaments %}
             <tr>
-            <td> <li><a style="color:white;" href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
-            <td> <li><a style="color:white;" href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
+            <td> <li><a href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
+            <td> <li><a href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
             <td> {{ tournament.start_time }} </td>
             <td> {{ tournament.end_time }} </td>
             <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
-            <td> <li><a style="color:white;" href="tournament/{{ tournament.id }}/results">Results</a></li> </td>
+            <td> <li><a href="tournament/{{ tournament.id }}/results">Results</a></li> </td>
             </tr>
         {% endfor %}
             </tbody>
