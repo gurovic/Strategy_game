@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Tournament results
+{% endblock title %}
+
+{% block header %}
+    Results of "{{ tournament.name }}"
+{% endblock header %}
+
+{% block content %}
+    {% if players_in_tournament|length == 0 %}
+        No one is participating in this tournament
+    {% elif tournament.status != 3 %}
+        Tournament is
+        {% if tournament.status == 0 %}
+            NOT STARTED
+        {% elif tournament.status == 1 %}
+            WAITING FOR SOLUTIONS
+        {% else %}
+            IN PROGRESS
+        {% endif %}
+        <br>
+        Results not available yet
+    {% else %}
+        <table>
+            <thead><th>Place</th><th>User</th><th>Number of points</th></thead>
+            <tbody>
+        {% for player_in_tournament in players_in_tournament %}
+            <tr>
+            <td> {{ player_in_tournament.place }} </td>
+            <td> <li><a style="color:white;" href="/users/{{ player_in_tournament.player.username }}">{{ player_in_tournament.player.username }}</a></li> </td>
+            <td> {{ player_in_tournament.number_of_points }} </td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

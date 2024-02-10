@@ -39,7 +39,7 @@ class Jury:
     def perform_play_command(self):
         play_command = self.play_process.read()
         if play_command["state"] == "play":
-            player = play_command["player"]
+            player = play_command["player"] - 1
             data = play_command["data"]
             self.strategies_process[player].write(data)
         else:

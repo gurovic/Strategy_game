@@ -19,6 +19,7 @@ class InvokerRequest:
         self.preserve_files = preserve_files
         self.callback = None
         self.report = None
+        self.process_callback = None
         self.type = None
 
     def run(self, invoker: Invoker):
