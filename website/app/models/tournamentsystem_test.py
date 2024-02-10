@@ -1,11 +1,18 @@
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
+
+from django.contrib.auth.models import User
+
 from .tournamentsystem import TournamentSystem
+from django.db import models
 
 
 class TestTournamentSystem(unittest.TestCase):
-    def test_init(self):
-        class MockTournament:
+    @patch('app.models.tournamentsystem.TournamentSystem')
+    def test_init(self, mock_players_in_tournament):
+        mock_players_in_tournament.return_value = Mock()
+
+        class MockTournament(models.Model):
             count = 0
 
             def finish_tournament(self):
@@ -18,6 +25,7 @@ class TestTournamentSystem(unittest.TestCase):
     def test_finish(self):
         class MockTournament:
             count = 0
+            players = []
 
             def finish_tournament(self):
                 self.count += 1
