@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import sandbox_views, tournament_views, tournament_start_view, tournament_register_views, tournament_results_view, tournaments_view, solution_upload_view
+from .views import sandbox_views, tournament_views, tournament_start_view, tournament_register_views, tournament_results_view, tournament_registration_view, tournaments_view, solution_upload_view
 
 urlpatterns = [
     path('sandbox/<int:game_id>', sandbox_views.show),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('tournament/create/', tournament_views.create_tounament, name="create_tournament"),
     path('tournament/register/<int:tournament_id>/<int:user_id>', tournament_register_views.register),
     path('tournament/<int:tournament_id>/results', tournament_results_view.show),
+    path('tournament/<int:tournament_id>/registration', tournament_registration_view.register, name="registration_for_tournament"),
     path('tournaments', tournaments_view.show),
     path('tournament/upload_solution/<int:tournament_id>/<int:user_id>', solution_upload_view.upload)
 ]
