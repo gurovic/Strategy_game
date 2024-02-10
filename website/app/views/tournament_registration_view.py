@@ -10,13 +10,12 @@ def register(request, tournament_id):
     user = request.user
 
     if request.method == 'POST':
-        if len(tournament.players.all()) < tournament.max_of_players:
-            tournament.players.add(user)
-            return render(request, 'tournament_registration.html', {'tournament': tournament, 'status': 'registered'})
-        else:
-            return render(request, 'tournament_registration.html', {'tournament': tournament, 'status': 'denied registration'})
+        tournament.players.add(user)
+        return render(request, 'tournament_registration.html', {'tournament': tournament, 'status': 'registered'})
     else:
         if tournament.players.all().contains(user):
             return render(request, 'tournament_registration.html', {'tournament': tournament, 'status': 'already registered'})
+        elif len(tournament.players.all()) >= tournament.max_of_players:
+            return render(request, 'tournament_registration.html', {'tournament': tournament, 'status': 'denied registration'})
         else:
             return render(request, 'tournament_registration.html', {'tournament': tournament, 'status': 'not registered'})
