@@ -32,7 +32,6 @@ class Tournament(models.Model):
         return self.name
 
     def start_tournament(self):
-        print('!!!!!!!!! TOURNAMENT STARTED CORRECTLY !!!!!!!')
         self.status = self.Status.WAITING_SOLUTIONS
         self.save()
 
