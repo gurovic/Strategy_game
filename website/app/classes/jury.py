@@ -1,5 +1,7 @@
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequestType
+from invoker.invoker_request import InvokerRequest
+from .jury_report import JuryReport
 
 import enum
 
@@ -22,6 +24,7 @@ class Jury:
         self.get_processes()
 
         self.game_state = GameState.PLAY
+        self.jury_report = JuryReport()
 
     def get_invoker_requests(self):
         invoker_requests = self.invoker_multi_request.invoker_requests
