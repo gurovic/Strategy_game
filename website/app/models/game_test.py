@@ -1,4 +1,4 @@
-from app.models.game import Game
+from app.models import Game
 
 from django.test import TestCase
 from django.db import IntegrityError

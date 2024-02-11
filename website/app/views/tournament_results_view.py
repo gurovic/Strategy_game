@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from app.models.tournament import Tournament
-from app.models.player_in_tournament import PlayerInTournament
+from app.models import Tournament
+from app.models import PlayerInTournament
 
 
 def show(request, tournament_id):
