@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from Strategy_game.website.app.classes.jury import GameState
-from Strategy_game.website.app.models.battle import Battle
+from ...app.classes.jury import GameState
+from ..models.battle import Battle
 
 
 class BattleTest(TestCase):
