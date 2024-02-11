@@ -29,25 +29,22 @@ def run_Sandbox(request, id):
 # Create your views here.
 
 def start_page(request):
-    return render(request, 'templates/tournament_page.html')
+    return render(request, 'tournament_page.html')
 
 
-def create_tounament(request):
+def create_tournament(request):
     error = ''
     if request.method == "POST":
         form = TournamentForm(request.POST)
-
         if form.is_valid():
             form.save()
-            return redirect('tounrament_startpage')
+            return redirect('tournament_startpage')
         else:
             error = 'Форма заполнена неверно'
-
     form = TournamentForm()
-
     data = {
         'form': form,
         'error': error
     }
 
-    return render(request, 'templates/tournament_create.html', data)
+    return render(request, 'tournament_create.html', data)
