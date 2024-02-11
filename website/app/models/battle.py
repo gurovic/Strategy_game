@@ -7,14 +7,18 @@ from django.contrib.auth.models import User
 from .game import Game
 
 
+class GameStateChoices(models.TextChoices):
+    N = "NOT_STARTED"
+    O = "OK"
+    E = "ERROR"
+
+
 class Battle(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     time_start = models.DateTimeField(auto_now_add=True)
     time_finish = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
-    status = models.CharField(max_length=1,
-                              choices=[("O", "OK"), ("E", "Error"), ("T", "Time Limit Exceeded"), ("N", "Not started")],
-                              default="N")
+    status = models.TextField(choices=GameStateChoices, default=GameStateChoices.N)
     logs = models.FileField(blank=True)
 
     def __init__(self, jury, jury_report, *args, **kwargs):
