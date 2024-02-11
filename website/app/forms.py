@@ -23,14 +23,14 @@ class TournamentForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Система проведения турнира'
             }),
-            # 'start_registration_time': DateTimeInput(attrs={
-            #     'class': 'form-control',
-            #     'placeholder': 'Время начала регистрации игроков'
-            # }),
-            # 'finish_registration_time': DateTimeInput(attrs={
-            #     'class': 'form-control',
-            #     'placeholder': 'Время конца регистрации игроков'
-            # }),
+            'start_registration_time': DateTimeInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Время начала регистрации игроков'
+            }),
+            'finish_registration_time': DateTimeInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Время конца регистрации игроков'
+            }),
             'max_of_players': NumberInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Максимальное количество игроков в турнире'

@@ -1,4 +1,4 @@
-from ..models import Battle, PlayersInBattle
+from app.models import Battle, PlayersInBattle
 
 
 class Sandbox:

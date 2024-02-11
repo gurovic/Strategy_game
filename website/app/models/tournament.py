@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 from django_q.models import Schedule
 from django_q.tasks import schedule
 
@@ -25,6 +26,8 @@ class Tournament(models.Model):
     players = models.ManyToManyField(User, through='PlayerInTournament', blank=True, verbose_name='Players')
     system = models.IntegerField(choices=System.choices, default=System.ROUND_ROBIN, verbose_name='Tournament System')
     status = models.IntegerField(choices=Status.choices, default=Status.NOT_STARTED, verbose_name='Status')
+    finish_registration_time = models.DateTimeField(default=now(), null=True, blank=True, verbose_name='Finish Registration Time')
+    tournament_start_time = models.DateTimeField(default=now(), null=True, blank=True, verbose_name='Tournament Start Time')
     battles = models.ManyToManyField(Battle, blank=True, verbose_name='Battle')
     max_of_players = models.IntegerField(default=2, verbose_name='Maximum number of players')
 
@@ -32,7 +35,6 @@ class Tournament(models.Model):
         return self.name
 
     def start_tournament(self):
-        print('!!!!!!!!! TOURNAMENT STARTED CORRECTLY !!!!!!!')
         self.status = self.Status.WAITING_SOLUTIONS
         self.save()
 
@@ -41,12 +43,9 @@ class Tournament(models.Model):
         self.save()
 
     def end_registration(self):
-        print('!!!!!!!!! TOURNAMENT ENDING REGISTRATION 1 !!!!!!!!!')
         self.status = self.Status.IN_PROGRESS
         self.save()
         tournament_system = None
         if self.system == self.System.ROUND_ROBIN:
             tournament_system = TournamentSystemRoundRobin(self)
         tournament_system.run_tournament()
-        print(self.status)
-        print('!!!!!!!!! TOURNAMENT ENDING REGISTRATION 2 !!!!!!!!!')
