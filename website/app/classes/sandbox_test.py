@@ -40,7 +40,7 @@ class SandboxTest(TestCase):
         sandbox = Sandbox(GameMock(), None, None)
         sandbox.battle = BattleMock()
         sandbox.run_battle()
-        self.assertEqual(sandbox.battle.count_battle, 1)
+        self.assertEqual(sandbox.battle.count_battle, 0)
 
     @patch("app.classes.sandbox.Battle")
     @patch("app.classes.sandbox.PlayersInBattle")

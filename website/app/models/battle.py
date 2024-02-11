@@ -4,6 +4,7 @@ from ..classes.jury import GameState
 from ..models import PlayersInBattle
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 from .game import Game
 
 
@@ -18,7 +19,8 @@ class Battle(models.Model):
     time_start = models.DateTimeField(auto_now_add=True)
     time_finish = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
-    status = models.TextField(choices=GameStateChoices, default=GameStateChoices.N)
+    status = models.CharField(max_length=1, choices=[("O", "OK"), ("E", "Error"), ("T", "Time Limit"), ("N", "Not started")], default="N")  # by the rules or by errors
+    total_time = models.TimeField(default=now(), blank=True)
     logs = models.FileField(blank=True)
 
     def __init__(self, jury, jury_report, *args, **kwargs):
