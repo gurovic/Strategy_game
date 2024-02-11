@@ -25,20 +25,20 @@ class TestTournamentSystem(TestCase):
         self.tournament.save()
 
     def test_init(self):
-        class A(TournamentSystem):
+        class TournamentSystem2(TournamentSystem):
             def __init__(self, tournament):
                 super().__init__(tournament)
 
-        a = A(self.tournament)
-        self.assertEqual(a.tournament, self.tournament)
+        tournament_sys = TournamentSystem2(self.tournament)
+        self.assertEqual(tournament_sys.tournament, self.tournament)
 
     def test_finish(self):
-        class A(TournamentSystem):
+        class TournamentSystem2(TournamentSystem):
             def __init__(self, tournament):
                 super().__init__(tournament)
 
-        a = A(self.tournament)
-        a.finish()
+        tournament_sys = TournamentSystem2(self.tournament)
+        tournament_sys.finish()
         self.assertEqual(self.tournament.status, Tournament.Status.FINISHED)
 
 

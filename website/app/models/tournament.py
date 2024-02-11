@@ -40,12 +40,9 @@ class Tournament(models.Model):
         self.save()
 
     def end_registration(self):
-        print('!!!!!!!!! TOURNAMENT ENDING REGISTRATION 1 !!!!!!!!!')
         self.status = self.Status.IN_PROGRESS
         self.save()
         tournament_system = None
         if self.system == self.System.ROUND_ROBIN:
             tournament_system = TournamentSystemRoundRobin(self)
         tournament_system.run_tournament()
-        print(self.status)
-        print('!!!!!!!!! TOURNAMENT ENDING REGISTRATION 2 !!!!!!!!!')
