@@ -1,5 +1,3 @@
-import enum
-
 from ..classes.jury import GameState
 from ..models import PlayersInBattle
 from django.db import models
