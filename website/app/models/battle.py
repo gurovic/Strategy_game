@@ -1,8 +1,16 @@
+import enum
+
 from ..classes.jury import GameState
 from ..models import PlayersInBattle
 from django.db import models
 from django.contrib.auth.models import User
 from .game import Game
+
+
+class BattleState(enum.Enum):
+    NOT_STARTED = enum.auto()
+    OK = enum.auto()
+    ERROR = enum.auto()
 
 
 class Battle(models.Model):
