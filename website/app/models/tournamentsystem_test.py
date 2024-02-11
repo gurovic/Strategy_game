@@ -42,6 +42,5 @@ class TestTournamentSystem(TestCase):
         self.assertEqual(self.tournament.status, Tournament.Status.FINISHED)
 
 
-
 if __name__ == '__main__':
     unittest.main()
