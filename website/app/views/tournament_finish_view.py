@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from app.models import Tournament
+from app.models.tournament import Tournament
 
 
 def finish_tournament(request, tournament_id):
