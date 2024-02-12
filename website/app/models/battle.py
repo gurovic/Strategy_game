@@ -3,7 +3,7 @@ from ..models import PlayersInBattle
 from django.db import models
 from django.contrib.auth.models import User
 from .game import Game
-
+from .jury_report import JuryReport
 
 
 class Battle(models.Model):
@@ -18,13 +18,13 @@ class Battle(models.Model):
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
     status = models.TextField(choices=GameStateChoices.choices, default=GameStateChoices.N)
     logs = models.FileField(blank=True)
+    jury_report = models.ForeignKey(JuryReport, on_delete=models.CASCADE)
 
-    def __init__(self, jury, jury_report, *args, **kwargs):
+    def __init__(self, jury, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.moves = []
         self.results = {}
         self.jury = jury
-        self.jury_report = jury_report
         self.numbers = []
 
     def run(self):

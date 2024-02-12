@@ -1,6 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
+from Strategy_game.website.app.models import JuryReport
+
 from ..classes.jury import GameState
 from . import Battle
 
@@ -8,21 +10,13 @@ from . import Battle
 class BattleTest(TestCase):
     def test_create(self):
         mock_jury = Mock()
-        mock_jury_report = Mock()
-        battle = Battle(mock_jury, mock_jury_report)
+        battle = Battle(mock_jury)
         battle.save()
-        self.assertEqual(Battle.objects.get(jury=mock_jury).jury_report, mock_jury_report)
+        self.assertEqual(Battle.objects.get(jury_report=battle.jury_report).jury, mock_jury)
 
     def test_run(self):
-        class JuryReportMock(self):
-            def __init__(self):
-                self.story_of_game = []
-                self.points = []
-                self.status = "OK"
-
         mock_jury = Mock()
-        mock_jury_report = JuryReportMock()
-        battle = Battle(mock_jury, mock_jury_report)
+        battle = Battle(mock_jury)
         battle.save()
 
         battle.jury.game_state = GameState.END
