@@ -3,12 +3,17 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django_q.models import Schedule
-from django_q.tasks import schedule
 
 from .tournament_system_round_robin import TournamentSystemRoundRobin
 from .battle import Battle
 from .game import Game
 from django.utils import timezone
+
+
+def _end_registration_task(tournament_id: int):
+    tournament = Tournament.objects.get(id=tournament_id)
+    if tournament.status == Tournament.Status.WAITING_SOLUTIONS:
+        tournament.end_registration()
 
 
 class Tournament(models.Model):
@@ -34,18 +39,27 @@ class Tournament(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if self.status == self.Status.WAITING_SOLUTIONS:
+            Schedule.objects.update_or_create(name=self.id, func="app.models.tournament._end_registration_task",
+                                              repeats=0, args=str(self.id),
+                                              defaults=dict(next_run=self.finish_registration_time))
+        return super().save(*args, **kwargs)
+
     def start_tournament(self):
         self.status = self.Status.WAITING_SOLUTIONS
-        self.save()
-
-    def finish_tournament(self):
-        self.status = self.Status.FINISHED
         self.save()
 
     def end_registration(self):
         self.status = self.Status.IN_PROGRESS
         self.save()
-        tournament_system = None
-        if self.system == self.System.ROUND_ROBIN:
-            tournament_system = TournamentSystemRoundRobin(self)
-        tournament_system.run_tournament()
+        match self.system:
+            case self.System.ROUND_ROBIN:
+                tournament_system = TournamentSystemRoundRobin(self)
+                tournament_system.run_tournament()
+            case _:
+                pass
+
+    def finish_tournament(self):
+        self.status = self.Status.FINISHED
+        self.save()
