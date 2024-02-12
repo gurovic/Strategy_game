@@ -18,26 +18,26 @@ class Battle(models.Model):
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
     status = models.TextField(choices=GameStateChoices.choices, default=GameStateChoices.N)
     logs = models.FileField(blank=True)
-    jury_report = models.ForeignKey(JuryReport, on_delete=models.CASCADE)
+    jury_report = models.ForeignKey(JuryReport, blank=True, null=True, on_delete=models.CASCADE)
 
-    def __init__(self, jury, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.moves = []
         self.results = {}
-        self.jury = jury
         self.numbers = []
 
-    def run(self):
-        while self.jury.game_state is not GameState.END:
-            self.jury.get_processes()
-            self.jury.perform_play_command()
+    def run(self, jury):
+        while jury.game_state is not GameState.END:
+            jury.get_processes()
+            jury.perform_play_command()
 
-        for player in PlayersInBattle.objects.filter(batlle=self):
-            player.number_of_points = self.jury_report.points[player.number]
+        for player in PlayersInBattle.objects.filter(battle=self):
+            player.number_of_points = Battle.objects.get(battle=self).points[player.number]
 
-        self.jury_report.points = dict(reversed(sorted(self.jury_report.points.items(), key=lambda item: item[1])))
+        points = JuryReport.objects.get(battle=self).points
+        points = dict(reversed(sorted(points.items(), key=lambda item: item[1])))
 
-        for order, player in enumerate(sorted(self.jury_report.points.keys()), start=1):
+        for order, player in enumerate(sorted(points), start=1):
             self.results[player] = order
-        self.moves = self.jury_report.story_of_game
-        self.status = self.jury_report.status
+        self.moves = JuryReport.objects.get(battle=self).story_of_game
+        self.status = JuryReport.objects.get(battle=self).status

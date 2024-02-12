@@ -7,18 +7,18 @@ from . import Battle
 
 class BattleTest(TestCase):
     def test_create(self):
-        mock_jury = Mock()
-        battle = Battle(mock_jury)
+        battle = Battle()
         battle.save()
-        self.assertEqual(Battle.objects.get(jury_report=battle.jury_report).jury, mock_jury)
+        self.assertEqual(Battle.objects.get(jury_report=battle.jury_report), battle)
 
     def test_run(self):
         mock_jury = Mock()
-        battle = Battle(mock_jury)
+        battle = Battle()
         battle.save()
 
-        battle.jury.game_state = GameState.END
-        battle.run()
+        battle.game_state = GameState.END
+        mock_jury.game_state = GameState.END
+        battle.run(mock_jury)
 
         self.assertEquals(battle.status, "OK")
         self.assertEquals(battle.moves, [])
