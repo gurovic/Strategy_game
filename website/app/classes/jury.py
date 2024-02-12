@@ -1,7 +1,7 @@
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequestType
 from invoker.invoker_request import InvokerRequest
-from .jury_report import JuryReport
+from ..models.jury_report import JuryReport
 
 import enum
 
@@ -42,31 +42,31 @@ class Jury:
     def perform_play_command(self):
         try:
             play_command = self.play_process.read()
-        except Exception:
-            self.jury_report.error_occured()
+        except RuntimeError:
+            self.jury_report.status = "ERROR"
             return self.jury_report
         if play_command["state"] == "play":
             player = play_command["player"] - 1
             data = play_command["data"]
             try:
                 self.strategies_process[player].write(data)
-            except Exception:
-                self.jury_report.error_occured()
+            except RuntimeError:
+                self.jury_report.status = "ERROR"
                 return self.jury_report
             try:
                 player_command = self.strategies_process[player].read()
-            except Exception:
-                self.jury_report.error_occured()
+            except RuntimeError:
+                self.jury_report.status = "ERROR"
                 return self.jury_report
             try:
                 self.play_process.write(player_command)
-            except Exception:
-                self.jury_report.error_occured()
+            except RuntimeError:
+                self.jury_report.status = "ERROR"
                 return self.jury_report
         else:
             self.game_state = GameState.END
             players_points = play_command["points"]
             player = players_points["player"]
             points = players_points["points"]
-            self.jury_report.add_points(player, points)
+            self.jury_report[player] = points
             return self.jury_report
