@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .game import Game
 
 
+
 class Battle(models.Model):
     class GameStateChoices(models.TextChoices):
         N = "NOT_STARTED"
