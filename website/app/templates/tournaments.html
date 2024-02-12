@@ -28,10 +28,10 @@
             <tr>
             <td> <li><a href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
             <td> <li><a href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
-            <td> {{ tournament.start_time }} </td>
-            <td> {{ tournament.end_time }} </td>
-            <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
-            <td> {{ tournament.start_time|timeuntil }} </td>
+            <td> {{ tournament.tournament_start_time }} </td>
+            <td> {{ tournament.finish_registration_time }} </td>
+            <td> {{ tournament.finish_registration_time|timeuntil:tournament.tournament_start_time }} </td>
+            <td> {{ tournament.tournament_start_time|timeuntil }} </td>
             <td> {{ tournament.players.all|length }} / {{ tournament.max_of_players }}</td>
             </tr>
         {% endfor %}
@@ -50,9 +50,9 @@
             <tr>
             <td> <li><a href="tournament/{{ tournament.id }}">{{ tournament.name }}</a></li> </td>
             <td> <li><a href="game/{{ tournament.game.id }}">{{ tournament.game.name }}</a></li> </td>
-            <td> {{ tournament.start_time }} </td>
-            <td> {{ tournament.end_time }} </td>
-            <td> {{ tournament.end_time|timeuntil:tournament.start_time }} </td>
+            <td> {{ tournament.tournament_start_time }} </td>
+            <td> {{ tournament.finish_registration_time }} </td>
+            <td> {{ tournament.finish_registration_time|timeuntil:tournament.tournament_start_time }} </td>
             <td> <li><a href="tournament/{{ tournament.id }}/results">Results</a></li> </td>
             </tr>
         {% endfor %}

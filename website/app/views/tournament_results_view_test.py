@@ -13,7 +13,7 @@ class TestTournamentResultsView(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.game = Game.objects.create(id=0)
-        cls.tournament = Tournament.objects.create(name="Тестовый турнир", game=cls.game, status=3, end_time=timezone.now())
+        cls.tournament = Tournament.objects.create(name="Тестовый турнир", game=cls.game, status=3, finish_registration_time=timezone.now())
 
         cls.user1 = User.objects.create_user(username='test_user1', password='12345678')
         cls.user2 = User.objects.create_user(username='test_user2', password='12345678')

@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block style %}
-    <link rel="stylesheet" href="/static/css/sandbox.css">
-    <link rel="stylesheet" href="/static/css/tournament_start.css">
+    <link rel="stylesheet" href="{% static "css/sandbox.css" %}">
+    <link rel="stylesheet" href="{% static "css/tournament_start.css" %}">
 {% endblock %}
 
 {% block title %}
-    Start tournament
+    Finish tournament
 {% endblock %}
 
 {% block header %}
     {% if status == 'failed' %}
     {% else %}
-        Start tournament {{ tournament.name }}
+        Finish tournament {{ tournament.name }}
     {% endif %}
 {% endblock %}
 
@@ -22,12 +22,12 @@
 
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="submit" value="start tournament">
+            <input type="submit" value="finish tournament">
         </form>
 
     {% elif status == 'getting report' %}
 
-        <p>Tournament started</p>
+        <p>Tournament finished</p>
         <p>name: {{ tournament.name }}</p>
         <p>game: {{ tournament.game }}</p>
         <p>id: {{ tournament.id }}</p>
