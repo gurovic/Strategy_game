@@ -14,12 +14,12 @@ class TestTournamentResultsView(TestCase):
     def setUpTestData(cls):
         cls.game = Game.objects.create(id=0)
         now = timezone.now()
-        cls.tournament1 = Tournament.objects.create(name="Турнир 1", game=cls.game, start_time=now+timedelta(minutes=20), end_time=now+timedelta(minutes=50))
-        cls.tournament2 = Tournament.objects.create(name="Турнир 2", game=cls.game, start_time=now-timedelta(days=5), end_time=now-timedelta(days=4))
-        cls.tournament3 = Tournament.objects.create(name="Турнир 3", game=cls.game, start_time=now-timedelta(minutes=20), end_time=now+timedelta(minutes=40))
-        cls.tournament4 = Tournament.objects.create(name="Турнир 4", game=cls.game, start_time=now+timedelta(days=2), end_time=now+timedelta(days=2, minutes=30))
-        cls.tournament5 = Tournament.objects.create(name="Турнир 5", game=cls.game, start_time=now-timedelta(hours=3), end_time=now-timedelta(hours=2))
-        cls.tournament6 = Tournament.objects.create(name="Турнир 6", game=cls.game, start_time=now-timedelta(days=10, hours=3), end_time=now-timedelta(days=10))
+        cls.tournament1 = Tournament.objects.create(name="Турнир 1", game=cls.game, tournament_start_time=now+timedelta(minutes=20), finish_registration_time=now+timedelta(minutes=50))
+        cls.tournament2 = Tournament.objects.create(name="Турнир 2", game=cls.game, tournament_start_time=now-timedelta(days=5), finish_registration_time=now-timedelta(days=4))
+        cls.tournament3 = Tournament.objects.create(name="Турнир 3", game=cls.game, tournament_start_time=now-timedelta(minutes=20), finish_registration_time=now+timedelta(minutes=40))
+        cls.tournament4 = Tournament.objects.create(name="Турнир 4", game=cls.game, tournament_start_time=now+timedelta(days=2), finish_registration_time=now+timedelta(days=2, minutes=30))
+        cls.tournament5 = Tournament.objects.create(name="Турнир 5", game=cls.game, tournament_start_time=now-timedelta(hours=3), finish_registration_time=now-timedelta(hours=2))
+        cls.tournament6 = Tournament.objects.create(name="Турнир 6", game=cls.game, tournament_start_time=now-timedelta(days=10, hours=3), finish_registration_time=now-timedelta(days=10))
 
     def test_views_url_exists(self):
         response = self.client.get('/app/tournaments')
