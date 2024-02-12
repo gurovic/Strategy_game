@@ -4,9 +4,8 @@ from django.http import HttpRequest
 from django.contrib.auth.models import User
 from unittest.mock import Mock, patch
 
+from app.models import Tournament, Game
 from app.models.tournament_system_round_robin import TournamentSystemRoundRobin
-from app.models.tournament import Tournament
-from app.models.game import Game
 from app.views.tournament_start_view import start_tournament
 
 
