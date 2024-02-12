@@ -1,8 +1,6 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from Strategy_game.website.app.models import JuryReport
-
 from ..classes.jury import GameState
 from . import Battle
 
