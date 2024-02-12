@@ -1,40 +1,52 @@
-from .tournamentsystem import TournamentSystem
+import datetime
+
+from .game import Game
 from .battle import Battle
+from .tournamentsystem import TournamentSystem
+from .players_in_battle import PlayersInBattle
+
 
 class TournamentSystemRoundRobin(TournamentSystem):
+    tournament = None
+
     def __init__(self, tournament):
-        super().__init__(tournament)
-        self.tournament_players = dict()
-        for player in self.tournament.players.all():
-            self.tournament_players[player.player] = player
-        self.battle_count = len(self.tournament_players)*(len(self.tournament_players)-1)/2
+        super(TournamentSystemRoundRobin, self).__init__(tournament)
+        self.battle_count = len(self.players_in_tournament) * (len(self.players_in_tournament) - 1) / 2
+        for i in range(len(self.players_in_tournament)):
+            for j in range(i + 1, len(self.players_in_tournament)):
+                battle = Battle.objects.create(game=self.tournament.game)
+                PlayersInBattle.objects.create(file_solution=self.players_in_tournament[i].file_solution, number=0,
+                                               battle=battle, player=self.players_in_tournament[i].player)
+                PlayersInBattle.objects.create(file_solution=self.players_in_tournament[j].file_solution, number=1,
+                                               battle=battle, player=self.players_in_tournament[j].player)
+                self.tournament.battles.add(battle)
+
 
     def run_tournament(self):
-        participants = list(zip(self.tournament_players.keys(), self.tournament_players.values()))
-        for i in range(len(participants)):
-            for j in range(i+1, len(participants)):
-                battle = Battle(self.tournament.game, list([participants[i][1], participants[j][1]]), self)
-                self.tournament.battles.append(battle)
-                battle.start()
+        for battle in self.tournament.battles.all():
+            battle.start()
+        self.write_battle_result()
 
     def calculate_places(self):
-        places = list(zip(self.tournament_players.keys(), self.tournament_players.values()))
-        places = sorted(places, key = lambda x: x[1].number_of_points)
-        number = 1
-        for place in places:
-            place[1].place = number
-            number += 1
+        self.players_in_tournament = sorted(self.players_in_tournament, key=lambda x: x.number_of_points)
+        last_place = 1
+        for player in self.players_in_tournament:
+            player.place = last_place
+            player.save()
+            last_place += 1
 
     def finish(self):
-        self.tournament.notify()
+        self.tournament.finish_tournament()
 
-    def write_battle_result(self, results, numbers):
-        for result in results.keys():
-            self.tournament.players[numbers[result].user].number_of_points += results[result]
-            self.tournament.players[numbers[result].user].save()
-        self.battle_count -= 1
-        if self.battle_count == 0:
-            self.calculate_places()
-            self.finish()
-
-
+    def write_battle_result(self):
+        for battle in self.tournament.battles.all():
+            players = battle.players.through.objects.filter(battle=battle)
+            for player in players:
+                for player_in_tournament in self.players_in_tournament:
+                    if player_in_tournament.player == player.player:
+                        player_in_tournament.number_of_points += player.number_of_points
+                        (player.player, player_in_tournament.number_of_points, player.number_of_points)
+                        player_in_tournament.save()
+            self.tournament.save()
+        self.calculate_places()
+        self.finish()

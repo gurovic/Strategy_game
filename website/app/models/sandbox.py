@@ -1,6 +1,5 @@
 from app.models import PlayersInBattle
 
-
 class Sandbox:
     def __init__(self, game, strategy):
         self.game = game

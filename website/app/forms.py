@@ -9,9 +9,35 @@ from django.contrib.auth.models import User
 class TournamentForm(ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'game', 'system', 'start_time', 'end_time', 'max_of_players']
+        fields = ['name', 'game', 'system', 'max_of_players']
+        widgets = {
+            'name': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Название турнира'
+            }),
+            'game': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Игра (по которой проводится турнир)'
+            }),
+            'system': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Система проведения турнира'
+            }),
+            'start_registration_time': DateTimeInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Время начала регистрации игроков'
+            }),
+            'finish_registration_time': DateTimeInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Время конца регистрации игроков'
+            }),
+            'max_of_players': NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Максимальное количество игроков в турнире'
+            })
+        }
 
-
+        
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
 

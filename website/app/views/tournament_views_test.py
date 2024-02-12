@@ -5,8 +5,7 @@ from ..models.game import Game
 
 
 
-class TestTournamentViews(TestCase):
-
+class TestTournamentViews(TestCase):            
     @classmethod
     def setUpTestData(cls):
         cls.game = Game.objects.create(id=0)
@@ -25,8 +24,6 @@ class TestTournamentViews(TestCase):
         response = self.client.get('/app/tournament/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'tournament_page.html')
-
-
 
     def test_correct_template_2(self):
         response = self.client.get('/app/tournament/create/')
