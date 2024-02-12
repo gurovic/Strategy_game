@@ -2,13 +2,13 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.timezone import now
 from django_q.models import Schedule
 from django_q.tasks import schedule
 
 from .tournament_system_round_robin import TournamentSystemRoundRobin
 from .battle import Battle
 from .game import Game
+from django.utils import timezone
 
 
 class Tournament(models.Model):
@@ -26,8 +26,8 @@ class Tournament(models.Model):
     players = models.ManyToManyField(User, through='PlayerInTournament', blank=True, verbose_name='Players')
     system = models.IntegerField(choices=System.choices, default=System.ROUND_ROBIN, verbose_name='Tournament System')
     status = models.IntegerField(choices=Status.choices, default=Status.NOT_STARTED, verbose_name='Status')
-    finish_registration_time = models.DateTimeField(default=now(), null=True, blank=True, verbose_name='Finish Registration Time')
-    tournament_start_time = models.DateTimeField(default=now(), null=True, blank=True, verbose_name='Tournament Start Time')
+    finish_registration_time = models.DateTimeField(default=timezone.now, null=True, blank=True, verbose_name='Finish Registration Time')
+    tournament_start_time = models.DateTimeField(default=timezone.now, null=True, blank=True, verbose_name='Tournament Start Time')
     battles = models.ManyToManyField(Battle, blank=True, verbose_name='Battle')
     max_of_players = models.IntegerField(default=2, verbose_name='Maximum number of players')
 
