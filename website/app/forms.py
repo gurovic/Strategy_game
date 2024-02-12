@@ -1,6 +1,7 @@
 from .models.tournament import Tournament
 from django.forms import ModelForm, TextInput, DateTimeInput, NumberInput
 from django import forms
+from .models.game import Game
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -8,8 +9,7 @@ from django.contrib.auth.models import User
 class TournamentForm(ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'game', 'system', 'start_time', 'end_time', 'max_of_players']
-
+        fields = ['name', 'game', 'system', 'max_of_players']
         widgets = {
             'name': TextInput(attrs={
                 'class': 'form-control',
@@ -23,11 +23,11 @@ class TournamentForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Система проведения турнира'
             }),
-            'start_time': DateTimeInput(attrs={
+            'start_registration_time': DateTimeInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Время начала регистрации игроков'
             }),
-            'end_time': DateTimeInput(attrs={
+            'finish_registration_time': DateTimeInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Время конца регистрации игроков'
             }),
@@ -37,6 +37,7 @@ class TournamentForm(ModelForm):
             })
         }
 
+        
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
