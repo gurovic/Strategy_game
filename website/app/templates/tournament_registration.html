@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Registration for tournament
+{% endblock title %}
+
+{% block header %}
+    Registration for tournament "{{ tournament.name }}"
+{% endblock header %}
+
+{% block content %}
+    {% if status == 'not registered' %}
+        <form method="POST" action=" ">
+            {% csrf_token %}
+            <input type="submit" value="register">
+        </form>
+    {% elif status == 'registered' %}
+        <p class="d-inline-block">You have successfully registered! Congratulations!</p>
+    {%  elif status == 'already registered' %}
+        <p class="d-inline-block">You have already registered for the tournament</p>
+    {% else %}
+         <p class="d-inline-block">Sorry, you can't register for this tournament, because the number of players is already maximum</p>
+    {% endif %}
+{% endblock %}
