@@ -194,11 +194,12 @@ class Invoker:
     def run(self, command: str, files: typing.Optional[list[str | File]] = None,
             preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
             label: typing.Optional[str] = None,
-            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None) -> InvokerProcess:
+            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None) -> RunResult:
         file_system = [file if isinstance(file, File) else File.load(file) for file in files] if files else None
 
         self._callback = callback
-        return self.environment(self.notify).launch(command, file_system, preserve_files=preserve_files, timelimit=timelimit, label=label)
+        return self.environment(self.notify).launch(command, file_system, preserve_files=preserve_files,
+                                                    timelimit=timelimit, label=label)
 
     def notify(self, result: RunResult):
         report = self.make_report(result)
@@ -216,19 +217,16 @@ class Invoker:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
-                                              status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE,
-                                              )
+                                              status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE)
         if result.input_files:
             for file in result.input_files:
                 report.input_files.add(
-                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source.encode()), name=file.name),
-                                             name=file.name))
+                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
             report.save()
 
         if result.preserved_files:
             for file in result.preserved_files:
-                report.preserved_files.add(
-                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
+                report.preserved_files.add(FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
             report.save()
 
         return report
@@ -239,4 +237,4 @@ class Invoker:
 
 
 __all__ = ["Invoker", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
-           "InvokerStatus"]
+           "InvokerStatus", "NoInvokerPoolCallbackData"]
