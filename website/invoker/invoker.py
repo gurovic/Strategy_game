@@ -217,7 +217,7 @@ class Invoker:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
-                                              status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE)
+                                              status=InvokerReport.Status.TL if result.exceeded_timelimit else InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE)
         if result.input_files:
             for file in result.input_files:
                 report.input_files.add(
@@ -226,7 +226,8 @@ class Invoker:
 
         if result.preserved_files:
             for file in result.preserved_files:
-                report.preserved_files.add(FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
+                report.preserved_files.add(
+                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
             report.save()
 
         return report
