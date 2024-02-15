@@ -187,18 +187,22 @@ class NoInvokerPoolCallbackData(Exception):
 class Invoker:
     def __init__(self):
         self.status: InvokerStatus = InvokerStatus.FREE
-        self.environment = DockerEnvironment() if settings.USE_DOCKER else NormalEnvironment()
+        self.environment = DockerEnvironment if settings.USE_DOCKER else NormalEnvironment
         self.callback_free_myself = None
+        self._callback = None
 
     def run(self, command: str, files: typing.Optional[list[str | File]] = None,
             preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
-            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
+            label: typing.Optional[str] = None,
+            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None) -> InvokerProcess:
         file_system = [file if isinstance(file, File) else File.load(file) for file in files] if files else None
 
-        result = self.environment.launch(command, file_system, preserve_files=preserve_files, timelimit=timelimit)
+        self._callback = callback
+        return self.environment(self.notify).launch(command, file_system, preserve_files=preserve_files, timelimit=timelimit, label=label)
 
+    def notify(self, result: RunResult):
         report = self.make_report(result)
-        self.send_report(report, callback)
+        self.send_report(report)
 
         self.free()
 
@@ -212,31 +216,26 @@ class Invoker:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
-                                              error=result.error,
                                               status=InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE,
                                               )
         if result.input_files:
             for file in result.input_files:
                 report.input_files.add(
-                    FileModel.objects.create(
-                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
-                                        name=file.name), name=file.name))
+                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source.encode()), name=file.name),
+                                             name=file.name))
             report.save()
 
         if result.preserved_files:
             for file in result.preserved_files:
                 report.preserved_files.add(
-                    FileModel.objects.create(
-                        file=FileDjango(io.BytesIO(file.source.encode() if type(file.source) == str else file.source),
-                                        name=file.name), name=file.name))
+                    FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
             report.save()
 
         return report
 
-    def send_report(self, report: InvokerReport,
-                    callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None):
-        if callback:
-            callback(report)
+    def send_report(self, report: InvokerReport):
+        if self._callback:
+            self._callback(report)
 
 
 __all__ = ["Invoker", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
