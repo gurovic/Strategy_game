@@ -8,15 +8,15 @@ from .jury_report import JuryReport
 
 class Battle(models.Model):
     class GameStateChoices(models.TextChoices):
-        N = "NOT_STARTED"
-        O = "OK"
-        E = "ERROR"
+        NS = "NOT_STARTED"
+        OK = "OK"
+        ER = "ERROR"
 
     game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
     time_start = models.DateTimeField(auto_now_add=True)
     time_finish = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
-    status = models.TextField(choices=GameStateChoices.choices, default=GameStateChoices.N)
+    status = models.TextField(choices=GameStateChoices.choices, default=GameStateChoices.NS)
     logs = models.FileField(blank=True)
     jury_report = models.ForeignKey(JuryReport, blank=True, null=True, on_delete=models.CASCADE)
 
@@ -24,14 +24,14 @@ class Battle(models.Model):
         super().__init__(*args, **kwargs)
         self.moves = []
         self.results = {}
-        self.numbers = []
+        self.numbers = {}
 
     def run(self, jury):
         while jury.game_state is not GameState.END:
             jury.get_processes()
             jury.perform_play_command()
 
-        for player in PlayersInBattle.objects.filter(battle=self):
+        for player in self.players:
             player.number_of_points = Battle.objects.get(battle=self).points[player.number]
 
         points = JuryReport.objects.get(battle=self).points
