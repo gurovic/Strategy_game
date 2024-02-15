@@ -237,4 +237,4 @@ class Invoker:
 
 
 __all__ = ["Invoker", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
-           "InvokerStatus", "NoInvokerPoolCallbackData"]
+           "InvokerStatus", "NoInvokerPoolCallbackData", "InvokerProcess"]
