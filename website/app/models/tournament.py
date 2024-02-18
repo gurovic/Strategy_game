@@ -1,5 +1,6 @@
 import datetime
 
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django_q.models import Schedule
@@ -7,7 +8,6 @@ from django_q.models import Schedule
 from .tournament_system_round_robin import TournamentSystemRoundRobin
 from .battle import Battle
 from .game import Game
-from django.utils import timezone
 
 
 def _end_registration_task(tournament_id: int):

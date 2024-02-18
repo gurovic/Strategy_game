@@ -1,9 +1,9 @@
 from typing import Any
-
-from django.test import TestCase
-from unittest.mock import Mock, patch
 from datetime import datetime
+
+from unittest.mock import Mock, patch
 from django.utils import timezone
+from django.test import TestCase
 
 from .tournament import Tournament
 

@@ -2,7 +2,7 @@ import datetime
 
 from .game import Game
 from .battle import Battle
-from .tournamentsystem import TournamentSystem
+from .tournament_system import TournamentSystem
 from .players_in_battle import PlayersInBattle
 
 

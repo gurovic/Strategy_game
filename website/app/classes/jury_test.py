@@ -1,11 +1,10 @@
-from django.test import TestCase
 from unittest.mock import patch, Mock
-
-from .jury import Jury
+from django.test import TestCase
 
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
 from invoker.invoker_process import InvokerProcess
+from .jury import Jury
 
 
 class TestJury(TestCase):
@@ -45,7 +44,8 @@ class TestJury(TestCase):
     @patch("app.classes.jury.Jury.get_processes")
     @patch("invoker.invoker_process.InvokerProcess.read")
     @patch("invoker.invoker_process.InvokerProcess.write")
-    def test_perform_play_command(self, mock_write: Mock, mock_read: Mock, mock_get_processes: Mock, mock_get_invoker_requests: Mock):
+    def test_perform_play_command(self, mock_write: Mock, mock_read: Mock, mock_get_processes: Mock,
+                                  mock_get_invoker_requests: Mock):
         play_command = {"state": "play", "player": 1, "data": "some data to player"}
         mock_read.return_value = play_command
 

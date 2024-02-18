@@ -1,14 +1,7 @@
-from django.test import TestCase
-import unittest
-from ..forms import TournamentForm
-
-from django.urls import reverse
-from django.http import HttpRequest
 from django.contrib.auth.models import User
-from unittest.mock import Mock, patch
+from django.test import TestCase
 
-from app.models import CompilerReport, Tournament
-from app.views.sandbox_views import show
+from app.models import Tournament
 
 
 class TestRegisterInTournament(TestCase):
