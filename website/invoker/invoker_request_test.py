@@ -20,6 +20,6 @@ class TestInvokerRequest(TestCase):
     def test_notify(self, mock_invoker_report: Mock):
         mock = Mock()
         invoker_request = InvokerRequest("echo Hello World")
-        invoker_request.callback = mock
+        invoker_request.report_callback = mock
         invoker_request.notify(mock_invoker_report)
         mock.assert_called()
