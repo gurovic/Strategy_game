@@ -1,7 +1,7 @@
+from invoker.invoker_request import InvokerRequest
+from models.jury_report import JuryReport
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequestType
-from invoker.invoker_request import InvokerRequest
-from ..models.jury_report import JuryReport
 
 import enum
 
@@ -41,32 +41,36 @@ class Jury:
 
     def perform_play_command(self):
         try:
-            play_command = self.play_process.read()
+            play_command = self.play_process.read() #change read() to smth
         except RuntimeError:
             self.jury_report.status = "ERROR"
             return self.jury_report
         if play_command["state"] == "play":
-            player = play_command["player"] - 1
-            data = play_command["data"]
-            try:
-                self.strategies_process[player].write(data)
-            except RuntimeError:
-                self.jury_report.status = "ERROR"
-                return self.jury_report
-            try:
-                player_command = self.strategies_process[player].read()
-            except RuntimeError:
-                self.jury_report.status = "ERROR"
-                return self.jury_report
-            try:
-                self.play_process.write(player_command)
-            except RuntimeError:
-                self.jury_report.status = "ERROR"
-                return self.jury_report
+            player_array = play_command["players"]
+            data_array = play_command["data"]
+            for i in range(len(player_array)):
+                try:
+                    self.strategies_process[player_array[i]].write(data_array[i])
+                except RuntimeError:
+                    self.jury_report.status = "ERROR"
+                    return self.jury_report
+            for i in range(len(player_array)):
+                try:
+                    player_command = self.strategies_process[player_array[i]].read()  #change read() to smth
+                except RuntimeError:
+                    self.jury_report.status = "ERROR"
+                    return self.jury_report
+                try:
+                    self.play_process.write(player_command)
+                except RuntimeError:
+                    self.jury_report.status = "ERROR"
+                    return self.jury_report
         else:
             self.game_state = GameState.END
+            self.jury_report.status = "OK"
             players_points = play_command["points"]
-            player = players_points["player"]
-            points = players_points["points"]
-            self.jury_report[player] = points
+            players = play_command["players"]
+            for i in range(len(players_points)):
+                self.jury_report[players[i]] = players_points[i]
+            self.jury_report.story_of_game = play_command["story_of_game"]
             return self.jury_report
