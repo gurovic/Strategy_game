@@ -1,16 +1,15 @@
 import io
+import typing
 
 from django.core.files import File as FileDjango
 
 from app.models import CompilerReport
-
 from invoker.models import InvokerReport
 from invoker.invoker_multi_request import Priority, InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.filesystem import File
 
-import typing
 
 
 class NotSupportedLanguage(ValueError):

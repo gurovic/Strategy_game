@@ -1,11 +1,3 @@
-from invoker.filesystem import File, delete_directory
-from invoker.models import InvokerReport, File as FileModel
-from invoker.invoker import RunResult
-
-from django.conf import settings
-from django.utils import timezone
-from django.core.files import File as FileDjango
-
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
@@ -18,6 +10,14 @@ import typing
 import shlex
 import enum
 import io
+
+from django.conf import settings
+from django.utils import timezone
+from django.core.files import File as FileDjango
+
+from invoker.filesystem import File, delete_directory
+from invoker.models import InvokerReport, File as FileModel
+from invoker.invoker import RunResult
 
 
 class StdIn(typing.Protocol):
@@ -51,8 +51,6 @@ class InvokerProcess(ABC):
 
         if self.callback:
             self.register_callback()
-
-
 
     def register_callback(self):
         Thread(target=self._wait_for_end).start()
@@ -88,5 +86,3 @@ class InvokerProcess(ABC):
         if not self._run_result:
             self._run_result = self.make_run_result()
         return self._run_result
-
-
