@@ -1,6 +1,7 @@
+from typing import Any
 import random
 import time
-from typing import Any
+
 from unittest.mock import Mock, patch, PropertyMock
 from django.test import TestCase
 

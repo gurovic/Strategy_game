@@ -1,10 +1,3 @@
-from invoker.filesystem import File, delete_directory
-from invoker.models import InvokerReport, File as FileModel
-
-from django.conf import settings
-from django.utils import timezone
-from django.core.files import File as FileDjango
-
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
@@ -17,6 +10,12 @@ import typing
 import enum
 import io
 
+from django.conf import settings
+from django.utils import timezone
+from django.core.files import File as FileDjango
+
+from invoker.filesystem import File, delete_directory
+from invoker.models import InvokerReport, File as FileModel
 
 class InvokerStatus(enum.Enum):
     FREE = enum.auto()

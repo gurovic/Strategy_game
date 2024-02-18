@@ -1,9 +1,9 @@
-from django.test import TestCase
 from unittest.mock import patch, Mock
+from django.test import TestCase
 
 from invoker.invoker import Invoker, NoInvokerPoolCallbackData
-from invoker.filesystem import File
 from invoker.models import InvokerReport
+from invoker.filesystem import File
 
 
 class TestInvoker(TestCase):

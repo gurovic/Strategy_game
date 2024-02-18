@@ -1,8 +1,7 @@
-from app.models import Game
-
 from django.test import TestCase
 from django.db import IntegrityError
 
+from app.models import Game
 
 class GameTest(TestCase):
     def setUp(self):

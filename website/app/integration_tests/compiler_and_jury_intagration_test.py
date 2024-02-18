@@ -1,11 +1,12 @@
-from app import compiler
+import unittest
+
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker_request import InvokerRequestType
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_multi_request import Priority
-from app.classes.jury import Jury
 from app.classes.jury import GameState
-import unittest
+from app.classes.jury import Jury
+from app import compiler
 
 
 class Test(unittest.TestCase):

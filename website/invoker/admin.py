@@ -1,6 +1,6 @@
-from invoker.models import InvokerReport, File
-
 from django.contrib import admin
+
+from invoker.models import InvokerReport, File
 
 
 @admin.register(File)

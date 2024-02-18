@@ -1,10 +1,11 @@
+import datetime
+
 from django.test import TestCase
 from unittest.mock import patch, Mock
 
 from app.compiler import NotSupportedLanguage, CompilerReport, DoNothingCompile, CPPCompile, Compiler, AbstractCompile
 from invoker.filesystem import File
 
-import datetime
 
 
 class TestNotSupportedLanguage(TestCase):

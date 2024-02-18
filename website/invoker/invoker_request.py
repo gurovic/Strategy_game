@@ -1,8 +1,8 @@
-from invoker.invoker import Invoker
-from invoker.models import InvokerReport
-
 import typing
 import enum
+
+from invoker.invoker import Invoker
+from invoker.models import InvokerReport
 
 
 class InvokerRequestType(enum.Enum):
