@@ -194,7 +194,7 @@ class Invoker:
     def run(self, command: str, files: typing.Optional[list[str | File]] = None,
             preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
             label: typing.Optional[str] = None,
-            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None) -> RunResult:
+            callback: typing.Optional[typing.Callable[[InvokerReport], None]] = None) -> InvokerProcess:
         file_system = [file if isinstance(file, File) else File.load(file) for file in files] if files else None
 
         self._callback = callback

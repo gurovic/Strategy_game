@@ -63,7 +63,7 @@ class TestInvoker(TestCase):
 
         mock_report_create.assert_called_once_with(command=mock_result.command, time_start=mock_result.time_start,
                                                     time_end=mock_result.time_end, exit_code=mock_result.exit_code,
-                                                    output=mock_result.output, status=InvokerReport.Status.RE)
+                                                    output=mock_result.output, status=InvokerReport.Status.TL)
         report.input_files.add.assert_called_once_with(mock_file())
         report.preserved_files.add.assert_called_once_with(mock_file())
         report.save.assert_called()
