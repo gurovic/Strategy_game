@@ -41,7 +41,7 @@ class Jury:
 
     def perform_play_command(self):
         try:
-            play_command = self.play_process.read() #change read() to smth
+            play_command = self.play_process.stdout.read()
         except RuntimeError:
             self.jury_report.status = "ERROR"
             return self.jury_report
@@ -50,18 +50,18 @@ class Jury:
             data_array = play_command["data"]
             for i in range(len(player_array)):
                 try:
-                    self.strategies_process[player_array[i]].write(data_array[i])
+                    self.strategies_process[player_array[i]].stdin.write(data_array[i])
                 except RuntimeError:
                     self.jury_report.status = "ERROR"
                     return self.jury_report
             for i in range(len(player_array)):
                 try:
-                    player_command = self.strategies_process[player_array[i]].read()  #change read() to smth
+                    player_command = self.strategies_process[player_array[i]].stdout.read()
                 except RuntimeError:
                     self.jury_report.status = "ERROR"
                     return self.jury_report
                 try:
-                    self.play_process.write(player_command)
+                    self.play_process.stdin.write(player_command)
                 except RuntimeError:
                     self.jury_report.status = "ERROR"
                     return self.jury_report
