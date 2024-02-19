@@ -80,7 +80,7 @@ class SandboxTest(TestCase):
                 self.creator = creator
                 self.report = random_number
 
-            def run(self):
+            def start(self):
                 self.battle_count += 1
                 return self.creator.notify(self.report)
 
