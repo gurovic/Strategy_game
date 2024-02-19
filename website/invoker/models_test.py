@@ -1,8 +1,9 @@
-from invoker.models import InvokerReport, File
-
 from django.core.files import File as FileDjango
 from django.utils import timezone
 from django.test import TestCase
+
+from invoker.models import InvokerReport, File
+
 
 
 class TestInvokerReport(TestCase):

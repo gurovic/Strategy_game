@@ -1,11 +1,12 @@
 from abc import ABC
+import typing
 
 from django.test import TestCase
 from unittest.mock import patch, Mock
+
 from invoker.invoker import Invoker
 from invoker.invoker import RunResult
 from invoker.invoker_process import InvokerProcess
-import typing
 
 
 class TestInvokerProcess(TestCase):

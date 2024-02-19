@@ -1,5 +1,4 @@
 from unittest.mock import patch, Mock
-
 from django.test import TestCase
 
 from .sandbox_notify_receiver import SandboxNotifyReceiver

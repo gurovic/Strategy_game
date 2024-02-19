@@ -1,6 +1,5 @@
-from django.test import TestCase
 from unittest.mock import patch, Mock
-
+from django.test import TestCase
 from threading import Thread
 
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue

@@ -1,9 +1,9 @@
-from invoker.invoker_request import InvokerRequest
+import enum
+
+from invoker.invoker_request import InvokerRequest, InvokerRequestType
 from models.jury_report import JuryReport
 from invoker.invoker_multi_request import InvokerMultiRequest
-from invoker.invoker_request import InvokerRequestType
 
-import enum
 
 
 class GameState(enum.Enum):

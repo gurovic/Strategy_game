@@ -1,5 +1,6 @@
-from app.models.jury_report import JuryReport
 from django.test import TestCase
+
+from app.models.jury_report import JuryReport
 
 
 class JuryReportTestCase(TestCase):

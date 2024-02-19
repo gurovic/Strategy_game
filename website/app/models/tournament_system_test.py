@@ -1,12 +1,11 @@
 import unittest
-
 from django.contrib.auth.models import User
-from django.db import models
 from django.db.models import QuerySet
+from django.db import models
 from django.test import TestCase
 
 from app.models import Tournament, PlayerInTournament
-from .tournamentsystem import TournamentSystem
+from .tournament_system import TournamentSystem
 
 
 class TestTournamentSystem(TestCase):
