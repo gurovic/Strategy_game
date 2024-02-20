@@ -85,11 +85,11 @@ class InvokerProcess(ABC):
 
     @abstractmethod
     def wait(self):
-        ...
+        """Wait until process finished or raise TimeoutExpired if timelimit exceeded"""
 
     @abstractmethod
     def kill(self):
-        ...
+        """Kill process"""
 
     def connect(self, input: str) -> str:
         self.stdin.write(input)
@@ -256,4 +256,4 @@ class Invoker:
 
 
 __all__ = ["Invoker", "DockerEnvironment", "NormalEnvironment", "InvokerEnvironment", "RunResult",
-           "InvokerStatus", "NoInvokerPoolCallbackData", "InvokerProcess"]
+           "InvokerStatus", "NoInvokerPoolCallbackData", "InvokerProcess", "NormalProcess", "TimeoutExpired"]
