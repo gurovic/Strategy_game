@@ -232,7 +232,7 @@ class NoInvokerProcessReturned(Exception):
 class Invoker:
     def __init__(self):
         self.status: InvokerStatus = InvokerStatus.FREE
-        self.environment = DockerEnvironment if settings.USE_DOCKER else NormalEnvironment
+        self.environment = DockerEnvironment if settings.ENABLE_DOCKER else NormalEnvironment
         self.callback_free_myself = None
         self._callback = None
 

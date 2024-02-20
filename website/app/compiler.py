@@ -2,6 +2,7 @@ import io
 import typing
 
 from django.core.files import File as FileDjango
+from django.conf import settings
 
 from app.models import CompilerReport
 from invoker.models import InvokerReport
@@ -26,7 +27,6 @@ class AbstractCompile:
     def __init__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
         self.source = source
         self.lang = lang
-
         self.callback = callback
 
     def command(self) -> (str, str | File, str):
@@ -34,7 +34,10 @@ class AbstractCompile:
 
     def compile(self):
         command, input_file, output_file = self.command()
-        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file])],
+        timelimit = None
+        if self.lang in settings.COMPILE_TL:
+            timelimit = settings.COMPILE_TL[self.lang]
+        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file], timelimit=timelimit)],
                                       priority=Priority.RED).subscribe(self)
         queue = InvokerMultiRequestPriorityQueue()
         queue.add(request)
