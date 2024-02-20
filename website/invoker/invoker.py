@@ -50,7 +50,6 @@ class TimeoutExpired(Exception):
         return f"Timeout {self.timelimit} expired"
 
 
-
 class StdIn(typing.Protocol):
     def write(self, data: str):
         ...
@@ -132,7 +131,8 @@ class InvokerEnvironment(ABC):
 
     @abstractmethod
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> InvokerProcess:
+               preserve_files: typing.Optional[list[str]] = None,
+               timelimit: typing.Optional[int] = None) -> InvokerProcess:
         ...
 
 
@@ -170,6 +170,7 @@ class NormalEnvironment(InvokerEnvironment):
         return NormalProcess(
             self.result_process,
             label=self.label,
+            timelimit=self.timelimit,
             callback=self.close
         )
 
@@ -205,7 +206,8 @@ class NormalEnvironment(InvokerEnvironment):
 
 class DockerEnvironment(InvokerEnvironment):
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
-               preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> InvokerProcess:
+               preserve_files: typing.Optional[list[str]] = None,
+               timelimit: typing.Optional[int] = None) -> InvokerProcess:
         pass
 
 
