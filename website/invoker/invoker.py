@@ -187,7 +187,7 @@ class NormalEnvironment(InvokerEnvironment):
         if timeout_error is False or timeout_error is None:
             self.return_code = self.result_process.poll()
         else:
-            self.return_code = False
+            self.return_code = None
 
         self.callback(RunResult(
             self.command,
@@ -195,11 +195,11 @@ class NormalEnvironment(InvokerEnvironment):
             self.result_process.stderr.read(),
             self.return_code,
             self.time_start,
-            self.time_end,
+            time_end,
             self.timelimit,
             timeout_error,
-            self.input_dir,
-            self.preserve_dir
+            input_dir,
+            preserve_dir
         ))
 
 
