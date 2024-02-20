@@ -14,6 +14,27 @@ from pathlib import Path
 import os
 import sys
 
+# <----- Project Settings ----->
+
+# - InvokerPool -
+MAX_INVOKERS_COUNT = 14
+
+# - InvokerRequest -
+DEFAULT_EXECUTION_TL = 10
+
+# - Environment -
+ENABLE_DOCKER = False
+
+# - Compiler -
+# Language / Time(Seconds)
+COMPILE_TL = {
+    "cpp": 4,
+    "py": 1,
+}
+
+
+# <----- End Project Settings ----->
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +48,6 @@ SECRET_KEY = 'django-insecure-$1f(0$y$+1s4&1capwy*07onds77p-7d&)%413_f__s9&!1wm3
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -60,7 +80,7 @@ ROOT_URLCONF = 'website.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/"templates"],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,7 +95,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'website.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -85,7 +104,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -105,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -116,7 +133,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -145,12 +161,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(PROJECT_ROOT, 'website'))
 
-MAX_INVOKERS_COUNT = 16
-USE_DOCKER = False
-
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
-
 
 Q_CLUSTER = {
     'name': 'DjangORM',
