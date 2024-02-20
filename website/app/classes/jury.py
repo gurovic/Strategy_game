@@ -1,7 +1,7 @@
 import enum
 
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
-from models.jury_report import JuryReport
+from app.models.jury_report import JuryReport
 from invoker.invoker_multi_request import InvokerMultiRequest
 
 
