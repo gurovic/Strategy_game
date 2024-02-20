@@ -17,6 +17,7 @@ from django.core.files import File as FileDjango
 from invoker.filesystem import File, delete_directory
 from invoker.models import InvokerReport, File as FileModel
 
+
 class InvokerStatus(enum.Enum):
     FREE = enum.auto()
     WORKING = enum.auto()
@@ -35,8 +36,19 @@ class RunResult:
     timelimit: typing.Optional[int] = None
     exceeded_timelimit: bool = False
 
+    label: typing.Optional[str] = None
+
     input_files: typing.Optional[list[File]] = None
     preserved_files: typing.Optional[list[File]] = None
+
+
+class TimeoutExpired(Exception):
+    def __init__(self, timelimit: int):
+        self.timelimit = timelimit
+
+    def __str__(self):
+        return f"Timeout {self.timelimit} expired"
+
 
 
 class StdIn(typing.Protocol):
@@ -56,17 +68,14 @@ class InvokerProcess(ABC):
     stdin: StdIn
     stdout: StdOut
 
-    def __init__(self, *args, label: typing.Optional[str] = None,
-                 preserve_files: typing.Optional[list[str]] = None,
-                 timelimit: typing.Optional[int] = None,
-                 callback: typing.Optional[typing.Callable[[RunResult], None]] = None,
-                 **kwargs):
+    def __init__(self, label: typing.Optional[str] = None, timelimit: typing.Optional[int] = None,
+                 callback: typing.Optional[typing.Callable[[bool], None]] = None):
         self.label = label
-        self.preserve_files = preserve_files
+
         self.timelimit = timelimit
         self.callback = callback
-        self._run_result = None
-        super().__init__(*args, **kwargs)
+
+        self._exceeded_timelimit = False
 
         if self.callback:
             self.register_callback()
@@ -75,7 +84,7 @@ class InvokerProcess(ABC):
         Thread(target=self._wait_for_end).start()
 
     @abstractmethod
-    def wait(self, timeout: typing.Optional[int] = None):
+    def wait(self):
         ...
 
     @abstractmethod
@@ -88,23 +97,33 @@ class InvokerProcess(ABC):
 
     def _wait_for_end(self):
         try:
-            self.wait(self.timelimit)
-        except subprocess.TimeoutExpired as exc:
+            self.wait()
+        except TimeoutExpired:
             self.kill()
+            self._exceeded_timelimit = True
         self.send_callback()
 
     def send_callback(self):
-        self.callback(self.run_result)
+        if self.callback:
+            self.callback(self._exceeded_timelimit)
 
-    @abstractmethod
-    def make_run_result(self) -> RunResult:
-        ...
 
-    @property
-    def run_result(self) -> RunResult:
-        if not self._run_result:
-            self._run_result = self.make_run_result()
-        return self._run_result
+class NormalProcess(InvokerProcess):
+    def __init__(self, process: subprocess.Popen, *args, **kwargs):
+        self._process = process
+        self.stdin = self._process.stdin
+        self.stdout = self._process.stdout
+
+        super().__init__(*args, **kwargs)
+
+    def wait(self):
+        try:
+            self._process.wait(self.timelimit)
+        except subprocess.TimeoutExpired:
+            raise TimeoutExpired(self.timelimit)
+
+    def kill(self):
+        self._process.kill()
 
 
 class InvokerEnvironment(ABC):
@@ -123,7 +142,7 @@ class NormalEnvironment(InvokerEnvironment):
                 file.make(tmpdir)
         return tmpdir
 
-    def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
+    def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
                preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None) -> RunResult:
         work_dir = self.initialize_workdir(file_system)
 
