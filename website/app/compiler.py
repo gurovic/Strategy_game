@@ -11,7 +11,6 @@ from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPrio
 from invoker.filesystem import File
 
 
-
 class NotSupportedLanguage(ValueError):
     def __init__(self, lang: str):
         self.lang = lang
@@ -45,12 +44,25 @@ class AbstractCompile:
         self.send_report(compiler_report)
 
     def make_report(self, report: InvokerReport):
+
+        end_status = None
+        if report.status == InvokerReport.Status.TL:
+            end_status = CompilerReport.Status.TIMELIMIT
+        elif report.status == InvokerReport.Status.OK:
+            end_status = CompilerReport.Status.OK
+        else:
+            end_status = CompilerReport.Status.COMPILATION_ERROR
+
+        compiled_file = None
+        if end_status == CompilerReport.Status.OK:
+            compiled_file = report.preserved_files.get(name=self.command()[2]).file
+
         return CompilerReport.objects.create(
             invoker_report=report,
             time=report.time_end - report.time_start,
-            status=CompilerReport.Status.TIMELIMIT if report.status == InvokerReport.Status.TL else CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR,
+            status=end_status,
             error=report.error,
-            compiled_file=report.preserved_files.get(name=self.command()[2]).file if report.status == InvokerReport.Status.OK else None)
+            compiled_file=compiled_file)
 
     def send_report(self, report: CompilerReport):
         if self.callback:
@@ -92,7 +104,8 @@ class Compiler:
         if self.lang not in self.COMMANDS:
             raise NotSupportedLanguage(self.lang)
 
-        self.command: AbstractCompile = self.COMMANDS[self.lang](self.source, self.lang, callback=self.notify)
+        compiler_type = self.COMMANDS[self.lang]
+        self.command: AbstractCompile = compiler_type(self.source, self.lang, callback=self.notify)
 
     def compile(self):
         self.command.compile()
