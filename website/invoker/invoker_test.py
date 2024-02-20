@@ -101,7 +101,7 @@ class TestInvoker(TestCase):
         self.assertEqual(invoker._callback, mock_invoker_run_callback)
         mock_file_load.assert_called_with("test")
         mock_environment.assert_called_once_with(invoker.notify)
-        mock_environment().launch.assert_called_once_with('echo Hello World', [mock_file_load("test"), File(name='test_file', source='test')],
+        mock_environment().launch.assert_called_once_with('echo Hello World', file_system=[mock_file_load("test"), File(name='test_file', source='test')],
                                                           preserve_files=['test'], timelimit=10, label="test")
 
     @patch("invoker.invoker.Invoker.free")

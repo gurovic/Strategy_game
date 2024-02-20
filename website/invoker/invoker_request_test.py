@@ -13,7 +13,7 @@ class TestInvokerRequest(TestCase):
         invoker_request = InvokerRequest("echo Hello World", files=["test.test"], preserve_files=["test.test"])
         invoker_request.run(invoker)
 
-        mock_invoker_run.assert_called_with("echo Hello World", files=["test.test"], preserve_files=["test.test"],
+        mock_invoker_run.assert_called_with("echo Hello World", files=["test.test"], label=None, preserve_files=["test.test"],
                                             callback=invoker_request.notify)
 
     @patch("invoker.models.InvokerReport")
