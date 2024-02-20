@@ -251,7 +251,6 @@ class Invoker:
     def notify(self, result: RunResult):
         report = self.make_report(result)
         self.send_report(report)
-
         self.free()
 
     def free(self):
