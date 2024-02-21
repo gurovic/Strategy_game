@@ -9,23 +9,20 @@ from .invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQue
 
 
 class TestInvokerSystem(TestCase):
-    @patch('invoker.invoker_multi_request.InvokerMultiRequest.notify')
-    @patch('website.settings.MAX_INVOKERS_COUNT')
-    def test(self, mock_max_invoker_count: Mock, mock_i_m_r_notify: Mock):
-        mock_max_invoker_count.return_value(1)
-        mock_i_m_r_notify.return_value = InvokerMultiRequest.notify
-
+    #@patch('invoker.invoker_request.InvokerRequest.notify')
+    @patch('invoker.invoker.Invoker.run')
+    def test(self, mock_inv_run: Mock): #mock_i_r_notify: Mock):
         i_m_r_p_queue = InvokerMultiRequestPriorityQueue()
 
         command = 'python'
-        file = './test_solutions/solution1.py'
-        invoker_request1 = InvokerRequest(command=command, files=[file])
-        invoker_multi_request = InvokerMultiRequest([invoker_request1], Priority.RED)
+        file = '/home/user/PycharmProjects/Strategy_game/website/invoker/test_solutions/solution1.py'
+        invoker_request = InvokerRequest(command=command, files=[file])
+        invoker_multi_request = InvokerMultiRequest([invoker_request], Priority.RED)
         i_m_r_p_queue.invoker_multi_request_queue.put(invoker_multi_request)
 
         i_m_r_p_queue.run()
 
-        mock_i_m_r_notify.assert_called()
+        mock_inv_run.assert_called()
 
-        print(mock_i_m_r_notify.call_args)
+        print(mock_inv_run.call_args)
 
