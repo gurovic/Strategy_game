@@ -17,8 +17,8 @@ COMPILE_TL = {
 }
 # Language / [tags, "%1"], %1 = file
 COMPILER_COMMANDS = {
-    "py" : None,
-    "cpp" : ["g++", "-std=c++17", "%1"]
+    "py": None,
+    "cpp": ["g++", "-std=c++17", "%1"]
 }
 
 # - Launcher -
@@ -26,12 +26,12 @@ COMPILER_COMMANDS = {
 
 # Language / [tags, "%1"], %1 = file
 LAUNCHER_COMMANDS = {
-    "epy" : ["python3", "%1"],
-    "ecpp" : None
+    "epy": ["python3", "%1"],
+    "ecpp": None
 }
 
 LAUNCHER_RUN_TL = {
-    "epy" : 10,
-    "ecpp" : 4
+    "epy": 10,
+    "ecpp": 4
 }
 # <----- End Project Settings ----->
