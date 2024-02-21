@@ -1,6 +1,6 @@
-from django.test import TestCase
-
 from threading import Lock, Thread
+
+from django.test import TestCase
 
 from invoker.utils import Singleton
 

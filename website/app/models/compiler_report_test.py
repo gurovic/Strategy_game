@@ -1,10 +1,11 @@
-from app.models import CompilerReport
-from invoker.models import InvokerReport
+from datetime import timedelta
 
 from django.utils import timezone
 from django.test import TestCase
 
-from datetime import timedelta
+from app.models import CompilerReport
+from invoker.models import InvokerReport
+
 
 
 class CompilerReportTestCase(TestCase):

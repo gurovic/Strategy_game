@@ -1,6 +1,7 @@
+from typing import Any
 import random
 import time
-from typing import Any
+
 from unittest.mock import Mock, patch, PropertyMock
 from django.test import TestCase
 
@@ -79,7 +80,7 @@ class SandboxTest(TestCase):
                 self.creator = creator
                 self.report = random_number
 
-            def run(self):
+            def start(self):
                 self.battle_count += 1
                 return self.creator.notify(self.report)
 
