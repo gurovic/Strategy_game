@@ -21,4 +21,17 @@ COMPILER_COMMANDS = {
     "cpp" : ["g++", "-std=c++17", "%1"]
 }
 
+# - Launcher -
+# !!! EVERY FILE SHOULD HAVE `e` BEFORE the LANGUAGE TYPE.
+
+# Language / [tags, "%1"], %1 = file
+LAUNCHER_COMMANDS = {
+    "epy" : ["python3", "%1"],
+    "ecpp" : None
+}
+
+LAUNCHER_RUN_TL = {
+    "epy" : 10,
+    "ecpp" : 4
+}
 # <----- End Project Settings ----->

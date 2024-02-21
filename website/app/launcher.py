@@ -1,15 +1,8 @@
-import io
-import typing
-
-from django.core.files import File as FileDjango
 from django.conf import settings
 
-from app.models import CompilerReport
-from invoker.models import InvokerReport
 from invoker.invoker_multi_request import Priority, InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
-from invoker.filesystem import File
 
 
 class NotSupportedExtension(ValueError):
@@ -39,11 +32,13 @@ class Launcher:
             return ' '.join(command_tags)
 
     def launch(self):
-        request = InvokerRequest(self.command(), files=[self.file], timelimit=settings.LAUNCHER_RUN_TL[self.extension])
-        multi_request = InvokerMultiRequest([request], priority=Priority.RED).subscribe(self.notify())
+        request = InvokerRequest(self.command(), files=[self.file], timelimit=settings.LAUNCHER_RUN_TL[self.extension], process_callback=self.notify)
+        multi_request = InvokerMultiRequest([request], priority=Priority.RED)
         queue = InvokerMultiRequestPriorityQueue()
+        print("Request added to the queue!")
         queue.add(multi_request)
 
     def notify(self, process=None):
+        print("Notification received!")
         if process is not None:
             self.callback(process)
