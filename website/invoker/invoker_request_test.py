@@ -10,10 +10,10 @@ class TestInvokerRequest(TestCase):
     def test_run(self, mock_invoker_run: Mock):
         invoker = Invoker()
 
-        invoker_request = InvokerRequest("echo Hello World", files=["test.test"], preserve_files=["test.test"])
+        invoker_request = InvokerRequest("echo Hello World", files=["test.test"], label="None", timelimit=5, preserve_files=["test.test"])
         invoker_request.run(invoker)
 
-        mock_invoker_run.assert_called_with("echo Hello World", files=["test.test"], preserve_files=["test.test"],
+        mock_invoker_run.assert_called_with("echo Hello World", files=["test.test"], label="None", timelimit=5, preserve_files=["test.test"],
                                             callback=invoker_request.notify)
 
     @patch("invoker.models.InvokerReport")
