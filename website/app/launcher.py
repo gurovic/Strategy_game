@@ -35,10 +35,8 @@ class Launcher:
         request = InvokerRequest(self.command(), files=[self.file], timelimit=settings.LAUNCHER_RUN_TL[self.extension], process_callback=self.notify)
         multi_request = InvokerMultiRequest([request], priority=Priority.RED)
         queue = InvokerMultiRequestPriorityQueue()
-        print("Request added to the queue!")
         queue.add(multi_request)
 
     def notify(self, process=None):
-        print("Notification received!")
         if process is not None:
             self.callback(process)
