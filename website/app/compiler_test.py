@@ -1,9 +1,10 @@
 import datetime
 
+from django.conf import settings
 from django.test import TestCase
 from unittest.mock import patch, Mock
 
-from app.compiler import NotSupportedLanguage, CompilerReport, DoNothingCompile, CPPCompile, Compiler, AbstractCompile
+from app.compiler import NotSupportedLanguage, CompilerReport, FakeCompile, NormalCompile, Compiler
 from invoker.filesystem import File
 
 
@@ -15,19 +16,18 @@ class TestNotSupportedLanguage(TestCase):
 
 
 class TestAbstractCompile(TestCase):
-    class CompileTest(AbstractCompile):
-        def command(self) -> (str, str | File, str):
-            return "test", "test", "test"
+    class CompileTest(NormalCompile):
+        pass
 
     @patch("app.compiler.InvokerMultiRequestPriorityQueue")
     def test_compile(self, mock_queue: Mock):
-        compiler = self.CompileTest("test", "test")
+        compiler = self.CompileTest("test", "cpp")
         compiler.compile()
         mock_queue = mock_queue()
         mock_queue.add.assert_called()
 
-    @patch("app.compiler.AbstractCompile.send_report")
-    @patch("app.compiler.AbstractCompile.make_report")
+    @patch("app.compiler.NormalCompile.send_report")
+    @patch("app.compiler.NormalCompile.make_report")
     def test_notify(self, mock_make_report: Mock, mock_send_report: Mock):
         report = Mock()
         compiler = self.CompileTest("test", lang="py")
@@ -64,27 +64,17 @@ class TestDoNothingCompile(TestCase):
     @patch("app.models.compiler_report.CompilerReport.objects.create")
     def test_compile(self, mock_compiler_report: Mock):
         mock = Mock()
-        compiler = DoNothingCompile("test", lang="py", callback=mock)
+        compiler = FakeCompile("test", lang="py", callback=mock)
         compiler.compile()
 
         mock.assert_called_once_with(mock_compiler_report())
-
-
-class TestCPPCompile(TestCase):
-    def test_command(self):
-        compiler = CPPCompile("test", lang="py")
-        command, input_file, output_file = compiler.command()
-
-        self.assertEquals(command, "g++ -o compiled main.cpp")
-        self.assertEquals(input_file, File("main.cpp", "test"))
-        self.assertEquals(output_file, "compiled")
 
 
 class TestCompiler(TestCase):
     def test_language(self):
         unsupported_languages = []
 
-        for language in Compiler.COMMANDS:
+        for language in settings.COMPILER_COMMANDS:
             try:
                 Compiler("test", lang=language)
             except NotSupportedLanguage:
@@ -99,10 +89,10 @@ class TestCompiler(TestCase):
 
     def test_compile(self):
         compiler = Compiler("test", lang="py")
-        compiler.command = Mock()
+        compiler.compiler = Mock()
         compiler.compile()
 
-        compiler.command.compile.assert_called_once()
+        compiler.compiler.compile.assert_called_once()
 
     @patch("invoker.models.InvokerReport")
     def test_notify(self, mock_invoker_report : Mock):
