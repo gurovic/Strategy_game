@@ -2,6 +2,8 @@ import os
 from unittest.mock import patch, Mock
 from django.test import TestCase
 
+from app.compiler import Compiler
+from app.launcher import Launcher
 from .invoker import Invoker
 from .invoker_request import InvokerRequest
 from .models import InvokerReport
@@ -10,19 +12,20 @@ from .invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQue
 
 
 class TestInvokerSystem(TestCase):
-    @patch('invoker.invoker_request.InvokerRequest.notify')
-    def test(self, mock_i_r_notify: Mock):
-        i_m_r_p_queue = InvokerMultiRequestPriorityQueue()
+    def test(self):
+        compiler_callback = Mock()
+        launcher_callback = Mock()
 
         file = os.path.abspath('invoker/test_solutions/solution1.py')
-        command = 'python'
-        invoker_request = InvokerRequest(command=command, files=[file])
-        invoker_multi_request = InvokerMultiRequest([invoker_request], Priority.RED)
-        i_m_r_p_queue.invoker_multi_request_queue.put(invoker_multi_request)
 
-        i_m_r_p_queue.run()
+        compiler = Compiler(file, 'py', compiler_callback)
+        compiler.compile()
 
-        mock_i_r_notify.assert_called()
+        compiler_callback.assert_called()
+        #compiled_file = compiler_callback.call_args[0].compiled_file
+        compiled_file = compiler.compiler.output_file
 
-        print(mock_i_r_notify.call_args)
+        launcher = Launcher(compiled_file, launcher_callback)
+        launcher.launch()
 
+        launcher_callback.assert_called()
