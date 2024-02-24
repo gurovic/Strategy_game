@@ -18,7 +18,7 @@ COMPILE_TL = {
 # Language / [tags, "%1"], %1 = file
 COMPILER_COMMANDS = {
     "py": None,
-    "cpp": ["g++", "-std=c++17", "%1"]
+    "cpp": ["g++", "-o", "compiled.ecpp", "-std=c++17", "%1"]
 }
 
 # - Launcher -
