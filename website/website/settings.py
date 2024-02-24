@@ -14,27 +14,6 @@ from pathlib import Path
 import os
 import sys
 
-# <----- Project Settings ----->
-
-# - InvokerPool -
-MAX_INVOKERS_COUNT = 14
-
-# - InvokerRequest -
-DEFAULT_EXECUTION_TL = 10
-
-# - Environment -
-ENABLE_DOCKER = False
-
-# - Compiler -
-# Language / Time(Seconds)
-COMPILE_TL = {
-    "cpp": 4,
-    "py": 1,
-}
-
-
-# <----- End Project Settings ----->
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -173,3 +152,5 @@ Q_CLUSTER = {
     'bulk': 10,
     'orm': 'default'
 }
+
+from project_settings import *
