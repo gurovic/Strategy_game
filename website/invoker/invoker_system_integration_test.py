@@ -1,3 +1,4 @@
+import os
 from unittest.mock import patch, Mock
 from django.test import TestCase
 
@@ -9,20 +10,19 @@ from .invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQue
 
 
 class TestInvokerSystem(TestCase):
-    #@patch('invoker.invoker_request.InvokerRequest.notify')
-    @patch('invoker.invoker.Invoker.run')
-    def test(self, mock_inv_run: Mock): #mock_i_r_notify: Mock):
+    @patch('invoker.invoker_request.InvokerRequest.notify')
+    def test(self, mock_i_r_notify: Mock):
         i_m_r_p_queue = InvokerMultiRequestPriorityQueue()
 
+        file = os.path.abspath('invoker/test_solutions/solution1.py')
         command = 'python'
-        file = '/home/user/PycharmProjects/Strategy_game/website/invoker/test_solutions/solution1.py'
         invoker_request = InvokerRequest(command=command, files=[file])
         invoker_multi_request = InvokerMultiRequest([invoker_request], Priority.RED)
         i_m_r_p_queue.invoker_multi_request_queue.put(invoker_multi_request)
 
         i_m_r_p_queue.run()
 
-        mock_inv_run.assert_called()
+        mock_i_r_notify.assert_called()
 
-        print(mock_inv_run.call_args)
+        print(mock_i_r_notify.call_args)
 
