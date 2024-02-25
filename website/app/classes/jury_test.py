@@ -51,7 +51,7 @@ class TestJury(TestCase):
     @patch("invoker.invoker.InvokerProcess.write")
     def test_perform_play_command(self, mock_write: Mock, mock_read: Mock, mock_get_processes: Mock,
                                   mock_get_invoker_requests: Mock):
-        play_command = {"state": "play", "player": 1, "data": "some data to player"}
+        play_command = {"state": "play", "players": ["user1", "user2", "user3"], "story_of_game": "some data", "points": [1, 2, 3]}
         mock_read.return_value = play_command
 
         invoker_multi_request = Mock()
