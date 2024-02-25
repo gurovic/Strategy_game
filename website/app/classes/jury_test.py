@@ -3,7 +3,6 @@ from django.test import TestCase
 
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
-from invoker.invoker_process import InvokerProcess
 from classes.jury import Jury
 
 
@@ -23,12 +22,12 @@ class TestJury(TestCase):
         self.assertEqual(jury.strategies_invoker_requests, [strategy_invoker_request])
 
     def test_get_processes(self):
-        play_process = InvokerProcess()
+        play_process = InvokerRequest().process_callback
         play_invoker_request = InvokerRequest("command")
         play_invoker_request.type = InvokerRequestType.PLAY
         play_invoker_request.process_callback = play_process
 
-        strategy_process = InvokerProcess()
+        strategy_process = InvokerRequest().process_callback
         strategy_invoker_request = InvokerRequest("command")
         strategy_invoker_request.type = InvokerRequestType.STRATEGY
         strategy_invoker_request.process_callback = strategy_process
@@ -51,8 +50,8 @@ class TestJury(TestCase):
 
         invoker_multi_request = Mock()
         jury = Jury(invoker_multi_request)
-        jury.play_process = InvokerProcess()
-        jury.strategies_process = [InvokerProcess()]
+        jury.play_process = InvokerRequest().process_callback
+        jury.strategies_process = [InvokerRequest().process_callback]
 
         jury.perform_play_command()
 
