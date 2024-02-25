@@ -6,7 +6,7 @@ from django.conf import settings
 
 from app.compiler import Compiler, CompilerReport
 from app.launcher import Launcher
-from invoker.invoker import NormalProcess
+from .invoker import Invoker, NormalProcess
 
 
 class TestInvokerSystem(TestCase):
