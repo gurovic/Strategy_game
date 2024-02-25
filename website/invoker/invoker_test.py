@@ -37,7 +37,7 @@ class TestInvokerProcess(TestCase):
 
         process.connect("test")
 
-        process.stdin.write.assert_called_once_with("test")
+        process.stdin.write.assert_called_once_with("test\n")
         process.stdout.readline.assert_called_once()
 
     def test_wait_for_end(self):

@@ -91,7 +91,7 @@ class InvokerProcess(ABC):
         """Kill process"""
 
     def connect(self, input: str) -> str:
-        self.stdin.write(input)
+        self.stdin.write(input + '\n')
         return self.stdout.readline()
 
     def _wait_for_end(self):
@@ -165,7 +165,7 @@ class NormalEnvironment(InvokerEnvironment):
         # try:
         self.result_process = subprocess.Popen(command, text=True,
                                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                               cwd=self.work_dir, shell=True)
+                                               cwd=self.work_dir, shell=True, bufsize=1, universal_newlines=True)
 
         return NormalProcess(
             self.result_process,
