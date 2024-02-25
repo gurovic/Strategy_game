@@ -71,6 +71,6 @@ class Jury:
             players_points = play_command["points"]
             players = play_command["players"]
             for i in range(len(players_points)):
-                self.jury_report[players[i]] = players_points[i]
+                self.jury_report.points[players[i]] = players_points[i]
             self.jury_report.story_of_game = play_command["story_of_game"]
             return self.jury_report
