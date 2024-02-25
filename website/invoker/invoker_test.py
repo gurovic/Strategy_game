@@ -1,9 +1,89 @@
+import subprocess
+
 from unittest.mock import patch, Mock
 from django.test import TestCase
 
-from invoker.invoker import Invoker, NoInvokerPoolCallbackData
+from invoker.invoker import Invoker, NoInvokerPoolCallbackData, InvokerProcess, TimeoutExpired, NormalProcess
 from invoker.models import InvokerReport
 from invoker.filesystem import File
+
+
+class TestInvokerProcess(TestCase):
+    class InvokerProcessTest(InvokerProcess):
+        def wait(self):
+            pass
+
+        def kill(self):
+            pass
+
+    @patch("invoker.invoker.InvokerProcess.register_callback")
+    def test_init(self, mock_register: Mock):
+        mock_callback = Mock()
+
+        self.InvokerProcessTest("test", 10, mock_callback)
+        mock_register.assert_called_once()
+
+    @patch("invoker.invoker.Thread")
+    def test_register_callback(self, mock_thread: Mock):
+        process = self.InvokerProcessTest()
+        process.register_callback()
+        mock_thread.assert_called_once_with(target=process._wait_for_end)
+        mock_thread().start.assert_called_once()
+
+    def test_connect(self):
+        process = self.InvokerProcessTest()
+        process.stdin = Mock()
+        process.stdout = Mock()
+
+        process.connect("test")
+
+        process.stdin.write.assert_called_once_with("test\n")
+        process.stdout.readline.assert_called_once()
+
+    def test_wait_for_end(self):
+        process = self.InvokerProcessTest(timelimit=10)
+        process.wait = Mock(side_effect=TimeoutExpired(10))
+        process.kill = Mock()
+        process.send_callback = Mock()
+
+        process._wait_for_end()
+
+        process.wait.assert_called_once()
+        process.kill.assert_called_once()
+        process.send_callback.assert_called_once()
+
+    def test_send_callback(self):
+        process = self.InvokerProcessTest()
+        process.callback = Mock()
+
+        process.send_callback()
+
+        process.callback.assert_called_once_with(False)
+
+
+class TestNormalProcess(TestCase):
+    def test_init(self):
+        mock_process = Mock()
+        process = NormalProcess(mock_process)
+
+        self.assertEqual(process.stdin, mock_process.stdin)
+        self.assertEqual(process.stdout, mock_process.stdout)
+
+    def test_wait(self):
+        mock_process = Mock()
+        mock_process.wait = Mock(side_effect=subprocess.TimeoutExpired("test", 10))
+
+        process = NormalProcess(mock_process, timelimit=10)
+        self.assertRaises(TimeoutExpired, process.wait)
+
+        mock_process.wait.assert_called_once_with(10)
+
+    def test_kill(self):
+        mock_process = Mock()
+        process = NormalProcess(mock_process)
+        process.kill()
+
+        mock_process.kill.assert_called_once()
 
 
 class TestInvoker(TestCase):
@@ -21,7 +101,7 @@ class TestInvoker(TestCase):
         self.assertEqual(invoker._callback, mock_invoker_run_callback)
         mock_file_load.assert_called_with("test")
         mock_environment.assert_called_once_with(invoker.notify)
-        mock_environment().launch.assert_called_once_with('echo Hello World', [mock_file_load("test"), File(name='test_file', source='test')],
+        mock_environment().launch.assert_called_once_with('echo Hello World', file_system=[mock_file_load("test"), File(name='test_file', source='test')],
                                                           preserve_files=['test'], timelimit=10, label="test")
 
     @patch("invoker.invoker.Invoker.free")
