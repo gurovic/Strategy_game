@@ -8,24 +8,27 @@ from django.contrib.auth.models import User
 
 
 def show_start_page(request):
+    user = None
     if request.method == 'POST':
         if request.POST['type'] == 'register':
-            response = redirect('registration/')
-            return response
+            return redirect('registration/')
         if request.POST['type'] == 'enter':
             return redirect('/accounts/login/')
 
         if request.POST['type'] == 'participate in tournament': #если надо зайти во все турниры
             if not request.user.is_authenticated:
                 return redirect('/accounts/login/')
+            user = request.user
             return redirect('tournaments')
         if request.POST['type'] == 'create tournament':
             if not request.user.is_authenticated:
                 return redirect('/accounts/login/')
+            user = request.user
             return redirect('tournament/create/')
         if request.POST['type'] == 'practice coding':
             if not request.user.is_authenticated:
                 return redirect('/accounts/login/')
+            user = request.user
             return redirect('sandbox/')
 
     else:
