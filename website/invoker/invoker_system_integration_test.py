@@ -1,14 +1,9 @@
-import os
 from unittest.mock import patch, Mock
 from django.test import TestCase
 
 from app.compiler import Compiler
 from app.launcher import Launcher
-from .invoker import Invoker
-from .invoker_request import InvokerRequest
-from .models import InvokerReport
-from .invoker_multi_request import InvokerMultiRequest, Priority
-from .invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
+from .invoker import Invoker, NormalProcess
 
 
 class TestInvokerSystem(TestCase):
@@ -16,16 +11,20 @@ class TestInvokerSystem(TestCase):
         compiler_callback = Mock()
         launcher_callback = Mock()
 
-        file = os.path.abspath('invoker/test_solutions/solution1.py')
+        file = 'invoker/test_solutions/solution1.py'
 
         compiler = Compiler(file, 'py', compiler_callback)
         compiler.compile()
 
         compiler_callback.assert_called()
-        #compiled_file = compiler_callback.call_args[0].compiled_file
-        compiled_file = compiler.compiler.output_file
+        compiler_report = compiler_callback.call_args.args[0]
+        compiled_file = compiler_report.compiled_file
+        path_to_compiled_file = compiled_file.path
 
-        launcher = Launcher(compiled_file, launcher_callback)
+        launcher = Launcher(path_to_compiled_file, launcher_callback)
         launcher.launch()
 
         launcher_callback.assert_called()
+        process = launcher_callback.call_args.args[0]
+
+        self.assertEqual(type(process), NormalProcess)
