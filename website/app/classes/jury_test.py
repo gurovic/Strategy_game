@@ -4,7 +4,7 @@ from django.test import TestCase
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
 from invoker.invoker_process import InvokerProcess
-from .jury import Jury
+from classes.jury import Jury
 
 
 class TestJury(TestCase):
