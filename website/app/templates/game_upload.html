@@ -19,53 +19,80 @@
         </script>
         <table class="m-b-50 form-with-td">
             <tr>
-                <td>Ideal_solution_report</td>
+                <td>Ideal solution</td>
             
                 {% if ideal_solution_report == 0 %}
-                    <td>Done</td>
+                    <td>OK</td>
+                {% elif ideal_solution_report == 1 %}
+                    <td>Compiler Error</td>
+                {% elif ideal_solution_report == 2 %}
+                    <td>Compilation Error</td>
+                {% elif ideal_solution_report == 3 %}
+                    <td>Time Limit</td>
                 {% else %}
                     <td>ERROR</td>
                 {% endif %}
             </tr>
             
             <tr>
-                <td>Play_report</td>
+                <td>Play</td>
             
                 {% if play_report == 0 %}
-                    <td>Done</td>
+                    <td>OK</td>
+                {% elif play_report == 1 %}
+                    <td>Compiler Error</td>
+                {% elif play_report == 2 %}
+                    <td>Compilation Error</td>
+                {% elif play_report == 3 %}
+                    <td>Time Limit</td>
                 {% else %}
                     <td>ERROR</td>
                 {% endif %}
             </tr>
             
             <tr>
-                <td>Visualizer_report</td>
+                <td>Visualiser</td>
             
-                {% if visualizer_report == 0 %}
-                    <td>Done</td>
+                {% if visualiser_report == 0 %}
+                    <td>OK</td>
+                {% elif visualiser_report == 1 %}
+                    <td>Compiler Error</td>
+                {% elif visualiser_report == 2 %}
+                    <td>Compilation Error</td>
+                {% elif visualiser_report == 3 %}
+                    <td>Time Limit</td>
                 {% else %}
                     <td>ERROR</td>
                 {% endif %}
             </tr>
         </table>
+
         <form id="uploaded-form" method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             <label>
-                <input class="d-none" type="text" name="type" value="Game">
+                <input class="d-none" type="text" name="type" value="game">
             </label>
             <label>
-                <input class="d-none" name="ideal_solution_compiler_report_id" value="{{ ideal_solution_report.status }}">
+                <input class="d-none" name="ideal_solution_compiler_report_id" value="{{ ideal_solution_report }}">
             </label>
             <label>
-                <input class="d-none" name="play_compiler_report_id" value="{{ play_report.status }}">
+                <input class="d-none" name="play_compiler_report_id" value="{{ play_report }}">
             </label>
             <label>
-                <input class="d-none" name="visualizer_compiler_report_id" value="{{ visualizer_report.status }}">
+                <input class="d-none" name="visualiser_compiler_report_id" value="{{ visualiser_report }}">
             </label>
-            <input type="submit" value="Загрузить Game">
+
+            {% if visualiser_report or play_report or ideal_solution_report %}
+                <input type="submit" value="Перезаполнить форму">
+
+            {% else %}
+                <input type="submit" value="Загрузить Game">
+
+            {% endif %}
         </form>
         
     {% elif status == 'compiling' %}
+
         <script>
             wait();
         </script>
@@ -77,11 +104,11 @@
             </label>
             <label>
                 <input class="d-block" type="text" value="Compilation in progress">
-                <input value="Обновить стораницу" class="m-b-20" type="submit">
+                <input value="Обновить страницу" class="m-b-20" type="submit">
             </label>
         </form>
 
-    {% elif status == 'compilation form' %}
+    {% elif status == 'game form' %}
         
         <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
@@ -117,11 +144,11 @@
                     </select>
                 </label>
 
-                <h3>Visualizer</h3>
-            <input type="file" name="visualizer">
+                <h3>Visualiser</h3>
+            <input type="file" name="visualiser">
             <p class="d-inline-block">Language: </p>
                 <label>
-                    <select class="d-inline-block" name="visualizer_language">
+                    <select class="d-inline-block" name="visualiser_language">
                         <option selected="selected">---- SELECT ----</option>
                         {% for language in available_languages %}
                             <option>{{ language }}</option>
@@ -130,11 +157,25 @@
                 </label>
 
             </fieldset>
-            
                 <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
         </form>
 
+    {% elif status == "game downloaded" %}
+        <h3>Игра {{ game_name }} успешно загружена на сайт</h3>
+        
+        <form id="uploading-new-game" method="POST">
+            {% csrf_token %}
+            <label>
+                <input class="d-none" type="text" name="type" value="upload new game">
+            </label>
+            <label>
+                <input value="Загрузить новую игру" class="m-b-20" type="submit">
+            </label>
+        </form>
+        
+
     {% else %}
+        <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
         <div class="error-container">
             <h1>STATUS ERROR</h1>
             <p>Either something in files was wrong or we have some problems in server.</p>
