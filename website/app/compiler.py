@@ -33,18 +33,21 @@ class NormalCompile:
         self.lang = lang
         self.command = command
         self.callback = callback
-        self.input_file = None
+        try:
+            with open(self.source, "r") as f:
+                self.input_file = f.read()
+        except FileNotFoundError:
+            self.input_file = None
         self.output_file = None
+
     def compile(self):
         command = self.command
-        self.input_file = File(source=self.source, name=self.INPUT_FILE_NAME.format(self.lang))
         self.output_file = self.OUTPUT_FILE_NAME.format(self.lang)
-
         timelimit = None
         if self.lang in settings.COMPILE_TL:
             timelimit = settings.COMPILE_TL[self.lang]
-
-        invoker_request = InvokerRequest(command, files=[self.input_file], preserve_files=[self.output_file], timelimit=timelimit)
+        invoker_request = InvokerRequest(' '.join(command), files=[self.source], preserve_files=[self.output_file],
+                                     timelimit=timelimit)
         multi_request = InvokerMultiRequest([invoker_request], priority=Priority.RED).subscribe(self)
 
         queue = InvokerMultiRequestPriorityQueue()
@@ -81,6 +84,7 @@ class NormalCompile:
 
 
 class FakeCompile:
+    INPUT_FILE_NAME = "main.{}"
     OUTPUT_FILE_NAME = "compiled.e{}"
 
     def __init__(self, source: str, lang: str, command: str = None,
@@ -89,11 +93,15 @@ class FakeCompile:
         self.lang = lang
         self.command = command
         self.callback = callback
-        self.input_file = None
+        try:
+            with open(self.source, "r") as f:
+                self.input_file = f.read()
+        except FileNotFoundError:
+            self.input_file = None
         self.output_file = None
 
     def compile(self):
-        compiled_file = FileDjango(io.StringIO(self.source), name=self.OUTPUT_FILE_NAME.format(self.lang))
+        compiled_file = FileDjango(io.StringIO(self.input_file), name=self.OUTPUT_FILE_NAME.format(self.lang))
 
         report = CompilerReport.objects.create(status=CompilerReport.Status.OK,
                                                compiled_file=compiled_file)
@@ -119,6 +127,7 @@ class Compiler:
         if command is None:
             self.compiler = FakeCompile(source=self.source, lang=self.lang, callback=self.notify)
         else:
+            command[-1] = self.source
             self.compiler = NormalCompile(source=self.source, lang=self.lang, command=command, callback=self.notify)
 
     def compile(self):

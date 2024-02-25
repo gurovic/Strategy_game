@@ -10,6 +10,8 @@ DEFAULT_EXECUTION_TL = 10
 ENABLE_DOCKER = False
 
 # - Compiler -
+SUPPORTED_LANGUAGES = ['py']
+
 # Language / Time(Seconds)
 COMPILE_TL = {
     "cpp": 4,
@@ -18,7 +20,7 @@ COMPILE_TL = {
 # Language / [tags, "%1"], %1 = file
 COMPILER_COMMANDS = {
     "py": None,
-    "cpp": ["g++", "-std=c++17", "%1"]
+    "cpp": ["g++", "-o", "compiled.ecpp", "-std=c++17", "%1"]
 }
 
 # - Launcher -

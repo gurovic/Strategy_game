@@ -90,8 +90,9 @@ class InvokerProcess(ABC):
     def kill(self):
         """Kill process"""
 
-    def connect(self, input: str) -> str:
-        self.stdin.write(input + '\n')
+    def connect(self, input_data: str | None) -> str:
+        if input_data is not None:
+            self.stdin.write(input_data + '\n')
         return self.stdout.readline()
 
     def _wait_for_end(self):
@@ -162,7 +163,6 @@ class NormalEnvironment(InvokerEnvironment):
         logging.debug(
             f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
 
-        # try:
         self.result_process = subprocess.Popen(command, text=True,
                                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                                cwd=self.work_dir, shell=True, bufsize=1, universal_newlines=True)
@@ -182,7 +182,6 @@ class NormalEnvironment(InvokerEnvironment):
         path = Path(self.work_dir)
         preserve_dir = [File.load(path / file) for file in self.preserve_files if
                         (path / file).exists()] if self.preserve_files else None
-
         delete_directory(self.work_dir)
 
         if timeout_error is False or timeout_error is None:
@@ -191,16 +190,16 @@ class NormalEnvironment(InvokerEnvironment):
             self.return_code = None
 
         self.callback(RunResult(
-            self.command,
-            self.result_process.stdout.read(),
-            self.result_process.stderr.read(),
-            self.return_code,
-            self.time_start,
-            time_end,
-            self.timelimit,
-            timeout_error,
-            input_dir,
-            preserve_dir
+            command=self.command,
+            output=self.result_process.stdout.read(),
+            error=self.result_process.stderr.read(),
+            exit_code=self.return_code,
+            time_start=self.time_start,
+            time_end=time_end,
+            timelimit=self.timelimit,
+            exceeded_timelimit=timeout_error,
+            input_files=input_dir,
+            preserved_files=preserve_dir
         ))
 
 
@@ -271,13 +270,11 @@ class Invoker:
                 report.input_files.add(
                     FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
             report.save()
-
         if result.preserved_files:
             for file in result.preserved_files:
                 report.preserved_files.add(
                     FileModel.objects.create(file=FileDjango(io.BytesIO(file.source), name=file.name), name=file.name))
             report.save()
-
         return report
 
     def send_report(self, report: InvokerReport):

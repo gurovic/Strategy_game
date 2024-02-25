@@ -1,31 +1,38 @@
+import time
 import os
-from unittest.mock import patch, Mock
-from django.test import TestCase
 
-from app.compiler import Compiler
+from django.test import TestCase
+from django.conf import settings
+
+from app.compiler import Compiler, CompilerReport
 from app.launcher import Launcher
-from .invoker import Invoker
-from .invoker_request import InvokerRequest
-from .models import InvokerReport
-from .invoker_multi_request import InvokerMultiRequest, Priority
-from .invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
+from invoker.invoker import NormalProcess
 
 
 class TestInvokerSystem(TestCase):
     def test(self):
-        compiler_callback = Mock()
-        launcher_callback = Mock()
+        for lang in settings.SUPPORTED_LANGUAGES:
+            file = os.path.abspath('invoker/test_solutions/invoker_integration.{}'.format(lang))
 
-        file = os.path.abspath('invoker/test_solutions/solution1.py')
+            self.launch_call = False
+            self.compiler_call = False
 
-        compiler = Compiler(file, 'py', compiler_callback)
-        compiler.compile()
+            def get_launcher_callback(process: NormalProcess):
+                process_output = process.connect(input_data="Hello")
+                self.assertEqual(process_output, "5879349 Hello\n")
+                self.launch_call = True
 
-        compiler_callback.assert_called()
-        #compiled_file = compiler_callback.call_args[0].compiled_file
-        compiled_file = compiler.compiler.output_file
+            def get_compiler_callback(report: CompilerReport):
+                compiled_file = report.compiled_file.path
+                launcher = Launcher(compiled_file, get_launcher_callback)
+                launcher.launch()
+                self.compiler_call = True
 
-        launcher = Launcher(compiled_file, launcher_callback)
-        launcher.launch()
+            compiler = Compiler(file, lang, get_compiler_callback)
+            compiler.compile()
 
-        launcher_callback.assert_called()
+            counter = time.perf_counter()
+            while ((time.perf_counter() - counter) < 4) & ((self.launch_call & self.compiler_call) == False):
+                pass
+            self.assertEqual(self.compiler_call, True, "language: {} is not compiling".format(lang))
+            self.assertEqual(self.launch_call, True, "language: {} is not launching".format(lang))
