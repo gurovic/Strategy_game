@@ -37,7 +37,7 @@ class Jury:
     def get_invoker_requests(self):
         invoker_requests = self.invoker_multi_request.invoker_requests
         for invoker_request in invoker_requests:
-            if invoker_request.label == InvokerRequestType.PLAY:
+            if invoker_request.type == InvokerRequestType.PLAY:
                 self.play_invoker_request = invoker_request
             else:
                 self.strategies_invoker_requests.append(invoker_request)
@@ -46,7 +46,7 @@ class Jury:
         invoker_requests = self.invoker_multi_request.invoker_requests
         for i in range(len(self.process)):
             invoker_request = invoker_requests[i]
-            if invoker_request.label == InvokerRequestType.PLAY:
+            if invoker_request.type == InvokerRequestType.PLAY:
                 self.play_process = self.process[i]
             else:
                 self.strategies_process.append(self.process[i])
