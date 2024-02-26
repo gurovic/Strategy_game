@@ -27,8 +27,7 @@ class Launcher:
             return ' '.join([self.file])
         else:
             command_tags = settings.LAUNCHER_COMMANDS[self.extension]
-            if command_tags[-1] == "%1":
-                command_tags[-1] = self.file
+            command_tags = [self.file if i == "%1" else i for i in command_tags]
             return ' '.join(command_tags)
 
     def launch(self):
