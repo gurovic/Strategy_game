@@ -13,8 +13,6 @@ class GameState(enum.Enum):
 
 class Jury:
 
-    process = None
-
     def __init__(self, invoker_multi_request: InvokerMultiRequest):
         self.invoker_multi_request = invoker_multi_request
         self.invoker_multi_request.subscribe(self)
@@ -29,6 +27,8 @@ class Jury:
 
         self.game_state = GameState.PLAY
         self.jury_report = JuryReport()
+
+        self.process = None
 
 
     def notify_processes(self, processes):
