@@ -69,35 +69,33 @@
 
         <form id="uploaded-form" method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
+
             <label>
                 <input class="d-none" type="text" name="type" value="game">
             </label>
-            <label>
-                <input class="d-none" name="ideal_solution_compiler_report_id" value="{{ ideal_solution_report }}">
-            </label>
-            <label>
-                <input class="d-none" name="play_compiler_report_id" value="{{ play_report }}">
-            </label>
-            <label>
-                <input class="d-none" name="visualiser_compiler_report_id" value="{{ visualiser_report }}">
-            </label>
-
-            {% if visualiser_report or play_report or ideal_solution_report %}
-                <input type="submit" value="Перезаполнить форму">
-
-            {% else %}
-                <input type="submit" value="Загрузить Game">
-
+        
+            <input type="submit" value="Перезаполнить форму">
+        
+            {% if game_can_be_uploaded %}
+                <input type="submit" onclick="set_value('game')" value="Загрузить игру">
             {% endif %}
+
+        <label>
+            <input class="d-none" type="text" id="value" name="type" value="dont upload">
+        </label>
+        
         </form>
         
-    {% elif status == 'compiling' %}
-
         <script>
-            wait();
+            function set_value(value) {
+                document.getElementById("value").value = value;
+                document.getElementById("myForm").submit();
+            }
         </script>
         
-        <form id="compiling" method="POST">
+    {% elif status == 'compiling' %}
+        
+        <form id="compiling" method="GET">
             {% csrf_token %}
             <label>
                 <input class="d-none" type="text" name="type" value="compilation">
@@ -159,14 +157,15 @@
             </fieldset>
                 <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
         </form>
+        
 
-    {% elif status == "game downloaded" %}
+    {% elif status == "game uploaded" %}
         <h3>Игра {{ game_name }} успешно загружена на сайт</h3>
         
         <form id="uploading-new-game" method="POST">
             {% csrf_token %}
             <label>
-                <input class="d-none" type="text" name="type" value="upload new game">
+                <input class="d-none" type="text" name="type" value="new game">
             </label>
             <label>
                 <input value="Загрузить новую игру" class="m-b-20" type="submit">
