@@ -4,7 +4,7 @@
 <head>
 
 {% block header %}
-    Wellcome! We are happy to see you here!
+    Welcome! We are happy to see you here!
 {% endblock %}
 
 </head>
@@ -12,10 +12,10 @@
 
 {% block content %}
     {% if status == 'show' %}
-        <a href='/accounts/login/'>зарегистрироваться или войти<\a><br>
-        <a href='../tournament/create/'>создать турнир<\a><br>
-        <a href='../tournaments'>участвовать в турнире<\a><br>
-        <a href='../sandbox/'>практиковаться<\a><br>
+        <a href='/accounts/login/'>зарегистрироваться или войти</a><br>
+        <a href='../tournament/create/'>создать турнир</a><br>
+        <a href='../tournaments'>участвовать в турнире</a><br>
+        <a href='../sandbox/'>практиковаться</a><br>
     {% else %}
         <p class="d-inline-block">Sorry, something went wrong(((</p>
     {% endif %}
