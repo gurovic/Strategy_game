@@ -9,7 +9,8 @@ from django.contrib.auth.models import User
 class TournamentForm(ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'game', 'system', 'max_of_players']
+        fields = ['name', 'game', 'system', 'finish_registration_time','tournament_start_time','max_of_players']
+        '''
         widgets = {
             'name': TextInput(attrs={
                 'class': 'form-control',
@@ -36,6 +37,7 @@ class TournamentForm(ModelForm):
                 'placeholder': 'Максимальное количество игроков в турнире'
             })
         }
+        '''
 
         
 class NewUserForm(UserCreationForm):
