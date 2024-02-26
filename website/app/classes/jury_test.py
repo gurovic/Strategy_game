@@ -21,6 +21,7 @@ class TestJury(TestCase):
         strategy_invoker_request.type = InvokerRequestType.STRATEGY
 
         invoker_multi_request = InvokerMultiRequest([play_invoker_request, strategy_invoker_request])
+        invoker_multi_request.subscribe(self)
 
         jury = Jury(invoker_multi_request)
 
@@ -39,6 +40,7 @@ class TestJury(TestCase):
         strategy_invoker_request.process_callback = strategy_process
 
         invoker_multi_request = InvokerMultiRequest([strategy_invoker_request, play_invoker_request])
+        invoker_multi_request.subscribe(self)
 
         jury = Jury(invoker_multi_request)
 

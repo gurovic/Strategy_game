@@ -17,6 +17,7 @@ class Jury:
 
     def __init__(self, invoker_multi_request: InvokerMultiRequest):
         self.invoker_multi_request = invoker_multi_request
+        self.invoker_multi_request.subscribe(self)
 
         self.play_invoker_request = None
         self.strategies_invoker_requests = []
