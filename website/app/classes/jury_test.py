@@ -49,8 +49,8 @@ class TestJury(TestCase):
 
     @patch("app.classes.jury.Jury.get_invoker_requests")
     @patch("app.classes.jury.Jury.get_processes")
-    @patch("invoker.invoker.InvokerProcess.read")
-    @patch("invoker.invoker.InvokerProcess.write")
+    @patch("invoker.invoker.InvokerProcess.stdout.read")
+    @patch("invoker.invoker.InvokerProcess.stdin.write")
     def test_perform_play_command(self, mock_write: Mock, mock_read: Mock, mock_get_processes: Mock,
                                   mock_get_invoker_requests: Mock):
         play_command = {"state": "play", "players": ["user1", "user2", "user3"], "story_of_game": "some data", "points": [1, 2, 3]}
