@@ -16,9 +16,9 @@ class TestJury(TestCase):
     @patch("app.classes.jury.Jury.get_processes")
     def test_get_invoker_requests(self, mock_get_processes: Mock):
         play_invoker_request = InvokerRequest("command")
-        play_invoker_request.type = InvokerRequestType.PLAY
+        play_invoker_request.label = InvokerRequestType.PLAY
         strategy_invoker_request = InvokerRequest("command")
-        strategy_invoker_request.type = InvokerRequestType.STRATEGY
+        strategy_invoker_request.label = InvokerRequestType.STRATEGY
 
         invoker_multi_request = InvokerMultiRequest([play_invoker_request, strategy_invoker_request])
         invoker_multi_request.subscribe(self)
@@ -31,12 +31,12 @@ class TestJury(TestCase):
     def test_get_processes(self):
         play_process = self.process
         play_invoker_request = InvokerRequest("command")
-        play_invoker_request.type = InvokerRequestType.PLAY
+        play_invoker_request.label = InvokerRequestType.PLAY
         play_invoker_request.process_callback = play_process
 
         strategy_process = self.process
         strategy_invoker_request = InvokerRequest("command")
-        strategy_invoker_request.type = InvokerRequestType.STRATEGY
+        strategy_invoker_request.label = InvokerRequestType.STRATEGY
         strategy_invoker_request.process_callback = strategy_process
 
         invoker_multi_request = InvokerMultiRequest([strategy_invoker_request, play_invoker_request])
