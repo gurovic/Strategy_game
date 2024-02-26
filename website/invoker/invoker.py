@@ -162,7 +162,6 @@ class NormalEnvironment(InvokerEnvironment):
 
         logging.debug(
             f'Command \"{command}\" was launched with files={file_system}, preserve_files={preserve_files} and timelimit={timelimit}')
-
         self.result_process = subprocess.Popen(command, text=True,
                                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                                cwd=self.work_dir, shell=True, bufsize=1, universal_newlines=True)
