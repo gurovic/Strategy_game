@@ -1,3 +1,4 @@
 
 def show(request):
-    pass
+    if request.method == 'POST':
+
