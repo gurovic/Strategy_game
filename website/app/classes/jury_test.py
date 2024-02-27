@@ -1,13 +1,12 @@
 from unittest.mock import patch, Mock
-from django.test import TestCase
+import unittest
 
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
 from app.classes.jury import Jury
 
 
-class TestJury(TestCase):
-
+class TestJury(unittest.TestCase):
     process = None
 
     def notify_processes(self, processes):
