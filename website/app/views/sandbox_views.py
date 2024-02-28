@@ -26,13 +26,13 @@ def show(request, game_id):
             lang = request.POST['language']
             DIR = Path(__file__).resolve().parent.parent.parent
             name_of_file = "sand_strategy"
-            complete_name = os.path.join(DIR / "media", (name_of_file + "."+str(lang)))
+            complete_name = os.path.join(DIR / "media", (name_of_file + "."+str(LANGUAGES[lang])))
             file1 = open(complete_name, "w")
             file1.write(str(file_content.decode()))
             file1.close()
-            file_compiler = Compiler(str(DIR / ("media/sand_strategy."+str(lang))), LANGUAGES[lang], None)
+            file_compiler = Compiler(str(DIR / ("media/sand_strategy."+str(LANGUAGES[lang]))), LANGUAGES[lang], None)
             file_compiler.compile()
-            os.remove(str(DIR / ("media/sand_strategy."+str(lang))))
+            os.remove(str(DIR / ("media/sand_strategy."+str(LANGUAGES[lang]))))
 
             return render(request, 'sandbox.html',
                           {'status': 'receive compiler report', 'report': file_compiler.report, 'game': game})
