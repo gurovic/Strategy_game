@@ -1,9 +1,11 @@
 import datetime
+import time
 
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django_q.models import Schedule
+from django_q.tasks import async_task, Task
 
 from .tournament_system_round_robin import TournamentSystemRoundRobin
 from .battle import Battle
@@ -14,6 +16,13 @@ def _end_registration_task(tournament_id: int):
     tournament = Tournament.objects.get(id=tournament_id)
     if tournament.status == Tournament.Status.WAITING_SOLUTIONS:
         tournament.end_registration()
+
+
+def start_tournament_task(tournament_id):
+    tournament = Tournament.objects.get(pk=tournament_id)
+    before_start = (tournament.tournament_start_time - timezone.now()).total_seconds()
+    time.sleep(before_start)
+    tournament.start_tournament()
 
 
 class Tournament(models.Model):
@@ -44,6 +53,8 @@ class Tournament(models.Model):
             Schedule.objects.update_or_create(name=self.id, func="app.models.tournament._end_registration_task",
                                               repeats=0, args=str(self.id),
                                               defaults=dict(next_run=self.finish_registration_time))
+        Task.objects.update_or_create(name=self.id, func='app.models.tournament.start_tournament_task', args=[self.id])
+        #async_task('app.models.tournament.start_tournament_task', self.id, name=self.id)
         return super().save(*args, **kwargs)
 
     def start_tournament(self):
