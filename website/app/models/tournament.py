@@ -45,8 +45,10 @@ class Tournament(models.Model):
                                               repeats=0, args=str(self.id),
                                               defaults=dict(next_run=self.finish_registration_time))
 
-        start_task = Schedule.objects.get_or_create(name=self.id, func='app.models.tournament.Tournament.start_tournament', args=[self])
-        start_task.update(schedule_type=Schedule.ONCE, next_run=self.tournament_start_time)
+        if self.status == self.Status.NOT_STARTED:
+            Schedule.objects.update_or_create(name=self.id, func='app.models.tournament.Tournament.start_tournament',
+                                              args=str(self), repeats=1,
+                                              defaults=dict(next_run=self.tournament_start_time))
 
         return super().save(*args, **kwargs)
 
