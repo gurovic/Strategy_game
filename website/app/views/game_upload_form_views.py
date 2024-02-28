@@ -46,26 +46,25 @@ class GameUploadFormView(View):
             game_model.save()
 
         ideal_solution = Compiler(
-            request.FILES['ideal_solution'].read(),
+            game_model.ideal_solution.path,
             LANGUAGES[request.POST['ideal_solution_language']],
             partial(self.notify, label='ideal_solution')
         )
 
         play = Compiler(
-            request.FILES['play'].read(),
+            game_model.play.path,
             LANGUAGES[request.POST['play_language']],
             partial(self.notify, label='play')
         )
 
         visualiser = Compiler(
-            request.FILES['visualiser'].read(),
+            game_model.visualiser.path,
             LANGUAGES[request.POST['visualiser_language']],
             partial(self.notify, label='visualiser')
         )
         request.session['ideal_solution_report_id'] = None
         request.session['play_report_id'] = None
         request.session['visualiser_report_id'] = None
-        request.session['previous_path'] = request.path
 
         ideal_solution.compile()
         play.compile()

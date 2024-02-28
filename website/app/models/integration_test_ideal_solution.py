@@ -1,9 +1,10 @@
 from django.test import TestCase
+
+from .players_in_battle import PlayersInBattle
 from .file_loader import FileLoader
 from .file import File
 from .battle import Battle
 from .game import Game
-from .players_in_battle import PlayersInBattle
 
 
 class IntegrationTest(TestCase):

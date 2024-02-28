@@ -1,6 +1,7 @@
+import datetime
+
 from django.db import models
 
-import datetime
 
 
 class CompilerReport(models.Model):

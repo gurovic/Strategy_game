@@ -1,7 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-from django.contrib.auth.models import User
-from app.models import Battle
+from .battle import Battle
 
 
 class PlayersInBattle(models.Model):

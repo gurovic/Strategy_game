@@ -1,0 +1,3 @@
+
+def show(request):
+    pass

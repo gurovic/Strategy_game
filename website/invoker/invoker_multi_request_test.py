@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock
 from invoker.invoker_multi_request import InvokerMultiRequest, Priority
 from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
-from invoker.invoker import Invoker
+from invoker.invoker import Invoker, InvokerProcess
 
 
 class TestInvokerMultiRequest(TestCase):
@@ -68,6 +68,24 @@ class TestInvokerMultiRequest(TestCase):
             invoker_multi_request.notify(invoker_report)
 
         mock.notify.assert_called_with(invoker_reports)
+
+    def test_send_processes(self):
+        mock = Mock()
+
+        invoker_requests = []
+        for index in range(3):
+            invoker_requests.append(Mock())
+        invoker_process_callbacks = [Mock() for _ in range(3)]
+
+        for index in range(3):
+            invoker_requests[index].process_callback = invoker_process_callbacks[index]
+
+        invoker_multi_request = InvokerMultiRequest(invoker_requests)
+        invoker_multi_request.subscribers = [mock]
+
+        invoker_multi_request.send_process()
+
+        mock.notify_processes.assert_called_with(invoker_process_callbacks)
 
     def test_subscribe(self):
         mock = Mock()

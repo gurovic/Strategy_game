@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.test import TestCase
 
-from app.models.player_in_tournament import PlayerInTournament
+from app.models import PlayerInTournament
 
 
 class PlayerInTournamentTest(TestCase):

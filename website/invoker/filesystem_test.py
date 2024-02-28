@@ -1,9 +1,9 @@
+from pathlib import Path
 from django.test import TestCase
 from unittest.mock import patch, Mock
 
 from invoker.filesystem import File, _get_path, write_file, delete_file, delete_directory
 
-from pathlib import Path
 
 
 class TestFunctions(TestCase):

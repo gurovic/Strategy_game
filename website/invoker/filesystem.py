@@ -33,6 +33,9 @@ class File:
     name: str
     source: str | bytes
 
+    def __post_init__(self):
+        self.source = self.source if isinstance(self.source, bytes) else self.source.encode()
+
     @classmethod
     def load(cls, path: _RawPathType) -> File:
         path = _get_path(path)
@@ -43,7 +46,7 @@ class File:
         path = _get_path(path)
 
         if not (path/self.name).exists():
-            write_file(path/self.name, self.source if isinstance(self.source, bytes) else self.source.encode())
+            write_file(path/self.name, self.source)
             logging.debug(f"File {path/self.name} was successfully created")
         else:
             delete_file(path/self.name)

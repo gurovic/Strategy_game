@@ -1,16 +1,15 @@
 import io
+import typing
 
 from django.core.files import File as FileDjango
+from django.conf import settings
 
 from app.models import CompilerReport
-
 from invoker.models import InvokerReport
 from invoker.invoker_multi_request import Priority, InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.filesystem import File
-
-import typing
 
 
 class NotSupportedLanguage(ValueError):
@@ -24,79 +23,106 @@ class NotSupportedLanguage(ValueError):
 CompilerReportSubscriber: typing.Type = typing.Callable[[CompilerReport], None]
 
 
-class AbstractCompile:
-    def __init__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
+class NormalCompile:
+    INPUT_FILE_NAME = "main.{}"
+    OUTPUT_FILE_NAME = "compiled.e{}"
+
+    def __init__(self, source: str, lang: str, command: str = None,
+                 callback: typing.Optional[CompilerReportSubscriber] = None):
         self.source = source
         self.lang = lang
-
+        self.command = command
         self.callback = callback
-
-    def command(self) -> (str, str | File, str):
-        """Return compile command, input file and output file name"""
-
+        self.input_file = None
+        self.output_file = None
     def compile(self):
-        command, input_file, output_file = self.command()
-        request = InvokerMultiRequest([InvokerRequest(command, files=[input_file], preserve_files=[output_file])],
-                                      priority=Priority.RED).subscribe(self)
+        command = self.command
+        self.input_file = File(source=self.source, name=self.INPUT_FILE_NAME.format(self.lang))
+        self.output_file = self.OUTPUT_FILE_NAME.format(self.lang)
+
+        timelimit = None
+        if self.lang in settings.COMPILE_TL:
+            timelimit = settings.COMPILE_TL[self.lang]
+
+        invoker_request = InvokerRequest(command, files=[self.input_file], preserve_files=[self.output_file], timelimit=timelimit)
+        multi_request = InvokerMultiRequest([invoker_request], priority=Priority.RED).subscribe(self)
+
         queue = InvokerMultiRequestPriorityQueue()
-        queue.add(request)
+        queue.add(multi_request)
+
+    def make_report(self, report: InvokerReport):
+
+        end_status = None
+        if report.status == InvokerReport.Status.TL:
+            end_status = CompilerReport.Status.TIMELIMIT
+        elif report.status == InvokerReport.Status.OK:
+            end_status = CompilerReport.Status.OK
+        else:
+            end_status = CompilerReport.Status.COMPILATION_ERROR
+
+        compiled_file = None
+        if end_status == CompilerReport.Status.OK:
+            compiled_file = report.preserved_files.get(name=self.output_file).file
+
+        return CompilerReport.objects.create(
+            invoker_report=report,
+            time=report.time_end - report.time_start,
+            status=end_status,
+            error=report.error,
+            compiled_file=compiled_file)
 
     def notify(self, report: list[InvokerReport]):
         compiler_report = self.make_report(report[0])
         self.send_report(compiler_report)
-
-    def make_report(self, report: InvokerReport):
-        return CompilerReport.objects.create(
-            invoker_report=report,
-            time=report.time_end - report.time_start,
-            status=CompilerReport.Status.TIMELIMIT if report.status == InvokerReport.Status.TL else CompilerReport.Status.OK if report.status == InvokerReport.Status.OK else CompilerReport.Status.COMPILATION_ERROR,
-            error=report.error,
-            compiled_file=report.preserved_files.get(name=self.command()[2]).file if report.status == InvokerReport.Status.OK else None)
 
     def send_report(self, report: CompilerReport):
         if self.callback:
             self.callback(report)
 
 
-class CPPCompile(AbstractCompile):
-    INPUT_FILE_NAME = "main.cpp"
-    OUTPUT_FILE_NAME = "compiled"
+class FakeCompile:
+    OUTPUT_FILE_NAME = "compiled.e{}"
 
-    def command(self) -> (str, str | File, str):
-        file = File(self.INPUT_FILE_NAME, self.source)
-        return f"g++ -o {self.OUTPUT_FILE_NAME} {file.name}", file, self.OUTPUT_FILE_NAME
-
-
-class DoNothingCompile(AbstractCompile):
-    FILE_NAME = "compiled.{}"
+    def __init__(self, source: str, lang: str, command: str = None,
+                 callback: typing.Optional[CompilerReportSubscriber] = None):
+        self.source = source
+        self.lang = lang
+        self.command = command
+        self.callback = callback
+        self.input_file = None
+        self.output_file = None
 
     def compile(self):
+        compiled_file = FileDjango(io.StringIO(self.source), name=self.OUTPUT_FILE_NAME.format(self.lang))
+
         report = CompilerReport.objects.create(status=CompilerReport.Status.OK,
-                                               compiled_file=FileDjango(io.StringIO(self.source),
-                                                                        name=self.FILE_NAME.format(self.lang))
-                                               )
+                                               compiled_file=compiled_file)
         self.send_report(report)
+
+    def send_report(self, report: CompilerReport):
+        if self.callback:
+            self.callback(report)
 
 
 class Compiler:
-    COMMANDS = {
-        "cpp": CPPCompile,
-        "py": DoNothingCompile,
-    }
-
     def __init__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
         self.source = source
         self.lang = lang
         self.callback = callback
         self.report = None
 
-        if self.lang not in self.COMMANDS:
+        if self.lang not in settings.COMPILER_COMMANDS:
             raise NotSupportedLanguage(self.lang)
 
-        self.command: AbstractCompile = self.COMMANDS[self.lang](self.source, self.lang, callback=self.notify)
+        command = settings.COMPILER_COMMANDS[self.lang]
+
+        if command is None:
+            self.compiler = FakeCompile(source=self.source, lang=self.lang, callback=self.notify)
+        else:
+            self.compiler = NormalCompile(source=self.source, lang=self.lang, command=command, callback=self.notify)
 
     def compile(self):
-        self.command.compile()
+        self.compiler.compile()
 
     def notify(self, report: CompilerReport):
         self.report = report

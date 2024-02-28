@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block header %}
+    Wellcome! We are happy to see you here!
+{% endblock %}
+
+{% block content %}
+    {% if status == 'show' %}
+        <form method="POST" action=" ">
+            {% csrf_token %}
+            <input class="d-none" type="submit" name="type" value='register/enter'>
+        </form>
+        <form method="POST" action=" ">
+            {% csrf_token %}
+            <input class="d-none" type="submit" name="type" value='participate in tournament'>
+        </form>
+        <form method="POST" action=" ">
+            {% csrf_token %}
+            <input class="d-none" type="submit" name="type" value='create tournament'>
+        </form>
+        <form method="POST" action=" ">
+            {% csrf_token %}
+            <input class="d-none" type="submit" name="type" value='practice coding'>
+        </form>
+    {% endif %}
+
+{% endblock %}

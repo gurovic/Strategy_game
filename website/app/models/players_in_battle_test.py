@@ -1,6 +1,7 @@
 from django.db import IntegrityError
 from django.test import TestCase
-from app.models.players_in_battle import PlayersInBattle
+
+from app.models import PlayersInBattle
 
 
 class PlayersInBattleTest(TestCase):
