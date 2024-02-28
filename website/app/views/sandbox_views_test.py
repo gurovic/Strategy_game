@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from django.contrib.auth.models import User
 from unittest.mock import Mock, patch
 
-from app.models import CompilerReport, Game
+from ..models import CompilerReport, Game
 from app.views.sandbox_views import show
 
 
@@ -65,5 +65,4 @@ class TestSandboxViews(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['status'], 'failed')
-
 
