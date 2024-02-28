@@ -41,8 +41,14 @@ class Tournament(models.Model):
     def save(self, *args, **kwargs):
         if self.status == self.Status.WAITING_SOLUTIONS:
             Schedule.objects.update_or_create(name=self.id, func="app.models.tournament._end_registration_task",
-                                              repeats=0, args=str(self.id),
+                                              repeats=1, args=str(self.id),
                                               defaults=dict(next_run=self.finish_registration_time))
+
+        if self.status == self.Status.NOT_STARTED:
+            Schedule.objects.update_or_create(name=f"Start tournament {self.id}", func='app.models.tournament.Tournament.start_tournament',
+                                              args=[self], repeats=1,
+                                              defaults=dict(next_run=self.tournament_start_time))
+
         return super().save(*args, **kwargs)
 
     def start_tournament(self):
