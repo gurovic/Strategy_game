@@ -21,7 +21,6 @@ urlpatterns = [
     path('tournament/finish/<int:tournament_id>', tournament_finish_view.finish_tournament),
     path('sandbox/', sandbox_all_games_view.show),
     path('registration/', register_request_views.register_request),
-    path('start_page/', start_page_views.show_start_page)
 ]
 
 if settings.DEBUG:
