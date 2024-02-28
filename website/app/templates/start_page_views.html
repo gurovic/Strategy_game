@@ -1,27 +1,27 @@
 {% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
 {% block header %}
-    Wellcome! We are happy to see you here!
+    Welcome! We are happy to see you here!
 {% endblock %}
+
+</head>
+<body>
 
 {% block content %}
     {% if status == 'show' %}
-        <form method="POST" action=" ">
-            {% csrf_token %}
-            <input class="d-none" type="submit" name="type" value='register/enter'>
-        </form>
-        <form method="POST" action=" ">
-            {% csrf_token %}
-            <input class="d-none" type="submit" name="type" value='participate in tournament'>
-        </form>
-        <form method="POST" action=" ">
-            {% csrf_token %}
-            <input class="d-none" type="submit" name="type" value='create tournament'>
-        </form>
-        <form method="POST" action=" ">
-            {% csrf_token %}
-            <input class="d-none" type="submit" name="type" value='practice coding'>
-        </form>
+        <a href='/accounts/login/'>зарегистрироваться или войти</a><br>
+        <a href='../tournament/create/'>создать турнир</a><br>
+        <a href='../tournaments'>участвовать в турнире</a><br>
+        <a href='../sandbox/'>практиковаться</a><br>
+    {% else %}
+        <p class="d-inline-block">Sorry, something went wrong(((</p>
     {% endif %}
 
 {% endblock %}
+
+</body>
+</html>
+

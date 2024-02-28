@@ -10,6 +10,8 @@ DEFAULT_EXECUTION_TL = 10
 ENABLE_DOCKER = False
 
 # - Compiler -
+SUPPORTED_LANGUAGES = ['py', 'cpp']
+
 # Language / Time(Seconds)
 COMPILE_TL = {
     "cpp": 4,
@@ -27,7 +29,7 @@ COMPILER_COMMANDS = {
 # Language / [tags, "%1"], %1 = file
 LAUNCHER_COMMANDS = {
     "epy": ["python3", "%1"],
-    "ecpp": None
+    "ecpp": ["%1"]
 }
 
 LAUNCHER_RUN_TL = {
