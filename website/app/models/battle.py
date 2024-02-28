@@ -30,10 +30,10 @@ class Battle(models.Model):
             jury.perform_play_command()
 
         for player in self.players.all():
-            player.number_of_points = Battle.objects.get(battle=self).points[player.number]
+            player.number_of_points = Battle.jury_report.points[player.number]
 
         points = self.jury_report.points
-        points = dict(reversed(sorted(points.items(), key=lambda item: item[1])))
+        points = dict(points.items())
 
         for order, player in enumerate(sorted(points), start=1):
             self.results[player] = order
