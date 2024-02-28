@@ -29,13 +29,13 @@ class Battle(models.Model):
             jury.get_processes()
             jury.perform_play_command()
 
-        for player in self.players.all():
-            player.number_of_points = Battle.jury_report.points[player.number]
-
         points = self.jury_report.points
         points = dict(points.items())
 
-        for order, player in enumerate(sorted(points), start=1):
+        for player in self.players.all():
+            player.number_of_points = points[player.number]
+
+        for order, player in enumerate(points, start=1):
             self.results[player] = order
         self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
