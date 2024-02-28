@@ -1,6 +1,8 @@
 import time
 import csv
 from django.shortcuts import render
+import os.path
+from pathlib import Path
 
 from ..models import CompilerReport, Game
 from ..classes import Sandbox, SandboxNotifyReceiver
@@ -21,9 +23,16 @@ def show(request, game_id):
     if request.method == 'POST':
         if request.POST['type'] == 'compiler':
             file_content = request.FILES['strategy'].read()
+            DIR = Path(__file__).resolve().parent.parent.parent
+            name_of_file = "sand_strategy"
+            complete_name = os.path.join(DIR / "media", name_of_file + ".py")
+            file1 = open(complete_name, "w")
+            file1.write(str(file_content.decode()))
+            file1.close()
             lang = request.POST['language']
-            file_compiler = Compiler(file_content, LANGUAGES[lang], None)
+            file_compiler = Compiler(str(DIR / "media/sand_strategy.py"), LANGUAGES[lang], None)
             file_compiler.compile()
+            os.remove(str(DIR / "media/sand_strategy.py"))
 
             return render(request, 'sandbox.html',
                           {'status': 'receive compiler report', 'report': file_compiler.report, 'game': game})
