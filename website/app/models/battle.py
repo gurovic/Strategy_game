@@ -2,7 +2,6 @@ from ..classes.jury import GameState
 from ..models import PlayersInBattle
 from django.db import models
 from django.contrib.auth.models import User
-from .game import Game
 from .jury_report import JuryReport
 
 
@@ -12,7 +11,7 @@ class Battle(models.Model):
         OK = "OK"
         ER = "ERROR"
 
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, null=True)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE, null=True)
     time_start = models.DateTimeField(auto_now_add=True)
     time_finish = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
@@ -31,13 +30,13 @@ class Battle(models.Model):
             jury.get_processes()
             jury.perform_play_command()
 
-        for player in self.players:
+        for player in self.players.all():
             player.number_of_points = Battle.objects.get(battle=self).points[player.number]
 
-        points = JuryReport.objects.get(battle=self).points
+        points = self.jury_report.points
         points = dict(reversed(sorted(points.items(), key=lambda item: item[1])))
 
         for order, player in enumerate(sorted(points), start=1):
             self.results[player] = order
-        self.moves = JuryReport.objects.get(battle=self).story_of_game
-        self.status = JuryReport.objects.get(battle=self).status
+        self.moves = self.jury_report.story_of_game
+        self.status = self.jury_report.status

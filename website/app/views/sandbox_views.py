@@ -3,7 +3,8 @@ import csv
 from django.shortcuts import render
 
 from ..models import CompilerReport, Game
-from ..classes import Sandbox, SandboxNotifyReceiver
+from ..classes.sandbox import Sandbox
+from ..classes.sandbox_notify_receiver import SandboxNotifyReceiver
 from ..compiler import Compiler
 
 LANGUAGES = {
