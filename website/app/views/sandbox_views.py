@@ -5,7 +5,8 @@ import os.path
 from pathlib import Path
 
 from ..models import CompilerReport, Game
-from ..classes import Sandbox, SandboxNotifyReceiver
+from ..classes.sandbox import Sandbox
+from ..classes.sandbox_notify_receiver import SandboxNotifyReceiver
 from ..compiler import Compiler
 
 LANGUAGES = {

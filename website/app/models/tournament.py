@@ -7,7 +7,6 @@ from django_q.models import Schedule
 
 from .tournament_system_round_robin import TournamentSystemRoundRobin
 from .battle import Battle
-from .game import Game
 
 
 def _end_registration_task(tournament_id: int):
@@ -27,7 +26,7 @@ class Tournament(models.Model):
         ROUND_ROBIN = 0
 
     name = models.CharField(max_length=255, default='tournament', verbose_name='Name')
-    game = models.ForeignKey(Game, blank=True, null=True, on_delete=models.CASCADE, verbose_name='Game')
+    game = models.ForeignKey('Game', blank=True, null=True, on_delete=models.CASCADE, verbose_name='Game')
     players = models.ManyToManyField(User, through='PlayerInTournament', blank=True, verbose_name='Players')
     system = models.IntegerField(choices=System.choices, default=System.ROUND_ROBIN, verbose_name='Tournament System')
     status = models.IntegerField(choices=Status.choices, default=Status.NOT_STARTED, verbose_name='Status')
