@@ -1,9 +1,8 @@
-from ..classes.jury import GameState
-from ..models import PlayersInBattle
 from django.db import models
 from django.contrib.auth.models import User
 from .jury_report import JuryReport
-
+from ..classes.jury import GameState
+from ..models import PlayersInBattle
 
 class Battle(models.Model):
     class GameStateChoices(models.TextChoices):
