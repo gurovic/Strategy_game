@@ -17,12 +17,12 @@ class TestStartPage(TestCase):
     def test_authorized_client_participate_in_tournament(self):
         client = Client()
         client.force_login(self.user)
-        response = client.post('/app/start_page/', {'type': 'participate in tournament'})
+        response = client.post('', {'type': 'participate in tournament'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'start_page_views.html')
 
     def test_not_authorized_client_participate_in_tournament(self):
-        response = self.client.post('/app/start_page/', {'type': 'participate in tournament'})
+        response = self.client.post('', {'type': 'participate in tournament'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base.html')
         self.assertTemplateUsed(response, 'start_page_views.html')

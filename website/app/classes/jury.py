@@ -5,7 +5,6 @@ from app.models.jury_report import JuryReport
 from invoker.invoker_multi_request import InvokerMultiRequest
 
 
-
 class GameState(enum.Enum):
     PLAY = enum.auto()
     END = enum.auto()

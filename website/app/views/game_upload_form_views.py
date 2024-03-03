@@ -10,6 +10,7 @@ from website.settings import SUPPORTED_LANGUAGES as LANGUAGES
 
 
 class GameUploadFormView(View):
+  
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -63,6 +64,7 @@ class GameUploadFormView(View):
             play.compile()
             visualiser.compile()
             return redirect('game_upload_compilation')
+          
 
     def notify(self, report, label):
         if label == 'ideal_solution':
