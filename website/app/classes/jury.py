@@ -21,18 +21,13 @@ class Jury:
         self.strategies_invoker_requests = []
         self.get_invoker_requests()
 
+        self.process = None
         self.play_process = None
         self.strategies_process = []
-        self.get_processes()
 
         self.game_state = GameState.PLAY
         self.jury_report = JuryReport()
 
-        self.process = None
-
-
-    def notify_processes(self, processes):
-        self.process = processes
 
     def get_invoker_requests(self):
         invoker_requests = self.invoker_multi_request.invoker_requests
@@ -64,6 +59,8 @@ class Jury:
         self.strategies_invoker_requests = invoker_request_sorted_array
 
     def get_processes(self):
+        self.play_process = None
+        self.strategies_process = []
         invoker_processes = self.process
         for invoker_process in invoker_processes:
             if invoker_process.label == "play":
@@ -173,3 +170,7 @@ class Jury:
             self.jury_report.story_of_game = play_command[index:]
             self.jury_report.status = "OK"
             return self.jury_report
+
+    def notify_processes(self, processes):
+        self.process = processes
+        self.get_processes()
