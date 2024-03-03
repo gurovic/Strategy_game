@@ -29,9 +29,9 @@ class TestGameUploadFormView(TestCase):
             'play': SimpleUploadedFile("test_play.py", b"file_content"),
             'visualiser': SimpleUploadedFile("test_visualiser.py", b"file_content"),
             'rules': SimpleUploadedFile("test_rules.txt", b"file_content"),
-            'ideal_solution_language': 'python',
-            'play_language': 'python',
-            'visualiser_language': 'python',
+            'ideal_solution_language': 'py',
+            'play_language': 'py',
+            'visualiser_language': 'py',
         })
 
         self.assertEqual(response.status_code, 302)
