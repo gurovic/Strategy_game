@@ -27,6 +27,9 @@ class Jury:
 
         self.game_state = GameState.PLAY
         self.jury_report = JuryReport()
+        self.jury_report.status = ""
+        self.jury_report.points = {}
+        self.jury_report.story_of_game = ""
 
 
     def get_invoker_requests(self):
@@ -91,7 +94,7 @@ class Jury:
 
     def perform_play_command(self):
         try:
-            play_command = self.play_process.stdout.readline()
+            play_command = self.play_process.stdout
         except RuntimeError:
             self.jury_report.status = "ERROR"
             return self.jury_report
@@ -160,7 +163,7 @@ class Jury:
                     if (data_from_play_command[:6] == "player"):
                         player = data_from_play_command[:len(data_from_play_command) - 1]
                     else:
-                        self.jury_report.points[player] = data_from_play_command
+                        self.jury_report.points[player] = int(data_from_play_command)
                         player = ""
                     data_from_play_command = ""
                 else:
