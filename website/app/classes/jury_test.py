@@ -92,3 +92,37 @@ class TestJury(unittest.TestCase):
         self.assertEqual(jury.jury_report.story_of_game, "smth")
         self.assertEqual(jury.jury_report.points, points_dict)
 
+    def test_perform_play_command_playing(self):
+
+        play_command = "status: play data: player1: None player2: 4"
+
+        play_mock_process = NormalProcess(Mock(), label="play")
+        play_mock_process.stdout = play_command
+        strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
+        strategy_mock_process_1.stdout = ""
+        strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
+        strategy_mock_process_2.stdout = "377"
+
+        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
+        play_invoker_request.label = "play"
+
+        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
+        strategy_invoker_request1.label = "player1"
+        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
+        strategy_invoker_request2.label = "player2"
+
+        invoker_multi_request = InvokerMultiRequest([play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
+
+        jury = Jury(invoker_multi_request)
+
+        invoker_multi_request.subscribe(jury)
+        invoker_multi_request.send_process()
+
+        jury.perform_play_command()
+
+
+        self.assertEqual(jury.jury_report.status, "")
+        self.assertEqual(play_mock_process.stdin, "377")
+        self.assertEqual(strategy_mock_process_1.stdin, "")
+        self.assertEqual(strategy_mock_process_2.stdin, "4")
+

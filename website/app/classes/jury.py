@@ -1,4 +1,5 @@
 import enum
+import typing
 
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
 from app.models.jury_report import JuryReport
@@ -9,6 +10,20 @@ from invoker.invoker_multi_request import InvokerMultiRequest
 class GameState(enum.Enum):
     PLAY = enum.auto()
     END = enum.auto()
+
+
+class StdIn(typing.Protocol):
+    def write(self, data: str):
+        ...
+
+
+class StdOut(typing.Protocol):
+    def read(self) -> str:
+        ...
+
+    def readline(self) -> str:
+        ...
+
 
 
 class Jury:
@@ -94,7 +109,7 @@ class Jury:
 
     def perform_play_command(self):
         try:
-            play_command = self.play_process.stdout
+            play_command = self.play_process.stdout #not as should be, needs a change
         except RuntimeError:
             self.jury_report.status = "ERROR"
             return self.jury_report
@@ -132,16 +147,22 @@ class Jury:
                 if (len(player_index_end) == len(self.strategies_process)):
                     end_cycle = 1
             for i in range(len(player_index_end)):
-                if (i != len(player_index_end) - 1):
+                if (i == len(player_index_end) - 1):
                     data_to_players.append(play_command[player_index_end[i] + 2 :])
                 else:
-                    data_to_players.append(play_command[player_index_end[i] + 2 : player_index_end[i + 1] - 7])
+                    data_to_players.append(play_command[player_index_end[i] + 2 : player_index_end[i + 1] - 8])
             data_from_players = []
             for i in range(len(self.strategies_process)):
-                player_data = self.strategies_process[i].connect(data_to_players[i])
+                if (data_to_players[i] != "None"):
+                    #player_data = self.strategies_process[i].connect(data_to_players[i])
+                    self.strategies_process[i].stdin = data_to_players[i] #  not as should be, needs a change
+                else:
+                    self.strategies_process[i].stdin = ""
+                player_data = self.strategies_process[i].stdout
                 data_from_players.append(player_data)
+            self.play_process.stdin = "" #not as should be, needs a change
             for i in range(len(data_from_players)):
-                self.play_process.stdin.write(data_from_players[i] + '\n')
+                self.play_process.stdin += data_from_players[i] #not as should be, needs a change
         else:
             self.game_state = GameState.END
             index = 20
