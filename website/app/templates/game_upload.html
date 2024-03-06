@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block style %}
+{% endblock %}
+
+{% block title %}
+    Game
+{% endblock title %}
+
+{% block header %}
+    Game
+{% endblock header %}
+
+{% block content %}
+
+    {% if status == 'receive compiler report' %}
+        
+        <script>
+            wait();
+        </script>
+        <table class="m-b-50 form-with-td">
+            <tr>
+                <td>Ideal solution</td>
+            
+                {% if ideal_solution_report == 0 %}
+                    <td>OK</td>
+                {% elif ideal_solution_report == 1 %}
+                    <td>Compiler Error</td>
+                {% elif ideal_solution_report == 2 %}
+                    <td>Compilation Error</td>
+                {% elif ideal_solution_report == 3 %}
+                    <td>Time Limit</td>
+                {% else %}
+                    <td>ERROR</td>
+                {% endif %}
+            </tr>
+            
+            <tr>
+                <td>Play</td>
+            
+                {% if play_report == 0 %}
+                    <td>OK</td>
+                {% elif play_report == 1 %}
+                    <td>Compiler Error</td>
+                {% elif play_report == 2 %}
+                    <td>Compilation Error</td>
+                {% elif play_report == 3 %}
+                    <td>Time Limit</td>
+                {% else %}
+                    <td>ERROR</td>
+                {% endif %}
+            </tr>
+            
+            <tr>
+                <td>Visualiser</td>
+            
+                {% if visualiser_report == 0 %}
+                    <td>OK</td>
+                {% elif visualiser_report == 1 %}
+                    <td>Compiler Error</td>
+                {% elif visualiser_report == 2 %}
+                    <td>Compilation Error</td>
+                {% elif visualiser_report == 3 %}
+                    <td>Time Limit</td>
+                {% else %}
+                    <td>ERROR</td>
+                {% endif %}
+            </tr>
+        </table>
+
+        <form id="uploaded-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>
+                <input class="d-none" type="text" name="type" value="game">
+            </label>
+        
+            <input type="submit" value="Перезаполнить форму">
+        
+            {% if game_can_be_uploaded %}
+                <input type="submit" onclick="set_value('game')" value="Загрузить игру">
+            {% endif %}
+
+        <label>
+            <input class="d-none" type="text" id="value" name="type" value="dont upload">
+        </label>
+        
+        </form>
+        
+        <script>
+            function set_value(value) {
+                document.getElementById("value").value = value;
+                document.getElementById("myForm").submit();
+            }
+        </script>
+        
+    {% elif status == 'compiling' %}
+        
+        <form id="compiling" method="GET">
+            {% csrf_token %}
+            <label>
+                <input class="d-none" type="text" name="type" value="compilation">
+            </label>
+            <label>
+                <input class="d-block" type="text" value="Compilation in progress">
+                <input value="Обновить страницу" class="m-b-20" type="submit">
+            </label>
+        </form>
+
+    {% elif status == 'game form' %}
+        
+        <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>
+                <input class="d-none" type="text" name="type" value="compiler">
+            </label>
+
+            <fieldset>
+                <legend>Информация об игре</legend>
+                {{ game_form.as_p }}
+            
+            <h3>Ideal Solution</h3>
+            <input type="file" name="ideal_solution">
+            <p class="d-inline-block">Language: </p>
+                <label>
+                    <select class="d-inline-block" name="ideal_solution_language">
+                        <option selected="selected">---- SELECT ----</option>
+                        {% for language in available_languages %}
+                            <option>{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <h3>Play</h3>
+            <input type="file" name="play">
+            <p class="d-inline-block">Language:</p>
+                <label>
+                    <select class="d-inline-block" name="play_language">
+                        <option selected="selected">---- SELECT ----</option>
+                        {% for language in available_languages %}
+                            <option>{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+                <h3>Visualiser</h3>
+            <input type="file" name="visualiser">
+            <p class="d-inline-block">Language: </p>
+                <label>
+                    <select class="d-inline-block" name="visualiser_language">
+                        <option selected="selected">---- SELECT ----</option>
+                        {% for language in available_languages %}
+                            <option>{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+
+            </fieldset>
+                <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
+        </form>
+        
+
+    {% elif status == "game uploaded" %}
+        <h3>Игра {{ game_name }} успешно загружена на сайт</h3>
+        
+        <form id="uploading-new-game" method="POST">
+            {% csrf_token %}
+            <label>
+                <input class="d-none" type="text" name="type" value="new game">
+            </label>
+            <label>
+                <input value="Загрузить новую игру" class="m-b-20" type="submit">
+            </label>
+        </form>
+        
+
+    {% else %}
+        <input value="Запустить компиляцию файлов" class="m-b-20" type="submit">
+        <div class="error-container">
+            <h1>STATUS ERROR</h1>
+            <p>Either something in files was wrong or we have some problems in server.</p>
+        </div>
+    {% endif %}
+{% endblock content %}

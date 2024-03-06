@@ -15,9 +15,9 @@ class Test(unittest.TestCase):
             def get_compiled_file(self, compiler_report):
                 self.compiled_file = compiler_report.compiled_file
 
-        play_code = open("../libgame/examples/bolshe_menshe_data/bolshe_menshe.py").read()
-        solution_first_code = open("../libgame/examples/bolshe_menshe_data/bolshe_menshe_solution1.py").read()
-        solution_second_code = open("../libgame/examples/bolshe_menshe_data/bolshe_menshe_solution2.py").read()
+        play_code = "../libgame/examples/bolshe_menshe_data/bolshe_menshe.py"
+        solution_first_code = "../libgame/examples/bolshe_menshe_data/bolshe_menshe_solution1.py"
+        solution_second_code = "../libgame/examples/bolshe_menshe_data/bolshe_menshe_solution2.py"
         play_compiled = CompiledFile()
         solution_first_compiled = CompiledFile()
         solution_second_compiled = CompiledFile()

@@ -10,3 +10,6 @@ class Game(models.Model):
     lose_point = models.IntegerField(default=0, null=True, blank=True, verbose_name='Point for loser')
     visualiser = models.FileField(upload_to=name, null=True, blank=True, verbose_name='Visualiser')
     rules = models.FileField(upload_to=name, null=True, blank=True, verbose_name='Rules')
+
+    def __str__(self):
+        return f"{self.name}"

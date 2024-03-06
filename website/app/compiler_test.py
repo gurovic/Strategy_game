@@ -16,7 +16,7 @@ class TestNotSupportedLanguage(TestCase):
 
 
 class TestAbstractCompile(TestCase):
-    class CompileTest(NormalCompile):
+    class CompileTest(Compiler):
         pass
 
     @patch("app.compiler.InvokerMultiRequestPriorityQueue")
@@ -30,8 +30,8 @@ class TestAbstractCompile(TestCase):
     @patch("app.compiler.NormalCompile.make_report")
     def test_notify(self, mock_make_report: Mock, mock_send_report: Mock):
         report = Mock()
-        compiler = self.CompileTest("test", lang="py")
-        compiler.notify([report])
+        compiler = self.CompileTest("test", lang="cpp")
+        compiler.compiler.notify([report])
 
         mock_make_report.assert_called_with(report)
         mock_send_report.assert_called()
@@ -43,8 +43,8 @@ class TestAbstractCompile(TestCase):
         mock.time_start = datetime.datetime.now()
         mock.time_end = datetime.datetime.now()
 
-        compiler = self.CompileTest("test", lang="py")
-        compiler.make_report(mock)
+        compiler = self.CompileTest("test", lang="cpp")
+        compiler.compiler.make_report(mock)
 
         mock_compiler_report.assert_called_once_with(invoker_report=mock, time=mock.time_end - mock.time_start,
                                                      status=CompilerReport.Status.OK, error=mock.error,
@@ -54,7 +54,7 @@ class TestAbstractCompile(TestCase):
     def test_send_report(self, mock_compiler_report: Mock):
         mock = Mock()
         compiler = self.CompileTest("test", lang="py", callback=mock)
-        compiler.send_report(mock_compiler_report)
+        compiler.compiler.send_report(mock_compiler_report)
 
         mock.assert_called()
 

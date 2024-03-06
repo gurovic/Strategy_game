@@ -37,7 +37,7 @@ class InvokerMultiRequest:
 
     def run(self, invokers):
         for (current_invoker, invoker_request) in zip(invokers, self.invoker_requests):
-            invoker_request.callback = self.notify
+            invoker_request.report_callback = self.notify
             invoker_request.run(current_invoker)
 
     def notify(self, invoker_report: InvokerReport):

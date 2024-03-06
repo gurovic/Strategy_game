@@ -4,7 +4,7 @@ from threading import Thread
 
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.invoker_multi_request import InvokerMultiRequest, Priority
-
+from .utils import Singleton
 
 class TestInvokerMultiRequestPriorityQueue(TestCase):
 
@@ -147,3 +147,6 @@ class TestInvokerMultiRequestPriorityQueue(TestCase):
             queue.invoker_multi_request_queue.put(invoker_multi_request)
         queue.run()
         self.assertEqual(queue.invoker_multi_request_queue.qsize(), 0)
+
+    def tearDown(self) -> None:
+        Singleton._instances = {}
