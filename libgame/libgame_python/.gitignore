@@ -56,6 +56,9 @@ coverage.xml
 # Django stuff:
 *.log
 *.pot
+*.рус
+
+
 
 .DS_Store
 
