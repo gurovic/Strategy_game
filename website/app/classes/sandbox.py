@@ -1,21 +1,23 @@
-from .battle import Battle
-from app.models.players_in_battle import PlayersInBattle
+from app.models import Battle, PlayersInBattle
 
 
 class Sandbox:
-    def __init__(self, game, strategy, creator):
+    def __init__(self, game, strategy, callback):
         self.game = game
         self.strategy = strategy
-        self.creator = creator
-        players = [PlayersInBattle(player=strategy, strategy_id=0)]
+        self.callback = callback
+        self.battle = Battle.objects.create(game=self.game)
+        player = PlayersInBattle.objects.create(file_solution=strategy, number=0, battle=self.battle)
+        self.players = [player]
         for i in range(self.game.number_of_players - 1):
-            players.append(PlayersInBattle(player=self.game.ideal_solution, strategy_id=i+1))
-        self.battle = Battle(self.game, players)
-        self.report = None
+            player = PlayersInBattle.objects.create(file_solution=self.game.ideal_solution, number=i + 1,
+                                                    battle=self.battle)
+            self.players.append(player)
+        self.battle.players.set(self.players)
+        self.battle.save()
 
     def run_battle(self):
-        self.battle.run()
+        self.battle.start()
 
     def notify(self, report):
-        self.report = report
-        self.creator(report)
+        self.callback(report)

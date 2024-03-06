@@ -1,56 +1,103 @@
 {% extends "base.html" %}
+{% block style %}
+    <link rel="stylesheet" href="/static/css/sandbox.css">
+{% endblock %}
+
 {% block title %}
     Sandbox
 {% endblock title %}
 
 {% block header %}
-    Sandbox
+    Sandbox for {{ game.name }}
 {% endblock header %}
 
 {% block content %}
-{% if failed_report %}
-    <form>
-    <table class="form-with-td">
-        <tr>
-            <td><p>compiled file</p></td>
-            <td><p>{{ failed_report.compiled_file }}</p></td>
-        </tr>
-        <tr>
-            <td><p>time</p></td>
-            <td><p>{{ failed_report.time }}</p></td>
-        </tr>
-        <tr>
-            <td><p>datetime_created</p></td>
-            <td><p>{{ failed_report.datetime_created }}</p></td>
-        </tr>
-        <tr>
-            <td><p>status</p></td>
-            <td><p>{{ failed_report.status }}</p></td>
-        </tr>
-        <tr>
-            <td><p>error</p></td>
-            <td><p>{{ failed_report.error }}</p></td>
-        </tr>
-        <tr>
-            <td><p>invoker_report</p></td>
-            <td><p>{{ failed_report.invoker_report }}</p></td>
-        </tr>
-    </table>
-    </form>
-{% elif report %}
-    <form class="form-with-td">
-    <table class="form-with-td">
-        <tr>
-            <td><p>command</p></td>
-            <td><p>{{ report.command }}</p></td>
-        </tr>
-    </table>
-    </form>
-{% else %}
-    <form method="POST" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="strategy">
-        <input type="submit">
-    </form>
-{% endif %}
+    <script>
+        function loading() {
+            {#document.getElementById('compilation-form').style.display = 'none';#}
+            document.getElementById('loader-content').style.display = 'block';
+        }
+        function wait() {
+            console.log(1);
+            {% if report == None %}
+                setTimeout(function () {
+                    location.reload();
+                }, 1000)
+            {% else %}
+                return 1;
+            {% endif %}
+        }
+    </script>
+
+    {% if status == 'receive compiler report' %}
+
+        <script>
+            wait();
+            document.getElementById('loader-content').style.display = 'none';
+        </script>
+        <table class="m-b-50 form-with-td">
+            <tr>
+                <td>Report</td>
+                <td>{{ report }}</td>
+            </tr>
+        </table>
+        {% if report.status == 0 %}
+            <form id="sandbox-form" method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input class="d-none" type="text" name="type" value="sandbox">
+                <input class="d-none" name="compiler_report_id" value="{{ report.id }}">
+                <input onclick="loading()" type="submit" value="Запустить sandbox">
+            </form>
+        {% endif %}
+
+    {% elif status == 'receive sandbox report' %}
+
+        <script>
+            wait();
+            document.getElementById('loader-content').style.display = 'none';
+        </script>
+        <table class="form-with-td">
+            <tr>
+                <td>report</td>
+                <td>{{ sandbox_report }}</td>
+            </tr>
+        </table>
+
+    {% elif status == 'filling compilation form' %}
+
+        <form id="compilation-form" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input class="d-none" type="text" name="type" value="compiler">
+            <input type="file" name="strategy">
+
+            <p class="d-inline-block">Choose language for your code: </p>
+            <select class="d-inline-block" name="language">
+                <option selected="selected">---- SELECT ----</option>
+                {% for language in available_languages %}
+                    <option>{{ language }}</option>
+                {% endfor %}
+            </select>
+
+            <input value="запустить компиляцию файла" class="m-b-20" type="submit" onclick="loading()">
+        </form>
+
+    {% else %}
+        <div class="error-container">
+            <h1>STATUS ERROR</h1>
+            <p>Either something in files was wrong or we have some problems in server.</p>
+        </div>
+    {% endif %}
+
+    <div id="loader-content">
+        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+             x="0px" y="0px"
+             width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+             xml:space="preserve">
+        <path fill="#000"
+              d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+            <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25"
+                              dur="0.6s" repeatCount="indefinite"></animateTransform>
+        </path>
+  </svg>
+    </div>
 {% endblock content %}

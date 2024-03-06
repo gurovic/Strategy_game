@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use indexmap::IndexMap;
 
-type Player = i32;
+pub type Player = isize;
 
 pub trait Read {
     fn read_line(&mut self, buffer: &mut String) -> io::Result<usize>;
@@ -14,16 +14,17 @@ pub trait Read {
 
 impl Read for Stdin {
     fn read_line(&mut self, buffer: &mut String) -> io::Result<usize> {
-        Ok(buffer.len())
+        Stdin::read_line(self, buffer)
     }
 }
+
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 struct PlayData {
     state: &'static str,
     player: Option<Player>,
-    data: Option<&'static str>,
-    points: Option<Vec<i32>>
+    data: Option<String>,
+    points: Option<Vec<isize>>
 }
 
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
@@ -34,15 +35,15 @@ pub struct PlayerMove {
 
 #[derive(PartialEq, Debug)]
 pub struct Battle<R: Read, W: Write> {
-    pub num_players: i32,
-    points: IndexMap<Player, i32>,
+    pub num_players: isize,
+    points: IndexMap<Player, isize>,
 
     stdin: R,
     stdout: W
 }
 
 impl<R: Read, T: Write> Battle<R, T> {
-    pub fn new(num_players: i32) -> Battle<Stdin, Stdout> {
+    pub fn new(num_players: isize) -> Battle<Stdin, Stdout> {
         let mut points = IndexMap::new();
         for player in 0..num_players {
             points.insert(player+1, 0);
@@ -57,11 +58,11 @@ impl<R: Read, T: Write> Battle<R, T> {
         }
     }
 
-    pub fn send_to(&mut self, player: Player, data: &'static str) {
+    pub fn send_to(&mut self, player: Player, data: &str) {
         let play_data = PlayData {
             state: "play",
             player: Some(player),
-            data: Some(data),
+            data: Some(String::from(data)),
             points: None,
         };
         let output = serde_json::to_string(&play_data).unwrap();
@@ -83,29 +84,36 @@ impl<R: Read, T: Write> Battle<R, T> {
         }
     }
 
-    pub fn set_points(&mut self, player: Player, count: i32) {
+    pub fn set_points(&mut self, player: Player, count: isize) {
         self.points.insert(player, count);
     }
 
-    pub fn add_points(&mut self, player: Player, count: i32) {
+    pub fn add_points(&mut self, player: Player, count: isize) {
         let points = self.points.get(&player).unwrap_or(&0);
         self.points.insert(player, points + count);
     }
 
-    pub fn end_due(&mut self, data: Option<&'static str>) {
+    fn end_battle(&mut self, data: Option<&str>) {
         self.points.sort_keys();
         let play_data = PlayData {
             state: "end",
-            points: Some(self.points.values().cloned().collect::<Vec<i32>>()),
+            points: Some(self.points.values().cloned().collect::<Vec<isize>>()),
             player: None,
-            data
+            data: match data {
+                Some(value) => Some(String::from(value)),
+                None => None
+            }
         };
         let output = serde_json::to_string(&play_data).unwrap();
-        write!(self.stdout, "{}", output).unwrap();
+        writeln!(self.stdout, "{}", output).unwrap();
+    }
+
+    pub fn end_due(&mut self, data: &str) {
+        self.end_battle(Some(data));
     }
 
     pub fn end(&mut self) {
-        self.end_due(None);
+        self.end_battle(None);
     }
 }
 

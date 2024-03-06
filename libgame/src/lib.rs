@@ -1,22 +1,17 @@
-mod battle;
+pub mod battle;
 
 use std::io::{Stdin, Stdout};
 use battle::Battle;
-use clap::Parser;
+use std::env;
 
 
-
-#[derive(Parser)]
-pub struct Cli {
-    players: i32
-}
-
-fn get_battle_from_cli(args: Cli) -> Battle<Stdin, Stdout> {
-    Battle::<Stdin, Stdout>::new(args.players)
+fn get_raw_battle(num_players: isize) -> Battle<Stdin, Stdout> {
+    Battle::<Stdin, Stdout>::new(num_players)
 }
 
 pub fn get_battle() -> Battle<Stdin, Stdout> {
-    get_battle_from_cli(Cli::parse())
+    let num_players: isize = env::args().last().unwrap().parse().expect("Should provide num of players!");
+    get_raw_battle(num_players)
 }
 
 #[cfg(test)]

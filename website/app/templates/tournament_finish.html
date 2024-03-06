@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static "css/sandbox.css" %}">
+    <link rel="stylesheet" href="{% static "css/tournament_start.css" %}">
+{% endblock %}
+
+{% block title %}
+    Finish tournament
+{% endblock %}
+
+{% block header %}
+    {% if status == 'failed' %}
+    {% else %}
+        Finish tournament {{ tournament.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    {% if status == 'posting tournament' %}
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="submit" value="finish tournament">
+        </form>
+
+    {% elif status == 'getting report' %}
+
+        <p>Tournament finished</p>
+        <p>name: {{ tournament.name }}</p>
+        <p>game: {{ tournament.game }}</p>
+        <p>id: {{ tournament.id }}</p>
+        <p>system: {{ tournament.system }}</p>
+        <p>status: {{ tournament.status }}</p>
+        <p>max of players: {{ tournament.max_of_players }}</p>
+
+    {% else %}
+
+        <div class="error-container">
+            <h1>STATUS ERROR</h1>
+            <p>Either something in files was wrong or we have some problems in server.</p>
+            <p>{{ status }}</p>
+        </div>
+
+    {% endif %}
+
+{% endblock %}
