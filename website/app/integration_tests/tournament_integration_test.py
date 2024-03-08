@@ -27,11 +27,17 @@ class TestTournament(TestCase):
 
         cls.tournament = Tournament.objects.create(name="Some tournament", game=cls.game)
 
-        cls.player_in_tournament1 = PlayerInTournament.objects.create(player=cls.user1, tournament=cls.tournament)
-        upload_file_to_file_field(cls.player_in_tournament1.file_solution, "app/integration_tests/tournament_integration_test/solution1.py")
+        player_in_tournament1 = PlayerInTournament.objects.create(player=cls.user1, tournament=cls.tournament)
+        upload_file_to_file_field(player_in_tournament1.file_solution,
+                                  "app/integration_tests/tournament_integration_test/solution1.py")
 
-        cls.player_in_tournament2 = PlayerInTournament.objects.create(player=cls.user2, tournament=cls.tournament)
-        upload_file_to_file_field(cls.player_in_tournament2.file_solution, "app/integration_tests/tournament_integration_test/solution2.py")
+        player_in_tournament2 = PlayerInTournament.objects.create(player=cls.user2, tournament=cls.tournament)
+        upload_file_to_file_field(player_in_tournament2.file_solution,
+                                  "app/integration_tests/tournament_integration_test/solution2.py")
+
+        player_in_tournament3 = PlayerInTournament.objects.create(player=cls.user3, tournament=cls.tournament)
+        upload_file_to_file_field(player_in_tournament3.file_solution,
+                                  "app/integration_tests/tournament_integration_test/solution3.py")
 
     @classmethod
     def tearDownClass(cls):
@@ -40,5 +46,5 @@ class TestTournament(TestCase):
             os.remove(player_in_tournament.file_solution.path)
 
     def test(self):
-        tournament = Tournament(name="Some tournament", game=self.game)
-        tournament.save()
+        tournament = self.tournament
+        tournament.end_registration()
