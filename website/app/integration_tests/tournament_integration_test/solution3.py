@@ -1,2 +1,2 @@
 start_of_game = input()
-print(3)
+print(2)
