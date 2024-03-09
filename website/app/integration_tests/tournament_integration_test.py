@@ -48,3 +48,5 @@ class TestTournament(TestCase):
     def test(self):
         tournament = self.tournament
         tournament.end_registration()
+
+        self.assertEqual(tournament.status, Tournament.Status.FINISHED)
