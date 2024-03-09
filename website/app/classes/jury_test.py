@@ -1,5 +1,6 @@
 from unittest.mock import patch, Mock
 import unittest
+import subprocess
 
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
@@ -62,8 +63,10 @@ class TestJury(unittest.TestCase):
 
         play_command = "status: end points: player1: 5 player2: 4 story_of_game: smth"
 
+
+        play_file = "-"
         play_mock_process = NormalProcess(Mock(), label="play")
-        play_mock_process.stdout = play_command
+        play_mock_process.stdout = subprocess.PIPE
         strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
         strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
 
@@ -97,11 +100,11 @@ class TestJury(unittest.TestCase):
         play_command = "status: play data: player1: None player2: 4"
 
         play_mock_process = NormalProcess(Mock(), label="play")
-        play_mock_process.stdout = play_command
+        #play_mock_process.stdout = play_command
         strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
-        strategy_mock_process_1.stdout = ""
+        #strategy_mock_process_1.stdout = ""
         strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
-        strategy_mock_process_2.stdout = "377"
+        #strategy_mock_process_2.stdout = "377"
 
         play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
         play_invoker_request.label = "play"

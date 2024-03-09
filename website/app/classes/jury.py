@@ -108,7 +108,7 @@ class Jury:
 
     def perform_play_command(self):
         try:
-            play_command = self.play_process.stdout #not as should be, needs a change
+            play_command = self.play_process.connect(None)
         except RuntimeError:
             self.jury_report.status = "ERROR"
             return self.jury_report
@@ -153,15 +153,17 @@ class Jury:
             data_from_players = []
             for i in range(len(self.strategies_process)):
                 if (data_to_players[i] != "None"):
-                    #player_data = self.strategies_process[i].connect(data_to_players[i])
-                    self.strategies_process[i].stdin = data_to_players[i] #  not as should be, needs a change
+                    player_data = self.strategies_process[i].connect(data_to_players[i])
+                    #self.strategies_process[i].stdin = data_to_players[i]   not as should be, needs a change
                 else:
-                    self.strategies_process[i].stdin = ""
-                player_data = self.strategies_process[i].stdout
+                    player_data = self.strategies_process[i].connect(data_to_players[i])
+                    #self.strategies_process[i].stdin = ""
+                #player_data = self.strategies_process[i].stdout
                 data_from_players.append(player_data)
-            self.play_process.stdin = "" #not as should be, needs a change
+            #self.play_process.stdin = "" #not as should be, needs a change
             for i in range(len(data_from_players)):
-                self.play_process.stdin += data_from_players[i] #not as should be, needs a change
+                blank_str = self.play_process.connect(data_from_players[i])
+                #self.play_process.stdin += data_from_players[i] #not as should be, needs a change
         else:
             self.game_state = GameState.END
             index = 20
