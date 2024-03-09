@@ -21,11 +21,10 @@ class TournamentSystemRoundRobin(TournamentSystem):
                                                battle=battle, player=self.players_in_tournament[j].player)
                 self.tournament.battles.add(battle)
 
-
     def run_tournament(self):
         for battle in self.tournament.battles.all():
-            battle.start()
-        self.write_battle_result()
+            battle.run()
+        self.write_battles_results()
 
     def calculate_places(self):
         self.players_in_tournament = sorted(self.players_in_tournament, key=lambda x: x.number_of_points)
@@ -38,7 +37,7 @@ class TournamentSystemRoundRobin(TournamentSystem):
     def finish(self):
         self.tournament.finish_tournament()
 
-    def write_battle_result(self):
+    def write_battles_results(self):
         for battle in self.tournament.battles.all():
             players = battle.players.through.objects.filter(battle=battle)
             for player in players:
