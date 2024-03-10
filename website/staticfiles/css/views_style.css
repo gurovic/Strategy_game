@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Goldman&display=swap');
+
+* {
+    font-family: 'Raleway', sans-serif;
+    box-sizing: border-box;
+    user-select: none;
+    /*padding: 0;*/
+    /*margin: 0;*/
+}
+
+/* TAGS REDACTION */
+table {
+    background: #292936;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+}
+table td { padding: 5px 15px; }
+ul li { list-style-type: none; }
+input[type='submit'], input[type='button'] {
+    font-weight: bolder;
+    padding: .7em 2.7em;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+input { display: block; }
+input:active, :hover, :focus { outline: 0; outline-offset: 0; }
+form { background: white; }
+
+/* ONE STYLE CLASSES */
+.txt-f-Goldman { font-family: 'Goldman', sans-serif; }
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+.a-cen-v { justify-content: center; }
+.a-cen-h { align-items: center; align-content: center; }
+.m-b-50 { margin-bottom: 50px; }
+.m-b-20 { margin-bottom: 20px; }
+
+/* OTHER CLASSES */
+.form-with-td td:first-child {
+    color: #efd00c;
+    padding-right: 20px;
+    font-weight: bold;
+}
+.author {
+    z-index: 1000;
+    position: absolute;
+    bottom: 5px;
+}
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
