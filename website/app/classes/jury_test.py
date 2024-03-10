@@ -102,15 +102,21 @@ class TestJury(unittest.TestCase):
         #play_command = "status: play data: player1: None player2: 4"
 
         play_file = open("media/jury_test_files/data_player_2.txt", 'r')
-        strategy_file_1 = open("media/jury_test_files/data_player_2.txt", 'r')
-        strategy_file_2 = open("media/jury_test_files/data_player_2.txt", 'r')
+        play_file_save = open("media/jury_test_files/save_data.txt", 'w')
+        strategy_file_1 = open("media/jury_test_files/data_player_3.txt", 'r')
+        strategy_file_save_1 = open("media/jury_test_files/save_data_1.txt", 'w')
+        strategy_file_2 = open("media/jury_test_files/data_player_4.txt", 'r')
+        strategy_file_save_2 = open("media/jury_test_files/save_data_2.txt", 'w')
 
         play_mock_process = NormalProcess(Mock(), label="play")
         play_mock_process.stdout = play_file
+        play_mock_process.stdin = play_file_save
         strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
         strategy_mock_process_1.stdout = strategy_file_1
+        strategy_mock_process_1.stdin = strategy_file_save_1
         strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
         strategy_mock_process_2.stdout = strategy_file_2
+        strategy_mock_process_2.stdin = strategy_file_save_2
 
         play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
         play_invoker_request.label = "play"
@@ -129,9 +135,13 @@ class TestJury(unittest.TestCase):
 
         jury.perform_play_command()
 
+        play_file_check = open("media/jury_test_files/save_data.txt", 'r')
+        strategy_file_check_1 = open("media/jury_test_files/save_data_1.txt", 'r')
+        strategy_file_check_2 = open("media/jury_test_files/save_data_2.txt", 'r')
+
 
         self.assertEqual(jury.jury_report.status, "")
-        self.assertEqual(play_mock_process.stdin, "377")
-        self.assertEqual(strategy_mock_process_1.stdin, "")
-        self.assertEqual(strategy_mock_process_2.stdin, "4")
+        self.assertEqual(play_file_check.read(), "377")
+        self.assertEqual(strategy_file_check_1.read(), "")
+        self.assertEqual(strategy_file_check_2.read(), "4")
 
