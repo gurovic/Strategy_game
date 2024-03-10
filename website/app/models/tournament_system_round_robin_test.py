@@ -60,7 +60,7 @@ class TestTournamentSystemRoundRobin(TestCase):
         self.assertEqual(mock_tournament.finish_finish_tournament.call_count, 0)
 
     # @patch('app.models.tournament_system_round_robin.TournamentSystemRoundRobin.write_battle_result')
-    def test_write_battle_results(self):
+    def test_write_battles_results(self):
         tournament_system = TournamentSystemRoundRobin(self.tournament)
         battles = tournament_system.tournament.battles.all()
         points = {'user1': 0, 'user2': 0, 'user3': 0}
@@ -72,7 +72,7 @@ class TestTournamentSystemRoundRobin(TestCase):
                 points[player.player.username] += points_count
                 player.save()
             battle.save()
-        tournament_system.write_battle_result()
+        tournament_system.write_battles_results()
 
         for player in tournament_system.players_in_tournament:
             self.assertEqual(points[player.player.username], player.number_of_points)
