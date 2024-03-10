@@ -61,12 +61,14 @@ class TestJury(unittest.TestCase):
 
     def test_perform_play_command_ended(self):
 
-        play_command = "status: end points: player1: 5 player2: 4 story_of_game: smth"
+        #play_command = "status: end points: player1: 5 player2: 4 story_of_game: smth"
+        #play_command1 = bytes(play_command, 'utf-8')
+        #play_command2 = play_command.encode('utf-8')
 
 
-        play_file = "-"
+        play_file = open("media/jury_test_files/data_player_1.txt", 'r')
         play_mock_process = NormalProcess(Mock(), label="play")
-        play_mock_process.stdout = subprocess.PIPE
+        play_mock_process.stdout = play_file
         strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
         strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
 
@@ -97,14 +99,18 @@ class TestJury(unittest.TestCase):
 
     def test_perform_play_command_playing(self):
 
-        play_command = "status: play data: player1: None player2: 4"
+        #play_command = "status: play data: player1: None player2: 4"
+
+        play_file = open("media/jury_test_files/data_player_2.txt", 'r')
+        strategy_file_1 = open("media/jury_test_files/data_player_2.txt", 'r')
+        strategy_file_2 = open("media/jury_test_files/data_player_2.txt", 'r')
 
         play_mock_process = NormalProcess(Mock(), label="play")
-        #play_mock_process.stdout = play_command
+        play_mock_process.stdout = play_file
         strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
-        #strategy_mock_process_1.stdout = ""
+        strategy_mock_process_1.stdout = strategy_file_1
         strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
-        #strategy_mock_process_2.stdout = "377"
+        strategy_mock_process_2.stdout = strategy_file_2
 
         play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
         play_invoker_request.label = "play"
