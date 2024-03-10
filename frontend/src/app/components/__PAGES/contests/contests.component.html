@@ -25,7 +25,7 @@
 	    <div class="contest-card__items">
 		<div [id]="'card'+card_index" class="contest-card__item" *ngFor="let card of cards; index as card_index">
 		<div class="image-part">
-		    <img class="arrow" src="assets/background_svgs/contest_backgrounds/arrow.svg">
+		    <img class="arrow" src="/static/angular/assets/background_svgs/contest_backgrounds/arrow.svg">
 		    <img class="backgr-image" [src]="card.picture_path">
 		</div>
 		<div [id]="'text-part-of-card-'+card_index" class="text-part">
