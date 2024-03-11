@@ -151,12 +151,12 @@ class Jury:
                 else:
                     data_to_players.append(play_command[player_index_end[i] + 2 : player_index_end[i + 1] - 8])
             data_from_players = []
-            for i in range(len(self.strategies_process)):
+            for i in range(len(data_to_players)):
                 if (data_to_players[i] != "None"):
                     player_data = self.strategies_process[i].connect(data_to_players[i])
                     #self.strategies_process[i].stdin = data_to_players[i]   not as should be, needs a change
                 else:
-                    player_data = self.strategies_process[i].connect(data_to_players[i])
+                    player_data = ""
                     #self.strategies_process[i].stdin = ""
                 #player_data = self.strategies_process[i].stdout
                 data_from_players.append(player_data)

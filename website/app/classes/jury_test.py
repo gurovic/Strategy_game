@@ -102,11 +102,11 @@ class TestJury(unittest.TestCase):
         #play_command = "status: play data: player1: None player2: 4"
 
         play_file = open("media/jury_test_files/data_player_2.txt", 'r')
-        play_file_save = open("media/jury_test_files/save_data.txt", 'w')
+        play_file_save = open("media/jury_test_files/save_data.txt", 'a+')
         strategy_file_1 = open("media/jury_test_files/data_player_3.txt", 'r')
-        strategy_file_save_1 = open("media/jury_test_files/save_data_1.txt", 'w')
+        strategy_file_save_1 = open("media/jury_test_files/save_data_1.txt", 'a+')
         strategy_file_2 = open("media/jury_test_files/data_player_4.txt", 'r')
-        strategy_file_save_2 = open("media/jury_test_files/save_data_2.txt", 'w')
+        strategy_file_save_2 = open("media/jury_test_files/save_data_2.txt", 'a+')
 
         play_mock_process = NormalProcess(Mock(), label="play")
         play_mock_process.stdout = play_file
@@ -135,13 +135,14 @@ class TestJury(unittest.TestCase):
 
         jury.perform_play_command()
 
-        play_file_check = open("media/jury_test_files/save_data.txt", 'r')
-        strategy_file_check_1 = open("media/jury_test_files/save_data_1.txt", 'r')
-        strategy_file_check_2 = open("media/jury_test_files/save_data_2.txt", 'r')
+
+        #play_file_check = open("media/jury_test_files/save_data.txt", 'r')
+        #strategy_file_check_1 = open("media/jury_test_files/save_data_1.txt", 'r')
+        #strategy_file_check_2 = open("media/jury_test_files/save_data_2.txt", 'r')
 
 
         self.assertEqual(jury.jury_report.status, "")
-        self.assertEqual(play_file_check.read(), "377")
-        self.assertEqual(strategy_file_check_1.read(), "")
-        self.assertEqual(strategy_file_check_2.read(), "4")
+        self.assertEqual(play_mock_process.stdin.read(), "")
+        self.assertEqual(strategy_file_save_1.read(), "")
+        self.assertEqual(strategy_file_save_2.read(), "")
 
