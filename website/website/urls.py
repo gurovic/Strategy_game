@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import TemplateView
-from app.views import register_request_views, start_page_views
+from app.views import register_request_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import (sandbox_views, tournament_views, tournament_start_view, tournament_register_views,
                     tournament_results_view, tournament_registration_view, tournaments_view, solution_upload_view,
-                    sandbox_all_games_view, register_request_views, start_page_views, game_upload_form_views,
+                    sandbox_all_games_view, register_request_views, game_upload_form_views,
                     game_upload_compilation_views, game_upload_report_views)
 
 
