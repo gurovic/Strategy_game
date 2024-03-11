@@ -29,7 +29,7 @@ COMPILER_COMMANDS = {
 # Language / [tags, "%1"], %1 = file
 LAUNCHER_COMMANDS = {
     "epy": ["python3", "%1"],
-    "ecpp": ["%1"]
+    "ecpp": ["chmod", "+x","%1","\n","%1"]
 }
 
 LAUNCHER_RUN_TL = {

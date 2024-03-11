@@ -17,7 +17,7 @@ from django.core.files import File as FileDjango
 from invoker.filesystem import File, delete_directory
 from invoker.models import InvokerReport, File as FileModel
 
-
+from app.classes.logger import class_log
 class InvokerStatus(enum.Enum):
     FREE = enum.auto()
     WORKING = enum.auto()
@@ -62,7 +62,7 @@ class StdOut(typing.Protocol):
     def readline(self) -> str:
         ...
 
-
+@class_log
 class InvokerProcess(ABC):
     stdin: StdIn
     stdout: StdOut
@@ -107,7 +107,7 @@ class InvokerProcess(ABC):
         if self.callback:
             self.callback(self._exceeded_timelimit)
 
-
+@class_log
 class NormalProcess(InvokerProcess):
     def __init__(self, process: subprocess.Popen, *args, **kwargs):
         self._process = process
@@ -125,7 +125,7 @@ class NormalProcess(InvokerProcess):
     def kill(self):
         self._process.kill()
 
-
+#@class_log
 class InvokerEnvironment(ABC):
     def __init__(self, callback):
         self.callback = callback
@@ -136,7 +136,7 @@ class InvokerEnvironment(ABC):
                timelimit: typing.Optional[int] = None) -> InvokerProcess:
         ...
 
-
+#@class_log
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
     def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
@@ -153,6 +153,7 @@ class NormalEnvironment(InvokerEnvironment):
         self.command = command
 
         self.file_system = file_system
+        #print(type(file_system))
         self.work_dir = self.initialize_workdir(file_system)
         self.preserve_files = preserve_files
 
@@ -226,7 +227,7 @@ class NoInvokerProcessReturned(Exception):
     def __str__(self):
         return f"No process returned for the environment: {self.environment_id}"
 
-
+@class_log
 class Invoker:
     def __init__(self):
         self.status: InvokerStatus = InvokerStatus.FREE
@@ -260,10 +261,11 @@ class Invoker:
             raise NoInvokerPoolCallbackData(id(self))
 
     def make_report(self, result: RunResult) -> InvokerReport:
-        report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
+        report = InvokerReport(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
                                               status=InvokerReport.Status.TL if result.exceeded_timelimit else InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE)
+        report.save()
         if result.input_files:
             for file in result.input_files:
                 report.input_files.add(
