@@ -12,7 +12,7 @@ from .invoker import Invoker, NormalProcess
 class TestInvokerSystem(TestCase):
     def test(self):
         for lang in settings.SUPPORTED_LANGUAGES:
-            file = os.path.abspath('invoker/invoker_system_integration_test/invoker_integration.{}'.format(lang))
+            file = os.path.abspath('website/invoker/invoker_system_integration_test/invoker_integration.{}'.format(lang))
 
             self.launch_call = False
             self.compiler_call = False
