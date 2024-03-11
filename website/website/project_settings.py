@@ -1,5 +1,5 @@
 # <----- Project Settings ----->
-
+import sys
 # - InvokerPool -
 MAX_INVOKERS_COUNT = 14
 
@@ -18,10 +18,16 @@ COMPILE_TL = {
     "py": 1,
 }
 # Language / [tags, "%1"], %1 = file
-COMPILER_COMMANDS = {
-    "py": None,
-    "cpp": ["g++", "-o", "compiled.ecpp", "-std=c++17", "%1"]
-}
+if sys.platform == "linux":
+    COMPILER_COMMANDS = {
+        "py": None,
+        "cpp": ["g++", "-o", "compiled.ecpp", "-std=c++17", "%1"]
+    }
+else:
+    COMPILER_COMMANDS = {
+        "py": None,
+        "cpp": ["%1"]
+    }
 
 # - Launcher -
 # !!! EVERY FILE SHOULD HAVE `e` BEFORE the LANGUAGE TYPE.
@@ -29,7 +35,7 @@ COMPILER_COMMANDS = {
 # Language / [tags, "%1"], %1 = file
 LAUNCHER_COMMANDS = {
     "epy": ["python3", "%1"],
-    "ecpp": ["chmod", "+x","%1","\n","%1"]
+    "ecpp": ["chmod", "+x","%1",";","%1"]
 }
 
 LAUNCHER_RUN_TL = {
