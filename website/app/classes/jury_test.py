@@ -146,3 +146,11 @@ class TestJury(unittest.TestCase):
         self.assertEqual(strategy_file_save_1.read(), "")
         self.assertEqual(strategy_file_save_2.read(), "")
 
+        play_file_check = open("media/jury_test_files/save_data.txt", 'r')
+        strategy_file_check_1 = open("media/jury_test_files/save_data_1.txt", 'r')
+        strategy_file_check_2 = open("media/jury_test_files/save_data_2.txt", 'r')
+
+        self.assertEqual(play_file_check.read(), "\n377\n")
+        self.assertEqual(strategy_file_check_1.read(), "")
+        self.assertEqual(strategy_file_check_2.read(), "4\n")
+
