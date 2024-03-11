@@ -10,16 +10,16 @@ import {ProfileService} from "../../../services/profile.service";
 })
 export class MainPageComponent implements AfterViewInit {
   public svg_filenames = [
-    'assets/logos_for_main_page/csharp.svg',
-    'assets/logos_for_main_page/c++.svg',
-    'assets/logos_for_main_page/c.svg',
-    'assets/logos_for_main_page/go.svg',
-    'assets/logos_for_main_page/java.svg',
-    'assets/logos_for_main_page/js.svg',
-    'assets/logos_for_main_page/kotlin.svg',
-    'assets/logos_for_main_page/python.svg',
-    'assets/logos_for_main_page/rust.svg',
-    'assets/logos_for_main_page/ts.svg',
+    '/static/angular/assets/logos_for_main_page/csharp.svg',
+    '/static/angular/assets/logos_for_main_page/c++.svg',
+    '/static/angular/assets/logos_for_main_page/c.svg',
+    '/static/angular/assets/logos_for_main_page/go.svg',
+    '/static/angular/assets/logos_for_main_page/java.svg',
+    '/static/angular/assets/logos_for_main_page/js.svg',
+    '/static/angular/assets/logos_for_main_page/kotlin.svg',
+    '/static/angular/assets/logos_for_main_page/python.svg',
+    '/static/angular/assets/logos_for_main_page/rust.svg',
+    '/static/angular/assets/logos_for_main_page/ts.svg',
   ]
   public user: Profile = {};
 
