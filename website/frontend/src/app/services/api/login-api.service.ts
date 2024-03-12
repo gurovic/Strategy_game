@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UserLogin} from "../../models/api/user-login.model";
+import {baseUrl} from "../../interface/utils";
 
-const baseUrl = '/api/login/';
+const currentUrl = `/accounts/login/`;
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class LoginApiService {
 
   constructor(
     private http: HttpClient,
@@ -16,6 +17,6 @@ export class LoginService {
   }
 
   create(data: any): Observable<any> {
-    return this.http.post(`${baseUrl}`, data);
+    return this.http.post(`${currentUrl}`, data);
   }
 }

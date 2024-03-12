@@ -2,19 +2,20 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Logout} from "../../models/api/logout.model";
+import {baseUrl} from "../../interface/utils";
 
-const baseUrl = '/api/logout/';
+const currentUrl = `${baseUrl}/logout/`;
 
 @Injectable({
   providedIn: 'root'
 })
-export class LogoutService {
+export class LogoutApiService {
 
   constructor(
     private http: HttpClient
   ) {}
 
   post(data: any): Observable<any> {
-    return this.http.post(`${baseUrl}`, data);
+    return this.http.post(`${currentUrl}`, data);
   }
 }
