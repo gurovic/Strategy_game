@@ -28,6 +28,7 @@ COMPILER_COMMANDS = {
 # !!! EVERY FILE SHOULD HAVE `e` BEFORE the LANGUAGE TYPE.
 
 # Language / [tags, "%1"], %1 = file
+
 if sys.platform == "linux":
     LAUNCHER_COMMANDS = {
         "epy": ["python3", "%1"],
@@ -35,7 +36,7 @@ if sys.platform == "linux":
     }
 else:
     LAUNCHER_COMMANDS = {
-        "epy": ["python3", "%1"],
+        "epy": ["python", "%1"],
         "ecpp": ["%1"]
     }
 LAUNCHER_RUN_TL = {
