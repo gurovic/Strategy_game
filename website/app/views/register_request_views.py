@@ -9,15 +9,17 @@ import json
 
 def register_request(request):
     if request.method == "POST":
-        form = NewUserForm(request.POST)
+        data = json.loads(request.body.decode("utf-8"))
+        print(data)
+        form = NewUserForm(data)
         if form.is_valid():
             user = form.save()
             login(request, user)
             messages.success(request, "Registration successful.")
-            return redirect("home")
+            return JsonResponse({'status': 'OK'})
         messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
-    return render(request=request, template_name="register.html", context={"register_form": form})
+    return JsonResponse({'status': 'error', 'reason': 'Invalid data'})
 
 
 def login_view(request):
@@ -29,10 +31,10 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return JsonResponse({'status': 'success'})
+                return JsonResponse({'status': 'OK'})
             else:
-                return JsonResponse({'status': 'failure', 'reason': 'Invalid username or password'})
+                return JsonResponse({'status': 'error', 'reason': 'Invalid username or password'})
         else:
-            return JsonResponse({'status': 'failure', 'reason': 'Missing username or password'})
+            return JsonResponse({'status': 'error', 'reason': 'Missing username or password'})
     else:
-        return JsonResponse({'status': 'failure', 'reason': 'Invalid request method'})
+        return JsonResponse({'status': 'error', 'reason': 'Invalid request method'})

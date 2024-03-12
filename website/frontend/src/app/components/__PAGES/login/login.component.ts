@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
       private login_service: LoginApiService,
-      public router: Router,
+      private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +29,12 @@ export class LoginComponent implements OnInit {
     )
   }
 
-  go(link:string) {
+  go_link(link:string) {
     this.router.navigate([link]);
+    window.scrollTo({
+      // @ts-ignore
+      top: 0,
+      behavior: "smooth"
+    });
   }
 }

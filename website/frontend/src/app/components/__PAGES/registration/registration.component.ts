@@ -13,7 +13,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(
       public register_service: RegisterApiService,
-      public router: Router,
+      private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class RegistrationComponent implements OnInit {
     )
   }
 
-  go(link:string) {
+  go_link(link:string) {
     this.router.navigate([link]);
   }
 
