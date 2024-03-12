@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss', '../login/login.component.scss']
+  styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
   public user: UserRegister = {username: '', password1: '', email: '' , password2: ''};
