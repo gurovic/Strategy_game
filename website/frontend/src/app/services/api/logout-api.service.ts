@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Logout} from "../../models/api/logout.model";
-import {baseUrl} from "../../interface/utils";
 
-const currentUrl = `${baseUrl}/logout/`;
+const currentUrl = `/app/logout/`;
 
 @Injectable({
   providedIn: 'root'

@@ -4,11 +4,13 @@
         <form class="form">
             <div class="input-group">
                 <label for="username">Username</label>
-                <input [(ngModel)]="user.username" type="text" name="username" autocomplete="username" id="username" placeholder="">
+                <input [(ngModel)]="user.username" type="text" name="username" autocomplete="username" id="username"
+                       placeholder="">
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
-                <input [(ngModel)]="user.password" type="password" name="password" autocomplete="password" id="password" placeholder="">
+                <input [(ngModel)]="user.password" type="password" name="password" autocomplete="password" id="password"
+                       placeholder="">
                 <div class="forgot">
                     <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
                 </div>
@@ -38,7 +40,21 @@
             </button>
         </div>
         <p class="signup">Don't have an account?
-            <a (click)="go_link('register')" rel="noopener noreferrer" href="#" class="">Sign up</a>
+            <a (click)="go_link('register')" class="">Sign up</a>
         </p>
+    </div>
+</div>
+
+<div id="loader-box" class="loader_container">
+    <div class="banter-loader">
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
+        <div class="banter-loader__box"></div>
     </div>
 </div>

@@ -17,6 +17,7 @@ import {ArchiveTaskComponent} from './components/__MODELS/archive-task/archive-t
 import {RegistrationComponent} from './components/__PAGES/registration/registration.component';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
+import { ProfileComponent } from './components/__PAGES/profile/profile.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
         LoginComponent,
         BottomBarComponent,
         ArchiveTaskComponent,
-        RegistrationComponent
+        RegistrationComponent,
+        ProfileComponent
     ],
     imports: [
         BrowserModule,

@@ -10,8 +10,11 @@
             <li (click)="go_link('wiki')" content="Wiki">Wiki</li>
             <li (click)="go_link('about')" content="About">About</li>
         </ul>
-        <div class="login" (click)="go_link('login')">
+        <div *ngIf="!this.user.is_registered" class="login" (click)="go_link('login')">
             <span>Login</span>
+        </div>
+        <div *ngIf="this.user.is_registered" class="login" (click)="go_link('profile')">
+            <span>Profile</span>
         </div>
         <!-- Mobile -->
         <div (click)="interact_menu()" class="mobile-menu-button">
