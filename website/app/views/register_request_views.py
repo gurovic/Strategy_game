@@ -78,8 +78,9 @@ def forgot_password(request):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
         subject = 'Password Reset Request'
-        message = 'Please click on the link to reset your password: ' + settings.DOMAIN + '/reset-password/' + token + '/' + uid
-        from_email = "OnlyCode pidorasy"
+        DOMAIN = 'https://localhost:8000'
+        message = 'Please click on the link to reset your password: ' + DOMAIN + '/reset-password/' + token + '/' + uid
+        from_email = "OnlyCode sex"
         recipient_list = [user.email]
         send_mail(subject, message, from_email, recipient_list)
 
