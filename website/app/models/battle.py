@@ -24,7 +24,6 @@ class Battle(models.Model):
         super().__init__(*args, **kwargs)
         self.moves = []
         self.results = {}
-        self.numbers = {}
 
     @method_log
     def run(self, jury):
