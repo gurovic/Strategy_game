@@ -257,6 +257,8 @@ class Invoker:
     def free(self):
         if self.callback_free_myself:
             self.callback_free_myself(self)
+            from django import db
+            db.connections.close_all()
         else:
             raise NoInvokerPoolCallbackData(id(self))
 
