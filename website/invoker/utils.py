@@ -1,6 +1,7 @@
 from threading import Lock
+from app.classes.logger import class_log
 
-
+@class_log
 class Singleton(type):
     _instances = {}
     _lock: Lock = Lock()

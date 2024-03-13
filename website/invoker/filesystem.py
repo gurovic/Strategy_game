@@ -5,7 +5,7 @@ from pathlib import Path
 import logging
 import shutil
 import typing
-
+from app.classes.logger import class_log
 
 _RawPathType = typing.Union[str, Path]
 
@@ -29,6 +29,7 @@ def delete_file(file: _RawPathType):
 
 
 @dataclass
+@class_log
 class File:
     name: str
     source: str | bytes
