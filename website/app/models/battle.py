@@ -22,7 +22,6 @@ class Battle(models.Model):
         super().__init__(*args, **kwargs)
         self.moves = []
         self.results = {}
-        self.numbers = {}
 
     def run(self, jury):
         while jury.game_state is not GameState.END:
