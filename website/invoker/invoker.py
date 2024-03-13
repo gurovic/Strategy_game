@@ -16,6 +16,7 @@ from django.core.files import File as FileDjango
 
 from invoker.filesystem import File, delete_directory
 from invoker.models import InvokerReport, File as FileModel
+from app.classes.logger import class_log
 
 
 class InvokerStatus(enum.Enum):
@@ -63,6 +64,7 @@ class StdOut(typing.Protocol):
         ...
 
 
+@class_log
 class InvokerProcess(ABC):
     stdin: StdIn
     stdout: StdOut
@@ -108,6 +110,7 @@ class InvokerProcess(ABC):
             self.callback(self._exceeded_timelimit)
 
 
+@class_log
 class NormalProcess(InvokerProcess):
     def __init__(self, process: subprocess.Popen, *args, **kwargs):
         self._process = process
@@ -126,6 +129,7 @@ class NormalProcess(InvokerProcess):
         self._process.kill()
 
 
+@class_log
 class InvokerEnvironment(ABC):
     def __init__(self, callback):
         self.callback = callback
@@ -137,6 +141,7 @@ class InvokerEnvironment(ABC):
         ...
 
 
+@class_log
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
     def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
@@ -202,6 +207,7 @@ class NormalEnvironment(InvokerEnvironment):
         ))
 
 
+@class_log
 class DockerEnvironment(InvokerEnvironment):
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
                preserve_files: typing.Optional[list[str]] = None,
@@ -227,6 +233,7 @@ class NoInvokerProcessReturned(Exception):
         return f"No process returned for the environment: {self.environment_id}"
 
 
+@class_log
 class Invoker:
     def __init__(self):
         self.status: InvokerStatus = InvokerStatus.FREE

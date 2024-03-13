@@ -7,6 +7,7 @@ from django_q.models import Schedule
 
 from .tournament_system_round_robin import TournamentSystemRoundRobin
 from .battle import Battle
+from app.classes.logger import method_log
 
 
 def _end_registration_task(tournament_id: int):
@@ -38,6 +39,7 @@ class Tournament(models.Model):
     def __str__(self):
         return self.name
 
+    @method_log
     def save(self, *args, **kwargs):
         if self.status == self.Status.WAITING_SOLUTIONS:
             Schedule.objects.update_or_create(name=self.id, func="app.models.tournament._end_registration_task",
@@ -51,10 +53,12 @@ class Tournament(models.Model):
 
         return super().save(*args, **kwargs)
 
+    @method_log
     def start_tournament(self):
         self.status = self.Status.WAITING_SOLUTIONS
         self.save()
 
+    @method_log
     def end_registration(self):
         self.status = self.Status.IN_PROGRESS
         self.save()
@@ -65,6 +69,7 @@ class Tournament(models.Model):
             case _:
                 pass
 
+    @method_log
     def finish_tournament(self):
         self.status = self.Status.FINISHED
         self.save()
