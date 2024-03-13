@@ -25,7 +25,13 @@ urlpatterns = [
     path('tournaments', tournaments_view.show),
     path('tournament/finish/<int:tournament_id>', tournament_finish_view.finish_tournament),
     path('sandbox/', sandbox_all_games_view.show),
-    path('registration/', register_request_views.register_request),
+
+    # account urls
+    path('register/', register_request_views.register_request),
+    path('login/', register_request_views.login_view),
+    path('profile/', register_request_views.user_view),
+    path('logout/', register_request_views.logout_view),
+    path('forgot-password/', register_request_views.forgot_password),
 ]
 
 if settings.DEBUG:

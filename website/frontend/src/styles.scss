@@ -1,0 +1,74 @@
+/* IMPORTS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Raleway");
+@import url("https://fonts.googleapis.com/css2?family=Goldman");
+@import url("https://fonts.googleapis.com/css2?family=Rubik");
+
+/* TAGS STYLES */
+html, body {
+  width:           100vw;
+  min-height:          100vh;
+  scroll-behavior: smooth;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  color:           var(--text-white)
+}
+
+body {
+  background-color: var(--background-ddark);
+  display:          flex;
+  flex-wrap:        wrap;
+  overflow-y: scroll;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  width:   0;
+}
+
+* {
+  line-height: 100%;
+  box-sizing:  border-box;
+  margin:      0;
+  padding:     0;
+  caret-color: transparent;
+  font-family: "Raleway", sans-serif;
+}
+input {
+  caret-color: #fff;
+}
+
+li {
+  list-style-type: none;
+  display:         inline-block;
+}
+
+input, button {
+  outline-offset: 0;
+  outline:        0;
+}
+
+img {
+  -moz-user-select:    none;
+  -webkit-user-select: none;
+  user-select:         none;
+  pointer-events:      none;
+}
+
+/* color */
+body {
+  --f-raleway:           "Raleway", sans-serif;
+  --f-rubik:             "Rubik", sans-serif;
+  --login-box-width:     min(100%, 300px);
+  --top-bar-height:      70px;
+  --background-dark:     #020024;
+  --background-ddark:    #000015;
+  --background-ldark:    #110f42;
+  --text-white:          #ffffff;
+  --color-primary:       #15ca0c;
+  --color-secondary:     #20222a;
+  --color-accent:        #00ffa1;
+  --color-accent-second: #99ff91;
+}
