@@ -16,8 +16,8 @@ from django.core.files import File as FileDjango
 
 from invoker.filesystem import File, delete_directory
 from invoker.models import InvokerReport, File as FileModel
-
 from app.classes.logger import class_log
+
 class InvokerStatus(enum.Enum):
     FREE = enum.auto()
     WORKING = enum.auto()
@@ -61,6 +61,7 @@ class StdOut(typing.Protocol):
 
     def readline(self) -> str:
         ...
+
 
 @class_log
 class InvokerProcess(ABC):
@@ -107,6 +108,7 @@ class InvokerProcess(ABC):
         if self.callback:
             self.callback(self._exceeded_timelimit)
 
+
 @class_log
 class NormalProcess(InvokerProcess):
     def __init__(self, process: subprocess.Popen, *args, **kwargs):
@@ -125,7 +127,8 @@ class NormalProcess(InvokerProcess):
     def kill(self):
         self._process.kill()
 
-#@class_log
+
+@class_log
 class InvokerEnvironment(ABC):
     def __init__(self, callback):
         self.callback = callback
@@ -136,7 +139,8 @@ class InvokerEnvironment(ABC):
                timelimit: typing.Optional[int] = None) -> InvokerProcess:
         ...
 
-#@class_log
+
+@class_log
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
     def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
@@ -203,6 +207,7 @@ class NormalEnvironment(InvokerEnvironment):
         ))
 
 
+@class_log
 class DockerEnvironment(InvokerEnvironment):
     def launch(self, command: str, file_system: typing.Optional[list[File]] = None,
                preserve_files: typing.Optional[list[str]] = None,
@@ -226,6 +231,7 @@ class NoInvokerProcessReturned(Exception):
 
     def __str__(self):
         return f"No process returned for the environment: {self.environment_id}"
+
 
 @class_log
 class Invoker:
