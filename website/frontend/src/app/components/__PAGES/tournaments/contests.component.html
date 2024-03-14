@@ -1,0 +1,13 @@
+
+
+<main class="main-container">
+    <div class="cards__container">
+        <div *ngFor="let card of future_cards" class="card">
+            <p>{{ card.id }}</p>
+            <p>{{ card.name }}</p>
+            <p>{{ card.start_date }}</p>
+            <p>{{ card.participants }}</p>
+            <p>{{ card.about_text }}</p>
+        </div>
+    </div>
+</main>

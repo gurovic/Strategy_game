@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {MainPageComponent} from './components/__PAGES/main-page/main-page.component';
 import {TopBarComponent} from './components/top-bar/top-bar.component';
 import {AboutUsComponent} from './components/__PAGES/about-us/about-us.component';
-import {ContestsComponent} from './components/__PAGES/contests/contests.component';
+import {ContestsComponent} from './components/__PAGES/tournaments/contests.component';
 import {SandboxComponent} from './components/__PAGES/sandbox/sandbox.component';
 import {WikiComponent} from './components/__PAGES/wiki/wiki.component';
 import {ContactUsComponent} from './components/__PAGES/contact-us/contact-us.component';

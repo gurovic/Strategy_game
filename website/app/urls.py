@@ -22,7 +22,7 @@ urlpatterns = [
     path('tournament/<int:tournament_id>/results', tournament_results_view.show),
     path('tournament/upload_solution/<int:tournament_id>/<int:user_id>', solution_upload_view.upload),
     path('tournament/<int:tournament_id>/registration', tournament_registration_view.register, name="registration_for_tournament"),
-    path('tournaments', tournaments_view.show),
+    path('tournaments/', tournaments_view.show),
     path('tournament/finish/<int:tournament_id>', tournament_finish_view.finish_tournament),
     path('sandbox/', sandbox_all_games_view.show),
 
