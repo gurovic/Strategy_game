@@ -67,23 +67,6 @@ def logout_view(request):
 
 def forgot_password(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return JsonResponse({'error': 'User with this email does not exist.'})
-
-        # Generate a one-use token that expires after 24 hours
-        token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-
-        subject = 'Password Reset Request'
-        DOMAIN = 'https://localhost:8000'
-        message = 'Please click on the link to reset your password: ' + DOMAIN + '/reset-password/' + token + '/' + uid
-        from_email = "OnlyCode sex"
-        recipient_list = [user.email]
-        send_mail(subject, message, from_email, recipient_list)
-
-        return JsonResponse({'user': user})
+        pass
     else:
         return JsonResponse({'error': 'Invalid request method.'})
