@@ -19,8 +19,8 @@ export class OurTeamService {
     {name: 'Ilgizar Khazeev', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Thinker' },
     {name: 'Michel Countryside', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'GPT-user' },
     {name: 'Michel Lichmanov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'still doing math' },
-    {name: 'Dmitry Dubrov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'None' },
-    {name: 'Dmitry Polov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'User haha' },
+    {name: 'Dmitry Dubrov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Postgres' },
+    {name: 'Dmitry Palov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'User' },
     {name: 'Alexandra Golubcova', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Thinker' },
   ]
 
