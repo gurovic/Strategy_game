@@ -1,8 +1,7 @@
-import logging
-import os
-import inspect
+import logging, os, inspect, functools
 
 def method_log(method):
+    @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         frame = inspect.currentframe().f_back
         file_name = os.path.abspath(frame.f_code.co_filename)
@@ -10,11 +9,19 @@ def method_log(method):
         line_number = frame.f_lineno
 
         try:
-            result = method(self, *args, **kwargs)
-            logger.info(f"{relative_file_path}:{line_number} {self.__class__.__name__}.{method.__name__} args={args}, kwargs={kwargs}")
+            result = method.__get__(self)(*args, **kwargs)
+            log_message = f"{relative_file_path}:{line_number} {self.__class__.__name__}.{method.__name__} args={args}, kwargs={kwargs}"
+            if len(log_message) > 200:
+                log_message = log_message[:197] + "..."
+            logger.info(log_message)
             return result
         except Exception as e:
-            logger.error(f"{relative_file_path}:{line_number} in {self.__class__.__name__}.{method.__name__} Error: {str(e)}. args={args}, kwargs={kwargs} ")
+            log_message = f"{relative_file_path}:{line_number} in {self.__class__.__name__}.{method.__name__} Error: {str(e)}. args={args}, kwargs={kwargs} "
+            if len(log_message) > 200:
+                log_message = log_message[:197] + "..."
+            logger.error(log_message)
+            raise
+
     return wrapper
 
 def class_log(cls):
