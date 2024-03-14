@@ -21,7 +21,6 @@ def method_log(method):
                 log_message = log_message[:197] + "..."
             logger.error(log_message)
             raise
-
     return wrapper
 
 def class_log(cls):
