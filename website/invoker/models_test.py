@@ -3,11 +3,12 @@ from django.utils import timezone
 from django.test import TestCase
 
 from invoker.models import InvokerReport, File
-
+import psycopg2
 
 
 class TestInvokerReport(TestCase):
     def setUp(self):
+        InvokerReport.objects.all().delete()
         InvokerReport.objects.create(command="Ok", status=InvokerReport.Status.OK, time_start=timezone.now(),
                                      time_end=timezone.now(), exit_code=0)
         InvokerReport.objects.create(command="RE", status=InvokerReport.Status.RE, time_start=timezone.now(),
