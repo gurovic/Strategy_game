@@ -20,9 +20,9 @@ def method_log(method):
     return wrapper
 
 def class_log(cls):
-    for name, method in vars(cls).items():
-        if callable(method):
-            setattr(cls, name, method_log(method))
+    #for name, method in vars(cls).items():
+    #    if callable(method):
+    #        setattr(cls, name, method_log(method))
     return cls
 
 
