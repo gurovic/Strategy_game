@@ -257,17 +257,18 @@ class Invoker:
     def free(self):
         if self.callback_free_myself:
             self.callback_free_myself(self)
-            from django import db
-            db.connections.close_all()
+            #from django import db
+            #db.connections.close_all()
         else:
+            #from django import db
+            #db.connections.close_all()
             raise NoInvokerPoolCallbackData(id(self))
 
     def make_report(self, result: RunResult) -> InvokerReport:
-        report = InvokerReport(command=result.command, time_start=result.time_start,
+        report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
                                               status=InvokerReport.Status.TL if result.exceeded_timelimit else InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE)
-        report.save()
         if result.input_files:
             for file in result.input_files:
                 report.input_files.add(
