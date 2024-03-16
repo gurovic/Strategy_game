@@ -10,6 +10,7 @@ from invoker.invoker_multi_request import Priority, InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.filesystem import File
+from app.classes.logger import class_log
 
 
 class NotSupportedLanguage(ValueError):
@@ -23,6 +24,7 @@ class NotSupportedLanguage(ValueError):
 CompilerReportSubscriber: typing.Type = typing.Callable[[CompilerReport], None]
 
 
+@class_log
 class NormalCompile:
     INPUT_FILE_NAME = "main.{}"
     OUTPUT_FILE_NAME = "compiled.e{}"
@@ -83,6 +85,7 @@ class NormalCompile:
             self.callback(report)
 
 
+@class_log
 class FakeCompile:
     INPUT_FILE_NAME = "main.{}"
     OUTPUT_FILE_NAME = "compiled.e{}"
@@ -112,6 +115,7 @@ class FakeCompile:
             self.callback(report)
 
 
+@class_log
 class Compiler:
     def __init__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
         self.source = source
