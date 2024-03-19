@@ -28,9 +28,9 @@ class Test(unittest.TestCase):
         compiler3 = compiler.Compiler(play_code, "py", solution_second_compiled.get_compiled_file).compile()
         while play_compiled.ok + solution_first_compiled.ok + solution_second_compiled.ok != 3:
             continue
-        play_compiled_path = play_compiled.compiled_file
-        solution_first_compiled_path = solution_first_compiled.compiled_file
-        solution_second_compiled_path = solution_second_compiled.compiled_file
+        play_compiled_path = "../website/media/" + "/".join(str(play_compiled.compiled_file).split("\\"))
+        solution_first_compiled_path = "../website/media/" + "/".join(str(solution_first_compiled.compiled_file).split("\\"))
+        solution_second_compiled_path = "../website/media/" + "/".join(str(solution_second_compiled.compiled_file).split("\\"))
         IR_play = InvokerRequest("", [play_compiled_path])
         IR_play.label = "play"
         IR_sol1 = InvokerRequest("", [solution_first_compiled_path])
@@ -40,7 +40,7 @@ class Test(unittest.TestCase):
         IM_process_of_battle = InvokerMultiRequest([IR_play, IR_sol1, IR_sol2], Priority.RED)
         jury_of_battle = Jury(IM_process_of_battle)
         IM_process_of_battle.subscribe(jury_of_battle)
-        IM_process_of_battle.send_process()
+        IM_process_of_battle.start()
         jury_of_battle.perform_play_command()
         self.assertIs(GameState.END, jury_of_battle.game_state)
 
