@@ -24,7 +24,6 @@ class StdOut(typing.Protocol):
         ...
 
 
-
 class Jury:
 
     def __init__(self, invoker_multi_request: InvokerMultiRequest):
@@ -45,7 +44,6 @@ class Jury:
         self.jury_report.points = {}
         self.jury_report.story_of_game = ""
 
-
     def get_invoker_requests(self):
         invoker_requests = self.invoker_multi_request.invoker_requests
         for invoker_request in invoker_requests:
@@ -56,20 +54,20 @@ class Jury:
         invoker_label = "player"
         player_number = 1
         invoker_request_sorted_array = []
-        while (player_number <= len(self.strategies_invoker_requests)):
+        while player_number <= len(self.strategies_invoker_requests):
             invoker_label_now = invoker_label + str(player_number)
             index = 0
             end_cycle = 0
             found_player = 0
-            while (end_cycle == 0):
-                if (self.strategies_invoker_requests[index].label == invoker_label_now):
+            while end_cycle == 0:
+                if self.strategies_invoker_requests[index].label == invoker_label_now:
                     end_cycle = 1
                     invoker_request_sorted_array.append(self.strategies_invoker_requests[index])
                     found_player = 1
                 index += 1
-                if (index >= len(self.strategies_invoker_requests)):
+                if index >= len(self.strategies_invoker_requests):
                     end_cycle = 1
-            if (found_player == 0):
+            if found_player == 0:
                 self.jury_report.status = "ERROR"
                 return self.jury_report
             player_number += 1
@@ -87,20 +85,20 @@ class Jury:
         process_label = "player"
         player_number = 1
         invoker_process_sorted_array = []
-        while (player_number <= len(self.strategies_process)):
+        while player_number <= len(self.strategies_process):
             process_label_now = process_label + str(player_number)
             index = 0
             end_cycle = 0
             found_player = 0
-            while (end_cycle == 0):
-                if (self.strategies_process[index].label == process_label_now):
+            while end_cycle == 0:
+                if self.strategies_process[index].label == process_label_now:
                     end_cycle = 1
                     invoker_process_sorted_array.append(self.strategies_process[index])
                     found_player = 1
                 index += 1
-                if (index >= len(self.strategies_process)):
+                if index >= len(self.strategies_process):
                     end_cycle = 1
-            if (found_player == 0):
+            if found_player == 0:
                 self.jury_report.status = "ERROR"
                 return self.jury_report
             player_number += 1
@@ -115,7 +113,7 @@ class Jury:
         # play_command:
         # status: play data: player1: .... player2: ...
         # status: end points: player1: .... player2: ... story_of_game: ...
-        if (len(play_command) < 12):
+        if len(play_command) < 12:
             self.jury_report.status = "ERROR"
             return self.jury_report
         if play_command[8:12] == "play":
@@ -130,40 +128,40 @@ class Jury:
             index += 1
             data_to_players = []
             player_index_end = []
-            while (end_cycle == 0):
+            while end_cycle == 0:
                 try:
                     add_str = play_command[index]
                 except RuntimeError:
                     self.jury_report.status = "ERROR"
                     return self.jury_report
-                if (add_str == " "):
-                    if (data_from_play_command[:6] == "player"):
+                if add_str == " ":
+                    if data_from_play_command[:6] == "player":
                         player_index_end.append(index - 1)
                     data_from_play_command = ""
                 else:
                     data_from_play_command += add_str
                 index += 1
-                if (len(player_index_end) == len(self.strategies_process)):
+                if len(player_index_end) == len(self.strategies_process):
                     end_cycle = 1
             for i in range(len(player_index_end)):
-                if (i == len(player_index_end) - 1):
-                    data_to_players.append(play_command[player_index_end[i] + 2 :])
+                if i == len(player_index_end) - 1:
+                    data_to_players.append(play_command[player_index_end[i] + 2:])
                 else:
-                    data_to_players.append(play_command[player_index_end[i] + 2 : player_index_end[i + 1] - 8])
+                    data_to_players.append(play_command[player_index_end[i] + 2: player_index_end[i + 1] - 8])
             data_from_players = []
             for i in range(len(data_to_players)):
-                if (data_to_players[i] != "None"):
+                if data_to_players[i] != "None":
                     player_data = self.strategies_process[i].connect(data_to_players[i])
-                    #self.strategies_process[i].stdin = data_to_players[i]   not as should be, needs a change
+                    # self.strategies_process[i].stdin = data_to_players[i]   not as should be, needs a change
                 else:
                     player_data = ""
-                    #self.strategies_process[i].stdin = ""
-                #player_data = self.strategies_process[i].stdout
+                    # self.strategies_process[i].stdin = ""
+                # player_data = self.strategies_process[i].stdout
                 data_from_players.append(player_data)
-            #self.play_process.stdin = "" #not as should be, needs a change
+            # self.play_process.stdin = "" #not as should be, needs a change
             for i in range(len(data_from_players)):
                 blank_str = self.play_process.connect(data_from_players[i])
-                #self.play_process.stdin += data_from_players[i] #not as should be, needs a change
+                # self.play_process.stdin += data_from_players[i] #not as should be, needs a change
         else:
             self.game_state = GameState.END
             index = 20
@@ -175,14 +173,14 @@ class Jury:
                 self.jury_report.status = "ERROR"
                 return self.jury_report
             index += 1
-            while (data_from_play_command != "story_of_game"):
+            while data_from_play_command != "story_of_game":
                 try:
                     add_str = play_command[index]
                 except RuntimeError:
                     self.jury_report.status = "ERROR"
                     return self.jury_report
-                if (add_str == " "):
-                    if (data_from_play_command[:6] == "player"):
+                if add_str == " ":
+                    if data_from_play_command[:6] == "player":
                         player = data_from_play_command[:len(data_from_play_command) - 1]
                     else:
                         self.jury_report.points[player] = int(data_from_play_command)
@@ -199,6 +197,7 @@ class Jury:
     def notify_processes(self, processes):
         self.process = processes
         self.get_processes()
+        self.perform_play_command()
 
     def notify(self, report):
-        pass
+        processes = self.invoker_multi_request.send_process()

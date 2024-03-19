@@ -39,9 +39,7 @@ class Test(unittest.TestCase):
         IR_sol2.label = "player2"
         IM_process_of_battle = InvokerMultiRequest([IR_play, IR_sol1, IR_sol2], Priority.RED)
         jury_of_battle = Jury(IM_process_of_battle)
-        IM_process_of_battle.subscribe(jury_of_battle)
         IM_process_of_battle.start()
-        jury_of_battle.perform_play_command()
         self.assertIs(GameState.END, jury_of_battle.game_state)
 
 

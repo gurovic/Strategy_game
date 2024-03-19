@@ -52,7 +52,7 @@ class InvokerMultiRequest:
     def send_process(self):
         invoker_processes = []
         for invoker_request in self.invoker_requests:
-            invoker_processes.append(invoker_request.process_callback)
+            invoker_processes.append(invoker_request.process)
         for subscriber in self.subscribers:
             subscriber.notify_processes(invoker_processes)
 
