@@ -1,6 +1,7 @@
 import logging
 import os
 import inspect
+import sys
 
 def method_log(method):
     def wrapper(self, *args, **kwargs):
@@ -15,12 +16,13 @@ def method_log(method):
             return result
         except Exception as e:
             logger.error(f"{relative_file_path}:{line_number} in {self.__class__.__name__}.{method.__name__} Error: {str(e)}. args={args}, kwargs={kwargs} ")
+            sys.exit(1)
     return wrapper
 
 def class_log(cls):
-    for name, method in vars(cls).items():
-        if callable(method):
-            setattr(cls, name, method_log(method))
+    #for name, method in vars(cls).items():
+    #    if callable(method):
+    #        setattr(cls, name, method_log(method))
     return cls
 
 

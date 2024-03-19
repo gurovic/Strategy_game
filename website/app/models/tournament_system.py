@@ -1,8 +1,6 @@
 from django.db import models
-from app.classes.logger import class_log
 
 
-@class_log
 class TournamentSystem:
     def __init__(self, tournament):
         self.tournament = tournament

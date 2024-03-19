@@ -6,7 +6,6 @@ import enum
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.invoker_request import InvokerRequest
 from invoker.models import InvokerReport
-from app.classes.logger import class_log
 
 
 class Priority(enum.IntEnum):
@@ -14,7 +13,7 @@ class Priority(enum.IntEnum):
     YELLOW = 2
     RED = 3
 
-@class_log
+
 class InvokerMultiRequest:
     def __init__(self, invoker_requests: list[InvokerRequest], priority: Priority = Priority.GREEN):
         self.subscribers = []
