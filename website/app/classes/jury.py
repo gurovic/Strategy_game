@@ -200,4 +200,4 @@ class Jury:
         self.perform_play_command()
 
     def notify(self, report):
-        processes = self.invoker_multi_request.send_process()
+        self.invoker_multi_request.send_process()
