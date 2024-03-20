@@ -1,3 +1,4 @@
+import time
 from unittest.mock import patch, Mock
 import unittest
 import subprocess
@@ -38,24 +39,26 @@ class TestJury(unittest.TestCase):
         strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
         strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
 
-        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
+        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process.callback)
         play_invoker_request.label = "play"
-        play_process = play_invoker_request.process_callback
 
-        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
+        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1.callback)
         strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
+        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2.callback)
         strategy_invoker_request2.label = "player2"
-        strategy_processes = [strategy_invoker_request1.process_callback, strategy_invoker_request2.process_callback]
 
         invoker_multi_request = InvokerMultiRequest([play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
+        invoker_multi_request.start()
 
         jury = Jury(invoker_multi_request)
 
         invoker_multi_request.subscribe(jury)
 
-        invoker_multi_request.send_process()
+        time.sleep(1)
+        play_process = play_invoker_request.process
 
+        #invoker_multi_request.send_process()
+        strategy_processes = [strategy_invoker_request1.process, strategy_invoker_request2.process]
         self.assertEqual(jury.play_process, play_process)
         self.assertEqual(jury.strategies_process, strategy_processes)
 
@@ -72,24 +75,24 @@ class TestJury(unittest.TestCase):
         strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
         strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
 
-        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
+        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process.callback)
         play_invoker_request.label = "play"
-        play_process = play_invoker_request.process_callback
 
-        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
+        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1.callback)
         strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
+        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2.callback)
         strategy_invoker_request2.label = "player2"
-        strategy_processes = [strategy_invoker_request1.process_callback, strategy_invoker_request2.process_callback]
 
         invoker_multi_request = InvokerMultiRequest([play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
 
         jury = Jury(invoker_multi_request)
 
         invoker_multi_request.subscribe(jury)
-        invoker_multi_request.send_process()
+        invoker_multi_request.start()
+        time.sleep(1)
 
         jury.perform_play_command()
+
 
         points_dict = {"player1": 5, "player2": 4}
 
@@ -118,12 +121,12 @@ class TestJury(unittest.TestCase):
         strategy_mock_process_2.stdout = strategy_file_2
         strategy_mock_process_2.stdin = strategy_file_save_2
 
-        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
+        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process.callback)
         play_invoker_request.label = "play"
 
-        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
+        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1.callback)
         strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
+        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2.callback)
         strategy_invoker_request2.label = "player2"
 
         invoker_multi_request = InvokerMultiRequest([play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
@@ -131,7 +134,8 @@ class TestJury(unittest.TestCase):
         jury = Jury(invoker_multi_request)
 
         invoker_multi_request.subscribe(jury)
-        invoker_multi_request.send_process()
+        invoker_multi_request.start()
+        time.sleep(1)
 
         jury.perform_play_command()
 
