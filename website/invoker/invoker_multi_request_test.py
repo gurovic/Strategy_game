@@ -78,7 +78,7 @@ class TestInvokerMultiRequest(TestCase):
         invoker_process_callbacks = [Mock() for _ in range(3)]
 
         for index in range(3):
-            invoker_requests[index].process_callback = invoker_process_callbacks[index]
+            invoker_requests[index].process = invoker_process_callbacks[index]
 
         invoker_multi_request = InvokerMultiRequest(invoker_requests)
         invoker_multi_request.subscribers = [mock]
