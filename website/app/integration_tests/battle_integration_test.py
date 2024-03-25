@@ -24,8 +24,8 @@ class BattleTest(TestCase):
         solution_second_compiled = CompiledFile()
 
         compiler1 = Compiler(play_code, "py", play_compiled.get_compiled_file).compile()
-        compiler2 = Compiler(play_code, "py", solution_first_compiled.get_compiled_file).compile()
-        compiler3 = Compiler(play_code, "py", solution_second_compiled.get_compiled_file).compile()
+        compiler2 = Compiler(solution_first_code, "py", solution_first_compiled.get_compiled_file).compile()
+        compiler3 = Compiler(solution_second_code, "py", solution_second_compiled.get_compiled_file).compile()
 
         play_compiled_path = play_compiled.compiled_file
         solution_first_compiled_path = solution_first_compiled.compiled_file
