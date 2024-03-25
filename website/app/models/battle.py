@@ -1,7 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+
 from .jury_report import JuryReport
-from ..classes.jury import GameState
+from ..classes.jury import GameState, Jury
+from ..launcher import Launcher
+from ..models import PlayersInBattle
+from invoker.invoker_multi_request import Priority, InvokerMultiRequest
+from invoker.invoker_request import InvokerRequest
+from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
+
 
 class Battle(models.Model):
     class GameStateChoices(models.TextChoices):
@@ -23,7 +31,33 @@ class Battle(models.Model):
         self.results = {}
         self.numbers = {}
 
-    def run(self, jury):
+    def create_invoker_requests(self):
+        requests = []
+
+        file = self.game.play
+        launcher = Launcher(file)
+        request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label="play")
+        requests.append(request)
+
+        players = PlayersInBattle.objects.filter(battle=self)
+        number = 0
+        for player in players:
+            number += 1
+            file = player.file_solution
+            launcher= Launcher(file)
+            request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label=f"player{number}")
+            requests.append(request)
+
+        multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
+        queue = InvokerMultiRequestPriorityQueue()
+        queue.add(multi_request)
+
+        self.jury = Jury(multi_request)
+
+    def run(self):
+        self.create_invoker_requests()
+        jury = self.jury
+
         while jury.game_state is not GameState.END:
             jury.get_processes()
             jury.perform_play_command()
