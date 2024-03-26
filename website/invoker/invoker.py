@@ -16,7 +16,7 @@ from django.core.files import File as FileDjango
 
 from invoker.filesystem import File, delete_directory
 from invoker.models import InvokerReport, File as FileModel
-from app.classes.logger import class_log
+from app.classes.logger import class_log, method_log
 
 
 class InvokerStatus(enum.Enum):
@@ -141,9 +141,9 @@ class InvokerEnvironment(ABC):
         ...
 
 
-@class_log
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
+    @method_log
     def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
         tmpdir = tempfile.mkdtemp()
         if file_system:
@@ -151,6 +151,7 @@ class NormalEnvironment(InvokerEnvironment):
                 file.make(tmpdir)
         return tmpdir
 
+    @method_log
     def launch(self, command: list[str] | str, file_system: typing.Optional[list[File]] = None,
                preserve_files: typing.Optional[list[str]] = None, timelimit: typing.Optional[int] = None,
                label: typing.Optional[str] = None) -> InvokerProcess:
@@ -178,6 +179,7 @@ class NormalEnvironment(InvokerEnvironment):
             callback=self.close
         )
 
+    @method_log
     def close(self, timeout_error: bool):
         time_end = timezone.now()
 
