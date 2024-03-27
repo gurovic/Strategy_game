@@ -10,6 +10,7 @@ from invoker.invoker_multi_request import Priority, InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 from invoker.filesystem import File
+from app.classes.logger import class_log
 
 
 class NotSupportedLanguage(ValueError):
@@ -23,6 +24,7 @@ class NotSupportedLanguage(ValueError):
 CompilerReportSubscriber: typing.Type = typing.Callable[[CompilerReport], None]
 
 
+@class_log
 class AbstractCompile:
     def __init__(self, source: str, lang: str, callback: typing.Optional[CompilerReportSubscriber] = None):
         self.source = source
@@ -72,6 +74,7 @@ class AbstractCompile:
             self.callback(report)
 
 
+@class_log
 class CPPCompile(AbstractCompile):
     INPUT_FILE_NAME = "main.cpp"
     OUTPUT_FILE_NAME = "compiled"
@@ -81,6 +84,7 @@ class CPPCompile(AbstractCompile):
         return f"g++ -o {self.OUTPUT_FILE_NAME} {file.name}", file, self.OUTPUT_FILE_NAME
 
 
+@class_log
 class DoNothingCompile(AbstractCompile):
     FILE_NAME = "compiled.{}"
 
@@ -91,7 +95,7 @@ class DoNothingCompile(AbstractCompile):
                                                )
         self.send_report(report)
 
-
+@class_log
 class Compiler:
     COMMANDS = {
         "cpp": CPPCompile,

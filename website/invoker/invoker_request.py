@@ -4,6 +4,7 @@ import enum
 from django.conf import settings
 from invoker.invoker import Invoker
 from invoker.models import InvokerReport
+from app.classes.logger import class_log
 
 
 class InvokerRequestType(enum.Enum):
@@ -11,7 +12,7 @@ class InvokerRequestType(enum.Enum):
     STRATEGY = enum.auto()
     OTHER = enum.auto()
 
-
+@class_log
 class InvokerRequest:
     def __init__(self, command: str, files: typing.Optional[list[str]] = None,
                  preserve_files: typing.Optional[list[str]] = None, timelimit=None,
