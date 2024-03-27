@@ -49,7 +49,7 @@ class Command(BaseRunserverCommand):
         p = subprocess.Popen(['ng', 'build', '--watch', '--output-path', settings.BASE_DIR / "staticfiles" / "angular"],
                              stdout=subprocess.DEVNULL if not log_build else None,
                              stderr=subprocess.STDOUT if not log_build else None, shell=_SHELL,
-                             cwd=settings.BASE_DIR.parent / "frontend")
+                             cwd=settings.BASE_DIR / "frontend")
         atexit.register(lambda: _safe_kill(p))
         _ALREADY_WATCHING = True
 

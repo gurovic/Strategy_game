@@ -7,15 +7,15 @@ class GameTest(TestCase):
     def setUp(self):
         play = None
         ideal_solution = None
-        Game.objects.create(name='test1', play=play, ideal_solution=ideal_solution, number_of_players=2)
-        Game.objects.create(name='test2', play=play, ideal_solution=ideal_solution, number_of_players=3)
-        Game.objects.create(name='test3', play=play, ideal_solution=ideal_solution, number_of_players=5)
-        Game.objects.create(name='test4', play=play, ideal_solution=ideal_solution, number_of_players=10, win_point=10)
+        Game.objects.create(name='test1', play=play, ideal_solution=ideal_solution, number_of_players=2, pk=1)
+        Game.objects.create(name='test2', play=play, ideal_solution=ideal_solution, number_of_players=3, pk=2)
+        Game.objects.create(name='test3', play=play, ideal_solution=ideal_solution, number_of_players=5, pk=3)
+        Game.objects.create(name='test4', play=play, ideal_solution=ideal_solution, number_of_players=10, win_point=10, pk=4)
         Game.objects.create(name='test6', play=play, ideal_solution=ideal_solution, number_of_players=2, win_point=30,
-                            lose_point=10)
-        Game.objects.create(name='test7', play=play, ideal_solution=ideal_solution, number_of_players=5)
-        Game.objects.create(name='test8', play=play, ideal_solution=ideal_solution, number_of_players=6)
-        Game.objects.create(name='test9', play=play, ideal_solution=ideal_solution, number_of_players=2, win_point=10)
+                            lose_point=10, pk=5)
+        Game.objects.create(name='test7', play=play, ideal_solution=ideal_solution, number_of_players=5, pk=6)
+        Game.objects.create(name='test8', play=play, ideal_solution=ideal_solution, number_of_players=6, pk=7)
+        Game.objects.create(name='test9', play=play, ideal_solution=ideal_solution, number_of_players=2, win_point=10, pk=8)
 
     def test_get_by_name(self):
         game = Game.objects.get(name='test1')
@@ -23,6 +23,7 @@ class GameTest(TestCase):
 
     def test_get_by_id(self):
         game = Game.objects.get(pk=1)
+        game.save()
         self.assertEqual(game.name, 'test1')
         self.assertEqual(game.number_of_players, 2)
 

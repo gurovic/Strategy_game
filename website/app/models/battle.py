@@ -2,9 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from .jury_report import JuryReport
 from ..classes.jury import GameState
-from ..models import PlayersInBattle
-from app.classes.logger import method_log
-
 
 class Battle(models.Model):
     class GameStateChoices(models.TextChoices):
@@ -26,7 +23,6 @@ class Battle(models.Model):
         self.results = {}
         self.numbers = {}
 
-    @method_log
     def run(self, jury):
         while jury.game_state is not GameState.END:
             jury.get_processes()
