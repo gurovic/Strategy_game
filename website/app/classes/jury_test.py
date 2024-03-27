@@ -1,4 +1,5 @@
 from unittest.mock import patch, Mock
+import shutil
 import unittest
 import subprocess
 
@@ -9,6 +10,14 @@ from app.classes.jury import Jury
 
 
 class TestJury(unittest.TestCase):
+
+    shutil.copyfile("app/classes/jury_original_test_files/data_player_1.txt", "media/jury_test_files/data_player_1.txt")
+    shutil.copyfile("app/classes/jury_original_test_files/data_player_2.txt", "media/jury_test_files/data_player_2.txt")
+    shutil.copyfile("app/classes/jury_original_test_files/data_player_3.txt", "media/jury_test_files/data_player_3.txt")
+    shutil.copyfile("app/classes/jury_original_test_files/data_player_4.txt", "media/jury_test_files/data_player_4.txt")
+    shutil.copyfile("app/classes/jury_original_test_files/save_data.txt", "media/jury_test_files/save_data.txt")
+    shutil.copyfile("app/classes/jury_original_test_files/save_data_1.txt", "media/jury_test_files/save_data_1.txt")
+    shutil.copyfile("app/classes/jury_original_test_files/save_data_2.txt", "media/jury_test_files/save_data_2.txt")
 
     process = None
 

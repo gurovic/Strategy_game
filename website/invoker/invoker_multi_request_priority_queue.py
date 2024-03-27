@@ -3,10 +3,8 @@ from queue import PriorityQueue
 
 from invoker.invoker_pool import InvokerPool
 from invoker.utils import Singleton
-from app.classes.logger import class_log
 
 
-@class_log
 class InvokerMultiRequestPriorityQueue(metaclass=Singleton):
     def __init__(self):
         self.invoker_multi_request_queue = PriorityQueue()

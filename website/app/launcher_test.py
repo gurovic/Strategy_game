@@ -31,4 +31,4 @@ class TestLauncher(TestCase):
     def test_PYTHON_launch(self):
         launcher = self.LaunchTest("compiled.epy")
         command = launcher.command()
-        self.assertEquals(command, "python3 compiled.epy")
+        self.assertEquals(command, "python compiled.epy")

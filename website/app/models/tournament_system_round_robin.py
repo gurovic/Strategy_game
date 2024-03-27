@@ -4,10 +4,8 @@ from .game import Game
 from .battle import Battle
 from .tournament_system import TournamentSystem
 from .players_in_battle import PlayersInBattle
-from app.classes.logger import class_log
 
 
-@class_log
 class TournamentSystemRoundRobin(TournamentSystem):
     tournament = None
 
