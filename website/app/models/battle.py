@@ -35,16 +35,17 @@ class Battle(models.Model):
         requests = []
 
         file = self.game.play
-        launcher = Launcher(file)
+        launcher = Launcher(file.path)
         request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label="play")
         requests.append(request)
 
-        players = PlayersInBattle.objects.filter(battle=self)
+        players_in_battle = PlayersInBattle.objects.filter(battle=self)
         number = 0
-        for player in players:
+        for player_in_battle in players_in_battle:
             number += 1
-            file = player.file_solution
-            launcher= Launcher(file)
+            self.numbers[number] = player_in_battle.player
+            file = player_in_battle.file_solution
+            launcher= Launcher(file.path)
             request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label=f"player{number}")
             requests.append(request)
 
