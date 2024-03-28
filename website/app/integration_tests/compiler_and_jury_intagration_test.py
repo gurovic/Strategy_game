@@ -32,37 +32,35 @@ class Test(unittest.TestCase):
         solution_first_compiled = CompiledFile()
         solution_second_compiled = CompiledFile()
 
-        compiler1 = compiler.Compiler(play_code, "py", play_compiled.get_compiled_file).compile()
-        compiler2 = compiler.Compiler(solution_first_code, "py", solution_first_compiled.get_compiled_file).compile()
-        compiler3 = compiler.Compiler(solution_second_code, "py", solution_second_compiled.get_compiled_file).compile()
+        compiler.Compiler(play_code, "py", play_compiled.get_compiled_file).compile()
+        compiler.Compiler(solution_first_code, "py", solution_first_compiled.get_compiled_file).compile()
+        compiler.Compiler(solution_second_code, "py", solution_second_compiled.get_compiled_file).compile()
 
         while play_compiled.ok + solution_first_compiled.ok + solution_second_compiled.ok != 3:
             continue
 
-        play_compiled_path = "../website/media/" + "/".join(str(play_compiled.compiled_file).split("\\"))
-        solution_first_compiled_path = "../website/media/" + "/".join(
-            str(solution_first_compiled.compiled_file).split("\\"))
-        solution_second_compiled_path = "../website/media/" + "/".join(
-            str(solution_second_compiled.compiled_file).split("\\"))
+        play_compiled_path = play_compiled.compiled_file
+        solution_first_compiled_path = solution_first_compiled.compiled_file
+        solution_second_compiled_path = solution_second_compiled.compiled_file
 
-        launcher_play = launcher.Launcher(play_compiled_path)
-        launcher_strategy1 = launcher.Launcher(solution_first_compiled_path)
-        launcher_strategy2 = launcher.Launcher(solution_second_compiled_path)
+        launcher_play = launcher.Launcher(str(play_compiled_path))
+        launcher_strategy1 = launcher.Launcher(str(solution_first_compiled_path))
+        launcher_strategy2 = launcher.Launcher(str(solution_second_compiled_path))
 
-        subprocess_play = subprocess.Popen(play_compiled_path)
-        subprocess_strategy1 = subprocess.Popen(solution_first_compiled_path)
-        subprocess_strategy2 = subprocess.Popen(solution_second_compiled_path)
+        subprocess_play = subprocess.Popen([str(launcher_play.command()), str(play_compiled_path)])
+        subprocess_strategy1 = subprocess.Popen([str(launcher_strategy1.command()), str(solution_first_compiled_path)])
+        subprocess_strategy2 = subprocess.Popen([str(launcher_strategy2.command()), str(solution_second_compiled_path)])
 
         play_process = NormalProcess(subprocess_play, label="play")
         strategy_process_1 = NormalProcess(subprocess_strategy1, label="player1")
         strategy_process_2 = NormalProcess(subprocess_strategy2, label="player2")
 
-        IR_play = InvokerRequest(launcher_play.command(), [play_compiled_path], process_callback=play_process)
+        IR_play = InvokerRequest(str(launcher_play.command()), [str(play_compiled_path)], process_callback=play_process)
         IR_play.label = "play"
-        IR_sol1 = InvokerRequest(launcher_strategy1.command(), [solution_first_compiled_path],
+        IR_sol1 = InvokerRequest(str(launcher_strategy1.command()), [str(solution_first_compiled_path)],
                                  process_callback=strategy_process_1)
         IR_sol1.label = "strategy"
-        IR_sol2 = InvokerRequest(launcher_strategy2.command(), [solution_second_compiled_path],
+        IR_sol2 = InvokerRequest(str(launcher_strategy2.command()), [str(solution_second_compiled_path)],
                                  process_callback=strategy_process_2)
         IR_sol2.label = "strategy"
 
