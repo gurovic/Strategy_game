@@ -33,7 +33,6 @@ class Jury:
 
         self.play_invoker_request = None
         self.strategies_invoker_requests = []
-        self.get_invoker_requests()
 
         self.process = None
         self.play_process = None
@@ -44,6 +43,8 @@ class Jury:
         self.jury_report.status = ""
         self.jury_report.points = {}
         self.jury_report.story_of_game = ""
+
+        self.get_invoker_requests()
 
 
     def get_invoker_requests(self):
