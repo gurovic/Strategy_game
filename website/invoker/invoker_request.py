@@ -18,7 +18,7 @@ class InvokerRequest:
                  preserve_files: typing.Optional[list[str]] = None, timelimit=None,
                  report_callback=None, process_callback=None, label=None):
         self.command = command
-        self.files = files
+        self.files = files or []
         self.timelimit = settings.DEFAULT_EXECUTION_TL
         if timelimit:
             self.timelimit = timelimit
