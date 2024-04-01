@@ -1,3 +1,5 @@
+import typing
+
 from django.conf import settings
 
 from invoker.invoker_multi_request import Priority, InvokerMultiRequest
@@ -13,33 +15,23 @@ class NotSupportedExtension(ValueError):
         return f"Language with extension {self.extension} is not supported!"
 
 
-class Launcher:
+class Launcher(InvokerRequest):
 
-    def __init__(self, files,  callback = None):
-        self.files = files
-        self.extensions = [i.split(".")[-1] for i in files]
-        self.callback = callback
+    def __init__(self, file: str, *args, **kwargs):
+        self.file = file
+        self.extension = self.file.split(".")[-1]
 
+        super(Launcher, self).__init__(self.command, *args, **kwargs)
+        self.files.append(self.file)
+
+    @property
     def command(self):
-        for i in range(len(self.files)):
-            if self.extensions[i] not in settings.LAUNCHER_COMMANDS:
-                raise NotSupportedExtension(self.extensions[i])
-            if settings.LAUNCHER_COMMANDS[self.extensions[i]] is None:
-                return ' '.join([self.files[i]])
+        for i in range(len(self.file)):
+            if self.extension[i] not in settings.LAUNCHER_COMMANDS:
+                raise NotSupportedExtension(self.extension[i])
+            if settings.LAUNCHER_COMMANDS[self.extension[i]] is None:
+                return ' '.join([self.file[i]])
             else:
-                command_tags = settings.LAUNCHER_COMMANDS[self.extensions[i]]
-                command_tags = [self.files[i] if i == "%1" else i for i in command_tags]
+                command_tags = settings.LAUNCHER_COMMANDS[self.extension[i]]
+                command_tags = [self.file[i] if i == "%1" else i for i in command_tags]
                 return ' '.join(command_tags)
-
-    def launch(self):
-        requests = []
-        for i in range(len(self.files)):
-            request = InvokerRequest(self.command(), files=[self.files[i]], timelimit=settings.LAUNCHER_RUN_TL[self.extensions[i]], process_callback=self.notify)
-            requests.append(request)
-        multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
-        queue = InvokerMultiRequestPriorityQueue()
-        queue.add(multi_request)
-
-    def notify(self, process=None):
-        if process is not None:
-            self.callback(process)
