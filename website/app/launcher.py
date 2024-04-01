@@ -15,24 +15,28 @@ class NotSupportedExtension(ValueError):
 
 class Launcher:
 
-    def __init__(self, file, callback = None):
-        self.file = file
-        self.extension = file.split(".")[-1]
+    def __init__(self, files,  callback = None):
+        self.files = files
+        self.extensions = [i.split(".")[-1] for i in files]
         self.callback = callback
 
     def command(self):
-        if self.extension not in settings.LAUNCHER_COMMANDS:
-            raise NotSupportedExtension(self.extension)
-        if settings.LAUNCHER_COMMANDS[self.extension] is None:
-            return ' '.join([self.file])
-        else:
-            command_tags = settings.LAUNCHER_COMMANDS[self.extension]
-            command_tags = [self.file if i == "%1" else i for i in command_tags]
-            return ' '.join(command_tags)
+        for i in range(len(self.files)):
+            if self.extensions[i] not in settings.LAUNCHER_COMMANDS:
+                raise NotSupportedExtension(self.extensions[i])
+            if settings.LAUNCHER_COMMANDS[self.extensions[i]] is None:
+                return ' '.join([self.files[i]])
+            else:
+                command_tags = settings.LAUNCHER_COMMANDS[self.extensions[i]]
+                command_tags = [self.files[i] if i == "%1" else i for i in command_tags]
+                return ' '.join(command_tags)
 
     def launch(self):
-        request = InvokerRequest(self.command(), files=[self.file], timelimit=settings.LAUNCHER_RUN_TL[self.extension], process_callback=self.notify)
-        multi_request = InvokerMultiRequest([request], priority=Priority.RED)
+        requests = []
+        for i in range(len(self.files)):
+            request = InvokerRequest(self.command(), files=[self.files[i]], timelimit=settings.LAUNCHER_RUN_TL[self.extensions[i]], process_callback=self.notify)
+            requests.append(request)
+        multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
         queue = InvokerMultiRequestPriorityQueue()
         queue.add(multi_request)
 
