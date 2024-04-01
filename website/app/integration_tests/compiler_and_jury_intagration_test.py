@@ -9,7 +9,6 @@ from invoker.invoker_multi_request import Priority
 from app.classes.jury import GameState
 from app.classes.jury import Jury
 from app import compiler
-import time
 import subprocess
 
 from app import launcher
@@ -39,28 +38,28 @@ class Test(unittest.TestCase):
         while play_compiled.ok + solution_first_compiled.ok + solution_second_compiled.ok != 3:
             continue
 
-        play_compiled_path = play_compiled.compiled_file
-        solution_first_compiled_path = solution_first_compiled.compiled_file
-        solution_second_compiled_path = solution_second_compiled.compiled_file
+        play_compiled_path = play_compiled.compiled_file.path
+        solution_first_compiled_path = solution_first_compiled.compiled_file.path
+        solution_second_compiled_path = solution_second_compiled.compiled_file.path
 
-        launcher_play = launcher.Launcher(play_compiled_path.path)
-        launcher_strategy1 = launcher.Launcher(solution_first_compiled_path.path)
-        launcher_strategy2 = launcher.Launcher(solution_second_compiled_path.path)
+        launcher_play = launcher.Launcher(play_compiled_path)
+        launcher_strategy1 = launcher.Launcher(solution_first_compiled_path)
+        launcher_strategy2 = launcher.Launcher(solution_second_compiled_path)
 
-        subprocess_play = subprocess.Popen([launcher_play.command(), play_compiled_path.path])
-        subprocess_strategy1 = subprocess.Popen([launcher_strategy1.command(), solution_first_compiled_path.path])
-        subprocess_strategy2 = subprocess.Popen([launcher_strategy2.command(), solution_second_compiled_path.path])
+        subprocess_play = subprocess.Popen([launcher_play.command(), play_compiled_path])
+        subprocess_strategy1 = subprocess.Popen([launcher_strategy1.command(), solution_first_compiled_path])
+        subprocess_strategy2 = subprocess.Popen([launcher_strategy2.command(), solution_second_compiled_path])
 
         play_process = NormalProcess(subprocess_play, label="play")
         strategy_process_1 = NormalProcess(subprocess_strategy1, label="player1")
         strategy_process_2 = NormalProcess(subprocess_strategy2, label="player2")
 
-        IR_play = InvokerRequest(launcher_play.command(), [play_compiled_path.path], process_callback=play_process)
+        IR_play = InvokerRequest(launcher_play.command(), [play_compiled_path], process_callback=play_process)
         IR_play.label = "play"
-        IR_sol1 = InvokerRequest(launcher_strategy1.command(), [solution_first_compiled_path.path],
+        IR_sol1 = InvokerRequest(launcher_strategy1.command(), [solution_first_compiled_path],
                                  process_callback=strategy_process_1)
         IR_sol1.label = "strategy"
-        IR_sol2 = InvokerRequest(launcher_strategy2.command(), [solution_second_compiled_path.path],
+        IR_sol2 = InvokerRequest(launcher_strategy2.command(), [solution_second_compiled_path],
                                  process_callback=strategy_process_2)
         IR_sol2.label = "strategy"
 
