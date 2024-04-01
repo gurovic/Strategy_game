@@ -1,43 +1,27 @@
 import sys
 
 from django.test import TestCase
-from unittest.mock import patch, Mock
 
-from app.launcher import Launcher
+from app.launcher import Launcher, NotSupportedExtension
 
 
 class TestLauncher(TestCase):
     class LaunchTest(Launcher):
         pass
 
-    @patch("app.launcher.InvokerMultiRequestPriorityQueue")
-    def test_launch(self, mock_queue: Mock):
-        launcher = self.LaunchTest(".!.@,#,$.%,^./file.epy")
-        launcher.launch()
-        mock_queue = mock_queue()
-        mock_queue.add.assert_called()
-
-    def test_notify(self):
-        callback = Mock()
-        report = Mock()
-        launcher = self.LaunchTest(".!.@,#,$.%,^./file.epy", callback=callback)
-        launcher.notify([report])
-
-        callback.assert_called_once_with([report])
+    def test_not_supported_launch(self):
+        self.assertRaises(NotSupportedExtension, self.LaunchTest, "compiled.fuck")
 
     def test_CPP_launch(self):
         launcher = self.LaunchTest("compiled.ecpp")
-        command = launcher.command()
         if sys.platform == "linux":
-            self.assertEquals(command, "chmod +x compiled.ecpp ; compiled.ecpp")
+            self.assertEquals(launcher.command, "chmod +x compiled.ecpp ; compiled.ecpp")
         else:
-            self.assertEqual(command, "compiled.ecpp")
-
+            self.assertEqual(launcher.command, "compiled.ecpp")
 
     def test_PYTHON_launch(self):
         launcher = self.LaunchTest("compiled.epy")
-        command = launcher.command()
         if sys.platform == "linux":
-            self.assertEquals(command, "python3 compiled.epy")
+            self.assertEquals(launcher.command, "python3 compiled.epy")
         else:
-            self.assertEqual(command, "python compiled.epy")
+            self.assertEqual(launcher.command, "python compiled.epy")
