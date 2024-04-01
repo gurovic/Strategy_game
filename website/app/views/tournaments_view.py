@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -6,8 +6,7 @@ from app.models import Tournament
 
 
 def show(request):
-    upcoming_or_current_tournaments = Tournament.objects.filter(finish_registration_time__gte=timezone.now()).order_by("tournament_start_time", "finish_registration_time")
-    past_tournaments = Tournament.objects.filter(finish_registration_time__lt=timezone.now()).order_by("-tournament_start_time", "finish_registration_time")
+    future_tournaments = list(Tournament.objects.filter(finish_registration_time__gte=timezone.now()).order_by("tournament_start_time", "finish_registration_time").values())
+    past_tournaments = list(Tournament.objects.filter(finish_registration_time__lt=timezone.now()).order_by("-tournament_start_time", "finish_registration_time").values())
 
-    return render(request, 'tournaments.html',
-                  {'upcoming_or_current_tournaments': upcoming_or_current_tournaments, 'past_tournaments': past_tournaments})
+    return JsonResponse({'future': future_tournaments, 'past': past_tournaments})

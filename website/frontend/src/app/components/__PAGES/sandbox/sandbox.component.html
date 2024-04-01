@@ -1,0 +1,46 @@
+<main class="main-content">
+
+  <div class="top-part">
+    <div class="background">
+      <img src="/static/angular/assets/background_svgs/background-object3.svg">
+    </div>
+
+    <div class="content">
+      <h1>Try solving tasks for self-improvement.</h1>
+      <p>Join our app to code games everytime you want.</p>
+      <div class="button">read docs</div>
+    </div>
+
+    <div class="bottom-content">
+      <div class="daily-solvers">
+        <p>Top solvers today: </p>
+        <p class="place to_hide600">
+          <img src="/static/angular/assets/icons/cup_second.svg">
+          Round_Loser
+        </p>
+        <p class="place">
+          <img src="/static/angular/assets/icons/cup_first.svg">
+          Physicus
+        </p>
+        <p class="place to_hide600">
+          <img src="/static/angular/assets/icons/cup_third.svg">
+          FeironoX5
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="tasks_archive__container">
+    <p class="header" style="margin-bottom: 20px;">All tasks</p>
+    <div class="tasks_archive__list">
+
+      <app-archive-task
+        *ngFor="let task of tasks_array; index as i;"
+        [task]="task"
+      ></app-archive-task>
+
+    </div>
+  </div>
+
+</main>
