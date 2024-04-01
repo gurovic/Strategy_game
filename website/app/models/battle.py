@@ -34,8 +34,8 @@ class Battle(models.Model):
     def create_invoker_requests(self):
         requests = []
 
-        file = self.game.play
-        launcher = Launcher(file.path)
+        file = self.game.play.path
+        launcher = Launcher(file)
         request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label="play")
         requests.append(request)
 
@@ -44,8 +44,8 @@ class Battle(models.Model):
         for player_in_battle in players_in_battle:
             number += 1
             self.numbers[number] = player_in_battle.player
-            file = player_in_battle.file_solution
-            launcher= Launcher(file.path)
+            file = player_in_battle.file_solution.path
+            launcher= Launcher(file)
             request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label=f"player{number}")
             requests.append(request)
 
