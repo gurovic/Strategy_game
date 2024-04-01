@@ -4,6 +4,7 @@ import typing
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
 from app.models.jury_report import JuryReport
 from invoker.invoker_multi_request import InvokerMultiRequest
+from app.classes.logger import class_log
 
 
 class GameState(enum.Enum):
@@ -24,7 +25,7 @@ class StdOut(typing.Protocol):
         ...
 
 
-
+@class_log
 class Jury:
 
     def __init__(self, invoker_multi_request: InvokerMultiRequest):
