@@ -11,10 +11,17 @@ def method_log(method):
 
         try:
             result = method(self, *args, **kwargs)
-            logger.info(f"{relative_file_path}:{line_number} {self.__class__.__name__}.{method.__name__} args={args}, kwargs={kwargs}")
+            log_message = f"{relative_file_path}:{line_number} {self.__class__.__name__}.{method.__name__} args={args}, kwargs={kwargs}"
+            if len(log_message) > 200:
+                log_message = log_message[:197] + "..."
+            logger.info(log_message)
             return result
         except Exception as e:
-            logger.error(f"{relative_file_path}:{line_number} in {self.__class__.__name__}.{method.__name__} Error: {str(e)}. args={args}, kwargs={kwargs} ")
+            log_message = f"{relative_file_path}:{line_number} in {self.__class__.__name__}.{method.__name__} Error: {str(e)}. args={args}, kwargs={kwargs} "
+            if len(log_message) > 200:
+                log_message = log_message[:197] + "..."
+            logger.error(log_message)
+            raise
     return wrapper
 
 def class_log(cls):
@@ -27,7 +34,6 @@ def class_log(cls):
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-
 logs_file_path = os.path.join(os.path.dirname(__file__), '../../media/logs.txt')
 
 file_handler = logging.FileHandler(logs_file_path)
@@ -39,6 +45,4 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 logger.propagate = False
 
-
 root_folder_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
-

@@ -1,5 +1,5 @@
 import unittest
-from logger import class_log
+from app.classes.logger import class_log
 import os
 
 class TestLoggerMethods(unittest.TestCase):
@@ -25,8 +25,3 @@ class TestLoggerMethods(unittest.TestCase):
         test_instance = self.InnerClass()
         with self.assertRaises(ValueError):
             test_instance.method2(0)
-
-    @classmethod
-    def tearDownClass(cls):
-        logs_file_path = os.path.join(os.path.dirname(__file__), '../../media/logs.txt')
-        os.remove(logs_file_path)

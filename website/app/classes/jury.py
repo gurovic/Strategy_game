@@ -200,3 +200,6 @@ class Jury:
     def notify_processes(self, processes):
         self.process = processes
         self.get_processes()
+
+    def notify(self, report):
+        pass

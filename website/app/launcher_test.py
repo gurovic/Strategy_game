@@ -1,3 +1,5 @@
+import sys
+
 from django.test import TestCase
 from unittest.mock import patch, Mock
 
@@ -26,9 +28,16 @@ class TestLauncher(TestCase):
     def test_CPP_launch(self):
         launcher = self.LaunchTest("compiled.ecpp")
         command = launcher.command()
-        self.assertEquals(command, "compiled.ecpp")
+        if sys.platform == "linux":
+            self.assertEquals(command, "chmod +x compiled.ecpp ; compiled.ecpp")
+        else:
+            self.assertEqual(command, "compiled.ecpp")
+
 
     def test_PYTHON_launch(self):
         launcher = self.LaunchTest("compiled.epy")
         command = launcher.command()
-        self.assertEquals(command, "python3 compiled.epy")
+        if sys.platform == "linux":
+            self.assertEquals(command, "python3 compiled.epy")
+        else:
+            self.assertEqual(command, "python compiled.epy")

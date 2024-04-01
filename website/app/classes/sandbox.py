@@ -1,8 +1,6 @@
 from app.models import Battle, PlayersInBattle
-from app.classes.logger import class_log
 
 
-@class_log
 class Sandbox:
     def __init__(self, game, strategy, callback):
         self.game = game

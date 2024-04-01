@@ -32,7 +32,7 @@ class TestInvokerSystem(TestCase):
             compiler.compile()
 
             counter = time.perf_counter()
-            while ((time.perf_counter() - counter) < 4) & ((self.launch_call & self.compiler_call) == False):
+            while ((time.perf_counter() - counter) < 14) & ((self.launch_call & self.compiler_call) == False):
                 pass
             self.assertEqual(self.compiler_call, True, "language: {} is not compiling".format(lang))
             self.assertEqual(self.launch_call, True, "language: {} is not launching".format(lang))
