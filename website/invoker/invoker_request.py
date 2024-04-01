@@ -26,11 +26,12 @@ class InvokerRequest:
         self.report_callback = report_callback
         self.process_callback = process_callback
         self.label = label
+        self.process = None
 
     def run(self, invoker: Invoker):
         invoker_process = invoker.run(self.command, files=self.files, preserve_files=self.preserve_files,
                                       timelimit=self.timelimit, label=self.label, callback=self.notify)
-
+        self.process = invoker_process
         if self.process_callback is not None:
             self.process_callback(invoker_process)
 
