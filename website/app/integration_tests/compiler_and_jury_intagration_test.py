@@ -42,9 +42,9 @@ class Test(unittest.TestCase):
         solution_first_compiled_path = solution_first_compiled.compiled_file.path
         solution_second_compiled_path = solution_second_compiled.compiled_file.path
 
-        launcher_play = launcher.Launcher(play_compiled_path)
-        launcher_strategy1 = launcher.Launcher(solution_first_compiled_path)
-        launcher_strategy2 = launcher.Launcher(solution_second_compiled_path)
+        launcher_play = launcher.Launcher(play_compiled_path, label="play")
+        launcher_strategy1 = launcher.Launcher(solution_first_compiled_path, label="strategy1")
+        launcher_strategy2 = launcher.Launcher(solution_second_compiled_path, label="strategy2")
 
         IM_process_of_battle = InvokerMultiRequest([launcher_play, launcher_strategy1, launcher_strategy2],
                                                    Priority.RED)
