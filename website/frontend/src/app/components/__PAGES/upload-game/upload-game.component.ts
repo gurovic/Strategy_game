@@ -24,7 +24,7 @@ export class UploadGameComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    register() {
+    upload() {
         this.register_service.create(this.user).subscribe(
             resp => {
                 this.profile_api_service.get().subscribe(

@@ -13,10 +13,33 @@
             <div class="input-group">
                 <label for="IdealSolution">Ideal Solution</label>
                 <input id="IdealSolution" type="file" name="ideal_solution">
+                <p class="d-inline-block">Language: </p>
+                <select class="d-inline-block" name="ideal_solution_language">
+                        <option selected="selected">---- SELECT ----</option>
+                        {% for language in available_languages %}
+                            <option>{{ language }}</option>
+                        {% endfor %}
+                </select>
             </div>
             <div class="input-group">
                 <label for="Play">Play (to conduct battles)</label>
-                <input id="Play" type="file" name=IdealSolution">
+                <input id="Play" type="file" name="play">
+            </div>
+            <div class="input-group">
+                <label for="WinPoints">Points for winner</label>
+                <input id="WinPoints" type="text" name="win_points">
+            </div>
+            <div class="input-group">
+                <label for="LosePoints">Points for winner</label>
+                <input id="LosePoints" type="text" name="lose_points">
+            </div>
+            <div class="input-group">
+                <label for="Visualiser">Play (to conduct battles)</label>
+                <input id="Visualiser" type="file" name="visualiser">
+            </div>
+            <div class="input-group">
+                <label for="Rules">Play (to conduct battles)</label>
+                <input id="Rules" type="file" name="rules">
             </div>
             <button id="submit-login-button" (click)="login()" type="button" class="sign">Sign in</button>
         </form>
