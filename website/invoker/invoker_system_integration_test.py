@@ -25,12 +25,12 @@ class TestInvokerSystem(TestCase):
             def get_compiler_callback(report: CompilerReport):
                 self.compiler_call = True
                 invoker = Invoker()
-                compiled_file1 = report.compiled_file.path
-                launcher = Launcher(compiled_file1, process_callback=get_launcher_callback)
+                compiled_file = report.compiled_file.path
+                launcher = Launcher(compiled_file, process_callback=get_launcher_callback)
 
                 launcher.run(invoker)
 
-            compiler = Compiler(file, lang, callback=get_compiler_callback)
+            compiler = Compiler(file, lang, get_compiler_callback)
             compiler.compile()
 
             counter = time.perf_counter()

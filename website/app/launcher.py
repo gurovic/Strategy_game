@@ -17,7 +17,7 @@ class Launcher(InvokerRequest):
         self.file = file
         self.extension = self.file.split(".")[-1]
 
-        super(Launcher, self).__init__(self.get_command(),  timelimit=settings.LAUNCHER_RUN_TL[self.extension],  *args, **kwargs)
+        super(Launcher, self).__init__(self.get_command(), timelimit=settings.LAUNCHER_RUN_TL[self.extension],  *args, **kwargs)
         self.files.append(self.file)
 
     def get_command(self):
