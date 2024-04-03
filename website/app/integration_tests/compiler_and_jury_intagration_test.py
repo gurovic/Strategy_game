@@ -50,9 +50,25 @@ class Test(unittest.TestCase):
                                                    Priority.RED)
         jury_of_battle = Jury(IM_process_of_battle)
 
-        IM_process_of_battle.subscribe(jury_of_battle)
-        IM_process_of_battle.send_process()
+        class getNotify:
+            def __init__(self, IMR, UC, BJ):
+                self.IMR_test = IMR
+                self.upper_class = UC
+                self.jury = BJ
+                ...
 
-        jury_of_battle.perform_play_command()
+            def notify(self, reports):
+                self.IMR_test.send_process()
+                self.jury.perform_play_command()
+
+                self.upper_class.assertEqual(jury_of_battle.game_state, GameState.PLAY)
+
+            def notify_processes(self, process):
+                pass
+
+        notify_getter = getNotify(IM_process_of_battle, self, jury_of_battle)
+        IM_process_of_battle.subscribe(jury_of_battle)
+        IM_process_of_battle.subscribe(notify_getter)
+        IM_process_of_battle.start()
 
         self.assertEqual(jury_of_battle.game_state, GameState.PLAY)

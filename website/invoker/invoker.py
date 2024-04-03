@@ -140,7 +140,6 @@ class InvokerEnvironment(ABC):
 
 class NormalEnvironment(InvokerEnvironment):
     @staticmethod
-    @method_log
     def initialize_workdir(file_system: typing.Optional[list[File]] = None) -> str:
         tmpdir = tempfile.mkdtemp()
         if file_system:
@@ -156,7 +155,6 @@ class NormalEnvironment(InvokerEnvironment):
         self.command = command
 
         self.file_system = file_system
-        #print(type(file_system))
         self.work_dir = self.initialize_workdir(file_system)
         self.preserve_files = preserve_files
 
@@ -193,10 +191,12 @@ class NormalEnvironment(InvokerEnvironment):
         else:
             self.return_code = None
 
-        self.callback(RunResult(
+        report = RunResult(
             command=self.command,
-            output=self.result_process.stdout.read(),
-            error=self.result_process.stderr.read(),
+            # output=self.result_process.stdout.read(),
+            # error=self.result_process.stderr.read(),
+            output="out",
+            error="er",
             exit_code=self.return_code,
             time_start=self.time_start,
             time_end=time_end,
@@ -204,7 +204,9 @@ class NormalEnvironment(InvokerEnvironment):
             exceeded_timelimit=timeout_error,
             input_files=input_dir,
             preserved_files=preserve_dir
-        ))
+        )
+        self.callback(report)
+
 
 @class_log
 class DockerEnvironment(InvokerEnvironment):
@@ -261,11 +263,11 @@ class Invoker:
     def free(self):
         if self.callback_free_myself:
             self.callback_free_myself(self)
-            #from django import db
-            #db.connections.close_all()
+            # from django import db
+            # db.connections.close_all()
         else:
-            #from django import db
-            #db.connections.close_all()
+            # from django import db
+            # db.connections.close_all()
             raise NoInvokerPoolCallbackData(id(self))
 
     def make_report(self, result: RunResult) -> InvokerReport:
