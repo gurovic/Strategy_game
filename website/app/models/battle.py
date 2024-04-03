@@ -35,9 +35,8 @@ class Battle(models.Model):
         requests = []
 
         file = self.game.play.path
-        launcher = Launcher(file)
-        request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label="play")
-        requests.append(request)
+        launcher = Launcher(file, label="play")
+        requests.append(launcher)
 
         players_in_battle = PlayersInBattle.objects.filter(battle=self)
         number = 0
@@ -45,13 +44,11 @@ class Battle(models.Model):
             number += 1
             self.numbers[number] = player_in_battle.player
             file = player_in_battle.file_solution.path
-            launcher= Launcher(file)
-            request = InvokerRequest(launcher.command(), files=[file], timelimit=settings.LAUNCHER_RUN_TL[launcher.extension], label=f"player{number}")
-            requests.append(request)
+            launcher= Launcher(file, label=f"player{number}")
+            requests.append(launcher)
 
         multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
-        queue = InvokerMultiRequestPriorityQueue()
-        queue.add(multi_request)
+        multi_request.start()
 
         self.jury = Jury(multi_request)
 
