@@ -75,17 +75,17 @@ class TestInvokerMultiRequest(TestCase):
         invoker_requests = []
         for index in range(3):
             invoker_requests.append(Mock())
-        invoker_process_callbacks = [Mock() for _ in range(3)]
+        invoker_process = [Mock() for _ in range(3)]
 
         for index in range(3):
-            invoker_requests[index].process_callback = invoker_process_callbacks[index]
+            invoker_requests[index].process = invoker_process[index]
 
         invoker_multi_request = InvokerMultiRequest(invoker_requests)
         invoker_multi_request.subscribers = [mock]
 
         invoker_multi_request.send_process()
 
-        mock.notify_processes.assert_called_with(invoker_process_callbacks)
+        mock.notify_processes.assert_called_with(invoker_process)
 
     def test_subscribe(self):
         mock = Mock()
