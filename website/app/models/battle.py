@@ -48,9 +48,9 @@ class Battle(models.Model):
             requests.append(launcher)
 
         multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
-        multi_request.start()
-
         self.jury = Jury(multi_request)
+        multi_request.subscribe(self.jury)
+        multi_request.start()
 
     def run(self):
         self.create_invoker_requests()
