@@ -46,24 +46,8 @@ class Test(unittest.TestCase):
         launcher_strategy1 = launcher.Launcher(solution_first_compiled_path)
         launcher_strategy2 = launcher.Launcher(solution_second_compiled_path)
 
-        subprocess_play = subprocess.Popen([launcher_play.command(), play_compiled_path])
-        subprocess_strategy1 = subprocess.Popen([launcher_strategy1.command(), solution_first_compiled_path])
-        subprocess_strategy2 = subprocess.Popen([launcher_strategy2.command(), solution_second_compiled_path])
-
-        play_process = NormalProcess(subprocess_play, label="play")
-        strategy_process_1 = NormalProcess(subprocess_strategy1, label="player1")
-        strategy_process_2 = NormalProcess(subprocess_strategy2, label="player2")
-
-        IR_play = InvokerRequest(launcher_play.command(), [play_compiled_path], process_callback=play_process)
-        IR_play.label = "play"
-        IR_sol1 = InvokerRequest(launcher_strategy1.command(), [solution_first_compiled_path],
-                                 process_callback=strategy_process_1)
-        IR_sol1.label = "strategy"
-        IR_sol2 = InvokerRequest(launcher_strategy2.command(), [solution_second_compiled_path],
-                                 process_callback=strategy_process_2)
-        IR_sol2.label = "strategy"
-
-        IM_process_of_battle = InvokerMultiRequest([IR_play, IR_sol1, IR_sol2], Priority.RED)
+        IM_process_of_battle = InvokerMultiRequest([launcher_play, launcher_strategy1, launcher_strategy2],
+                                                   Priority.RED)
         jury_of_battle = Jury(IM_process_of_battle)
 
         IM_process_of_battle.subscribe(jury_of_battle)
