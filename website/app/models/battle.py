@@ -1,7 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+
 from .jury_report import JuryReport
-from ..classes.jury import GameState
+from ..classes.jury import GameState, Jury
+from ..launcher import Launcher
+from ..models import PlayersInBattle
+from invoker.invoker_multi_request import Priority, InvokerMultiRequest
+from invoker.invoker_request import InvokerRequest
+from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
+
 
 class Battle(models.Model):
     class GameStateChoices(models.TextChoices):
@@ -23,7 +31,31 @@ class Battle(models.Model):
         self.results = {}
         self.numbers = {}
 
-    def run(self, jury):
+    def create_invoker_requests(self):
+        requests = []
+
+        file = self.game.play.path
+        launcher = Launcher(file, label="play")
+        requests.append(launcher)
+
+        players_in_battle = PlayersInBattle.objects.filter(battle=self)
+        number = 0
+        for player_in_battle in players_in_battle:
+            number += 1
+            self.numbers[number] = player_in_battle.player
+            file = player_in_battle.file_solution.path
+            launcher= Launcher(file, label=f"player{number}")
+            requests.append(launcher)
+
+        multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
+        self.jury = Jury(multi_request)
+        multi_request.subscribe(self.jury)
+        multi_request.start()
+
+    def run(self):
+        self.create_invoker_requests()
+        jury = self.jury
+
         while jury.game_state is not GameState.END:
             jury.get_processes()
             jury.perform_play_command()
