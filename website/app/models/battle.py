@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
+from website.settings import MEDIA_ROOT
 from .jury_report import JuryReport
 from ..classes.jury import GameState, Jury
 from ..compiler import Compiler
@@ -36,22 +37,30 @@ class Battle(models.Model):
 
     def create_invoker_requests(self):
         requests = []
+        global ok_sum
+        ok_sum = 0
 
         class CompiledFile:
-            self.ok = 0
+            ok_sum = 0
 
             def get_compiled_file(self, compiler_report):
                 self.compiled_file = compiler_report.compiled_file
-                self.ok = 1
+                global ok_sum
+                ok_sum += 1
 
-        file = os.path.abspath(self.game.play.path)
-        play_compiled = CompiledFile()
-        Compiler(file, file.split(".")[-1], play_compiled.get_compiled_file).compile()
+        file = os.path.join(MEDIA_ROOT, str(self.game.play.path))
+        list_compiled_file = []
+        if file.split(".")[-1][0] != 'e':
+            play_compiled = CompiledFile()
+            list_compiled_file.append(play_compiled)
+            Compiler(file, file.split(".")[-1], play_compiled.get_compiled_file).compile()
+            file = os.path.join(MEDIA_ROOT, str(play_compiled.compiled_file))
 
-        launcher = Launcher(os.path.abspath(str(play_compiled.compiled_file)), label="play")
+        launcher = Launcher(os.path.abspath(str(file)), label="play")
         requests.append(launcher)
         players_in_battle = PlayersInBattle.objects.filter(battle=self)
         number = 0
+        files_list = []
         for player_in_battle in players_in_battle:
             number += 1
             self.numbers[number] = player_in_battle.player
@@ -59,10 +68,19 @@ class Battle(models.Model):
             if file.split(".")[-1][0] != 'e':
                 strategy_compiled = CompiledFile()
                 Compiler(file, file.split(".")[-1], strategy_compiled.get_compiled_file).compile()
-                file = strategy_compiled.compiled_file
+                list_compiled_file.append(strategy_compiled)
+                file = os.path.join(MEDIA_ROOT, str(strategy_compiled.compiled_file))
 
-            launcher = Launcher(os.path.abspath(str(file)), label=f"player{number}")
+            files_list.append(file)
+
+        while ok_sum != len(list_compiled_file):
+            continue
+
+        number = 1
+        for file in files_list:
+            launcher = Launcher(file, label=f'player{number}')
             requests.append(launcher)
+            number += 1
 
         multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
         self.jury = Jury(multi_request)
