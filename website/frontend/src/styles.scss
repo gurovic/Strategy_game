@@ -67,18 +67,31 @@ img {
 :root { // sizes
   --login-box-width: min(100%, 300px);
   --top-bar-height:  70px;
+  --max-main-width:  1440px;
 }
 
 :root { // basic colors
-  --white:   255, 255, 255;
-  --black:   0, 0, 0;
-  --d-blue:  17, 15, 66;
-  --d-green: 21, 202, 12;
-  --l-green: 153, 255, 145;
+  --white:      255, 255, 255;
+  --black:      0, 0, 0;
+  --d-blue:     17, 15, 66;
+  --l-blue:     27, 23, 98;
+  --d-green:    21, 202, 12;
+  --l-green:    153, 255, 145;
+  --prismarine: 0, 255, 161;
+  --gray:       153, 153, 153;
+  --purple:     163, 0, 255;
+  --pink:       232, 28, 255;
+  --blue:       64, 201, 255;
+  --l-purple:   167, 139, 250;
+  --d-gray:     55, 65, 81;
+  --d-gray2: 65,65,65;
 }
 
 :root { // colors
-  --text-color:       var(--white);
-  --caret-color:      var(--white);
-  --background-color: var(-d-blue);
+  --text-color:           var(--white);
+  --caret-color:          var(--white);
+  --background-color:     var(-d-blue);
+  --border-color:         var(--l-blue);
+  --color-accent:         var(--prismarine);
+  --button-primary-color: var(--purple);
 }

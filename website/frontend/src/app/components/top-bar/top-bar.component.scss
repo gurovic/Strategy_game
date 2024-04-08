@@ -2,8 +2,8 @@
   position:         relative;
   width:            100vw;
   height:           var(--top-bar-height);
-  background-color: var(--background-ddark);
-  border-bottom: 3px solid var(--background-ldark);
+  background-color: rgb(var(--background-color));
+  border-bottom:    3px solid rgb(var(--background-color));
   display:          flex;
   justify-content:  center;
   overflow:         hidden;
@@ -36,7 +36,7 @@
 .links {
   display:         flex;
   grid-column-gap: 0.8em;
-  color:           var(--text-white);
+  color:           rgb(var(--text-white));
   text-decoration: none;
   font-size:       1.4em;
   font-family:     "Rubik", sans-serif;
@@ -53,12 +53,12 @@
     content:  attr(content);
     width:    0;
     inset:    0;
-    color:    var(--color-accent);
+    color:    rgb(var(--color-accent));
     overflow: hidden;
   }
 
   li:hover {
-    color:  var(--color-accent);
+    color:  rgb(var(--color-accent));
     cursor: pointer;
   }
 }
@@ -67,14 +67,14 @@
   display:         flex;
   flex-direction:  column;
   width:           100%;
-  color:           var(--text-white);
+  color:           rgb(var(--text-white));
   text-decoration: none;
   font-size:       1.4em;
   font-family:     "Rubik", sans-serif;
   grid-row-gap:    1.5vh;
 
   li:active {
-    color:  var(--color-primary);
+    color:  rgb(var(--l-green));
     cursor: pointer;
   }
 }
@@ -89,24 +89,16 @@
 }
 
 .login {
-  --btn-transition:         .3s;
-  --btn-animation-duration: 1.2s;
-  --btn-letter-spacing:     .1rem;
-  --btn-default-bg:         var(--background-ddark);
-  --btn-hover-bg:           var(--background-ldark);
-  --hover-btn-color:        var(--color-accent-second);
-  --default-btn-color:      var(--text-white);
-
-  padding-right:            20px;
-  display:                  flex;
-  align-items:              center;
-  justify-content:          center;
-  color:                    var(--default-btn-color);
-  font-size:                1.4em;
-  background:               var(--btn-default-bg);
-  border:                   none;
-  cursor:                   pointer;
-  transition:               var(--btn-transition);
+  padding-right:   20px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           rgb(var(--default-btn-color));
+  font-size:       1.4em;
+  background:      rgb(var(--btn-default-bg));
+  border:          none;
+  cursor:          pointer;
+  transition:      var(--btn-transition);
 
   span {
     letter-spacing: var(--btn-letter-spacing);
@@ -126,7 +118,7 @@
   &:hover, &:focus {
 
     span {
-      color: var(--hover-btn-color);
+      color: rgb(var(--hover-btn-color));
     }
   }
 }
@@ -162,9 +154,8 @@
   width:               100vw;
   height:              fit-content;
   padding:             40px 30px;
-  background-color:    var(--background-ddark);
-  //box-shadow: 0px -3px 10px 2px var(--text-white);
-  border-bottom:       1px solid #000210;
+  background-color:    rgb(var(--background-color));
+  border-bottom:       1px solid rgb(var(--border-black));
   transition-duration: .5s;
   transform:           translateY(-100%);
   z-index:             90;
@@ -173,7 +164,7 @@
 @media screen and (max-width: 900px) {
   .top-bar {
     box-shadow:    none;
-    border-bottom: 1px solid #000210ff;
+    border-bottom: 1px solid rgb(var(--border-black));
   }
   .links, .login, :nth-child(1 of .circle-element), :nth-child(2 of .circle-element), :nth-child(4 of .circle-element) {
     display: none !important;
@@ -199,4 +190,15 @@
   100% {
     transform: translateY(-100%);
   }
+}
+
+:host {
+  --border-black:           var(--black);
+  --btn-transition:         .3s;
+  --btn-animation-duration: 1.2s;
+  --btn-letter-spacing:     .1rem;
+  --btn-default-bg:         var(--black);
+  --btn-hover-bg:           var(--d-blue);
+  --hover-btn-color:        var(--l-green);
+  --default-btn-color:      var(--white);
 }
