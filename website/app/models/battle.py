@@ -1,9 +1,12 @@
+import os.path
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
 from .jury_report import JuryReport
 from ..classes.jury import GameState, Jury
+from ..compiler import Compiler
 from ..launcher import Launcher
 from ..models import PlayersInBattle
 from invoker.invoker_multi_request import Priority, InvokerMultiRequest
@@ -34,17 +37,31 @@ class Battle(models.Model):
     def create_invoker_requests(self):
         requests = []
 
-        file = self.game.play.path
-        launcher = Launcher(file, label="play")
-        requests.append(launcher)
+        class CompiledFile:
+            self.ok = 0
 
+            def get_compiled_file(self, compiler_report):
+                self.compiled_file = compiler_report.compiled_file
+                self.ok = 1
+
+        file = os.path.abspath(self.game.play.path)
+        play_compiled = CompiledFile()
+        Compiler(file, file.split(".")[-1], play_compiled.get_compiled_file).compile()
+
+        launcher = Launcher(os.path.abspath(str(play_compiled.compiled_file)), label="play")
+        requests.append(launcher)
         players_in_battle = PlayersInBattle.objects.filter(battle=self)
         number = 0
         for player_in_battle in players_in_battle:
             number += 1
             self.numbers[number] = player_in_battle.player
             file = player_in_battle.file_solution.path
-            launcher= Launcher(file, label=f"player{number}")
+            if file.split(".")[-1][0] != 'e':
+                strategy_compiled = CompiledFile()
+                Compiler(file, file.split(".")[-1], strategy_compiled.get_compiled_file).compile()
+                file = strategy_compiled.compiled_file
+
+            launcher = Launcher(os.path.abspath(str(file)), label=f"player{number}")
             requests.append(launcher)
 
         multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
