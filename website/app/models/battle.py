@@ -32,10 +32,12 @@ class Battle(models.Model):
         self.numbers = {}
 
     def create_invoker_requests(self):
+        self.jury = Jury()
+
         requests = []
 
         file = self.game.play.path
-        launcher = Launcher(file, label="play")
+        launcher = Launcher(file, label="play", process_callback=self.jury.play_process_callback)
         requests.append(launcher)
 
         players_in_battle = PlayersInBattle.objects.filter(battle=self)
@@ -44,21 +46,17 @@ class Battle(models.Model):
             number += 1
             self.numbers[number] = player_in_battle.player
             file = player_in_battle.file_solution.path
-            launcher= Launcher(file, label=f"player{number}")
+            launcher= Launcher(file, label=f"player{number}", process_callback=self.jury.strategy_process_callback)
             requests.append(launcher)
 
         multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
-        self.jury = Jury(multi_request)
-        multi_request.subscribe(self.jury)
         multi_request.start()
 
     def run(self):
         self.create_invoker_requests()
         jury = self.jury
-
-        while jury.game_state is not GameState.END:
-            jury.get_processes()
-            jury.perform_play_command()
+        #while jury.game_state is not GameState.END:
+        jury.perform_play_command()
 
         points = self.jury_report.points
         points = dict(points.items())

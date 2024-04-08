@@ -27,13 +27,7 @@ class StdOut(typing.Protocol):
 
 @class_log
 class Jury:
-
-    def __init__(self, invoker_multi_request: InvokerMultiRequest):
-        self.invoker_multi_request = invoker_multi_request
-
-        self.play_invoker_request = None
-        self.strategies_invoker_requests = []
-
+    def __init__(self):
         self.process = None
         self.play_process = None
         self.strategies_process = []
@@ -44,67 +38,11 @@ class Jury:
         self.jury_report.points = {}
         self.jury_report.story_of_game = ""
 
-        self.get_invoker_requests()
+    def play_process_callback(self, process):
+        self.play_process = process
 
-    def get_invoker_requests(self):
-        invoker_requests = self.invoker_multi_request.invoker_requests
-        for invoker_request in invoker_requests:
-            if invoker_request.label == "play":
-                self.play_invoker_request = invoker_request
-            else:
-                self.strategies_invoker_requests.append(invoker_request)
-        invoker_label = "player"
-        player_number = 1
-        invoker_request_sorted_array = []
-        while (player_number <= len(self.strategies_invoker_requests)):
-            invoker_label_now = invoker_label + str(player_number)
-            index = 0
-            end_cycle = 0
-            found_player = 0
-            while (end_cycle == 0):
-                if (self.strategies_invoker_requests[index].label == invoker_label_now):
-                    end_cycle = 1
-                    invoker_request_sorted_array.append(self.strategies_invoker_requests[index])
-                    found_player = 1
-                index += 1
-                if (index >= len(self.strategies_invoker_requests)):
-                    end_cycle = 1
-            if (found_player == 0):
-                self.jury_report.status = "ERROR"
-                return self.jury_report
-            player_number += 1
-        self.strategies_invoker_requests = invoker_request_sorted_array
-
-    def get_processes(self):
-        self.play_process = None
-        self.strategies_process = []
-        invoker_processes = self.process
-        for invoker_process in invoker_processes:
-            if invoker_process.label == "play":
-                self.play_process = invoker_process
-            else:
-                self.strategies_process.append(invoker_process)
-        process_label = "player"
-        player_number = 1
-        invoker_process_sorted_array = []
-        while (player_number <= len(self.strategies_process)):
-            process_label_now = process_label + str(player_number)
-            index = 0
-            end_cycle = 0
-            found_player = 0
-            while (end_cycle == 0):
-                if (self.strategies_process[index].label == process_label_now):
-                    end_cycle = 1
-                    invoker_process_sorted_array.append(self.strategies_process[index])
-                    found_player = 1
-                index += 1
-                if (index >= len(self.strategies_process)):
-                    end_cycle = 1
-            if (found_player == 0):
-                self.jury_report.status = "ERROR"
-                return self.jury_report
-            player_number += 1
-        self.strategies_process = invoker_process_sorted_array
+    def strategy_process_callback(self, process):
+        self.strategies_process.append(process)
 
     def perform_play_command(self):
         try:
@@ -195,10 +133,3 @@ class Jury:
             self.jury_report.story_of_game = play_command[index:]
             self.jury_report.status = "OK"
             return self.jury_report
-
-    def notify_processes(self, processes):
-        self.process = processes
-        self.get_processes()
-
-    def notify(self, report):
-        pass

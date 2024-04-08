@@ -23,62 +23,6 @@ class TestJury(unittest.TestCase):
     def notify_processes(self, processes):
         self.process = processes
 
-    @patch("app.classes.jury.Jury.get_processes")
-    def test_get_invoker_requests(self, mock_get_processes: Mock):
-        play_invoker_request = InvokerRequest("command")
-        play_invoker_request.label = "play"
-
-        strategy_invoker_request1 = InvokerRequest("command1")
-        strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2")
-        strategy_invoker_request2.label = "player2"
-
-        invoker_multi_request = InvokerMultiRequest(
-            [play_invoker_request, strategy_invoker_request1, strategy_invoker_request2])
-
-        jury = Jury(invoker_multi_request)
-
-        self.assertEqual(jury.play_invoker_request, play_invoker_request)
-        self.assertEqual(jury.strategies_invoker_requests, [strategy_invoker_request1, strategy_invoker_request2])
-
-    def test_get_processes(self):
-        play_mock_process = NormalProcess(Mock(), label="play")
-        strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
-        strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
-
-        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
-        play_invoker_request.label = "play"
-        play_process = play_invoker_request.process_callback
-
-        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
-        strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
-        strategy_invoker_request2.label = "player2"
-        strategy_processes = [strategy_invoker_request1.process_callback, strategy_invoker_request2.process_callback]
-
-        invoker_multi_request = InvokerMultiRequest(
-            [play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
-
-        jury = Jury(invoker_multi_request)
-        invoker_multi_request.subscribe(jury)
-
-        class getNotify():
-            def __init__(self, IMR, UC):
-                self.IMR_test = IMR
-                self.upper_class = UC
-                ...
-
-            def notify(self, process):
-                self.IMR_test.send_process()
-                self.upper_class.assertEqual(jury.play_process, play_process)
-                self.upper_class.assertEqual(jury.strategies_process, strategy_processes)
-
-        notify_return = getNotify(invoker_multi_request, self)
-
-        invoker_multi_request.subscribe(jury)
-        invoker_multi_request.subscribe(notify_return)
-        invoker_multi_request.start()
-
     def test_perform_play_command_ended(self):
         # play_command = "status: end points: player1: 5 player2: 4 story_of_game: smth"
         # play_command1 = bytes(play_command, 'utf-8')
@@ -127,7 +71,6 @@ class TestJury(unittest.TestCase):
         invoker_multi_request.subscribe(jury)
         invoker_multi_request.subscribe(notify_return)
         invoker_multi_request.start()
-
 
     def test_perform_play_command_playing(self):
         # play_command = "status: play data: player1: None player2: 4"
