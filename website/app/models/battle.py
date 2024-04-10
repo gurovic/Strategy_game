@@ -51,9 +51,12 @@ class Battle(models.Model):
         file = os.path.join(MEDIA_ROOT, str(self.game.play.path))
         list_compiled_file = []
 
-        def get_compiled_file(compiler_report):
-            play_compiled_file = os.path.join(MEDIA_ROOT, str(compiler_report.compiled_file))
-            self.game.play = compiler_report.compiled_file
+        def get_compiled_file(compiler_report=None):
+            if compiler_report is None:
+                play_compiled_file = os.path.join(MEDIA_ROOT, str(self.game.play.path))
+            else:
+                play_compiled_file = os.path.join(MEDIA_ROOT, str(compiler_report.compiled_file))
+                self.game.play = compiler_report.compiled_file
 
             launcher = Launcher(os.path.abspath(str(play_compiled_file)), label="play")
             requests.append(launcher)
@@ -67,7 +70,8 @@ class Battle(models.Model):
                 player_solution_file = player_in_battle.file_solution.path
                 if player_solution_file.split(".")[-1][0] != 'e':
                     strategy_compiled = CompiledFile()
-                    Compiler(player_solution_file, player_solution_file.split(".")[-1], strategy_compiled.get_compiled_file).compile()
+                    Compiler(player_solution_file, player_solution_file.split(".")[-1],
+                             strategy_compiled.get_compiled_file).compile()
                     list_compiled_file.append(strategy_compiled)
                     player_solution_file = os.path.join(MEDIA_ROOT, str(strategy_compiled.compiled_file))
 
@@ -90,6 +94,8 @@ class Battle(models.Model):
         # <--------- AFTER FUNCTION --------->
         if file.split(".")[-1][0] != 'e':
             Compiler(file, file.split(".")[-1], get_compiled_file).compile()
+        else:
+            get_compiled_file()
 
     def run(self):
         self.create_invoker_requests()
