@@ -41,7 +41,7 @@ class SandboxTest(TestCase):
         sandbox = Sandbox(GameMock(), None, None)
         sandbox.battle = BattleMock()
         sandbox.run_battle()
-        self.assertEqual(sandbox.battle.count_battle, 0)
+        self.assertEqual(sandbox.battle.count_battle, 1)
 
     @patch("app.classes.sandbox.Battle")
     @patch("app.classes.sandbox.PlayersInBattle")
@@ -80,7 +80,7 @@ class SandboxTest(TestCase):
                 self.creator = creator
                 self.report = random_number
 
-            def start(self):
+            def run(self):
                 self.battle_count += 1
                 return self.creator.notify(self.report)
 
