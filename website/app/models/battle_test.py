@@ -22,19 +22,14 @@ class BattleTest(TestCase):
         user1 = User.objects.create_user(username='user1')
         user2 = User.objects.create_user(username='user2')
 
-        game = Game.objects.create(pk=1)
-        compile_and_upload_to_file_field(game.play, 'app/models/play.py', 'py')
-
+        game = Game.objects.create(pk=1, play='app/models/battle_test/play.py')
         battle = Battle.objects.create(game=game)
-
-        player_in_battle1 = PlayersInBattle.objects.create(player=user1, battle=battle)
-        compile_and_upload_to_file_field(player_in_battle1.file_solution, 'app/models/solution.py', 'py')
-
+        PlayersInBattle.objects.create(player=user1, battle=battle, file_solution='app/models/battle_test/solution.py')
+        PlayersInBattle.objects.create(player=user2, battle=battle, file_solution='app/models/battle_test/solution.py')
         battle.create_invoker_requests()
 
         mock_queue_add.assert_called()
-        invoker_requests = mock_queue_add.call_args.args[0].invoker_requests
-        self.assertEqual(battle.numbers, {1: user1})
+        self.assertEqual(battle.numbers, {1: user1, 2: user2})
 
     @patch('app.models.battle.Battle.create_invoker_requests')
     def test_run(self, mock_create_invoker_requests: Mock):
@@ -45,7 +40,7 @@ class BattleTest(TestCase):
         battle.game_state = GameState.END
         mock_jury.game_state = GameState.END
         Battle.jury_report = JuryReport()
-        Battle.jury_report.points = {1:1}
+        Battle.jury_report.points = {1: 1}
         Battle.jury_report.status = 1
         Battle.jury_report.story_of_game = []
         Battle.jury_report.save()
