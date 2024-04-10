@@ -1,11 +1,13 @@
 from unittest.mock import Mock, patch
 
+import django.db.models
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.files import File
 
 from ..classes.tests_utils import compile_and_upload_to_file_field
 from ..classes.jury import GameState
+from ..compiler import Compiler
 from ..models.jury_report import JuryReport
 from . import Battle, Game, PlayersInBattle
 from invoker.utils import Singleton
@@ -22,13 +24,10 @@ class BattleTest(TestCase):
         user1 = User.objects.create_user(username='user1')
         user2 = User.objects.create_user(username='user2')
 
-        game = Game.objects.create(pk=1)
-        compile_and_upload_to_file_field(game.play, 'app/models/play.py', 'py')
-
+        game = Game.objects.create(pk=1, play='app/models/battle/play.py')
         battle = Battle.objects.create(game=game)
-
-        player_in_battle1 = PlayersInBattle.objects.create(player=user1, battle=battle)
-        compile_and_upload_to_file_field(player_in_battle1.file_solution, 'app/models/solution.py', 'py')
+        PlayersInBattle.objects.create(player=user1, battle=battle,
+                                       file_solution='app/models/battle/solution.py')
 
         battle.create_invoker_requests()
 
@@ -45,7 +44,7 @@ class BattleTest(TestCase):
         battle.game_state = GameState.END
         mock_jury.game_state = GameState.END
         Battle.jury_report = JuryReport()
-        Battle.jury_report.points = {1:1}
+        Battle.jury_report.points = {1: 1}
         Battle.jury_report.status = 1
         Battle.jury_report.story_of_game = []
         Battle.jury_report.save()
