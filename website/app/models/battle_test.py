@@ -1,13 +1,11 @@
 from unittest.mock import Mock, patch
 
-import django.db.models
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.files import File
 
 from ..classes.tests_utils import compile_and_upload_to_file_field
 from ..classes.jury import GameState
-from ..compiler import Compiler
 from ..models.jury_report import JuryReport
 from . import Battle, Game, PlayersInBattle
 from invoker.utils import Singleton
@@ -24,16 +22,14 @@ class BattleTest(TestCase):
         user1 = User.objects.create_user(username='user1')
         user2 = User.objects.create_user(username='user2')
 
-        game = Game.objects.create(pk=1, play='app/models/battle/play.py')
+        game = Game.objects.create(pk=1, play='app/models/battle_test/play.py')
         battle = Battle.objects.create(game=game)
-        PlayersInBattle.objects.create(player=user1, battle=battle,
-                                       file_solution='app/models/battle/solution.py')
-
+        PlayersInBattle.objects.create(player=user1, battle=battle, file_solution='app/models/battle_test/solution.py')
+        PlayersInBattle.objects.create(player=user2, battle=battle, file_solution='app/models/battle_test/solution.py')
         battle.create_invoker_requests()
 
         mock_queue_add.assert_called()
-        invoker_requests = mock_queue_add.call_args.args[0].invoker_requests
-        self.assertEqual(battle.numbers, {1: user1})
+        self.assertEqual(battle.numbers, {1: user1, 2: user2})
 
     @patch('app.models.battle.Battle.create_invoker_requests')
     def test_run(self, mock_create_invoker_requests: Mock):
