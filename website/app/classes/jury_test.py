@@ -1,12 +1,16 @@
 from unittest.mock import patch, Mock
 import shutil
 import unittest
+import os
 import subprocess
+
+from django.test import TestCase
 
 from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker import NormalProcess
-from app.classes.jury import Jury
+from app.classes.jury import Jury, GameState
+from ..launcher import Launcher
 
 
 class TestJury(unittest.TestCase):
@@ -79,6 +83,51 @@ class TestJury(unittest.TestCase):
         invoker_multi_request.subscribe(notify_return)
         invoker_multi_request.start()
 
+    @patch('app.classes.jury.Jury.__init__')
+    def test_perform_play_command(self, mock_init: Mock):
+        class GetInvokerMultiRequestCallback:
+            def __init__(self, jury: Jury, UC):
+                self.jury = jury
+                self.upper_class = UC
+
+            def notify(self, reports):
+                pass
+
+            def notify_processes(self, processes):
+                jury = self.jury
+                jury.perform_play_command()
+                print(jury.game_state)
+                print(jury.points)
+                print(jury.story_of_game)
+
+                self.upper_class.assertEqual(jury.jury_report.status, "OK")
+                self.upper_class.assertEqual(jury.jury_report.story_of_game, "smth")
+                #self.upper_class.assertEqual(jury.jury_report.points, points_dict)
+
+        mock_init.return_value = None
+        jury = Jury()
+        jury.strategies_process = []
+        jury.game_state = GameState.PLAY
+
+        def play_process_callback(process):
+            jury.play_process = process
+
+        def strategy_process_callback(process):
+            jury.strategies_process.append(process)
+
+        play = os.path.abspath("app/classes/jury_test/play.epy")
+        str1 = os.path.abspath("app/classes/jury_test/str1.epy")
+        str2 = os.path.abspath("app/classes/jury_test/str2.epy")
+
+        play_ir = Launcher(play, process_callback=play_process_callback)
+        str1_ir = Launcher(str1, process_callback=strategy_process_callback)
+        str2_ir = Launcher(str2, process_callback=strategy_process_callback)
+
+        imr = InvokerMultiRequest([play_ir, str1_ir, str2_ir])
+        get_imr_callback = GetInvokerMultiRequestCallback(jury, self)
+        imr.subscribe(get_imr_callback)
+        imr.start()
+
     def test_perform_play_command_ended(self):
         # play_command = "status: end points: player1: 5 player2: 4 story_of_game: smth"
         # play_command1 = bytes(play_command, 'utf-8')
@@ -127,7 +176,6 @@ class TestJury(unittest.TestCase):
         invoker_multi_request.subscribe(jury)
         invoker_multi_request.subscribe(notify_return)
         invoker_multi_request.start()
-
 
     def test_perform_play_command_playing(self):
         # play_command = "status: play data: player1: None player2: 4"
