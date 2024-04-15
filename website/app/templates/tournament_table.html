@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}
+    Tournament results
+{% endblock title %}
 
-</body>
-</html>
+{% block header %}
+    Tournament results
+{% endblock header %}
+
+{% block content %}
+    {% for row in strings%}
+         <tr>
+            {% for x in row %}
+                <td> {{x}} </td>
+            {% endfor %}
+         </tr>
+    {% endfor %}
+{% endblock content %}
