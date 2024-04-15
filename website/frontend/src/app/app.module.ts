@@ -15,7 +15,7 @@ import {BottomBarComponent} from './components/bottom-bar/bottom-bar.component';
 import {NgOptimizedImage} from "@angular/common";
 import {ArchiveTaskComponent} from './components/__MODELS/archive-task/archive-task.component';
 import {RegistrationComponent} from './components/__PAGES/registration/registration.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import { ProfileComponent } from './components/__PAGES/profile/profile.component';
 import { UploadGameComponent } from './components/__PAGES/upload-game/upload-game.component';
@@ -47,6 +47,7 @@ import { UploadGameComponent } from './components/__PAGES/upload-game/upload-gam
             cookieName: 'csrftoken',
             headerName: 'X-CSRFToken',
         }),
+        ReactiveFormsModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
