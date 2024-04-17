@@ -29,7 +29,7 @@ class Launcher(InvokerRequest):
         if settings.LAUNCHER_COMMANDS[self.extension] is None:
             return ' '.join([self.file] + self.params)
         else:
-            command_tags = settings.LAUNCHER_COMMANDS[self.extension]
+            command_tags = settings.LAUNCHER_COMMANDS[self.extension].copy()
             if self.params:
                 command_tags += self.params
             command_tags = [self.file if i == "%1" else i for i in command_tags]
