@@ -104,18 +104,20 @@ class TestInvoker(TestCase):
         mock_environment().launch.assert_called_once_with('echo Hello World', file_system=[mock_file_load("test"), File(name='test_file', source='test')],
                                                           preserve_files=['test'], timelimit=10, label="test")
 
-    @patch("invoker.invoker.Invoker.free")
-    @patch("invoker.invoker.Invoker.send_report")
-    @patch("invoker.invoker.Invoker.make_report")
-    def test_notify(self, mock_make_report: Mock, mock_send_report: Mock, mock_free: Mock):
+    def test_notify(self):
         mock_result = Mock()
 
         invoker = Invoker()
+
+        invoker.make_report = Mock()
+        invoker.send_report = Mock()
+        invoker.free = Mock()
+
         invoker.notify(mock_result)
 
-        mock_make_report.assert_called_once_with(mock_result)
-        mock_send_report.assert_called_once_with(mock_make_report())
-        mock_free.assert_called_once()
+        invoker.make_report.assert_called_once_with(mock_result)
+        invoker.send_report.assert_called_once_with(invoker.make_report())
+        invoker.free.assert_called_once()
 
     def test_free(self):
         mock_callback = Mock()
