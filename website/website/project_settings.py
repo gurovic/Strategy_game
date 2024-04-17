@@ -32,7 +32,7 @@ COMPILER_COMMANDS = {
 if sys.platform == "linux":
     LAUNCHER_COMMANDS = {
         "epy": ["python3", "%1"],
-        "ecpp": ["chmod", "+x","%1",";","%1"]
+        "ecpp": ["chmod", "+x", "%1", ";", "%1"]
     }
 else:
     LAUNCHER_COMMANDS = {

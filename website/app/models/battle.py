@@ -56,9 +56,11 @@ class Battle(models.Model):
             Compiler(file, file.split(".")[-1], play_compiled.get_compiled_file).compile()
             file = os.path.join(MEDIA_ROOT, str(play_compiled.compiled_file))
 
-        launcher = Launcher(os.path.abspath(str(file)), label="play")
-        requests.append(launcher)
         players_in_battle = PlayersInBattle.objects.filter(battle=self)
+
+        launcher = Launcher(os.path.abspath(str(file)), params=[players_in_battle.count()], label="play")
+        requests.append(launcher)
+
         number = 0
         files_list = []
         for player_in_battle in players_in_battle:
