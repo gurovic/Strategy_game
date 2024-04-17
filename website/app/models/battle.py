@@ -26,7 +26,7 @@ class Battle(models.Model):
     time_start = models.DateTimeField(auto_now_add=True)
     time_finish = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
-    status = models.TextField(choices=GameStateChoices.choices, default=GameStateChoices.NOT_STARTED)
+    status = models.IntegerField(choices=GameStateChoices.choices, default=GameStateChoices.NOT_STARTED)
     logs = models.FileField(blank=True)
     jury_report = models.ForeignKey(JuryReport, blank=True, null=True, on_delete=models.CASCADE)
 
@@ -102,7 +102,6 @@ class Battle(models.Model):
             player.number_of_points = self.jury_report.points.get(player.number, 0)
 
         self.moves = self.jury_report.story_of_game
-        print(self.jury_report.get_status_display().upper())
         self.status = self.jury_report.status
 
         self.save()
