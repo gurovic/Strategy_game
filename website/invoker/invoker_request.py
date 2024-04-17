@@ -18,7 +18,7 @@ class InvokerRequest:
                  preserve_files: typing.Optional[list[str]] = None, timelimit=None,
                  report_callback=None, process_callback=None, label=None):
         self.command = command
-        self.files = files
+        self.files = files or []
         self.timelimit = settings.DEFAULT_EXECUTION_TL
         if timelimit:
             self.timelimit = timelimit
@@ -26,11 +26,12 @@ class InvokerRequest:
         self.report_callback = report_callback
         self.process_callback = process_callback
         self.label = label
+        self.process = None
 
     def run(self, invoker: Invoker):
         invoker_process = invoker.run(self.command, files=self.files, preserve_files=self.preserve_files,
                                       timelimit=self.timelimit, label=self.label, callback=self.notify)
-
+        self.process = invoker_process
         if self.process_callback is not None:
             self.process_callback(invoker_process)
 

@@ -1,8 +1,8 @@
+import typing
+
 from django.conf import settings
 
-from invoker.invoker_multi_request import Priority, InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
-from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPriorityQueue
 
 
 class NotSupportedExtension(ValueError):
@@ -13,14 +13,16 @@ class NotSupportedExtension(ValueError):
         return f"Language with extension {self.extension} is not supported!"
 
 
-class Launcher:
+class Launcher(InvokerRequest):
 
-    def __init__(self, file, callback = None):
+    def __init__(self, file: str, *args, **kwargs):
         self.file = file
-        self.extension = file.split(".")[-1]
-        self.callback = callback
+        self.extension = self.file.split(".")[-1]
 
-    def command(self):
+        super(Launcher, self).__init__(self.get_command(), timelimit=settings.LAUNCHER_RUN_TL[self.extension],  *args, **kwargs)
+        self.files.append(self.file)
+
+    def get_command(self):
         if self.extension not in settings.LAUNCHER_COMMANDS:
             raise NotSupportedExtension(self.extension)
         if settings.LAUNCHER_COMMANDS[self.extension] is None:
@@ -29,13 +31,3 @@ class Launcher:
             command_tags = settings.LAUNCHER_COMMANDS[self.extension]
             command_tags = [self.file if i == "%1" else i for i in command_tags]
             return ' '.join(command_tags)
-
-    def launch(self):
-        request = InvokerRequest(self.command(), files=[self.file], timelimit=settings.LAUNCHER_RUN_TL[self.extension], process_callback=self.notify)
-        multi_request = InvokerMultiRequest([request], priority=Priority.RED)
-        queue = InvokerMultiRequestPriorityQueue()
-        queue.add(multi_request)
-
-    def notify(self, process=None):
-        if process is not None:
-            self.callback(process)
