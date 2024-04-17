@@ -33,7 +33,6 @@ class Battle(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.moves = []
-        self.results = {}
         self.numbers = {}
 
     def create_invoker_requests(self):
@@ -99,13 +98,9 @@ class Battle(models.Model):
 
         self.jury_report = jury.jury_report
 
-        points = self.jury_report.points
-
         for player in PlayersInBattle.objects.filter(battle=self):
-            player.number_of_points = points.get(player.number, 0)
+            player.number_of_points = self.jury_report.points.get(player.number, 0)
 
-        for order, player in enumerate(points, start=1):
-            self.results[player] = order
         self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
 

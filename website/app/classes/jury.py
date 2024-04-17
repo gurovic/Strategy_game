@@ -142,7 +142,7 @@ class Jury:
 
                     points = {}
                     for player, point in enumerate(play_data["points"]):
-                        points[player] = point
+                        points[player+1] = point
 
                     self.jury_report.points = points
 
