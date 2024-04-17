@@ -42,19 +42,11 @@ class TestJury(unittest.TestCase):
         self.assertEqual(jury.strategies_invoker_requests, [strategy_invoker_request1, strategy_invoker_request2])
 
     def test_get_processes(self):
-        play_mock_process = NormalProcess(Mock(), label="play")
-        strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
-        strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
 
-        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
-        play_invoker_request.label = "play"
-        play_process = play_invoker_request.process_callback
+        play_invoker_request = InvokerRequest("command", label="play")
 
-        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
-        strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
-        strategy_invoker_request2.label = "player2"
-        strategy_processes = [strategy_invoker_request1.process_callback, strategy_invoker_request2.process_callback]
+        strategy_invoker_request1 = InvokerRequest("command1", label="player1")
+        strategy_invoker_request2 = InvokerRequest("command2", label="player2")
 
         invoker_multi_request = InvokerMultiRequest(
             [play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
@@ -68,10 +60,12 @@ class TestJury(unittest.TestCase):
                 self.upper_class = UC
                 ...
 
-            def notify(self, process):
-                self.IMR_test.send_process()
-                self.upper_class.assertEqual(jury.play_process, play_process)
-                self.upper_class.assertEqual(jury.strategies_process, strategy_processes)
+            def notify_processes(self, processes):
+                for process in processes:
+                    if process.label == "play":
+                        self.upper_class.assertEqual(jury.play_process, process)
+                    else:
+                        self.upper_class.assert_(process in jury.strategies_process)
 
         notify_return = getNotify(invoker_multi_request, self)
 
@@ -79,31 +73,44 @@ class TestJury(unittest.TestCase):
         invoker_multi_request.subscribe(notify_return)
         invoker_multi_request.start()
 
+        while not (play_invoker_request.process and strategy_invoker_request1.process and strategy_invoker_request2.process):
+            pass
+
+        invoker_multi_request.send_process()
+
     def test_perform_play_command_ended(self):
         # play_command = "status: end points: player1: 5 player2: 4 story_of_game: smth"
         # play_command1 = bytes(play_command, 'utf-8')
         # play_command2 = play_command.encode('utf-8')
 
         play_file = open("media/jury_test_files/data_player_1.txt", 'r')
-        play_mock_process = NormalProcess(Mock(), label="play")
-        play_mock_process.stdout = play_file
-        strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
-        strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
 
-        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
+        play_invoker_request = InvokerRequest("command", label="play")
         play_invoker_request.label = "play"
-        play_process = play_invoker_request.process_callback
 
-        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
+        strategy_invoker_request1 = InvokerRequest("command1", label="player1")
         strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
+        strategy_invoker_request2 = InvokerRequest("command2", label="player2")
         strategy_invoker_request2.label = "player2"
-        strategy_processes = [strategy_invoker_request1.process_callback, strategy_invoker_request2.process_callback]
 
         invoker_multi_request = InvokerMultiRequest(
             [play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
 
         jury = Jury(invoker_multi_request)
+
+        invoker_multi_request.subscribe(jury)
+
+        invoker_multi_request.start()
+
+        while not (play_invoker_request.process and strategy_invoker_request1.process and strategy_invoker_request2.process):
+            pass
+
+        invoker_multi_request.send_process()
+
+        play_process = play_invoker_request.process
+        play_process.stdout = play_file
+
+        strategy_processes = [strategy_invoker_request1.process, strategy_invoker_request2.process]
 
         class getNotify():
             def __init__(self, IMR, UC, JR):
@@ -149,13 +156,9 @@ class TestJury(unittest.TestCase):
         strategy_mock_process_2.stdout = strategy_file_2
         strategy_mock_process_2.stdin = strategy_file_save_2
 
-        play_invoker_request = InvokerRequest("command", process_callback=play_mock_process)
-        play_invoker_request.label = "play"
-
-        strategy_invoker_request1 = InvokerRequest("command1", process_callback=strategy_mock_process_1)
-        strategy_invoker_request1.label = "player1"
-        strategy_invoker_request2 = InvokerRequest("command2", process_callback=strategy_mock_process_2)
-        strategy_invoker_request2.label = "player2"
+        play_invoker_request = InvokerRequest("command", label="play")
+        strategy_invoker_request1 = InvokerRequest("command1", label="player1")
+        strategy_invoker_request2 = InvokerRequest("command2", label="player2")
 
         invoker_multi_request = InvokerMultiRequest(
             [play_invoker_request, strategy_invoker_request2, strategy_invoker_request1])
@@ -163,8 +166,23 @@ class TestJury(unittest.TestCase):
         jury = Jury(invoker_multi_request)
 
         invoker_multi_request.subscribe(jury)
+        invoker_multi_request.start()
+
+        while not (play_invoker_request.process and strategy_invoker_request1.process and strategy_invoker_request2.process):
+            pass
+
         invoker_multi_request.send_process()
 
+        play_invoker_request.process.stdout = play_file
+        play_invoker_request.process.stdin = play_file_save
+
+        strategy_invoker_request1.process.stdout = strategy_file_1
+        strategy_invoker_request2.process.stdin = strategy_file_save_1
+
+        strategy_invoker_request2.process.stdout = strategy_file_2
+        strategy_invoker_request2.process.stdin = strategy_file_save_2
+
+        jury.get_processes()
         jury.perform_play_command()
 
         # play_file_check = open("media/jury_test_files/save_data.txt", 'r')
