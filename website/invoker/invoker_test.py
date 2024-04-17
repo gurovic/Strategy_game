@@ -3,7 +3,7 @@ import subprocess
 from unittest.mock import patch, Mock
 from django.test import TestCase
 
-from invoker.invoker import Invoker, NoInvokerPoolCallbackData, InvokerProcess, TimeoutExpired, NormalProcess
+from invoker.invoker import Invoker, NoInvokerPoolCallbackData, InvokerProcess, TimeoutExpired, NormalProcess, BufferWrapper
 from invoker.models import InvokerReport
 from invoker.filesystem import File
 
@@ -67,7 +67,7 @@ class TestNormalProcess(TestCase):
         process = NormalProcess(mock_process)
 
         self.assertEqual(process.stdin, mock_process.stdin)
-        self.assertEqual(process.stdout, mock_process.stdout)
+        self.assertEqual(process.stdout, BufferWrapper(mock_process.stdout))
 
     def test_wait(self):
         mock_process = Mock()
@@ -145,7 +145,7 @@ class TestInvoker(TestCase):
 
         mock_report_create.assert_called_once_with(command=mock_result.command, time_start=mock_result.time_start,
                                                     time_end=mock_result.time_end, exit_code=mock_result.exit_code,
-                                                    output=mock_result.output, status=InvokerReport.Status.TL)
+                                                    output=mock_result.output, error=mock_result.error, status=InvokerReport.Status.TL)
         report.input_files.add.assert_called_once_with(mock_file())
         report.preserved_files.add.assert_called_once_with(mock_file())
         report.save.assert_called()

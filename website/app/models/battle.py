@@ -1,4 +1,5 @@
 import os.path
+import typing
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -56,9 +57,11 @@ class Battle(models.Model):
             Compiler(file, file.split(".")[-1], play_compiled.get_compiled_file).compile()
             file = os.path.join(MEDIA_ROOT, str(play_compiled.compiled_file))
 
-        launcher = Launcher(os.path.abspath(str(file)), label="play")
-        requests.append(launcher)
         players_in_battle = PlayersInBattle.objects.filter(battle=self)
+
+        launcher = Launcher(os.path.abspath(str(file)), params=[players_in_battle.count()], label="play")
+        requests.append(launcher)
+
         number = 0
         files_list = []
         for player_in_battle in players_in_battle:
@@ -87,21 +90,26 @@ class Battle(models.Model):
         multi_request.subscribe(self.jury)
         multi_request.start()
 
-    def run(self):
+    def run(self, callback: typing.Optional[typing.Callable[[JuryReport], None]] = None):
         self.create_invoker_requests()
         jury = self.jury
 
-        while jury.game_state is not GameState.END:
-            jury.get_processes()
-            jury.perform_play_command()
+        jury.get_processes()
+        jury.perform_play_command()
+
+        self.jury_report = jury.jury_report
 
         points = self.jury_report.points
-        points = dict(points.items())
 
-        for player in self.players.all():
-            player.number_of_points = points[player.number]
+        for player in PlayersInBattle.objects.filter(battle=self):
+            player.number_of_points = points.get(player.number, 0)
 
         for order, player in enumerate(points, start=1):
             self.results[player] = order
         self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
+
+        self.save()
+
+        if callback:
+            callback(self.jury_report)

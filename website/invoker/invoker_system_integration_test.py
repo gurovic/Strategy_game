@@ -20,7 +20,7 @@ class TestInvokerSystem(TestCase):
             def get_launcher_callback(process: NormalProcess):
                 self.launch_call = True
                 process_output = process.connect(input_data="Hello")
-                self.assertEqual(process_output, "5879349 Hello\n")
+                self.assertEqual(process_output, "5879349 Hello")
 
             def get_compiler_callback(report: CompilerReport):
                 self.compiler_call = True

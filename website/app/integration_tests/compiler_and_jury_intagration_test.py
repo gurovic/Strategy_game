@@ -61,7 +61,7 @@ class Test(unittest.TestCase):
                 self.IMR_test.send_process()
                 self.jury.perform_play_command()
 
-                self.upper_class.assertEqual(jury_of_battle.game_state, GameState.PLAY)
+                self.upper_class.assertEqual(jury_of_battle.game_state, GameState.END)
 
             def notify_processes(self, process):
                 pass
