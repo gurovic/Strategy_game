@@ -1,0 +1,51 @@
+<main class="content">
+
+    <div class="block-content block-header">
+
+
+    </div>
+
+</main>
+<form [formGroup]="checkoutForm">
+    <div>
+    <label>Name</label>
+    <input type="text" formControlName="name">
+    </div>
+
+    <div>
+        <label>Number of players</label>
+        <input type="text" formControlName="number_of_players"> #тут ввод - целое число!
+    </div>
+
+    <div>
+        <label>Ideal solution</label>
+        <input type="file" formControlName="ideal_solution">
+    </div>
+
+    <div>
+        <label>Play</label>
+        <input type="file" formControlName="play">
+    </div>
+
+    <div>
+        <label>Win points</label>
+        <input type="text" formControlName="win_points">#тут ввод - целое число!
+    </div>
+
+    <div>
+        <label>Lose points</label>
+        <input type="text" formControlName="lose_points">#тут ввод - целое число!
+    </div>
+
+    <div>
+        <label>Visualiser</label>
+        <input type="file" formControlName="visualiser">
+    </div>
+
+    <div>
+        <label>Rules</label>
+        <input type="file" formControlName="rules">
+    </div>
+
+    <button (click)="onSubmit()" class="button" type="button">Purchase</button>
+</form>
