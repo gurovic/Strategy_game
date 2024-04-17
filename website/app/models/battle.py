@@ -18,22 +18,21 @@ from invoker.invoker_multi_request_priority_queue import InvokerMultiRequestPrio
 
 class Battle(models.Model):
     class GameStateChoices(models.TextChoices):
-        NS = "NOT_STARTED"
-        OK = "OK"
-        ER = "ERROR"
+        NOT_STARTED = -1
+        ERROR = 0
+        OK = 1
 
     game = models.ForeignKey('Game', on_delete=models.CASCADE, null=True)
     time_start = models.DateTimeField(auto_now_add=True)
     time_finish = models.DateTimeField(auto_now_add=True)
     players = models.ManyToManyField(User, through='PlayersInBattle', blank=True)
-    status = models.TextField(choices=GameStateChoices.choices, default=GameStateChoices.NS)
+    status = models.IntegerField(choices=GameStateChoices.choices, default=GameStateChoices.NOT_STARTED)
     logs = models.FileField(blank=True)
     jury_report = models.ForeignKey(JuryReport, blank=True, null=True, on_delete=models.CASCADE)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.moves = []
-        self.results = {}
         self.numbers = {}
 
     def create_invoker_requests(self):
@@ -99,13 +98,9 @@ class Battle(models.Model):
 
         self.jury_report = jury.jury_report
 
-        points = self.jury_report.points
-
         for player in PlayersInBattle.objects.filter(battle=self):
-            player.number_of_points = points.get(player.number, 0)
+            player.number_of_points = self.jury_report.points.get(player.number, 0)
 
-        for order, player in enumerate(points, start=1):
-            self.results[player] = order
         self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
 
