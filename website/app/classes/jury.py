@@ -150,7 +150,6 @@ class Jury:
 
                     return self.jury_report
                 case _:
-                    print(2)
                     return self.mark_error()
 
     def notify_processes(self, processes):
