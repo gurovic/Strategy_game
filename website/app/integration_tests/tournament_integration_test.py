@@ -15,7 +15,7 @@ class TestTournament(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.game = Game.objects.create(pk=1, play=os.path.abspath(
-            'app/integration_tests/tournament_integration_test/game_play.py'))
+            "media/game_bolshe-menshe/bolshe_menshe.py"))
 
         cls.user1 = User.objects.create_user(username='user1', password='12345')
         cls.user2 = User.objects.create_user(username='user2', password='12345')
@@ -24,19 +24,16 @@ class TestTournament(TestCase):
         cls.tournament = Tournament.objects.create(name="Some tournament", game=cls.game)
 
         PlayerInTournament.objects.create(player=cls.user1, tournament=cls.tournament,
-                                          file_solution='app/integration_tests/tournament_integration_test/game_play.py')
+                                          file_solution="media/game_bolshe-menshe/bolshe_menshe_solution1.py")
 
         PlayerInTournament.objects.create(player=cls.user2, tournament=cls.tournament,
-                                          file_solution='app/integration_tests/tournament_integration_test/game_play.py')
+                                          file_solution="media/game_bolshe-menshe/bolshe_menshe_solution1.py")
 
         PlayerInTournament.objects.create(player=cls.user3, tournament=cls.tournament,
-                                          file_solution='app/integration_tests/tournament_integration_test/game_play.py')
+                                          file_solution="media/game_bolshe-menshe/bolshe_menshe_solution1.py")
 
     @classmethod
     def tearDownClass(cls):
-        cls.game.play.delete()
-        for player_in_tournament in PlayerInTournament.objects.all():
-            player_in_tournament.file_solution.delete()
         super().tearDownClass()
 
     def test(self):
