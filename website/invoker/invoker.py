@@ -112,7 +112,7 @@ class InvokerProcess(ABC):
     def connect(self, input_data: str | None) -> str:
         if input_data is not None:
             self.stdin.write(input_data + '\n')
-        return self.stdout.readline().strip()
+        return self.stdout.readline()
 
     def _wait_for_end(self):
         try:
