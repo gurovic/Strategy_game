@@ -16,7 +16,7 @@ class Sandbox:
         self.battle.save()
 
     def run_battle(self):
-        self.battle.run()
+        self.battle.run(self.notify)
 
     def notify(self, report):
         self.callback(report)

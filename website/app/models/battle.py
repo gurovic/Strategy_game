@@ -1,4 +1,5 @@
 import os.path
+import typing
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -89,13 +90,14 @@ class Battle(models.Model):
         multi_request.subscribe(self.jury)
         multi_request.start()
 
-    def run(self):
+    def run(self, callback: typing.Optional[typing.Callable[[JuryReport], None]] = None):
         self.create_invoker_requests()
         jury = self.jury
 
-        while jury.game_state is not GameState.END:
-            jury.get_processes()
-            jury.perform_play_command()
+        jury.get_processes()
+        jury.perform_play_command()
+
+        self.jury_report = jury.jury_report
 
         points = self.jury_report.points
         points = dict(points.items())
@@ -107,3 +109,8 @@ class Battle(models.Model):
             self.results[player] = order
         self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
+
+        self.save()
+
+        if callback:
+            callback(self.jury_report)

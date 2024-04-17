@@ -1,5 +1,6 @@
 import enum
 import typing
+import json
 
 from invoker.invoker_request import InvokerRequest, InvokerRequestType
 from app.models.jury_report import JuryReport
@@ -38,6 +39,8 @@ class Jury:
         self.play_process = None
         self.strategies_process = []
 
+        self.story_of_game = []
+
         self.game_state = GameState.PLAY
         self.jury_report = JuryReport()
         self.jury_report.status = ""
@@ -70,12 +73,15 @@ class Jury:
                 if (index >= len(self.strategies_invoker_requests)):
                     end_cycle = 1
             if (found_player == 0):
-                self.jury_report.status = "ERROR"
+                self.jury_report.status = JuryReport.Status.ERROR
                 return self.jury_report
             player_number += 1
         self.strategies_invoker_requests = invoker_request_sorted_array
 
     def get_processes(self):
+        if not self.process:
+            self.invoker_multi_request.send_process()
+
         self.play_process = None
         self.strategies_process = []
         invoker_processes = self.process
@@ -101,100 +107,51 @@ class Jury:
                 if (index >= len(self.strategies_process)):
                     end_cycle = 1
             if (found_player == 0):
-                self.jury_report.status = "ERROR"
+                self.jury_report.status = JuryReport.Status.ERROR
                 return self.jury_report
             player_number += 1
         self.strategies_process = invoker_process_sorted_array
 
+    def mark_error(self):
+        self.game_state = GameState.END
+        self.jury_report.status = JuryReport.Status.ERROR
+        self.jury_report.save()
+        return self.jury_report
+
     def perform_play_command(self):
-        try:
-            play_command = self.play_process.connect(None)
-        except RuntimeError:
-            self.jury_report.status = "ERROR"
-            return self.jury_report
-        # play_command:
-        # status: play data: player1: .... player2: ...
-        # status: end points: player1: .... player2: ... story_of_game: ...
-        if (len(play_command) < 12):
-            self.jury_report.status = "ERROR"
-            return self.jury_report
-        if play_command[8:12] == "play":
-            index = 19
-            data_from_play_command = ""
+        player_data = None
+
+        while self.game_state == GameState.PLAY:
             try:
-                data_from_play_command = play_command[index]
-            except RuntimeError:
-                self.jury_report.status = "ERROR"
-                return self.jury_report
-            end_cycle = 0
-            index += 1
-            data_to_players = []
-            player_index_end = []
-            while (end_cycle == 0):
-                try:
-                    add_str = play_command[index]
-                except RuntimeError:
-                    self.jury_report.status = "ERROR"
+                play_command = self.play_process.connect(player_data)
+
+                self.story_of_game.append(play_command)
+                play_data = json.loads(play_command)
+            except (RuntimeError, json.decoder.JSONDecodeError):
+                return self.mark_error()
+            
+            match play_data["state"]:
+                case "play":
+                    player_command = self.strategies_process[play_data["player"]-1].connect(play_data["data"])
+                    player_data = json.dumps({"player": play_data["player"], "data": player_command})
+                    self.story_of_game.append(player_data)
+                case "end":
+                    self.game_state = GameState.END
+
+                    self.jury_report.story_of_game = self.story_of_game
+                    self.jury_report.status = JuryReport.Status.OK
+
+                    points = {}
+                    for player, point in enumerate(play_data["points"]):
+                        points[player+1] = point
+
+                    self.jury_report.points = points
+
+                    self.jury_report.save()
+
                     return self.jury_report
-                if (add_str == " "):
-                    if (data_from_play_command[:6] == "player"):
-                        player_index_end.append(index - 1)
-                    data_from_play_command = ""
-                else:
-                    data_from_play_command += add_str
-                index += 1
-                if (len(player_index_end) == len(self.strategies_process)):
-                    end_cycle = 1
-            for i in range(len(player_index_end)):
-                if (i == len(player_index_end) - 1):
-                    data_to_players.append(play_command[player_index_end[i] + 2:])
-                else:
-                    data_to_players.append(play_command[player_index_end[i] + 2: player_index_end[i + 1] - 8])
-            data_from_players = []
-            for i in range(len(data_to_players)):
-                if (data_to_players[i] != "None"):
-                    player_data = self.strategies_process[i].connect(data_to_players[i])
-                    # self.strategies_process[i].stdin = data_to_players[i]   not as should be, needs a change
-                else:
-                    player_data = ""
-                    # self.strategies_process[i].stdin = ""
-                # player_data = self.strategies_process[i].stdout
-                data_from_players.append(player_data)
-            # self.play_process.stdin = "" #not as should be, needs a change
-            for i in range(len(data_from_players)):
-                blank_str = self.play_process.connect(data_from_players[i])
-                # self.play_process.stdin += data_from_players[i] #not as should be, needs a change
-        else:
-            self.game_state = GameState.END
-            index = 20
-            data_from_play_command = ""
-            player = ""
-            try:
-                data_from_play_command = play_command[index]
-            except RuntimeError:
-                self.jury_report.status = "ERROR"
-                return self.jury_report
-            index += 1
-            while (data_from_play_command != "story_of_game"):
-                try:
-                    add_str = play_command[index]
-                except RuntimeError:
-                    self.jury_report.status = "ERROR"
-                    return self.jury_report
-                if (add_str == " "):
-                    if (data_from_play_command[:6] == "player"):
-                        player = data_from_play_command[:len(data_from_play_command) - 1]
-                    else:
-                        self.jury_report.points[player] = int(data_from_play_command)
-                        player = ""
-                    data_from_play_command = ""
-                else:
-                    data_from_play_command += add_str
-                index += 1
-            index += 2
-            self.jury_report.story_of_game = play_command[index:]
-            self.jury_report.status = "OK"
-            return self.jury_report
+                case _:
+                    return self.mark_error()
 
     def notify_processes(self, processes):
         self.process = processes
