@@ -13,11 +13,10 @@ class Sandbox:
             player = PlayersInBattle.objects.create(file_solution=self.game.ideal_solution, number=i + 1,
                                                     battle=self.battle)
             self.players.append(player)
-        self.battle.players.set(self.players)
         self.battle.save()
 
     def run_battle(self):
-        self.battle.start()
+        self.battle.run()
 
     def notify(self, report):
         self.callback(report)

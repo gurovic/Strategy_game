@@ -7,8 +7,6 @@
 }
 
 .top-part {
-  --screen-width:  min(1440px, 100vw);
-  --image-width:   max(500px, .6 * var(--screen-width));
   width:           100%;
   min-height:      var(--image-width);
   display:         flex;
@@ -36,14 +34,14 @@
 
     p {
       font-size:      max(1em, min(1.5em, 10vw));
-      color:          #999999;
+      color:          rgb(var(--gray));
       text-transform: uppercase;
     }
 
     .button {
       margin-top:          50px;
       padding:             10px 40px;
-      border:              2px solid white;
+      border:              2px solid rgb(var(--white));
       font-size:           max(15px, min(20px, 3vw));
       width:               fit-content;
       height:              fit-content;
@@ -53,8 +51,8 @@
       transition-duration: 250ms;
 
       &:hover {
-        background: #ffffff;
-        color:      var(--background-ddark);
+        background: rgb(var(--white));
+        color:      rgb(var(--background-ddark));
       }
     }
   }
@@ -66,7 +64,7 @@
       justify-content: center;
       flex-direction:  row;
       flex-wrap:       wrap;
-      background:      #000000;
+      background:      rgb(var(--black));
       grid-column-gap: 50px;
       position:        absolute;
       left:            -100vw;
@@ -99,7 +97,7 @@
     flex-wrap:       wrap;
     flex-direction:  row;
     grid-column-gap: 20px;
-    grid-row-gap: 40px;
+    grid-row-gap:    40px;
   }
 
   .tasks_archive__card {
@@ -109,4 +107,9 @@
 
 @media screen and (max-width: 600px) {
   .to_hide600 { display: none !important; }
+}
+
+:host {
+  --screen-width: min(1440px, 100vw);
+  --image-width:  max(500px, .6 * var(--screen-width));
 }
