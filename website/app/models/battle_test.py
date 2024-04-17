@@ -39,11 +39,13 @@ class BattleTest(TestCase):
 
         battle.game_state = GameState.END
         mock_jury.game_state = GameState.END
-        Battle.jury_report = JuryReport()
-        Battle.jury_report.points = {1: 1}
-        Battle.jury_report.status = 1
-        Battle.jury_report.story_of_game = []
-        Battle.jury_report.save()
+
+        battle.jury.jury_report = JuryReport()
+        battle.jury.jury_report.points = {1: 1}
+        battle.jury.jury_report.status = 1
+        battle.jury.jury_report.story_of_game = []
+        battle.jury.jury_report.save()
+
         battle.run()
 
         self.assertEquals(battle.status, 1)

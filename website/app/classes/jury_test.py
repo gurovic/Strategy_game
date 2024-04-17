@@ -7,6 +7,7 @@ from invoker.invoker_multi_request import InvokerMultiRequest
 from invoker.invoker_request import InvokerRequest
 from invoker.invoker import NormalProcess
 from app.classes.jury import Jury
+from app.models.jury_report import JuryReport
 
 
 class TestJury(unittest.TestCase):
@@ -59,6 +60,9 @@ class TestJury(unittest.TestCase):
                 self.IMR_test = IMR
                 self.upper_class = UC
                 ...
+
+            def notify(self, report):
+                pass
 
             def notify_processes(self, processes):
                 for process in processes:
@@ -119,7 +123,10 @@ class TestJury(unittest.TestCase):
                 self.jury = JR
                 ...
 
-            def notify(self, process):
+            def notify(self, report):
+                pass
+
+            def notify_processes(self, process):
                 self.IMR_test.send_process()
                 self.jury.perform_play_comand()
 
@@ -146,16 +153,6 @@ class TestJury(unittest.TestCase):
         strategy_file_2 = open("media/jury_test_files/data_player_4.txt", 'r')
         strategy_file_save_2 = open("media/jury_test_files/save_data_2.txt", 'a+')
 
-        play_mock_process = NormalProcess(Mock(), label="play")
-        play_mock_process.stdout = play_file
-        play_mock_process.stdin = play_file_save
-        strategy_mock_process_1 = NormalProcess(Mock(), label="player1")
-        strategy_mock_process_1.stdout = strategy_file_1
-        strategy_mock_process_1.stdin = strategy_file_save_1
-        strategy_mock_process_2 = NormalProcess(Mock(), label="player2")
-        strategy_mock_process_2.stdout = strategy_file_2
-        strategy_mock_process_2.stdin = strategy_file_save_2
-
         play_invoker_request = InvokerRequest("command", label="play")
         strategy_invoker_request1 = InvokerRequest("command1", label="player1")
         strategy_invoker_request2 = InvokerRequest("command2", label="player2")
@@ -170,6 +167,10 @@ class TestJury(unittest.TestCase):
 
         while not (play_invoker_request.process and strategy_invoker_request1.process and strategy_invoker_request2.process):
             pass
+
+        play_invoker_request.process._process = Mock()
+        strategy_invoker_request1.process._process = Mock()
+        strategy_invoker_request2.process._process = Mock()
 
         invoker_multi_request.send_process()
 
@@ -189,8 +190,8 @@ class TestJury(unittest.TestCase):
         # strategy_file_check_1 = open("media/jury_test_files/save_data_1.txt", 'r')
         # strategy_file_check_2 = open("media/jury_test_files/save_data_2.txt", 'r')
 
-        self.assertEqual(jury.jury_report.status, "")
-        self.assertEqual(play_mock_process.stdin.read(), "")
+        self.assertEqual(jury.jury_report.status, JuryReport.Status.OK)
+        self.assertEqual(play_file_save.read(), "")
         self.assertEqual(strategy_file_save_1.read(), "")
         self.assertEqual(strategy_file_save_2.read(), "")
 
@@ -198,7 +199,7 @@ class TestJury(unittest.TestCase):
         strategy_file_check_1 = open("media/jury_test_files/save_data_1.txt", 'r+')
         strategy_file_check_2 = open("media/jury_test_files/save_data_2.txt", 'r+')
 
-        self.assertEqual(play_file_check.read(), "\n377\n")
+        self.assertEqual(play_file_check.read(), '{"player": 2, "data": "377"}\n')
         self.assertEqual(strategy_file_check_1.read(), "")
         self.assertEqual(strategy_file_check_2.read(), "4\n")
 

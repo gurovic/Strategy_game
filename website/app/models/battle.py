@@ -100,10 +100,9 @@ class Battle(models.Model):
         self.jury_report = jury.jury_report
 
         points = self.jury_report.points
-        points = dict(points.items())
 
-        for player in self.players.all():
-            player.number_of_points = points[player.number]
+        for player in PlayersInBattle.objects.filter(battle=self):
+            player.number_of_points = points.get(player.number, 0)
 
         for order, player in enumerate(points, start=1):
             self.results[player] = order

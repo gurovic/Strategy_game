@@ -1,1 +1,1 @@
-status: end points: player1: 5 player2: 4 story_of_game: smth
+{"state": "end", "points": "5 4"}

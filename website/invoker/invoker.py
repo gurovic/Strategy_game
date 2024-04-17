@@ -69,6 +69,9 @@ class BufferWrapper:
         self.buffer = buffer
         self.log = []
 
+    def __eq__(self, other):
+        return self.buffer == other.buffer
+
     def read(self) -> str:
         for line in self.buffer.read().splitlines():
             self.log.append(line)

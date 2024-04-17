@@ -124,7 +124,6 @@ class Jury:
         while self.game_state == GameState.PLAY:
             try:
                 play_command = self.play_process.connect(player_data)
-
                 self.story_of_game.append(play_command)
                 play_data = json.loads(play_command)
             except (RuntimeError, json.decoder.JSONDecodeError):
@@ -143,7 +142,7 @@ class Jury:
 
                     points = {}
                     for player, point in enumerate(play_data["points"]):
-                        points[player+1] = point
+                        points[player] = point
 
                     self.jury_report.points = points
 
@@ -151,6 +150,7 @@ class Jury:
 
                     return self.jury_report
                 case _:
+                    print(2)
                     return self.mark_error()
 
     def notify_processes(self, processes):
