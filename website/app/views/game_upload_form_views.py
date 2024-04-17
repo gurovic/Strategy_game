@@ -31,39 +31,39 @@ class GameUploadFormView(View):
             except:
                 pass
 
-            game_model = Game.objects.create(**game_form.cleaned_data)
-            request.session['game_id'] = game_model.id
-            game_model.ideal_solution = request.FILES['ideal_solution']
-            game_model.play = request.FILES['play']
-            game_model.visualiser = request.FILES['visualiser']
-            game_model.rules = request.FILES['rules']
-            game_model.save()
+        game_model = Game.objects.create(**game_form.cleaned_data)
+        request.session['game_id'] = game_model.id
+        game_model.ideal_solution = request.FILES['ideal_solution']
+        game_model.play = request.FILES['play']
+        game_model.visualiser = request.FILES['visualiser']
+        game_model.rules = request.FILES['rules']
+        game_model.save()
 
-            ideal_solution = Compiler(
-                game_model.ideal_solution.path,
-                request.POST['ideal_solution_language'],
-                callback=partial(self.notify, label='ideal_solution')
-            )
+        ideal_solution = Compiler(
+            game_model.ideal_solution.path,
+            request.POST['ideal_solution_language'],
+            callback=partial(self.notify, label='ideal_solution')
+        )
 
-            play = Compiler(
-                game_model.play.path,
-                request.POST['play_language'],
-                callback=partial(self.notify, label='play', game_model=game_model)
-            )
+        play = Compiler(
+            game_model.play.path,
+            request.POST['play_language'],
+            callback=partial(self.notify, label='play', game_model=game_model)
+        )
 
-            visualiser = Compiler(
-                game_model.visualiser.path,
-                request.POST['visualiser_language'],
-                callback=partial(self.notify, label='visualiser')
-            )
-            request.session['ideal_solution_report_id'] = None
-            request.session['play_report_id'] = None
-            request.session['visualiser_report_id'] = None
+        visualiser = Compiler(
+            game_model.visualiser.path,
+            request.POST['visualiser_language'],
+            callback=partial(self.notify, label='visualiser')
+        )
+        request.session['ideal_solution_report_id'] = None
+        request.session['play_report_id'] = None
+        request.session['visualiser_report_id'] = None
 
-            ideal_solution.compile()
-            play.compile()
-            visualiser.compile()
-            return redirect('game_upload_compilation')
+        ideal_solution.compile()
+        play.compile()
+        visualiser.compile()
+        return redirect('game_upload_compilation')
 
     def notify(self, report, label, game_model=None):
         if label == 'ideal_solution':
