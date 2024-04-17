@@ -48,7 +48,7 @@ class GameUploadFormView(View):
             play = Compiler(
                 game_model.play.path,
                 request.POST['play_language'],
-                callback=partial(self.notify, label='play')
+                callback=partial(self.notify, label='play', game_model=game_model)
             )
 
             visualiser = Compiler(
@@ -66,10 +66,11 @@ class GameUploadFormView(View):
             return redirect('game_upload_compilation')
           
 
-    def notify(self, report, label):
+    def notify(self, report, label, game_model=None):
         if label == 'ideal_solution':
             self.request.session['ideal_solution_report_id'] = report.id
         elif label == 'play':
+            game_model.compiled_play = report.compiled_file
             self.request.session['play_report_id'] = report.id
         elif label == 'visualiser':
             self.request.session['visualiser_report_id'] = report.id
