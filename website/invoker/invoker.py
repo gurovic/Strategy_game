@@ -63,10 +63,28 @@ class StdOut(typing.Protocol):
     def readline(self) -> str:
         ...
 
+
+class BufferWrapper:
+    def __init__(self, buffer: StdOut):
+        self.buffer = buffer
+        self.log = []
+
+    def read(self) -> str:
+        for line in self.buffer.read().splitlines():
+            self.log.append(line)
+        return "\n".join(self.log)
+
+    def readline(self) -> str:
+        line = self.buffer.readline().strip()
+        self.log.append(line)
+        return line
+
+
 @class_log
 class InvokerProcess(ABC):
     stdin: StdIn
     stdout: StdOut
+    stderr: StdOut
 
     def __init__(self, label: typing.Optional[str] = None, timelimit: typing.Optional[int] = None,
                  callback: typing.Optional[typing.Callable[[bool], None]] = None):
@@ -94,7 +112,7 @@ class InvokerProcess(ABC):
     def connect(self, input_data: str | None) -> str:
         if input_data is not None:
             self.stdin.write(input_data + '\n')
-        return self.stdout.readline()
+        return self.stdout.readline().strip()
 
     def _wait_for_end(self):
         try:
@@ -113,7 +131,8 @@ class NormalProcess(InvokerProcess):
     def __init__(self, process: subprocess.Popen, *args, **kwargs):
         self._process = process
         self.stdin = self._process.stdin
-        self.stdout = self._process.stdout
+        self.stdout = BufferWrapper(self._process.stdout)
+        self.stderr = BufferWrapper(self._process.stderr)
 
         super().__init__(*args, **kwargs)
 
@@ -167,13 +186,14 @@ class NormalEnvironment(InvokerEnvironment):
         self.result_process = subprocess.Popen(command, text=True,
                                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                                cwd=self.work_dir, shell=True, bufsize=1, universal_newlines=True)
-
-        return NormalProcess(
+        self.normal_process = NormalProcess(
             self.result_process,
             label=self.label,
             timelimit=self.timelimit,
             callback=self.close
         )
+
+        return self.normal_process
 
     @method_log
     def close(self, timeout_error: bool):
@@ -193,10 +213,8 @@ class NormalEnvironment(InvokerEnvironment):
 
         report = RunResult(
             command=self.command,
-            # output=self.result_process.stdout.read(),
-            # error=self.result_process.stderr.read(),
-            output="out",
-            error="er",
+            output=self.normal_process.stdout.read(),
+            error=self.normal_process.stderr.read(),
             exit_code=self.return_code,
             time_start=self.time_start,
             time_end=time_end,
@@ -274,6 +292,7 @@ class Invoker:
         report = InvokerReport.objects.create(command=result.command, time_start=result.time_start,
                                               time_end=result.time_end, exit_code=result.exit_code,
                                               output=result.output,
+                                              error=result.error,
                                               status=InvokerReport.Status.TL if result.exceeded_timelimit else InvokerReport.Status.OK if result.exit_code == 0 else InvokerReport.Status.RE)
         if result.input_files:
             for file in result.input_files:
