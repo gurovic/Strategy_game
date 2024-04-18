@@ -6,6 +6,7 @@ import {RegisterApiService} from "../../../services/api/register-api.service";
 import {UserRegister} from "../../../models/api/user-register.model";
 import {ProfileService} from "../../../services/profile.service";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
+import {RoutingService} from "../../../services/routing.service";
 
 @Component({
     selector: 'app-login',
@@ -19,14 +20,14 @@ export class LoginComponent implements OnInit {
         private login_service: LoginApiService,
         private profile_service: ProfileService,
         private profile_api_service: ProfileApiService,
-        private router: Router,
+        private router: RoutingService,
     ) {
     }
 
     ngOnInit(): void {
         this.profile_api_service.get().subscribe(
             resp => {
-                this.router.navigate(['profile']);
+                this.router.navigate('profile');
             }
         );
     }
@@ -42,7 +43,7 @@ export class LoginComponent implements OnInit {
                         setTimeout(() => {
                             // @ts-ignore
                             document.getElementById('loader-box').style.display = 'none';
-                            this.router.navigate(['profile'])
+                            this.router.navigate('profile')
                             location.reload();
                         }, 1000)
                     },
@@ -66,7 +67,7 @@ export class LoginComponent implements OnInit {
     }
 
     go_link(link: string) {
-        this.router.navigate([link]);
+        this.router.navigate(link);
         window.scrollTo({
             // @ts-ignore
             top: 0,

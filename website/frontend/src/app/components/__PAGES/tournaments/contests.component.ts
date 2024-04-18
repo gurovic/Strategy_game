@@ -5,6 +5,7 @@ import {ProfileApiService} from "../../../services/api/profile-api.service";
 import {ProfileService} from "../../../services/profile.service";
 import {Profile} from "../../../models/profile.model";
 import {TournamentModel} from "../../../models/api/tournament.model";
+import {RoutingService} from "../../../services/routing.service";
 
 @Component({
     selector: 'app-tournaments',
@@ -20,6 +21,7 @@ export class ContestsComponent implements OnInit {
         private tournament_service: TournamentApiService,
         private profile_api_service: ProfileApiService,
         private profile_service: ProfileService,
+        private router: RoutingService,
     ) {
     }
 
@@ -44,5 +46,9 @@ export class ContestsComponent implements OnInit {
                     this.user = this.profile_service.get_user();
                 },
             );
+    }
+
+    navigate(link: string) {
+        this.router.navigate(link);
     }
 }
