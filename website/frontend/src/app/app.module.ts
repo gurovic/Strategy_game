@@ -18,6 +18,7 @@ import {RegistrationComponent} from './components/__PAGES/registration/registrat
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import { ProfileComponent } from './components/__PAGES/profile/profile.component';
+import { TournamentUploadSolutionComponent } from './components/__PAGES/tournament-upload-solution/tournament-upload-solution.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import { ProfileComponent } from './components/__PAGES/profile/profile.component
         ArchiveTaskComponent,
         RegistrationComponent,
         ProfileComponent,
+        TournamentUploadSolutionComponent,
     ],
     imports: [
         BrowserModule,
