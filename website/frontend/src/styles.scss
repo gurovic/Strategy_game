@@ -74,6 +74,7 @@ img {
   --white:      255, 255, 255;
   --black:      0, 0, 0;
   --d-blue:     17, 15, 66;
+  --dd-blue:    0, 0, 21;
   --l-blue:     27, 23, 98;
   --d-green:    21, 202, 12;
   --l-green:    153, 255, 145;
@@ -84,13 +85,13 @@ img {
   --blue:       64, 201, 255;
   --l-purple:   167, 139, 250;
   --d-gray:     55, 65, 81;
-  --d-gray2: 65,65,65;
+  --d-gray2:    65, 65, 65;
 }
 
 :root { // colors
   --text-color:           var(--white);
   --caret-color:          var(--white);
-  --background-color:     var(-d-blue);
+  --background-color:     var(--dd-blue);
   --border-color:         var(--l-blue);
   --color-accent:         var(--prismarine);
   --button-primary-color: var(--purple);
