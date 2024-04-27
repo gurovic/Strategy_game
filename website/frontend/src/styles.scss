@@ -85,12 +85,13 @@ img {
   --l-purple:   167, 139, 250;
   --d-gray:     55, 65, 81;
   --d-gray2: 65,65,65;
+  --orange: 232, 28, 100;
 }
 
 :root { // colors
   --text-color:           var(--white);
   --caret-color:          var(--white);
-  --background-color:     var(-d-blue);
+  --background-color:     var(--orange);
   --border-color:         var(--l-blue);
   --color-accent:         var(--prismarine);
   --button-primary-color: var(--purple);

@@ -22,6 +22,7 @@ class GameUploadFormView(View):
         })
 
     def post(self, request, *args, **kwargs):
+        print('herfmsdklfmklsdmkl')
         game_form = GameForm(data=request.POST)
 
         if game_form.is_valid():
@@ -33,10 +34,11 @@ class GameUploadFormView(View):
 
         game_model = Game.objects.create(**game_form.cleaned_data)
         request.session['game_id'] = game_model.id
-        game_model.ideal_solution = request.FILES['ideal_solution']
-        game_model.play = request.FILES['play']
-        game_model.visualiser = request.FILES['visualiser']
-        game_model.rules = request.FILES['rules']
+        ideal_solution = request.FILES.get('ideal_solution')
+        game_model.ideal_solution = request.FILES.get('ideal_solution')
+        game_model.play = request.FILES.get('play')
+        game_model.visualiser = request.FILES.get('visualiser')
+        game_model.rules = request.FILES.get('rules')
         game_model.save()
 
         ideal_solution = Compiler(

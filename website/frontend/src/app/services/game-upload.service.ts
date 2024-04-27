@@ -15,7 +15,7 @@ export class GameUploadService {
     ) {
     }
 
-    uploadingGame(data: UploadGameModel): Observable<any> {
+    uploadingGame(data: any): Observable<any> {
         return this.http.post('app/game_upload/form/', data);
     }
 }

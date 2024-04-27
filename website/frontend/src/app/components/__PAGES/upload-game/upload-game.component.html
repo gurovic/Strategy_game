@@ -6,46 +6,74 @@
     </div>
 
 </main>
-<form [formGroup]="checkoutForm">
+<form>
     <div>
-    <label>Name</label>
-    <input type="text" formControlName="name">
+        <label>Name</label>
+        <input
+            type="text"
+            [(ngModel)]="name"
+            required
+        />
     </div>
 
     <div>
         <label>Number of players</label>
-        <input type="text" formControlName="number_of_players"> #тут ввод - целое число!
+        <input
+            type="text"
+            [(ngModel)]="number_of_players"
+            required
+        />
     </div>
 
     <div>
         <label>Ideal solution</label>
-        <input type="file" formControlName="ideal_solution">
+        <input
+            type="file"
+            required
+        #ideal_solution_input/>
     </div>
 
     <div>
         <label>Play</label>
-        <input type="file" formControlName="play">
+        <input
+            type="file"
+            required
+        #play_input/>
     </div>
 
     <div>
         <label>Win points</label>
-        <input type="text" formControlName="win_points">#тут ввод - целое число!
+        <input
+            type="text"
+            [(ngModel)]="win_point"
+            required
+        />
     </div>
 
     <div>
         <label>Lose points</label>
-        <input type="text" formControlName="lose_points">#тут ввод - целое число!
+        <input
+            type="text"
+            [(ngModel)]="lose_point"
+            required
+        />
     </div>
 
     <div>
         <label>Visualiser</label>
-        <input type="file" formControlName="visualiser">
+        <input
+            type="file"
+            required
+        #visualizer_input/>
     </div>
 
     <div>
         <label>Rules</label>
-        <input type="file" formControlName="rules">
+        <input
+            type="file"
+            required
+        #rules_input/>
     </div>
 
-    <button (click)="onSubmit()" class="button" type="button">Purchase</button>
+    <button (click)="onSubmit($event)" class="button" type="button">Upload</button>
 </form>
