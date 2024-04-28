@@ -6,74 +6,46 @@
     </div>
 
 </main>
-<form>
+<form [formGroup]="checkoutForm">
     <div>
         <label>Name</label>
-        <input
-            type="text"
-            [(ngModel)]="name"
-            required
-        />
+        <input type="text" formControlName="name">
     </div>
 
     <div>
         <label>Number of players</label>
-        <input
-            type="text"
-            [(ngModel)]="number_of_players"
-            required
-        />
+        <input type="number" formControlName="number_of_players"> #тут ввод - целое число!
     </div>
 
     <div>
         <label>Ideal solution</label>
-        <input
-            type="file"
-            required
-        #ideal_solution_input/>
+        <input type="file" name="ideal_solution" (change)="uploadFile($event)">
     </div>
 
     <div>
         <label>Play</label>
-        <input
-            type="file"
-            required
-        #play_input/>
+        <input type="file" name="play" (change)="uploadFile($event)">
     </div>
 
     <div>
         <label>Win points</label>
-        <input
-            type="text"
-            [(ngModel)]="win_point"
-            required
-        />
+        <input type="number" formControlName="win_point">#тут ввод - целое число!
     </div>
 
     <div>
         <label>Lose points</label>
-        <input
-            type="text"
-            [(ngModel)]="lose_point"
-            required
-        />
+        <input type="number" formControlName="lose_point">#тут ввод - целое число!
     </div>
 
     <div>
         <label>Visualiser</label>
-        <input
-            type="file"
-            required
-        #visualizer_input/>
+        <input type="file" name="visualiser" (change)="uploadFile($event)">
     </div>
 
     <div>
         <label>Rules</label>
-        <input
-            type="file"
-            required
-        #rules_input/>
+        <input type="file" name="rules" (change)="uploadFile($event)">
     </div>
 
-    <button (click)="onSubmit($event)" class="button" type="button">Upload</button>
+    <button (click)="onSubmit()" class="button" type="button">Upload</button>
 </form>

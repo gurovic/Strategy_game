@@ -1,10 +1,10 @@
-export interface UploadGameModel {
-    name: '',
-    number_of_players: '',
-    ideal_solution: '',
-    play: '',
-    win_point: '',
-    lose_point: '',
-    visualiser: '',
-    rules: ''
+export class UploadGameModel {
+    name?: string;
+    number_of_players?: number;
+    ideal_solution?: File;
+    play?: File;
+    win_point?: number;
+    lose_point?: number;
+    visualiser?: File;
+    rules?: File;
 }

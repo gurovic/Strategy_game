@@ -9,18 +9,7 @@ import {GameUploadService} from "../../../services/game-upload.service";
   styleUrls: ['./upload-game.component.scss']
 })
 export class UploadGameComponent implements OnInit {
-    @ViewChild('ideal_solution_input') public ideal_solution_input: any;
-    @ViewChild('play_input') public play_input: any;
-    @ViewChild('rules_input') public rules_input: any;
-    @ViewChild('visualizer_input') public visualizer_input: any;
-    public name = '';
-    public number_of_players = 0;
-    public ideal_solution = undefined;
-    public play = undefined;
-    public win_point = 0;
-    public lose_point = 0;
-    public visualiser = undefined;
-    public rules = undefined;
+    checkoutForm: any;
 
   constructor(
       private formBuilder: FormBuilder,
@@ -29,17 +18,27 @@ export class UploadGameComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkoutForm = this.formBuilder.group({
+      name: '',
+      number_of_players: null,
+      ideal_solution: null,
+      play: null,
+      win_point: null,
+      lose_point: null,
+      visualiser: null,
+      rules: null
+    });
   }
 
-  onSubmit(event: any) {
-    this.ideal_solution = this.ideal_solution_input.nativeElement.value;
-    this.visualiser = this.visualizer_input.nativeElement.value;
-    this.rules = this.rules_input.nativeElement.value;
-    this.play = this.play_input.nativeElement.value;
-    console.log(this.name, this.ideal_solution, this.number_of_players, this.play, this.win_point, this.rules, this.lose_point, this.visualiser);
-    this.gameUploadService.uploadingGame({name: this.name, ideal_solution: this.ideal_solution, play: this.play, lose_point: this.lose_point, win_point: this.win_point, rules: this.rules, visualiser: this.visualiser, number_of_players: this.number_of_players}).subscribe({
-      next: value => console.log('Your files compiled successfully! Congratulations!'),
-      error: err => console.error('Compilation failed'),
+  uploadFile(event: Event) {
+    // @ts-ignore
+    this.checkoutForm.get(event.target.name).setValue(event.target.files[0]);
+  }
+
+  onSubmit() {
+    this.gameUploadService.uploadingGame(this.checkoutForm.value).subscribe({
+        next: value => alert("Your files compiled successfully! Congratulations!"),
+        error: err => alert("Compilation failed"),
     });
   }
 }

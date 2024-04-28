@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 
 const currentUrl = ''
 
+
 @Injectable({
     providedIn: 'root'
 })
@@ -15,7 +16,11 @@ export class GameUploadService {
     ) {
     }
 
-    uploadingGame(data: any): Observable<any> {
-        return this.http.post('app/game_upload/form/', data);
+    uploadingGame(data: UploadGameModel): Observable<any> {
+        let formData = new FormData();
+        for (let [key, value] of Object.entries(data)) {
+            formData.append(key, value);
+        }
+        return this.http.post('app/game_upload/form/', formData);
     }
 }
