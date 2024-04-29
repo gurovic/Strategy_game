@@ -62,6 +62,7 @@ class Battle(models.Model):
         requests.append(launcher)
 
         number = 0
+        strategies = []
         for player_in_battle in players_in_battle:
             number += 1
             self.numbers[number] = player_in_battle.player
@@ -69,16 +70,14 @@ class Battle(models.Model):
                 strategy_compiled = CompiledFile()
                 Compiler(file, file.split(".")[-1], strategy_compiled.get_compiled_file).compile()
                 list_compiled_file.append(strategy_compiled)
+                strategies.append(strategy_compiled)
 
         while ok_sum != len(list_compiled_file):
             continue
 
-        files_list = []
-        for compiled in list_compiled_file:
-            files_list.append(compiled.compiled_file.path)
-
         number = 1
-        for file in files_list:
+        for compiled in strategies:
+            file = compiled.compiled_file.path
             launcher = Launcher(file, label=f'player{number}')
             requests.append(launcher)
             number += 1
