@@ -13,4 +13,4 @@ def show(request, tournament_id):
 
     players_in_tournament = PlayerInTournament.objects.filter(tournament=tournament).order_by("place", "-number_of_points")
 
-    return render(request, 'tournament_results.html', {'tournament':tournament, 'players_in_tournament':players_in_tournament})
+    return render(request, 'tournament_results.html', {'tournament': tournament, 'players_in_tournament': players_in_tournament})
