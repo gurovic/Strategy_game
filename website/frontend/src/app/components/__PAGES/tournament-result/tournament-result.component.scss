@@ -1,0 +1,62 @@
+.container {
+  margin: 60px;
+  color: white;
+}
+
+.title {
+  color: black;
+  margin-bottom: 20px;
+  font-size: xx-large;
+  background-color: orange;
+  padding: 20px 20px;
+  border-radius: 10px;
+
+  .tournament-name {
+    font-weight: bold;
+
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+
+  th, td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background-color: darkblue;
+    color: white;
+  }
+
+  td {
+    background-color: black;
+  }
+}
+
+.pagination {
+  margin-top: 10pzx;
+
+  .page-button {
+    padding: 8px 12px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    margin: 0 10px;
+    color: white;
+  }
+}

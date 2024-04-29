@@ -1,0 +1,29 @@
+<div *ngIf="tournamentResult" class="container">
+  <header class="title">
+    Tournament <span class="tournament-name">{{ tournamentResult.tournament.name }}</span> results
+  </header>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Name</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of displayedParticipants; let i = index">
+        <td>{{ currentPage * pageSize + i + 1 }}</td>
+        <td>{{ player.player_name }}</td>
+        <td>{{ player.number_of_points }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 0" class="page-button">Previous</button>
+    <span>Page {{ currentPage + 1 }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === maxPage" class="page-button">Next</button>
+  </div>
+</div>
+<div *ngIf="!tournamentResult" class="container">
+  <p>Loading...</p>
+</div>

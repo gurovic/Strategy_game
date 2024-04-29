@@ -18,6 +18,7 @@ import {RegistrationComponent} from './components/__PAGES/registration/registrat
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import { ProfileComponent } from './components/__PAGES/profile/profile.component';
+import {TournamentResultComponent} from './components/__PAGES/tournament-result/tournament-result.component';
 import { UploadGameComponent } from './components/__PAGES/upload-game/upload-game.component';
 
 @NgModule({
@@ -35,6 +36,7 @@ import { UploadGameComponent } from './components/__PAGES/upload-game/upload-gam
         ArchiveTaskComponent,
         RegistrationComponent,
         ProfileComponent,
+        TournamentResultComponent,
         UploadGameComponent
     ],
     imports: [
