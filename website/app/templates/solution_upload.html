@@ -6,7 +6,7 @@
 
 {% block content %}
     {% if status == 'wait for strategy' %}
-        <form method="POST" action=" ">
+        <form method="POST" action=" " enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" name="strategy">
             <input type="submit" value="upload strategy">
