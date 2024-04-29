@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {GameModel} from "../../../models/api/game.model";
 import {GameApiService} from "../../../services/api/game-api.service";
 import {Profile} from "../../../models/profile.model";
-import {ProfileService} from "../../../services/profile.service";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
 
 @Component({
