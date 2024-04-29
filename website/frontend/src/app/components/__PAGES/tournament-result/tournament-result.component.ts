@@ -16,7 +16,7 @@ export class TournamentResultComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tournamentResultService: TournamentResultService,
+    public tournamentResultService: TournamentResultService,
     private titleService: Title
   ) {}
 
