@@ -8,23 +8,19 @@ import {ContestsComponent} from "./components/__PAGES/tournaments/contests.compo
 import {LoginComponent} from "./components/__PAGES/login/login.component";
 import {RegistrationComponent} from "./components/__PAGES/registration/registration.component";
 import {ProfileComponent} from "./components/__PAGES/profile/profile.component";
-import {
-    TournamentSolutionUploadComponent
-} from "./components/__PAGES/tournament-solution-upload/tournament-solution-upload.component";
+import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
 
 const routes: Routes = [
     {path: '', component: MainPageComponent},
     {path: 'about', component: AboutUsComponent},
     {path: 'wiki', component: WikiComponent},
     {path: 'sandbox', component: SandboxComponent},
+    {path: 'tournaments', component: ContestsComponent},
     // {path: 'contact', component: ContactUsComponent},
-
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegistrationComponent},
     {path: 'profile', component: ProfileComponent},
-
-    {path: 'tournaments', component: ContestsComponent},
-    {path:'tournament/:id', component: TournamentSolutionUploadComponent}
+    {path: 'game/upload', component: UploadGameComponent},
 ];
 
 @NgModule({
