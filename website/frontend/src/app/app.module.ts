@@ -15,12 +15,16 @@ import {BottomBarComponent} from './components/bottom-bar/bottom-bar.component';
 import {NgOptimizedImage} from "@angular/common";
 import {ArchiveTaskComponent} from './components/__MODELS/archive-task/archive-task.component';
 import {RegistrationComponent} from './components/__PAGES/registration/registration.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
-import { ProfileComponent } from './components/__PAGES/profile/profile.component';
-import { TournamentUploadSolutionComponent } from './components/__PAGES/tournament-upload-solution/tournament-upload-solution.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {ProfileComponent} from './components/__PAGES/profile/profile.component';
+import {
+    TournamentUploadSolutionComponent
+} from './components/__PAGES/tournament-upload-solution/tournament-upload-solution.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {TournamentResultComponent} from "./components/__PAGES/tournament-result/tournament-result.component";
+import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
 
 @NgModule({
     declarations: [
@@ -38,6 +42,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         RegistrationComponent,
         ProfileComponent,
         TournamentUploadSolutionComponent,
+        TournamentResultComponent,
+        UploadGameComponent
     ],
     imports: [
         BrowserModule,
@@ -51,6 +57,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
         }),
         BrowserAnimationsModule,
         MatProgressBarModule,
+        ReactiveFormsModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
