@@ -102,6 +102,7 @@ class Battle(models.Model):
 
         for player in PlayersInBattle.objects.filter(battle=self):
             player.number_of_points = self.jury_report.points.get(player.number, 0)
+            player.save()
 
         self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
