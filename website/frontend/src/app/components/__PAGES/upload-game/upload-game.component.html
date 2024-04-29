@@ -1,53 +1,50 @@
-<main class="content">
-
-    <div class="block-content block-header">
-
-
-
-        <form [formGroup]="checkoutForm" class = "input-group">
-            <div>
-                <label>Name</label>
-                <input type="text" formControlName="name">
-            </div>
-
-            <div>
-                <label>Number of players</label>
-                <input type="number" formControlName="number_of_players">
-            </div>
-
-            <div>
-                <label>Ideal solution</label>
-                <input type="file" name="ideal_solution" (change)="uploadFile($event)">
-            </div>
-
-            <div>
-                <label>Play</label>
-                <input type="file" name="play" (change)="uploadFile($event)">
-            </div>
-
-            <div>
-                <label>Win points</label>
-                <input type="number" formControlName="win_point">
-            </div>
-
-            <div>
-                <label>Lose points</label>
-                <input type="number" formControlName="lose_point">
-            </div>
-
-            <div>
-                <label>Visualiser</label>
-                <input type="file" name="visualiser" (change)="uploadFile($event)">
-            </div>
-
-            <div>
-                <label>Rules</label>
-                <input type="file" name="rules" (change)="uploadFile($event)">
-            </div>
-
-            <button (click)="onSubmit()" class="button" type="button">Upload</button>
-        </form>
-    </div>
-
+<main>
+    <h1>Upload your game</h1>
 </main>
+<body>
+    <form [formGroup]="checkoutForm" class = "input-group">
+        <div class="group">
+            <label>Name</label>
+            <input type="text" formControlName="name">
+        </div>
+
+        <div class="group">
+            <label>Number of players</label>
+            <input type="number" formControlName="number_of_players">
+        </div>
+
+        <div class="group">
+            <label>Ideal solution</label>
+            <input type="file" name="ideal_solution" (change)="uploadFile($event)">
+        </div>
+
+        <div class="group">
+            <label>Play</label>
+            <input type="file" name="play" (change)="uploadFile($event)">
+        </div>
+
+        <div class="group">
+            <label>Win points</label>
+            <input type="number" formControlName="win_point">
+        </div>
+
+        <div class="group">
+            <label>Lose points</label>
+            <input type="number" formControlName="lose_point">
+        </div>
+
+        <div class="group">
+            <label>Visualiser</label>
+            <input type="file" name="visualiser" (change)="uploadFile($event)">
+        </div>
+
+        <div class="group">
+            <label>Rules</label>
+            <input type="file" name="rules" (change)="uploadFile($event)">
+        </div>
+
+        <button (click)="onSubmit()" class="button" type="button">Upload</button>
+    </form>
+
+</body>
 
