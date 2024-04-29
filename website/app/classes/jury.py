@@ -30,11 +30,9 @@ class Jury:
 
     def __init__(self, invoker_multi_request: InvokerMultiRequest):
         self.invoker_multi_request = invoker_multi_request
-        self.invoker_multi_request.subscribe(self)
 
         self.play_invoker_request = None
         self.strategies_invoker_requests = []
-        self.get_invoker_requests()
 
         self.process = None
         self.play_process = None
@@ -46,6 +44,7 @@ class Jury:
         self.jury_report.points = {}
         self.jury_report.story_of_game = ""
 
+        self.get_invoker_requests()
 
     def get_invoker_requests(self):
         invoker_requests = self.invoker_multi_request.invoker_requests
@@ -148,23 +147,23 @@ class Jury:
                     end_cycle = 1
             for i in range(len(player_index_end)):
                 if (i == len(player_index_end) - 1):
-                    data_to_players.append(play_command[player_index_end[i] + 2 :])
+                    data_to_players.append(play_command[player_index_end[i] + 2:])
                 else:
-                    data_to_players.append(play_command[player_index_end[i] + 2 : player_index_end[i + 1] - 8])
+                    data_to_players.append(play_command[player_index_end[i] + 2: player_index_end[i + 1] - 8])
             data_from_players = []
             for i in range(len(data_to_players)):
                 if (data_to_players[i] != "None"):
                     player_data = self.strategies_process[i].connect(data_to_players[i])
-                    #self.strategies_process[i].stdin = data_to_players[i]   not as should be, needs a change
+                    # self.strategies_process[i].stdin = data_to_players[i]   not as should be, needs a change
                 else:
                     player_data = ""
-                    #self.strategies_process[i].stdin = ""
-                #player_data = self.strategies_process[i].stdout
+                    # self.strategies_process[i].stdin = ""
+                # player_data = self.strategies_process[i].stdout
                 data_from_players.append(player_data)
-            #self.play_process.stdin = "" #not as should be, needs a change
+            # self.play_process.stdin = "" #not as should be, needs a change
             for i in range(len(data_from_players)):
                 blank_str = self.play_process.connect(data_from_players[i])
-                #self.play_process.stdin += data_from_players[i] #not as should be, needs a change
+                # self.play_process.stdin += data_from_players[i] #not as should be, needs a change
         else:
             self.game_state = GameState.END
             index = 20
@@ -200,3 +199,6 @@ class Jury:
     def notify_processes(self, processes):
         self.process = processes
         self.get_processes()
+
+    def notify(self, report):
+        pass
