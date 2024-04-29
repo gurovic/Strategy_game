@@ -62,21 +62,20 @@ class Battle(models.Model):
         requests.append(launcher)
 
         number = 0
-        files_list = []
         for player_in_battle in players_in_battle:
             number += 1
             self.numbers[number] = player_in_battle.player
-            file = player_in_battle.file_solution.path
             if file.split(".")[-1][0] != 'e':
                 strategy_compiled = CompiledFile()
                 Compiler(file, file.split(".")[-1], strategy_compiled.get_compiled_file).compile()
                 list_compiled_file.append(strategy_compiled)
-                file = os.path.join(MEDIA_ROOT, str(strategy_compiled.compiled_file))
-
-            files_list.append(file)
 
         while ok_sum != len(list_compiled_file):
             continue
+
+        files_list = []
+        for compiled in list_compiled_file:
+            files_list.append(compiled.compiled_file.path)
 
         number = 1
         for file in files_list:
