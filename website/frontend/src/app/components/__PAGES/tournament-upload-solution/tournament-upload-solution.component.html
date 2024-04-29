@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="text-container">
+        <p class="font-size-xxlarge fw-600 font-capitalize text-name" #name_container></p>
+        <p class="font-size-regular" #rules_container></p>
+    </div>
+    <div class="send-solution-container">
+        <div class="card">
+            <div class="card-header">
+                <p class="font-size-regular">Отправить решение</p>
+            </div>
+            <div class="card-container">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Язык:</td>
+                            <td>
+                                <select [(ngModel)]="language" class="font-color-black">
+                                    <option class="font-color-black">c++</option>
+                                    <option class="font-color-black">python</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Выберите файл</td>
+                            <td>
+                                <input class="solution-input" type="file" (change)="ChangeFile()" name="solution" #solution_input>
+                            </td>
+                        </tr>
+                        <tr *ngIf="solution_upload_progress!==undefined">
+                            <mat-progress-bar style="width: 100%" mode="determinate" [value]="solution_upload_progress!" *ngIf="solution_upload_progress !== undefined"></mat-progress-bar>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <input [disabled]="solution_upload_progress !== undefined" type="button" class="send-solution-btn" (click)="SendSolutionFile()" value="Отправить">
+            </div>
+        </div>
+    </div>
+</div>

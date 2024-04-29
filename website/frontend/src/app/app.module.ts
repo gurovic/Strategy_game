@@ -19,6 +19,8 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
 import { ProfileComponent } from './components/__PAGES/profile/profile.component';
 import { TournamentUploadSolutionComponent } from './components/__PAGES/tournament-upload-solution/tournament-upload-solution.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
     declarations: [
@@ -47,6 +49,8 @@ import { TournamentUploadSolutionComponent } from './components/__PAGES/tourname
             cookieName: 'csrftoken',
             headerName: 'X-CSRFToken',
         }),
+        BrowserAnimationsModule,
+        MatProgressBarModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

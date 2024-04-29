@@ -18,5 +18,13 @@ export class TournamentApiService {
   get(): Observable<any> {
     return this.http.get(`${currentUrl}`);
   }
+
+  get_by_id(id: number): Observable<any> {
+    return this.http.get(`app/tournament/${id}`);
+  }
+
+  upload_solution(data: any, user_id: number, tournament_id: number): Observable<any> {
+    return this.http.post<any>(`app/tournament/upload_solution/${tournament_id}/${user_id}`, data);
+  }
 }
 

@@ -24,7 +24,7 @@ const routes: Routes = [
     {path: 'profile', component: ProfileComponent},
 
     {path: 'tournaments', component: ContestsComponent},
-    {path:'tournament/upload', component: TournamentUploadSolutionComponent}
+    {path:'tournament/upload/:tournament-id', component: TournamentUploadSolutionComponent}
 ];
 
 @NgModule({
