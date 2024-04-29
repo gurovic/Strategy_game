@@ -8,7 +8,7 @@ class JuryReportTestCase(TestCase):
         story_of_game = "lol"
         points = {1: 1, 2: 1}
         status = 1
-        battle = Battle(status="O")
+        battle = Battle(status=0)
         battle.save()
         jury_report = JuryReport.objects.create(battle=battle, story_of_game=story_of_game, points=points, status=status)
         jury_report.save()

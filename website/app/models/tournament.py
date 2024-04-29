@@ -15,6 +15,12 @@ def _end_registration_task(tournament_id: int):
         tournament.end_registration()
 
 
+def _start_tournament_task(tournament_id: int):
+    tournament = Tournament.objects.get(id=tournament_id)
+    if tournament.status == Tournament.Status.NOT_STARTED:
+        tournament.start_tournament()
+
+
 class Tournament(models.Model):
     class Status(models.IntegerChoices):
         NOT_STARTED = 0
@@ -40,13 +46,13 @@ class Tournament(models.Model):
 
     def save(self, *args, **kwargs):
         if self.status == self.Status.WAITING_SOLUTIONS:
-            Schedule.objects.update_or_create(name=self.id, func="app.models.tournament._end_registration_task",
+            Schedule.objects.update_or_create(name=f"End registration {self.id}", func="app.models.tournament._end_registration_task",
                                               repeats=1, args=str(self.id),
                                               defaults=dict(next_run=self.finish_registration_time))
 
         if self.status == self.Status.NOT_STARTED:
-            Schedule.objects.update_or_create(name=f"Start tournament {self.id}", func='app.models.tournament.Tournament.start_tournament',
-                                              args=[self], repeats=1,
+            Schedule.objects.update_or_create(name=f"Start tournament {self.id}", func='app.models.tournament._start_tournament_task',
+                                              repeats=1, args=str(self.id),
                                               defaults=dict(next_run=self.tournament_start_time))
 
         return super().save(*args, **kwargs)

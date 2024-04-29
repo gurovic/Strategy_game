@@ -1,12 +1,13 @@
 .container {
   margin: 60px;
+  color: white;
 }
 
 .title {
-  color: var(--background-dark);
+  color: black;
   margin-bottom: 20px;
   font-size: xx-large;
-  background-color: var(--title-yellow);
+  background-color: orange;
   padding: 20px 20px;
   border-radius: 10px;
 
@@ -22,18 +23,18 @@
   margin-bottom: 20px;
 
   th, td {
-    border: 1px solid var(--text-white);
+    border: 1px solid white;
     padding: 10px;
     text-align: left;
   }
 
   th {
-    background-color: var(--background-ldark);
-    color: var(--text-white);
+    background-color: darkblue;
+    color: white;
   }
 
   td {
-    background-color: var(--background-ddark);
+    background-color: black;
   }
 }
 
@@ -42,8 +43,8 @@
 
   .page-button {
     padding: 8px 12px;
-    background-color: var(--button-blue);
-    color: var(--text-white);
+    background-color: blue;
+    color: white;
     border: none;
     cursor: pointer;
     border-radius: 10px;
@@ -56,6 +57,6 @@
 
   span {
     margin: 0 10px;
-    color: var(--text-white);
+    color: white;
   }
 }

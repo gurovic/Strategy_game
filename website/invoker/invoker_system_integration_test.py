@@ -12,7 +12,7 @@ from .invoker import Invoker, NormalProcess
 class TestInvokerSystem(TestCase):
     def test(self):
         for lang in settings.SUPPORTED_LANGUAGES:
-            file = os.path.abspath('website/invoker/invoker_system_integration_test/invoker_integration.{}'.format(lang))
+            file = os.path.abspath('invoker/invoker_system_integration_test/invoker_integration.{}'.format(lang))
 
             self.launch_call = False
             self.compiler_call = False
@@ -20,7 +20,7 @@ class TestInvokerSystem(TestCase):
             def get_launcher_callback(process: NormalProcess):
                 self.launch_call = True
                 process_output = process.connect(input_data="Hello")
-                self.assertEqual(process_output, "5879349 Hello\n")
+                self.assertEqual(process_output, "5879349 Hello")
 
             def get_compiler_callback(report: CompilerReport):
                 self.compiler_call = True

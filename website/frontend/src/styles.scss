@@ -9,18 +9,18 @@
 /* TAGS STYLES */
 html, body {
   width:           100vw;
-  min-height:          100vh;
+  min-height:      100vh;
   scroll-behavior: smooth;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  color:           var(--text-white)
+  overflow-y:      hidden;
+  overflow-x:      hidden;
+  color:           rgb(var(--text-color));
 }
 
 body {
-  background-color: var(--background-ddark);
+  background-color: rgb(var(--background-color));
   display:          flex;
   flex-wrap:        wrap;
-  overflow-y: scroll;
+  overflow-y:       scroll;
 }
 
 *::-webkit-scrollbar {
@@ -36,8 +36,9 @@ body {
   caret-color: transparent;
   font-family: "Raleway", sans-serif;
 }
+
 input {
-  caret-color: #fff;
+  caret-color: rgb(var(--caret-color));
 }
 
 li {
@@ -57,20 +58,40 @@ img {
   pointer-events:      none;
 }
 
-/* color */
-body {
-  --f-raleway:           "Raleway", sans-serif;
-  --f-rubik:             "Rubik", sans-serif;
-  --login-box-width:     min(100%, 300px);
-  --top-bar-height:      70px;
-  --background-dark:     #020024;
-  --background-ddark:    #000015;
-  --background-ldark:    #110f42;
-  --text-white:          #ffffff;
-  --color-primary:       #15ca0c;
-  --color-secondary:     #20222a;
-  --color-accent:        #00ffa1;
-  --color-accent-second: #99ff91;
-  --button-blue:         #1a237e;
-  --title-yellow:        #ffa31a;
+:root { // fonts
+  --f-raleway: "Raleway", sans-serif;
+  --f-rubik:   "Rubik", sans-serif;
+}
+
+:root { // sizes
+  --login-box-width: min(100%, 300px);
+  --top-bar-height:  70px;
+  --max-main-width:  1440px;
+}
+
+:root { // basic colors
+  --white:      255, 255, 255;
+  --black:      0, 0, 0;
+  --d-blue:     17, 15, 66;
+  --l-blue:     27, 23, 98;
+  --d-green:    21, 202, 12;
+  --l-green:    153, 255, 145;
+  --prismarine: 0, 255, 161;
+  --gray:       153, 153, 153;
+  --purple:     163, 0, 255;
+  --pink:       232, 28, 255;
+  --blue:       64, 201, 255;
+  --l-purple:   167, 139, 250;
+  --d-gray:     55, 65, 81;
+  --d-gray2: 65,65,65;
+  --orange: 232, 28, 100;
+}
+
+:root { // colors
+  --text-color:           var(--white);
+  --caret-color:          var(--white);
+  --background-color:     var(--black);
+  --border-color:         var(--l-blue);
+  --color-accent:         var(--prismarine);
+  --button-primary-color: var(--purple);
 }

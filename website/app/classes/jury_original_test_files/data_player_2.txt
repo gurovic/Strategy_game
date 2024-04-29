@@ -1,1 +1,2 @@
-status: play data: player1: None player2: 4
+{"state": "play", "data": "4", "player": 2}
+{"state": "end", "points": "4 0"}

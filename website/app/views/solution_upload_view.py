@@ -10,9 +10,9 @@ def upload(request, tournament_id, user_id):
         return render(request, 'solution_upload.html', {'status': 'strategy uploaded'})
 
     else:
-        if our_tournament.Status == 'WAITING_SOLUTIONS':
+        if our_tournament.status == Tournament.Status.WAITING_SOLUTIONS:
             return render(request, 'solution_upload.html', {'status': 'wait for strategy'})
-        elif our_tournament.Status == 'NOT_STARTED':
+        elif our_tournament.status == Tournament.Status.NOT_STARTED:
             return render(request, 'solution_upload.html', {'status': 'not started'})
         else:
             return render(request, 'solution_upload.html', {'status': 'finished'})

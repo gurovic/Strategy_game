@@ -15,9 +15,10 @@ class NotSupportedExtension(ValueError):
 
 class Launcher(InvokerRequest):
 
-    def __init__(self, file: str, *args, **kwargs):
+    def __init__(self, file: str, *args, params: typing.Optional[list[typing.Any]] = None, **kwargs):
         self.file = file
         self.extension = self.file.split(".")[-1]
+        self.params = list(map(str, params)) if params else []
 
         super(Launcher, self).__init__(self.get_command(), timelimit=settings.LAUNCHER_RUN_TL[self.extension],  *args, **kwargs)
         self.files.append(self.file)
@@ -26,8 +27,10 @@ class Launcher(InvokerRequest):
         if self.extension not in settings.LAUNCHER_COMMANDS:
             raise NotSupportedExtension(self.extension)
         if settings.LAUNCHER_COMMANDS[self.extension] is None:
-            return ' '.join([self.file])
+            return ' '.join([self.file] + self.params)
         else:
-            command_tags = settings.LAUNCHER_COMMANDS[self.extension]
+            command_tags = settings.LAUNCHER_COMMANDS[self.extension].copy()
+            if self.params:
+                command_tags += self.params
             command_tags = [self.file if i == "%1" else i for i in command_tags]
             return ' '.join(command_tags)

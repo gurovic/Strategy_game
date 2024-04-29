@@ -35,13 +35,13 @@ class SandboxTest(TestCase):
                 super().__init__(**kwargs)
                 self.count_battle = 0
 
-            def run(self):
+            def run(self, callback=None):
                 self.count_battle += 1
 
         sandbox = Sandbox(GameMock(), None, None)
         sandbox.battle = BattleMock()
         sandbox.run_battle()
-        self.assertEqual(sandbox.battle.count_battle, 0)
+        self.assertEqual(sandbox.battle.count_battle, 1)
 
     @patch("app.classes.sandbox.Battle")
     @patch("app.classes.sandbox.PlayersInBattle")
@@ -74,15 +74,15 @@ class SandboxTest(TestCase):
                 self.number_of_players = 2
 
         class BattleMock(Mock):
-            def __init__(self, creator, **kwargs: Any):
+            def __init__(self, **kwargs: Any):
                 super().__init__(**kwargs)
                 self.battle_count = 0
-                self.creator = creator
                 self.report = random_number
 
-            def start(self):
+            def run(self, callback=None):
                 self.battle_count += 1
-                return self.creator.notify(self.report)
+                if callback:
+                    callback(self.report)
 
         class ToNotify:
             def __init__(self):
@@ -95,10 +95,9 @@ class SandboxTest(TestCase):
 
         report_getter = ToNotify()
         a = Sandbox(GameMock(), None, report_getter.notify)
-        a.battle = BattleMock(a)
+        a.battle = BattleMock()
         a.run_battle()
         self.assertEqual(a.battle.battle_count, 1)
-        self.assertEqual(a.battle.creator, a)
 
         time_start = time.time()
         while report_getter.report is None:
