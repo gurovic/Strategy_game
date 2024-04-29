@@ -1,14 +1,46 @@
 use pyo3::prelude::*;
 
-/// Formats the sum of two numbers as string.
-#[pyfunction]
-fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
-    Ok((a + b).to_string())
+use visualization_rust::{Frame as Frame_rust};
+use visualization_rust::get_frame as get_frame_rust;
+
+#[pyclass]
+struct Frame {
+    pub frame: Frame_rust,
 }
 
-/// A Python module implemented in Rust.
+impl Frame {
+    fn new(frame: Frame_rust) -> Frame {
+        Frame {
+            frame,
+        }
+    }
+}
+
+#[pymethods]
+impl Frame {
+    pub fn draw_line(&mut self, start_x: i32, start_y: i32, end_x: i32, end_y: i32, color: (i32,i32,i32)) {
+        self.frame.draw_line(start_x, start_y, end_x, end_y, color);
+    }
+
+    pub fn draw_circle(&mut self, x: i32, y: i32, radius: i32, color: (i32,i32,i32), fill: bool) {
+        self.frame.draw_circle(x, y, radius, color, fill);
+    }
+
+    pub fn draw_rectangle(&mut self, x1: i32, y1: i32, x2: i32, y2: i32,color: (i32,i32,i32), fill: bool) {
+        self.frame.draw_rectangle(x1, y1, x2, y2, color, fill);
+    }
+
+}
+
+#[pyfunction]
+fn get_frame(width: usize, height: usize, color: (i32,i32,i32)) -> PyResult<Py<Frame>> {
+    let frame = get_frame_rust(width,height,color);
+    Ok(Python::with_gil(|py| Py::new(py, Frame::new(frame)).unwrap()))
+}
+
 #[pymodule]
-fn visualization_python(_py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+fn visualization(_py: Python, m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(get_frame, m)?)?;
+    m.add_class::<Frame>()?;
     Ok(())
 }

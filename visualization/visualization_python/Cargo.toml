@@ -5,8 +5,9 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "visualization_python"
+name = "visualization"
 crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = "0.20.0"
+visualization_rust = {package = "visualization", path = ".."}

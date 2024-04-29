@@ -1,22 +1,24 @@
 use std::cmp::max;
 use std::cmp::min;
 
+#[derive(Debug, Clone)]
 pub struct Frame {
-    width: usize,
-    height: usize,
-    data: Vec<Vec<(i32,i32,i32)>>,
+    pub width: usize,
+    pub height: usize,
+    pub data: Vec<Vec<(i32,i32,i32)>>,
 }
 
 impl Frame {
     pub fn new(width: usize, height: usize, color: (i32,i32,i32)) -> Frame {
+        let mut image: Vec<Vec<(i32, i32, i32)>> = vec![vec![color; height]; width];
         Frame {
             width: width,
             height: height,
-            data: vec![vec![color; height]; width],
+            data: image,
         }
     }
 
-    pub fn draw_line(&mut self, start_x: i32, start_y: i32, end_x: i32, end_y: i32, color: (i32,i32,i32)) -> () {
+    pub fn draw_line(&mut self, start_x: i32, start_y: i32, end_x: i32, end_y: i32, color: (i32,i32,i32)) {
         if (start_x-end_x).abs()>(start_y-end_y).abs() {
             for x in start_x..end_x {
                 let y = (((x-start_x) as f32)*((end_y-start_y) as f32)/((end_x-start_x) as f32)+start_y as f32).round() as i32;
@@ -34,7 +36,7 @@ impl Frame {
         }
     }
 
-    pub fn draw_circle(&mut self, x: i32, y: i32, radius: i32, color: (i32,i32,i32), fill: bool) -> () {
+    pub fn draw_circle(&mut self, x: i32, y: i32, radius: i32, color: (i32,i32,i32), fill: bool) {
         if fill==true {
             for i in (x-radius)..(x+radius) {
                 for j in (y-radius)..(y+radius) {
@@ -54,7 +56,7 @@ impl Frame {
         }
     }
 
-    pub fn draw_rectangle(&mut self, x1: i32, y1: i32, x2: i32, y2: i32,color: (i32,i32,i32), fill: bool) -> (){
+    pub fn draw_rectangle(&mut self, x1: i32, y1: i32, x2: i32, y2: i32,color: (i32,i32,i32), fill: bool) {
         if fill == true {
             for x in (max(0,min(x1,x2)))..(min(self.width as i32 -1,max(x1,x2))) {
                 for y in (max(0,min(y1,y2)))..(min(self.height as i32 -1,max(y1,y2))) {
@@ -74,6 +76,12 @@ impl Frame {
     }
 }
 
+pub fn get_frame(width: usize, height: usize, color: (i32,i32,i32)) -> Frame {
+    let img = Frame::new(width, height, color);
+    //println!("{}",img.width);
+    img
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -88,9 +96,9 @@ mod tests {
 
     #[test]
     fn check_line_creation() {
-        let mut frame: Frame = Frame::new(10,20,(255,255,255));
-        frame.draw_line(2, 2, 5, 5, (255,0,255));
-        frame.draw_line(2, 2, 5, 5, (255,0,255));
+        let mut frame: Frame = Frame::new(5,5,(255,255,255));
+        frame.draw_line(0, 0, 4, 4, (0,0,0));
+        //println!("{:?}",frame.data);
     }
 
     #[test]
