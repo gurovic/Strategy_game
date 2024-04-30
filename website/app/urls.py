@@ -26,6 +26,7 @@ urlpatterns = [
     path('tournament/<int:tournament_id>/registration', tournament_registration_view.register, name="registration_for_tournament"),
     path('tournaments/', tournaments_view.show),
     path('tournament/finish/<int:tournament_id>', tournament_finish_view.finish_tournament),
+    path('tournament/is_registered/<int:tournament_id>/<int:user_id>', tournament_views.is_registered),
     path('sandbox/', sandbox_all_games_view.show),
 
     # account urls

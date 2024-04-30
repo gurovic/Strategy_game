@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from ..forms import TournamentForm
 from ..models.tournament import Tournament
@@ -10,8 +11,9 @@ from ..sandbox_forms import SandboxForm
 
 
 def run_SandboxForm(request):
-    form=SandboxForm()#создали экземпляр
+    form = SandboxForm()  # создали экземпляр
     return render(request, 'sandbox/sandboxform.html', {'form': form})
+
 
 def run_Sandbox(request, id):
     if request.method == 'POST':
@@ -25,6 +27,7 @@ def run_Sandbox(request, id):
             return render(request, 'sandbox_views.html', {'failed_report': strategy})
     else:
         return render(request, "sandbox_views.html", {})
+
 
 # Create your views here.
 
@@ -48,3 +51,12 @@ def create_tournament(request):
     }
 
     return render(request, 'tournament_create.html', data)
+
+
+def is_registered(request, tournament_id, user_id):
+    tournament = Tournament.objects.get(pk=tournament_id)
+    try:
+        current_player_in_tournament = tournament.players.get(pk=user_id)
+        return JsonResponse({'ok': 'ok'}, status=200)
+    except:
+        return JsonResponse({'ok': 'no'}, status=200)

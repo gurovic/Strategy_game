@@ -25,6 +25,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {TournamentResultComponent} from "./components/__PAGES/tournament-result/tournament-result.component";
 import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
+import { LoaderComponentComponent } from './components/__MODELS/loader-component/loader-component.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.
         ProfileComponent,
         TournamentUploadSolutionComponent,
         TournamentResultComponent,
-        UploadGameComponent
+        UploadGameComponent,
+        LoaderComponentComponent
     ],
     imports: [
         BrowserModule,

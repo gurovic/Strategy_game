@@ -32,7 +32,7 @@ body {
 
 ::selection {
   background: rgb(var(--prismarine));
-  color: rgb(var(--black));
+  color:      rgb(var(--black));
 }
 
 * {
@@ -42,7 +42,7 @@ body {
   padding:     0;
   caret-color: transparent;
   font-family: var(--ff-inter);
-  user-select: text!important;
+  user-select: text !important;
 }
 
 input {
@@ -155,10 +155,11 @@ img {
   --gray:       153, 153, 153;
   --purple:     163, 0, 255;
   --pink:       232, 28, 255;
-  --blue:       64, 201, 255;
+  --blue:       34, 132, 250;
   --l-purple:   167, 139, 250;
   --d-gray:     55, 65, 81;
   --d-gray2:    65, 65, 65;
+  --orange:     255, 136, 0;
 }
 
 :root { // colors

@@ -6,4 +6,5 @@ export class TournamentModel {
     finish_registration_time?: string;
     status?: number;
     system?: number;
+    is_registered?: boolean;
 }

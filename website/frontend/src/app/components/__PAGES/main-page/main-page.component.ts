@@ -2,7 +2,6 @@ import {Component, AfterViewInit, HostListener, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Profile} from "../../../models/profile.model";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
-import {ProfileService} from "../../../services/profile.service";
 
 @Component({
     selector: 'app-main-page',
