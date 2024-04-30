@@ -5,7 +5,7 @@ import { UserRegister } from "../../models/api/user-register.model";
 import {baseUrl} from "../../interface/utils";
 
 
-const currentUrl = `/app/register/`;
+const currentUrl = `/register/`;
 
 @Injectable({
   providedIn: 'root'
