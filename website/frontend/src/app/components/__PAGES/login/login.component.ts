@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
         this.login_service.create(this.user).subscribe(
             resp => {
                 LoaderComponentComponent.Hide();
+                location.reload();
                 this.router.navigate(['']).then();
             },
             error => {
