@@ -6,6 +6,7 @@ import {GameModel} from "../../../models/api/game.model";
 import {GameApiService} from "../../../services/api/game-api.service";
 import {Profile} from "../../../models/profile.model";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
+import {NotifierService} from "angular-notifier";
 
 @Component({
     selector: 'app-tournament-upload-solution',
@@ -13,6 +14,7 @@ import {ProfileApiService} from "../../../services/api/profile-api.service";
     styleUrls: ['./tournament-upload-solution.component.scss']
 })
 export class TournamentUploadSolutionComponent implements OnInit, AfterViewInit {
+    private readonly notifier: NotifierService;
     @ViewChild('rules_container') public rules_container_element: any;
     @ViewChild('name_container') public name_container_element: any;
     @ViewChild('solution_input') public solution_input: any;
@@ -30,7 +32,9 @@ export class TournamentUploadSolutionComponent implements OnInit, AfterViewInit 
         private profile_service: ProfileApiService,
         private route: ActivatedRoute,
         private router: Router,
+        private notifierService: NotifierService,
     ) {
+        this.notifier = notifierService;
     }
 
     ngOnInit(): void {
@@ -101,7 +105,8 @@ export class TournamentUploadSolutionComponent implements OnInit, AfterViewInit 
 
         this.tournament_service.upload_solution(formData, this.profile.id!, this.tournament.id!).subscribe(
             resp => {
-                console.log(resp);
+                this.solution_input.nativeElement.value = null;
+                this.notifier.notify('success', 'Решение отправлено на проверку');
             }, error => {
                 console.log(error);
             }

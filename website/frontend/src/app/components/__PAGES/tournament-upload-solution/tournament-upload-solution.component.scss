@@ -67,7 +67,7 @@ table > tr > td {
 
 .send-solution-btn {
   border:              1px solid rgb(var(--black));
-  background:          rgb(var(--gray));
+  background:          rgb(var(--blue));
   font-size:           17px;
   padding:             7px 15px;
   border-radius:       5px;
@@ -80,6 +80,6 @@ table > tr > td {
   }
 
   &:disabled {
-    filter: brightness(.4);
+    background: rgb(var(--gray));
   }
 }
