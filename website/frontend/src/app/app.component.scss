@@ -1,10 +1,15 @@
-.main-content {
-  width:           100%;
+.main-container {
+  width:           100vw;
   height:          fit-content;
-  overflow:        visible;
-  max-width:       var(--max-main-width);
   min-height:      calc(100vh - var(--top-bar-height));
-  position:        relative;
   display:         flex;
+  flex-direction:  row;
   justify-content: center;
+}
+
+.content {
+  width:     100%;
+  height:    fit-content;
+  position: relative;
+  max-width: var(--max-main-width);
 }

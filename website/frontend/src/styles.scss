@@ -3,10 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Raleway");
-@import url("https://fonts.googleapis.com/css2?family=Goldman");
 @import url("https://fonts.googleapis.com/css2?family=Rubik");
+@import url('https://fonts.googleapis.com/css2?family=Inter');
+@import url('https://fonts.cdnfonts.com/css/noto-sans-syriac-eastern');
 
 /* TAGS STYLES */
+
 html, body {
   width:           100vw;
   min-height:      100vh;
@@ -28,13 +30,19 @@ body {
   width:   0;
 }
 
+::selection {
+  background: rgb(var(--prismarine));
+  color:      rgb(var(--black));
+}
+
 * {
   line-height: 100%;
   box-sizing:  border-box;
   margin:      0;
   padding:     0;
   caret-color: transparent;
-  font-family: "Raleway", sans-serif;
+  font-family: var(--ff-inter);
+  user-select: text !important;
 }
 
 input {
@@ -46,7 +54,7 @@ li {
   display:         inline-block;
 }
 
-input, button {
+input, button, select {
   outline-offset: 0;
   outline:        0;
 }
@@ -58,9 +66,75 @@ img {
   pointer-events:      none;
 }
 
+/* LITTLE CLASSES */
+.font-size-xxxlarge {
+  font-size: clamp(4.5rem, 7vw, 7.5rem);
+
+  @media screen and (max-width: 991px) {
+    font-size: 7vw;
+  }
+  @media screen and (max-width: 470px) {
+    font-size: 9.25vw;
+  }
+}
+
+.font-size-xxlarge {
+  font-size: clamp(3rem, 5vw, 5rem);
+
+  @media screen and (max-width: 991px) {
+    font-size: 3rem;
+  }
+  @media screen and (max-width: 470px) {
+    font-size: 2rem;
+  }
+}
+
+.font-size-xlarge {
+  font-size: clamp(2.5rem, 3.5vw, 3rem);
+
+  @media screen and (max-width: 991px) {
+    font-size: 2.5rem;
+  }
+  @media screen and (max-width: 470px) {
+    font-size: 1.75rem;
+  }
+}
+
+.font-size-large {
+  font-size: clamp(1.5rem, 2vw, 2.5rem);
+
+  @media screen and (max-width: 991px) {
+    font-size: 2rem;
+  }
+  @media screen and (max-width: 470px) {
+    font-size: 1.5rem;
+  }
+}
+
+.font-size-medium {
+  font-size: 1.5rem;
+
+  @media screen and (max-width: 470px) {
+    font-size: 1rem;
+  }
+}
+
+.font-size-regular {
+  font-size: 1rem;
+}
+
+.fw-700 { font-weight: 700; }
+
+.fw-600 { font-weight: 600; }
+
+.fw-500 { font-weight: 500; }
+
+/* VARIABLES */
 :root { // fonts
-  --f-raleway: "Raleway", sans-serif;
-  --f-rubik:   "Rubik", sans-serif;
+  --ff-raleway: "Raleway", sans-serif;
+  --ff-rubik:   "Rubik", sans-serif;
+  --ff-noto:    "Noto Sans Syriac Eastern", sans-serif;
+  --ff-inter:   "Inter", sans-serif;
 }
 
 :root { // sizes
@@ -73,6 +147,7 @@ img {
   --white:      255, 255, 255;
   --black:      0, 0, 0;
   --d-blue:     17, 15, 66;
+  --dd-blue:    0, 0, 21;
   --l-blue:     27, 23, 98;
   --d-green:    21, 202, 12;
   --l-green:    153, 255, 145;
@@ -80,17 +155,17 @@ img {
   --gray:       153, 153, 153;
   --purple:     163, 0, 255;
   --pink:       232, 28, 255;
-  --blue:       64, 201, 255;
+  --blue:       34, 132, 250;
   --l-purple:   167, 139, 250;
   --d-gray:     55, 65, 81;
-  --d-gray2: 65,65,65;
-  --orange: 232, 28, 100;
+  --d-gray2:    65, 65, 65;
+  --orange:     255, 136, 0;
 }
 
 :root { // colors
   --text-color:           var(--white);
   --caret-color:          var(--white);
-  --background-color:     var(--black);
+  --background-color:     var(--dd-blue);
   --border-color:         var(--l-blue);
   --color-accent:         var(--prismarine);
   --button-primary-color: var(--purple);

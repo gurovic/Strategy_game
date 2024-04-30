@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Profile} from "../../../models/profile.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
-import {ProfileService} from "../../../services/profile.service";
 import {LogoutApiService} from "../../../services/api/logout-api.service";
+import {LoaderComponentComponent} from "../../__MODELS/loader-component/loader-component.component";
 
 @Component({
     selector: 'app-profile',
@@ -12,57 +12,43 @@ import {LogoutApiService} from "../../../services/api/logout-api.service";
 })
 export class ProfileComponent implements OnInit {
     public user: Profile = {is_registered: false};
+    @ViewChild('username') public username_container: any;
+    @ViewChild('last_name') public last_name_container: any;
+    @ViewChild('email') public email_container: any;
+    @ViewChild('first_name') public first_name_container: any;
+    @ViewChild('date_joined') public date_joined_container: any;
 
     constructor(
         private router: Router,
         private profile_api_service: ProfileApiService,
         private logout_api_service: LogoutApiService,
-        private profile_service: ProfileService,
     ) {
     }
 
     ngOnInit(): void {
-        this.user = this.profile_service.get_user();
-        if (!this.user.is_registered)
-            this.profile_api_service.get().subscribe(
-                resp => {
-                    this.profile_service.set_user(resp);
-                    this.user = this.profile_service.get_user();
-                    if (!this.user.is_registered) this.router.navigate(['']);
-                    // @ts-ignore
-                    document.getElementById('username')!.innerText = this.user.username;
-                    // @ts-ignore
-                    document.getElementById('email')!.innerText = this.user.email;
-                    // @ts-ignore
-                    document.getElementById('first-name')!.innerText = this.user.first_name;
-                    // @ts-ignore
-                    document.getElementById('last-name')!.innerText = this.user.last_name;
-                    // @ts-ignore
-                    document.getElementById('date-joined')!.innerText = this.user.date_joined;
-                },
-                error => {
-                    this.profile_service.clear();
-                    this.router.navigate(['']);
-                },
-            )
-        else {
-            // @ts-ignore
-            document.getElementById('username')!.innerText = this.user.username;
-            // @ts-ignore
-            document.getElementById('email')!.innerText = this.user.email;
-            // @ts-ignore
-            document.getElementById('first-name')!.innerText = this.user.first_name;
-            // @ts-ignore
-            document.getElementById('last-name')!.innerText = this.user.last_name;
-            // @ts-ignore
-            document.getElementById('date-joined')!.innerText = this.user.date_joined;
-        }
+        LoaderComponentComponent.Show();
+        this.profile_api_service.get().subscribe(
+            resp => {
+                LoaderComponentComponent.Hide();
+                this.user = resp;
+                this.user.is_registered = true;
+                if (!this.user.is_registered) this.router.navigate(['login']);
+                this.username_container.nativeElement.innerText = this.user.username;
+                this.email_container.nativeElement.innerText = this.user.email;
+                this.first_name_container.nativeElement.innerText = this.user.first_name;
+                this.last_name_container.nativeElement.innerText = this.user.last_name;
+                this.date_joined_container.nativeElement.innerText = this.user.date_joined;
+            },
+            error => {
+                LoaderComponentComponent.Hide();
+                this.router.navigate(['login']);
+            },
+        )
     }
 
     logout() {
         this.logout_api_service.post('').subscribe(
             resp => {
-                this.profile_service.clear();
                 location.reload();
             },
         )

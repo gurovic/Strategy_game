@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {RegisterApiService} from "../../../services/api/register-api.service";
 import {UserRegister} from "../../../models/api/user-register.model";
 import {Router} from "@angular/router";
-import {ProfileService} from "../../../services/profile.service";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
 
 @Component({
@@ -15,7 +14,6 @@ export class RegistrationComponent implements OnInit {
 
     constructor(
         public register_service: RegisterApiService,
-        private profile_service: ProfileService,
         private profile_api_service: ProfileApiService,
         private router: Router,
     ) {
@@ -32,21 +30,8 @@ export class RegistrationComponent implements OnInit {
     register() {
         this.register_service.create(this.user).subscribe(
             resp => {
-                this.profile_api_service.get().subscribe(
-                    response => {
-                        this.profile_service.set_user(response);
-                        setTimeout(() => {
-                            // @ts-ignore
-                            document.getElementById('loader-box').style.display = 'none';
-                            this.router.navigate(['profile'])
-                            location.reload();
-                        }, 1000)
-                    },
-                    error => {
-                        // @ts-ignore
-                        document.getElementById('loader-box').style.display = 'none';
-                    },
-                )
+                console.log(resp);
+                this.router.navigate(['']).then();
             },
             error => {
                 // @ts-ignore

@@ -17,9 +17,15 @@ import {ArchiveTaskComponent} from './components/__MODELS/archive-task/archive-t
 import {RegistrationComponent} from './components/__PAGES/registration/registration.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule, HttpClientXsrfModule} from "@angular/common/http";
-import { ProfileComponent } from './components/__PAGES/profile/profile.component';
-import {TournamentResultComponent} from './components/__PAGES/tournament-result/tournament-result.component';
-import { UploadGameComponent } from './components/__PAGES/upload-game/upload-game.component';
+import {ProfileComponent} from './components/__PAGES/profile/profile.component';
+import {
+    TournamentUploadSolutionComponent
+} from './components/__PAGES/tournament-upload-solution/tournament-upload-solution.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {TournamentResultComponent} from "./components/__PAGES/tournament-result/tournament-result.component";
+import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
+import { LoaderComponentComponent } from './components/__MODELS/loader-component/loader-component.component';
 
 @NgModule({
     declarations: [
@@ -36,8 +42,10 @@ import { UploadGameComponent } from './components/__PAGES/upload-game/upload-gam
         ArchiveTaskComponent,
         RegistrationComponent,
         ProfileComponent,
+        TournamentUploadSolutionComponent,
         TournamentResultComponent,
-        UploadGameComponent
+        UploadGameComponent,
+        LoaderComponentComponent
     ],
     imports: [
         BrowserModule,
@@ -49,6 +57,8 @@ import { UploadGameComponent } from './components/__PAGES/upload-game/upload-gam
             cookieName: 'csrftoken',
             headerName: 'X-CSRFToken',
         }),
+        BrowserAnimationsModule,
+        MatProgressBarModule,
         ReactiveFormsModule,
     ],
     providers: [],

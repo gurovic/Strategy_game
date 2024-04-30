@@ -2,10 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {LoginApiService} from "../../../services/api/login-api.service";
 import {Router} from "@angular/router";
 import {UserLogin} from "../../../models/api/user-login.model";
-import {RegisterApiService} from "../../../services/api/register-api.service";
-import {UserRegister} from "../../../models/api/user-register.model";
-import {ProfileService} from "../../../services/profile.service";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
+import {LoaderComponentComponent} from "../../__MODELS/loader-component/loader-component.component";
 
 @Component({
     selector: 'app-login',
@@ -17,7 +15,6 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private login_service: LoginApiService,
-        private profile_service: ProfileService,
         private profile_api_service: ProfileApiService,
         private router: Router,
     ) {
@@ -32,31 +29,13 @@ export class LoginComponent implements OnInit {
     }
 
     login() {
-        // @ts-ignore
-        document.getElementById('loader-box').style.display = 'flex';
+        LoaderComponentComponent.Show();
         this.login_service.create(this.user).subscribe(
             resp => {
-                this.profile_api_service.get().subscribe(
-                    response => {
-                        this.profile_service.set_user(response);
-                        setTimeout(() => {
-                            // @ts-ignore
-                            document.getElementById('loader-box').style.display = 'none';
-                            this.router.navigate(['profile'])
-                            location.reload();
-                        }, 1000)
-                    },
-                    error => {
-                        // @ts-ignore
-                        document.getElementById('loader-box').style.display = 'none';
-                        this.profile_service.clear();
-                    },
-                )
+                this.router.navigate(['']).then();
             },
             error => {
-                // @ts-ignore
-                document.getElementById('loader-box').style.display = 'none';
-                this.profile_service.clear()
+                LoaderComponentComponent.Hide();
             },
         )
     }

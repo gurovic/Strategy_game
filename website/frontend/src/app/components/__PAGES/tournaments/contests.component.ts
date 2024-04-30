@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {debug_cards} from "../../../interface/contest_card";
 import {TournamentApiService} from "../../../services/api/tournament-api.service";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
-import {ProfileService} from "../../../services/profile.service";
 import {Profile} from "../../../models/profile.model";
 import {TournamentModel} from "../../../models/api/tournament.model";
+import {Router} from "@angular/router";
+import {LoaderComponentComponent} from "../../__MODELS/loader-component/loader-component.component";
 
 @Component({
     selector: 'app-tournaments',
@@ -12,6 +13,8 @@ import {TournamentModel} from "../../../models/api/tournament.model";
     styleUrls: ['./contests.component.scss']
 })
 export class ContestsComponent implements OnInit {
+    public need_close_loader_callbacks_count = 1;
+    private have_close_loader_callbacks_count = 0;
     public future_cards: TournamentModel[] = [];
     public past_cards: TournamentModel[] = [];
     public user: Profile = {is_registered: false};
@@ -19,30 +22,65 @@ export class ContestsComponent implements OnInit {
     constructor(
         private tournament_service: TournamentApiService,
         private profile_api_service: ProfileApiService,
-        private profile_service: ProfileService,
+        private router: Router,
     ) {
     }
 
-    ngOnInit(): void {
-        this.user = this.profile_service.user;
-        if (!this.user.is_registered)
-            this.profile_api_service.get().subscribe(
-                resp => {
-                    this.profile_service.set_user(resp);
-                    this.user = this.profile_service.get_user();
+    CloseLoaderComponent() {
+        this.have_close_loader_callbacks_count++;
+        if (this.have_close_loader_callbacks_count >= this.need_close_loader_callbacks_count)
+            LoaderComponentComponent.Hide();
+    }
 
-                    this.tournament_service.get().subscribe(
-                        resp => {
-                            console.log(resp);
-                            this.future_cards = resp.future;
-                            this.past_cards = resp.past;
+    ngOnInit(): void {
+        LoaderComponentComponent.Show();
+        this.profile_api_service.get().subscribe(
+            resp => {
+                this.user = resp;
+                this.user.is_registered = true;
+
+                this.tournament_service.get().subscribe(
+                    resp => {
+                        this.future_cards = resp.future;
+                        this.past_cards = resp.past;
+                        this.need_close_loader_callbacks_count += this.future_cards.length;
+                        this.CloseLoaderComponent();
+                        for (let i = 0; i < this.future_cards.length; ++i) {
+                            this.tournament_service.CheckIfUserRegistered(this.future_cards[i].id!, this.user.id!).subscribe(
+                                resp => {
+                                    if (resp.ok == 'ok')
+                                        this.future_cards[i].is_registered = true;
+                                    else
+                                        this.future_cards[i].is_registered = false;
+                                    this.CloseLoaderComponent();
+                                }
+                            );
                         }
-                    );
-                },
-                error => {
-                    this.profile_service.clear();
-                    this.user = this.profile_service.get_user();
-                },
-            );
+                    }
+                );
+            },
+            error => {
+                LoaderComponentComponent.Hide();
+                this.router.navigate(['login']).then();
+            },
+        );
+    }
+
+    RegisterToTournament(id: number) {
+        LoaderComponentComponent.Show();
+        this.tournament_service.RegisterToTournament(id, this.user.id!).subscribe(
+            resp => {
+                if (resp.status == 'denied registration') alert('registration_denied');
+                else {
+                    for (let i = 0; i < this.future_cards.length; i++)
+                        if (this.future_cards[i].id == id) this.future_cards[i].is_registered = true;
+                }
+                LoaderComponentComponent.Hide();
+            }
+        );
+    }
+
+    navigate(link: string) {
+        this.router.navigate([link]).then();
     }
 }

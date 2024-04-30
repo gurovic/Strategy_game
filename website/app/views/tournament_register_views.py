@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from ..models.tournament import Tournament
 from ..models.player_in_tournament import PlayerInTournament
@@ -17,13 +18,11 @@ def register(request, tournament_id, user_id):
         if try_to_get_player is None and len(
                 ourtournament.players.all()) != ourtournament.max_of_players:  # если можем зарегистрировать
             ouruser = User.objects.get(pk=user_id)
-            #ourplayer = PlayerInTournament.objects.create(player=ouruser, tournament=ourtournament, file_solution=None)
             ourtournament.players.add(ouruser)
-            return render(request, 'register_intournament.html', {'status': 'registered'})
+            return JsonResponse({'status': 'done'}, status=200)
         elif try_to_get_player != None:
-            return render(request, 'register_intournament.html', {'status': 'already registered'})
+            return JsonResponse({'status': 'already registered'}, status=200)
         else:
-            return render(request, 'register_intournament.html', {'status': 'denied registration'})
-
+            return JsonResponse({'status': 'denied registration'})
     else:
-        return render(request, 'register_intournament.html', {'status': 'not registered'})
+        return JsonResponse({'status': 'ok'})

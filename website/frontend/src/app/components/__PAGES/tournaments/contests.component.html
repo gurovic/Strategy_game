@@ -1,13 +1,19 @@
-
-
 <main class="main-container">
     <div class="cards__container">
-        <div *ngFor="let card of future_cards" class="card">
-            <p>{{ card.id }}</p>
-            <p>{{ card.name }}</p>
-            <p>{{ card.start_date }}</p>
-            <p>{{ card.participants }}</p>
-            <p>{{ card.about_text }}</p>
+        <div *ngFor="let card of future_cards" class="full-width">
+            <div class="card">
+                <div class="flex-inline">
+                    <p>{{ card.id }}</p>
+                    <p class="font-size-medium">{{ card.name }}</p>
+                </div>
+                <button class="enter-btn" *ngIf="card.is_registered"
+                        (click)="navigate('tournament/upload/'+card.id)">Войти в турнир
+                </button>
+                <button class="register-btn" *ngIf="!card.is_registered"
+                        (click)="RegisterToTournament(card.id!)">Зарегистрироваться
+                </button>
+
+            </div>
         </div>
     </div>
 </main>

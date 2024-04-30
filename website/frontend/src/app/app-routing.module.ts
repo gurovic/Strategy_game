@@ -8,7 +8,10 @@ import {ContestsComponent} from "./components/__PAGES/tournaments/contests.compo
 import {LoginComponent} from "./components/__PAGES/login/login.component";
 import {RegistrationComponent} from "./components/__PAGES/registration/registration.component";
 import {ProfileComponent} from "./components/__PAGES/profile/profile.component";
-import {TournamentResultComponent} from './components/__PAGES/tournament-result/tournament-result.component';
+import {
+    TournamentUploadSolutionComponent
+} from "./components/__PAGES/tournament-upload-solution/tournament-upload-solution.component";
+import {TournamentResultComponent} from "./components/__PAGES/tournament-result/tournament-result.component";
 import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
 
 const routes: Routes = [
@@ -16,10 +19,14 @@ const routes: Routes = [
     {path: 'about', component: AboutUsComponent},
     {path: 'wiki', component: WikiComponent},
     {path: 'sandbox', component: SandboxComponent},
-    {path: 'tournaments', component: ContestsComponent},
+    // {path: 'contact', component: ContactUsComponent},
+
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegistrationComponent},
     {path: 'profile', component: ProfileComponent},
+
+    {path: 'tournaments', component: ContestsComponent},
+    {path:'tournament/upload/:tournament-id', component: TournamentUploadSolutionComponent},
     {path: 'tournament/:tournamentId/results', component: TournamentResultComponent},
     {path: 'game/upload', component: UploadGameComponent},
 ];

@@ -1,4 +1,4 @@
-.main-content {
+.main-container {
   width:  100%;
   height: auto;
 
@@ -75,7 +75,7 @@
     .place {
       display:        flex;
       flex-direction: row;
-      font-family:    var(--f-rubik);
+      font-family:    var(--ff-rubik);
     }
   }
 }
