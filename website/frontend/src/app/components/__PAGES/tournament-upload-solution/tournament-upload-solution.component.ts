@@ -108,6 +108,7 @@ export class TournamentUploadSolutionComponent implements OnInit, AfterViewInit 
                 this.solution_input.nativeElement.value = null;
                 this.notifier.notify('success', 'Решение отправлено на проверку');
             }, error => {
+                this.notifier.notify('error', 'Решение не прошло проверку');
                 console.log(error);
             }
         )
