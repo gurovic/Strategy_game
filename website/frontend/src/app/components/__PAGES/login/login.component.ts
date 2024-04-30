@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
         LoaderComponentComponent.Show();
         this.login_service.create(this.user).subscribe(
             resp => {
+                LoaderComponentComponent.Hide();
                 this.router.navigate(['']).then();
             },
             error => {

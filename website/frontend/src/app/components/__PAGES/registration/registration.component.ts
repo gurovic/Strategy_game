@@ -30,7 +30,7 @@ export class RegistrationComponent implements OnInit {
     register() {
         this.register_service.create(this.user).subscribe(
             resp => {
-                console.log(resp);
+                location.reload();
                 this.router.navigate(['']).then();
             },
             error => {

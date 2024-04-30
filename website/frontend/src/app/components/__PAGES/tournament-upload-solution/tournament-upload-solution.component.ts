@@ -97,9 +97,7 @@ export class TournamentUploadSolutionComponent implements OnInit, AfterViewInit 
         }
 
         let formData = new FormData()
-        formData.append('strategy', this.solution);
-        formData.append('filename', this.filename);
-        formData.append('language', this.language);
+        formData.append('strategy', this.solution_input.nativeElement.files[0]);
 
         this.tournament_service.upload_solution(formData, this.profile.id!, this.tournament.id!).subscribe(
             resp => {
