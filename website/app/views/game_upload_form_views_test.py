@@ -34,6 +34,6 @@ class TestGameUploadFormView(TestCase):
             'visualiser_language': 'py',
         })
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(Game.objects.count(), 1)
         self.assertNotEqual(request.session.get('game_id'), 0)

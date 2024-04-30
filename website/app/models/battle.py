@@ -62,25 +62,29 @@ class Battle(models.Model):
         requests.append(launcher)
 
         number = 0
+        list_files = []
         strategies = []
         for player_in_battle in players_in_battle:
             number += 1
             self.numbers[number] = player_in_battle.player
+            file = player_in_battle.file_solution.path
             if file.split(".")[-1][0] != 'e':
                 strategy_compiled = CompiledFile()
                 Compiler(file, file.split(".")[-1], strategy_compiled.get_compiled_file).compile()
                 list_compiled_file.append(strategy_compiled)
-                strategies.append(strategy_compiled)
+                strategies.append((number, strategy_compiled))
+            else:
+                list_files.append((number, file))
 
         while ok_sum != len(list_compiled_file):
             continue
 
-        number = 1
-        for compiled in strategies:
-            file = compiled.compiled_file.path
+        for number, compiled in strategies:
+            list_files.append((number, compiled.compiled_file.path))
+
+        for number, file in sorted(list_files, key=lambda x: x[0]):
             launcher = Launcher(file, label=f'player{number}')
             requests.append(launcher)
-            number += 1
 
         multi_request = InvokerMultiRequest(requests, priority=Priority.RED)
         self.jury = Jury(multi_request)
@@ -98,6 +102,7 @@ class Battle(models.Model):
 
         for player in PlayersInBattle.objects.filter(battle=self):
             player.number_of_points = self.jury_report.points.get(player.number, 0)
+            player.save()
 
         self.moves = self.jury_report.story_of_game
         self.status = self.jury_report.status
