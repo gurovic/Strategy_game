@@ -1,4 +1,7 @@
 <main class="main-container">
+    <div *ngIf="future_cards.length == 0">
+        <p class="font-size-xlarge">Здесь скоро появятся доступные турниры</p>
+    </div>
     <div class="cards__container">
         <div *ngFor="let card of future_cards" class="full-width">
             <div class="card">
