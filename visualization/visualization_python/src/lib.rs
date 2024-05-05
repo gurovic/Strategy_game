@@ -5,7 +5,7 @@ use visualization_rust::get_frame as get_frame_rust;
 
 #[pyclass]
 struct Frame {
-    pub frame: Frame_rust,
+    frame: Frame_rust,
 }
 
 impl Frame {
@@ -18,6 +18,11 @@ impl Frame {
 
 #[pymethods]
 impl Frame {
+    #[getter]
+    pub fn data(&self) -> PyResult<Vec<Vec<(i32,i32,i32)>>> {
+        Ok(self.frame.data.clone())
+    }
+
     pub fn draw_line(&mut self, start_x: i32, start_y: i32, end_x: i32, end_y: i32, color: (i32,i32,i32)) {
         self.frame.draw_line(start_x, start_y, end_x, end_y, color);
     }

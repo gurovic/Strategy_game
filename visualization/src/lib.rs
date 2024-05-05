@@ -10,10 +10,10 @@ pub struct Frame {
 
 impl Frame {
     pub fn new(width: usize, height: usize, color: (i32,i32,i32)) -> Frame {
-        let mut image: Vec<Vec<(i32, i32, i32)>> = vec![vec![color; height]; width];
+        let image: Vec<Vec<(i32, i32, i32)>> = vec![vec![color; height]; width];
         Frame {
-            width: width,
-            height: height,
+            width,
+            height,
             data: image,
         }
     }
