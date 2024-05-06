@@ -6,6 +6,7 @@
         </div>
         <ul class="links">
             <li (click)="go_link('tournaments')" content="Competitions">Competitions</li>
+            <li (click)="go_link('create')" content="About">Create</li>
             <li (click)="go_link('about')" content="About">About</li>
         </ul>
         <div *ngIf="!this.user.is_registered" class="login" (click)="go_link('login')">
@@ -184,6 +185,7 @@
     <ul class="dropdown-links" style="margin-bottom: 10px;">
         <li (click)="go_link('');">Home</li>
         <li (click)="go_link('tournaments');">Competitions</li>
+            <li (click)="go_link('create')" content="About">Create</li>
         <li (click)="go_link('about');">About</li>
     </ul>
 

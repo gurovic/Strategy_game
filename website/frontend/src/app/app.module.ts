@@ -27,6 +27,7 @@ import {TournamentResultComponent} from "./components/__PAGES/tournament-result/
 import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
 import { LoaderComponentComponent } from './components/__MODELS/loader-component/loader-component.component';
 import {NotifierModule} from "angular-notifier";
+import { CreateNewComponent } from './components/__PAGES/create-new/create-new.component';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import {NotifierModule} from "angular-notifier";
         TournamentUploadSolutionComponent,
         TournamentResultComponent,
         UploadGameComponent,
-        LoaderComponentComponent
+        LoaderComponentComponent,
+        CreateNewComponent
     ],
     imports: [
         BrowserModule,
