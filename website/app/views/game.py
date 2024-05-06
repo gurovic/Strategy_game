@@ -10,6 +10,9 @@ def get_by_id(request, game_id: int):
     serialized_game = ast.literal_eval(serialized_game)[0]
     serialized_game['fields']['id'] = serialized_game['pk']
     serialized_game = serialized_game['fields']
-    with open(f'media/{serialized_game["rules"]}', 'r') as file:
-        serialized_game['rules'] = file.read()
+    try:
+        with open(f'media/{serialized_game["rules"]}', 'r') as file:
+            serialized_game['rules'] = file.read()
+    except:
+        serialized_game['rules'] = 'Правила не были загружены автором игры или отсутствует файл с правилами'
     return JsonResponse({'game': serialized_game}, status=200)
