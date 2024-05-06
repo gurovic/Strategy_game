@@ -23,6 +23,10 @@ impl Frame {
         Ok(self.frame.data.clone())
     }
 
+    pub fn draw(&mut self, x: i32, y: i32, color: (i32, i32, i32)) {
+        self.frame.draw(x, y, color);
+    }
+    
     pub fn draw_line(&mut self, start_x: i32, start_y: i32, end_x: i32, end_y: i32, color: (i32,i32,i32)) {
         self.frame.draw_line(start_x, start_y, end_x, end_y, color);
     }
