@@ -15,8 +15,8 @@ import {LoaderComponentComponent} from "../../__MODELS/loader-component/loader-c
 export class ContestsComponent implements OnInit {
     public need_close_loader_callbacks_count = 1;
     private have_close_loader_callbacks_count = 0;
-    public future_cards: TournamentModel[] = [];
-    public past_cards: TournamentModel[] = [];
+    public future_cards: TournamentModel[] = [{}];
+    public past_cards: TournamentModel[] = [{}];
     public user: Profile = {is_registered: false};
 
     constructor(
