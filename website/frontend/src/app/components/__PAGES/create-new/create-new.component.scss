@@ -1,0 +1,37 @@
+.cn-content {
+  padding: 30px;
+  width:   100%;
+}
+
+.links-container {
+  width:          100%;
+  display:        flex;
+  flex-direction: row;
+}
+
+.link {
+  padding:       20px 40px;
+  border-radius: 8px;
+  max-width:     300px;
+  border:        1px solid white;
+}
+
+.create-btn {
+  display:        flex;
+  flex-direction: row;
+  align-items:    center;
+  align-content:  center;
+  font-size:      18px;
+  transition:     gap .3s;
+  margin-top: 10px;
+  gap:            .15em;
+
+  &:after {
+    font-size: 18px;
+    content:   "\2192";
+  }
+
+  &:hover {
+    gap: .3em;
+  }
+}
