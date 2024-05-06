@@ -22,7 +22,7 @@ export class ContestsComponent implements OnInit {
     constructor(
         private tournament_service: TournamentApiService,
         private profile_api_service: ProfileApiService,
-        private router: Router,
+        public router: Router,
     ) {
     }
 
@@ -52,6 +52,9 @@ export class ContestsComponent implements OnInit {
                                         this.future_cards[i].is_registered = true;
                                     else
                                         this.future_cards[i].is_registered = false;
+                                    this.future_cards.push(this.future_cards[i]);
+                                    this.future_cards.push(this.future_cards[i]);
+                                    this.future_cards.push(this.future_cards[i]);
                                     this.CloseLoaderComponent();
                                 }
                             );
