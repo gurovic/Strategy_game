@@ -52,10 +52,17 @@ export class TournamentUploadSolutionComponent implements OnInit, AfterViewInit 
         file_reader.readAsText(this.solution_input.nativeElement.files[0]);
         this.filename = this.solution_input.nativeElement.files[0].name;
 
-        file_reader.onload = () => { this.solution = file_reader.result; }
-        file_reader.onprogress = (e:any) => { this.solution_upload_progress = e.loaded / e.total * 100; }
-        file_reader.onloadend = () => { this.solution_upload_progress = undefined; }
-        setTimeout(() => {})
+        file_reader.onload = () => {
+            this.solution = file_reader.result;
+        }
+        file_reader.onprogress = (e: any) => {
+            this.solution_upload_progress = e.loaded / e.total * 100;
+        }
+        file_reader.onloadend = () => {
+            this.solution_upload_progress = undefined;
+        }
+        setTimeout(() => {
+        })
     }
 
     GetProfile() {
@@ -109,7 +116,6 @@ export class TournamentUploadSolutionComponent implements OnInit, AfterViewInit 
                 this.notifier.notify('success', 'Решение отправлено на проверку');
             }, error => {
                 this.notifier.notify('error', 'Решение не прошло проверку');
-                console.log(error);
             }
         )
     }

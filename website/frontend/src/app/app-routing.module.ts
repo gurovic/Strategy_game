@@ -13,6 +13,7 @@ import {
 } from "./components/__PAGES/tournament-upload-solution/tournament-upload-solution.component";
 import {TournamentResultComponent} from "./components/__PAGES/tournament-result/tournament-result.component";
 import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
+import {CreateNewComponent} from "./components/__PAGES/create-new/create-new.component";
 
 const routes: Routes = [
     {path: '', component: MainPageComponent},
@@ -29,6 +30,7 @@ const routes: Routes = [
     {path:'tournament/upload/:tournament-id', component: TournamentUploadSolutionComponent},
     {path: 'tournament/:tournamentId/results', component: TournamentResultComponent},
     {path: 'game/upload', component: UploadGameComponent},
+    {path: 'create', component: CreateNewComponent }
 ];
 
 @NgModule({

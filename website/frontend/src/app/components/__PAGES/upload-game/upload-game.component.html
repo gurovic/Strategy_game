@@ -1,50 +1,48 @@
-<main>
-    <h1>Upload your game</h1>
+<main class="flex-center">
+    <p class="font-size-xlarge fw-700">Upload your game</p>
 </main>
-<body>
-    <form [formGroup]="checkoutForm" class = "input-group">
-        <div class="group">
+<div class="flex-center">
+    <form [formGroup]="checkoutForm" class="form-group">
+        <div class="input-group">
             <label>Name</label>
             <input type="text" formControlName="name">
         </div>
 
-        <div class="group">
+        <div class="input-group">
             <label>Number of players</label>
             <input type="number" formControlName="number_of_players">
         </div>
 
-        <div class="group">
+        <div class="input-group">
             <label>Ideal solution</label>
             <input type="file" name="ideal_solution" (change)="uploadFile($event)">
         </div>
 
-        <div class="group">
+        <div class="input-group">
             <label>Play</label>
             <input type="file" name="play" (change)="uploadFile($event)">
         </div>
 
-        <div class="group">
+        <div class="input-group">
             <label>Win points</label>
             <input type="number" formControlName="win_point">
         </div>
 
-        <div class="group">
+        <div class="input-group">
             <label>Lose points</label>
             <input type="number" formControlName="lose_point">
         </div>
 
-        <div class="group">
+        <div class="input-group">
             <label>Visualiser</label>
             <input type="file" name="visualiser" (change)="uploadFile($event)">
         </div>
 
-        <div class="group">
+        <div class="input-group">
             <label>Rules</label>
             <input type="file" name="rules" (change)="uploadFile($event)">
         </div>
 
-        <button (click)="onSubmit()" class="button" type="button">Upload</button>
+        <button (click)="onSubmit()" class="submit-btn" type="button">Upload</button>
     </form>
-
-</body>
-
+</div>
