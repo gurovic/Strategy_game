@@ -32,7 +32,6 @@ export class ProfileComponent implements OnInit {
                 LoaderComponentComponent.Hide();
                 this.user = resp;
                 this.user.is_registered = true;
-                if (!this.user.is_registered) this.router.navigate(['login']);
                 this.username_container.nativeElement.innerText = this.user.username;
                 this.email_container.nativeElement.innerText = this.user.email;
                 this.first_name_container.nativeElement.innerText = this.user.first_name;
