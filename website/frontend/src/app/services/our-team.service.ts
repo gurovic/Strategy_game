@@ -11,17 +11,18 @@ export interface Member {
 })
 export class OurTeamService {
   public members: Member[] = [
-    {name: 'Vladimir Gurovic', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Team Lead' },
-    {name: 'Boris Kiva', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'FullStack dev' },
-    {name: 'Vladimir Shaklein', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Backend dev' },
-    {name: 'Seraphim Lobanov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Backend dev' },
-    {name: 'Maria Bessolova', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Shaklein user' },
-    {name: 'Ilgizar Khazeev', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Thinker' },
-    {name: 'Michel Countryside', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'GPT-user' },
-    {name: 'Michel Lichmanov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'math is done' },
-    {name: 'Dmitry Dubrov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Postgres' },
-    {name: 'Dmitry Palov', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'User' },
-    {name: 'Alexandra Golubcova', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Thinker' },
+    {name: 'Владимир Гуровиц', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Team lead' },
+    {name: 'Борис Кива', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Fustack dev' },
+    {name: 'Владимир Шаклеин', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Project lead' },
+    {name: 'Лобанос Серафим', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Backend dev' },
+    {name: 'Бессолова Мария', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Shaklein user' },
+    {name: 'Хазеев Ильгизар', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Smartphone Vivo' },
+    {name: 'Загороднюк Михаил', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'GPT-user' },
+    {name: 'Личманов Михаил', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'math is done' },
+    {name: 'Дубров Дмитрий', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'BD lead' },
+    {name: 'Палов Дмитрий', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'User' },
+    {name: 'Голубцова Александра', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Thinker' },
+    {name: 'Адаменко Мирослав', image_path: '/static/angular/assets/our_team_photos/boris.png', position: 'Thinker' },
   ]
 
   constructor() { }
