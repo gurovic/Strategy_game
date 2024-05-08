@@ -48,6 +48,7 @@ export class ProfileComponent implements OnInit {
     logout() {
         this.logout_api_service.post('').subscribe(
             resp => {
+                localStorage.removeItem('token');
                 location.reload();
             },
         )

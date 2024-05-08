@@ -15,7 +15,6 @@ import json
 def register_request(request):
     if request.method == "POST":
         data = json.loads(request.body.decode("utf-8"))
-        print(data)
         form = NewUserForm(data)
         if form.is_valid():
             user = form.save()
