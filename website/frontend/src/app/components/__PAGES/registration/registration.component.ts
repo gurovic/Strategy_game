@@ -3,6 +3,7 @@ import {RegisterApiService} from "../../../services/api/register-api.service";
 import {UserRegister} from "../../../models/api/user-register.model";
 import {Router} from "@angular/router";
 import {ProfileApiService} from "../../../services/api/profile-api.service";
+import {LoaderComponentComponent} from "../../__MODELS/loader-component/loader-component.component";
 
 @Component({
     selector: 'app-registration',
@@ -28,14 +29,16 @@ export class RegistrationComponent implements OnInit {
     }
 
     register() {
+        LoaderComponentComponent.Show();
         this.register_service.create(this.user).subscribe(
             resp => {
+                LoaderComponentComponent.Hide();
                 location.reload();
+                localStorage.setItem('token', '2147h4247y329j43298423h98j9');
                 this.router.navigate(['']).then();
             },
             error => {
-                // @ts-ignore
-                document.getElementById('loader-box').style.display = 'none';
+                LoaderComponentComponent.Hide();
             },
         )
     }

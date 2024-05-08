@@ -1,6 +1,6 @@
 <main class="main-container">
     <p class="font-size-xlarge" style="margin: 20px;" *ngIf="future_cards.length > 0">Текущие турниры</p>
-    <div class="cards__container" *ngIf="future_cards.length > 0">
+    <div class="cards__container" *ngIf="future_cards.length > 0" [style.width]="getWidth(future_cards.length)">
         <div *ngFor="let card of future_cards" class="card">
             <div class="flex-inline">
                 <p>{{ card.id }}</p>
@@ -14,18 +14,16 @@
             </button>
         </div>
     </div>
-    <p class="font-size-xlarge" style="margin: 30px 0 20px;" *ngIf="past_cards.length > 0">Прощедшие турниры</p>
-    <div class="cards__container" *ngIf="past_cards.length > 0">
-        <div *ngFor="let card of past_cards" class="full-width">
-            <div class="card">
-                <div class="flex-inline">
-                    <p>{{ card.id }}</p>
-                    <p class="font-size-medium">{{ card.name }}</p>
-                </div>
-                <button style="text-wrap: nowrap" class="register-btn"
-                        (click)="router.navigate(['tournament/'+card.id+'/results'])">Посмотреть результат
-                </button>
+    <p class="font-size-xlarge" style="margin: 30px 0 20px;" *ngIf="past_cards.length > 0">Прошедшие турниры</p>
+    <div class="cards__container" *ngIf="past_cards.length > 0" [style.width]="getWidth(past_cards.length)">
+        <div class="card" *ngFor="let card of past_cards">
+            <div class="flex-inline">
+                <p>{{ card.id }}</p>
+                <p class="font-size-medium">{{ card.name }}</p>
             </div>
+            <button style="text-wrap: nowrap" class="register-btn"
+                    (click)="router.navigate(['tournament/'+card.id+'/results'])">Посмотреть результат
+            </button>
         </div>
     </div>
 </main>

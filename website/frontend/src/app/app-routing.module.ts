@@ -14,23 +14,22 @@ import {
 import {TournamentResultComponent} from "./components/__PAGES/tournament-result/tournament-result.component";
 import {UploadGameComponent} from "./components/__PAGES/upload-game/upload-game.component";
 import {CreateNewComponent} from "./components/__PAGES/create-new/create-new.component";
+import {AuthGuard} from "./guards/auth.guard";
 
 const routes: Routes = [
     {path: '', component: MainPageComponent},
     {path: 'about', component: AboutUsComponent},
-    {path: 'wiki', component: WikiComponent},
-    {path: 'sandbox', component: SandboxComponent},
-    // {path: 'contact', component: ContactUsComponent},
 
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegistrationComponent},
-    {path: 'profile', component: ProfileComponent},
+    {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
 
-    {path: 'tournaments', component: ContestsComponent},
-    {path:'tournament/upload/:tournament-id', component: TournamentUploadSolutionComponent},
-    {path: 'tournament/:tournamentId/results', component: TournamentResultComponent},
-    {path: 'game/upload', component: UploadGameComponent},
-    {path: 'create', component: CreateNewComponent }
+    {path: 'tournaments', component: ContestsComponent, canActivate: [AuthGuard]},
+    {path: 'tournament/upload/:tournament-id', component: TournamentUploadSolutionComponent, canActivate: [AuthGuard]},
+    {path: 'tournament/:tournamentId/results', component: TournamentResultComponent, canActivate: [AuthGuard]},
+    {path: 'game/upload', component: UploadGameComponent, canActivate: [AuthGuard]},
+    {path: 'create', component: CreateNewComponent, canActivate: [AuthGuard]},
+    {path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 
 @NgModule({

@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
             resp => {
                 LoaderComponentComponent.Hide();
                 location.reload();
+                localStorage.setItem('token', '2147h4247y329j43298423h98j9');
                 this.router.navigate(['']).then();
             },
             error => {
