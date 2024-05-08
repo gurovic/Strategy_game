@@ -22,8 +22,7 @@ const routes: Routes = [
 
     {path: 'login', component: LoginComponent},
     {path: 'register', component: RegistrationComponent},
-    {path: 'profile', component: ProfileComponent},
-    // {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
+    {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
 
     {path: 'tournaments', component: ContestsComponent, canActivate: [AuthGuard]},
     {path: 'tournament/upload/:tournament-id', component: TournamentUploadSolutionComponent, canActivate: [AuthGuard]},

@@ -69,7 +69,6 @@ export class ContestsComponent implements OnInit {
     getWidth(count: number) {
         const size = 300;
         const gap = 20;
-        console.log(count);
         if (count == 1) return `${size}px`;
         if (count == 2) return `${2*size + gap}px`;
         if (count == 3) return `${3*size + 2*gap}px`;
