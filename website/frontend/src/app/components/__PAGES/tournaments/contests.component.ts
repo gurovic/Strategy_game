@@ -15,8 +15,8 @@ import {LoaderComponentComponent} from "../../__MODELS/loader-component/loader-c
 export class ContestsComponent implements OnInit {
     public need_close_loader_callbacks_count = 1;
     private have_close_loader_callbacks_count = 0;
-    public future_cards: TournamentModel[] = [{}];
-    public past_cards: TournamentModel[] = [{}];
+    public future_cards: TournamentModel[] = [];
+    public past_cards: TournamentModel[] = [];
     public user: Profile = {is_registered: false};
 
     constructor(
@@ -24,6 +24,7 @@ export class ContestsComponent implements OnInit {
         private profile_api_service: ProfileApiService,
         public router: Router,
     ) {
+        LoaderComponentComponent.Show();
     }
 
     CloseLoaderComponent() {
@@ -33,7 +34,6 @@ export class ContestsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        LoaderComponentComponent.Show();
         this.profile_api_service.get().subscribe(
             resp => {
                 this.user = resp;
@@ -64,6 +64,16 @@ export class ContestsComponent implements OnInit {
                 this.router.navigate(['login']).then();
             },
         );
+    }
+
+    getWidth(count: number) {
+        const size = 300;
+        const gap = 20;
+        console.log(count);
+        if (count == 1) return `${size}px`;
+        if (count == 2) return `${2*size + gap}px`;
+        if (count == 3) return `${3*size + 2*gap}px`;
+        return '100%';
     }
 
     RegisterToTournament(id: number) {
