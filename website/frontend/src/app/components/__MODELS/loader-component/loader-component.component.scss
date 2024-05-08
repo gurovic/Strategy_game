@@ -1,17 +1,16 @@
 .background-loader {
-  position:            absolute;
-  top:                 0;
-  opacity:             0;
-  left:                0;
-  right:               0;
-  bottom:              0;
-  background:          rgba(0, 0, 0, .6);
-  display:             none;
-  justify-content:     center;
-  align-items:         center;
-  align-content:       center;
-  transition-duration: .3s;
-  z-index:             10000;
+  position:        absolute;
+  top:             var(--top-bar-height);
+  opacity:         0;
+  left:            0;
+  width:           100vw;
+  height:          calc(100vh - var(--top-bar-height));
+  background:      rgb(var(--background-color));
+  display:         none;
+  justify-content: center;
+  align-items:     center;
+  align-content:   center;
+  z-index:         10000;
 
   svg {
     width:            3.25em;
